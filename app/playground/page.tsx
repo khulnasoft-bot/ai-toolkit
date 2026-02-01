@@ -1,232 +1,316 @@
 'use client'
 
+import { useState, useCallback, useEffect } from 'react'
 import { Header } from '@/components/header'
-import { Button } from '@/components/ui/button'
-import { Card, CardTitle, CardDescription, CardHeader } from '@/components/ui/card'
-import { SettingsPanel } from '@/components/playground/settings-panel'
-import { ResponseViewer } from '@/components/playground/response-viewer'
-import { useState } from 'react'
-import { Play } from 'lucide-react'
+import { PromptInput } from '@/components/playground/prompt-input'
+import { ModelCard } from '@/components/playground/model-card'
+import { ModelSelector } from '@/components/playground/model-selector'
+import { HistoryPanel } from '@/components/playground/history-panel'
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { Settings } from 'lucide-react'
 
-const PROVIDERS = [
-  { id: 'openai', name: 'OpenAI', models: ['gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo'] },
-  { id: 'anthropic', name: 'Anthropic', models: ['claude-3-opus', 'claude-3-sonnet', 'claude-3-haiku'] },
-  { id: 'groq', name: 'Groq', models: ['mixtral-8x7b', 'llama2-70b'] },
-  { id: 'google', name: 'Google', models: ['gemini-pro', 'palm-2'] },
-]
+interface SelectedModel {
+  provider: string
+  model: string
+}
 
-const FUNCTIONS = [
-  { id: 'generateText', name: 'Generate Text', description: 'Generate text content from a prompt' },
-  { id: 'generateObject', name: 'Generate Object', description: 'Generate structured JSON objects' },
-  { id: 'streamText', name: 'Stream Text', description: 'Stream text responses in real-time' },
-  { id: 'generateImage', name: 'Generate Image', description: 'Generate images from text descriptions' },
-]
+interface ModelResponse {
+  content: string
+  tokens: number
+  cost: number
+  time: number
+}
+
+interface HistoryItem {
+  id: string
+  prompt: string
+  timestamp: Date
+}
 
 export default function PlaygroundPage() {
-  const [selectedProvider, setSelectedProvider] = useState('openai')
-  const [selectedModel, setSelectedModel] = useState('gpt-4')
-  const [selectedFunction, setSelectedFunction] = useState('generateText')
-  const [prompt, setPrompt] = useState('Write a short story about a robot learning to dance')
-  const [response, setResponse] = useState('')
-  const [loading, setLoading] = useState(false)
+  const [prompt, setPrompt] = useState('')
+  const [selectedModels, setSelectedModels] = useState<SelectedModel[]>([
+    { provider: 'OpenAI', model: 'gpt-4-turbo' },
+    { provider: 'Anthropic', model: 'claude-3-opus' },
+  ])
+  const [responses, setResponses] = useState<Record<string, ModelResponse>>({})
+  const [loading, setLoading] = useState<Record<string, boolean>>({})
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [history, setHistory] = useState<HistoryItem[]>([])
   const [temperature, setTemperature] = useState(0.7)
-  const [maxTokens, setMaxTokens] = useState(1024)
-  const [topP, setTopP] = useState(1)
+  const [maxTokens, setMaxTokens] = useState(2048)
 
-  const currentProvider = PROVIDERS.find(p => p.id === selectedProvider)
-  const currentFunction = FUNCTIONS.find(f => f.id === selectedFunction)
+  // Load history from localStorage
+  useEffect(() => {
+    const saved = localStorage.getItem('playground-history')
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved)
+        setHistory(
+          parsed.map((item: any) => ({
+            ...item,
+            timestamp: new Date(item.timestamp),
+          }))
+        )
+      } catch (e) {
+        console.error('Failed to load history', e)
+      }
+    }
+  }, [])
 
-  const handleRun = async () => {
-    setLoading(true)
-    try {
-      const response = await fetch('/api/playground', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          provider: selectedProvider,
-          model: selectedModel,
-          function: selectedFunction,
-          prompt,
-          parameters: {
-            temperature,
-            maxTokens,
-            topP,
-          },
-        }),
-      })
-      const data = await response.json()
-      setResponse(data.result || data.error || 'No response')
-    } catch (error) {
-      setResponse(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`)
-    } finally {
-      setLoading(false)
+  // Save history to localStorage
+  useEffect(() => {
+    localStorage.setItem('playground-history', JSON.stringify(history))
+  }, [history])
+
+  const generateModelKey = (model: SelectedModel) =>
+    `${model.provider}-${model.model}`
+
+  const handleAddModel = () => {
+    // In a real implementation, this would open a modal to select models
+    const newModel: SelectedModel = {
+      provider: 'Groq',
+      model: 'mixtral-8x7b-32768',
+    }
+    if (!selectedModels.some((m) => generateModelKey(m) === generateModelKey(newModel))) {
+      setSelectedModels([...selectedModels, newModel])
     }
   }
 
-  const handleCopyResponse = () => {
-    navigator.clipboard.writeText(response)
+  const handleRemoveModel = (index: number) => {
+    const key = generateModelKey(selectedModels[index])
+    const newSelectedModels = selectedModels.filter((_, i) => i !== index)
+    setSelectedModels(newSelectedModels)
+
+    const newResponses = { ...responses }
+    delete newResponses[key]
+    setResponses(newResponses)
+
+    const newLoading = { ...loading }
+    delete newLoading[key]
+    setLoading(newLoading)
+
+    const newErrors = { ...errors }
+    delete newErrors[key]
+    setErrors(newErrors)
   }
 
-  const handleClearAll = () => {
+  const handleSubmit = useCallback(async () => {
+    if (!prompt.trim()) return
+
+    // Add to history
+    const historyItem: HistoryItem = {
+      id: Date.now().toString(),
+      prompt,
+      timestamp: new Date(),
+    }
+    setHistory((prev) => [historyItem, ...prev.slice(0, 49)])
+
+    // Set loading state for all models
+    const loadingState: Record<string, boolean> = {}
+    selectedModels.forEach((model) => {
+      loadingState[generateModelKey(model)] = true
+    })
+    setLoading(loadingState)
+    setErrors({})
+
+    // Simulate API calls to different models
+    for (const model of selectedModels) {
+      const key = generateModelKey(model)
+
+      setTimeout(async () => {
+        try {
+          // Simulate API response with delay
+          const delay = Math.random() * 2000 + 1000
+          await new Promise((resolve) => setTimeout(resolve, delay))
+
+          // Mock response - in production this would call real APIs
+          const mockResponse: ModelResponse = {
+            content: generateMockResponse(model.provider, prompt),
+            tokens: Math.floor(Math.random() * 500) + 100,
+            cost: parseFloat((Math.random() * 0.01 + 0.001).toFixed(5)),
+            time: (Math.random() * 2 + 0.5).toFixed(2) as any,
+          }
+
+          setResponses((prev) => ({ ...prev, [key]: mockResponse }))
+          setLoading((prev) => ({ ...prev, [key]: false }))
+        } catch (error) {
+          setErrors((prev) => ({
+            ...prev,
+            [key]: error instanceof Error ? error.message : 'Unknown error',
+          }))
+          setLoading((prev) => ({ ...prev, [key]: false }))
+        }
+      }, 0)
+    }
+  }, [prompt, selectedModels])
+
+  const handleClear = () => {
     setPrompt('')
-    setResponse('')
-    setSelectedProvider('openai')
-    setSelectedModel('gpt-4')
-    setSelectedFunction('generateText')
+    setResponses({})
+    setErrors({})
+  }
+
+  const handleSelectHistory = (item: HistoryItem) => {
+    setPrompt(item.prompt)
+    setResponses({})
+    setErrors({})
+  }
+
+  const handleClearHistory = () => {
+    setHistory([])
   }
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Page Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-2">Playground</h1>
-          <p className="text-lg text-muted-foreground">
-            Test different AI providers, models, and functions with your own prompts
-          </p>
-        </div>
-
+      <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
-          {/* Controls Panel */}
+          {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
-            {/* Provider Selection */}
+            {/* Model Selector */}
+            <ModelSelector
+              selectedModels={selectedModels}
+              onAdd={handleAddModel}
+              onRemove={handleRemoveModel}
+            />
+
+            {/* Settings */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">AI Provider</CardTitle>
+                <CardTitle className="text-base flex items-center gap-2">
+                  <Settings className="w-4 h-4" />
+                  Settings
+                </CardTitle>
               </CardHeader>
-              <div className="space-y-3 px-6 pb-6">
-                {PROVIDERS.map(provider => (
-                  <button
-                    key={provider.id}
-                    onClick={() => {
-                      setSelectedProvider(provider.id)
-                      setSelectedModel(provider.models[0])
-                    }}
-                    className={`w-full text-left px-4 py-3 rounded-lg border transition-colors ${
-                      selectedProvider === provider.id
-                        ? 'bg-primary/10 border-primary text-foreground'
-                        : 'border-border bg-input-bg text-muted-foreground hover:bg-hover-bg'
-                    }`}
-                  >
-                    <div className="font-medium">{provider.name}</div>
-                  </button>
-                ))}
-              </div>
-            </Card>
-
-            {/* Model Selection */}
-            {currentProvider && (
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-base">Model</CardTitle>
-                </CardHeader>
-                <div className="space-y-3 px-6 pb-6">
-                  {currentProvider.models.map(model => (
-                    <button
-                      key={model}
-                      onClick={() => setSelectedModel(model)}
-                      className={`w-full text-left px-4 py-3 rounded-lg border transition-colors text-sm ${
-                        selectedModel === model
-                          ? 'bg-primary/10 border-primary text-foreground'
-                          : 'border-border bg-input-bg text-muted-foreground hover:bg-hover-bg'
-                      }`}
-                    >
-                      {model}
-                    </button>
-                  ))}
+              <div className="px-6 pb-6 space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-foreground block mb-2">
+                    Temperature: {temperature.toFixed(1)}
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="2"
+                    step="0.1"
+                    value={temperature}
+                    onChange={(e) => setTemperature(parseFloat(e.target.value))}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Controls randomness. Higher values = more creative.
+                  </p>
                 </div>
-              </Card>
-            )}
 
-            {/* Function Selection */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-base">Function</CardTitle>
-              </CardHeader>
-              <div className="space-y-3 px-6 pb-6">
-                {FUNCTIONS.map(func => (
-                  <button
-                    key={func.id}
-                    onClick={() => setSelectedFunction(func.id)}
-                    className={`w-full text-left px-4 py-3 rounded-lg border transition-colors ${
-                      selectedFunction === func.id
-                        ? 'bg-primary/10 border-primary'
-                        : 'border-border bg-input-bg hover:bg-hover-bg'
-                    }`}
-                  >
-                    <div className={`font-medium ${selectedFunction === func.id ? 'text-foreground' : 'text-muted-foreground'}`}>
-                      {func.name}
-                    </div>
-                    <div className="text-xs text-muted-foreground mt-1">{func.description}</div>
-                  </button>
-                ))}
+                <div>
+                  <label className="text-sm font-medium text-foreground block mb-2">
+                    Max Tokens: {maxTokens}
+                  </label>
+                  <input
+                    type="range"
+                    min="128"
+                    max="4096"
+                    step="128"
+                    value={maxTokens}
+                    onChange={(e) => setMaxTokens(parseInt(e.target.value))}
+                    className="w-full"
+                  />
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Maximum length of generated response.
+                  </p>
+                </div>
               </div>
             </Card>
+
+            {/* History */}
+            <HistoryPanel
+              history={history}
+              onSelect={handleSelectHistory}
+              onClear={handleClearHistory}
+            />
           </div>
 
-          {/* Main Editor */}
+          {/* Main Content */}
           <div className="lg:col-span-3 space-y-6">
             {/* Prompt Input */}
             <Card>
               <CardHeader>
-                <CardTitle className="text-base">Prompt</CardTitle>
-                <CardDescription>Enter your prompt or question</CardDescription>
+                <CardTitle>Prompt</CardTitle>
+                <CardDescription>
+                  Enter your prompt to test across all selected models
+                </CardDescription>
               </CardHeader>
               <div className="px-6 pb-6">
-                <textarea
+                <PromptInput
                   value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  className="w-full h-32 bg-input-bg border border-border rounded-lg px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary resize-none"
-                  placeholder="Enter your prompt here..."
+                  onChange={setPrompt}
+                  onSubmit={handleSubmit}
+                  onClear={handleClear}
+                  isLoading={Object.values(loading).some((v) => v)}
                 />
               </div>
             </Card>
 
-            {/* Run Button */}
-            <div className="flex gap-4">
-              <Button
-                onClick={handleRun}
-                disabled={loading}
-                variant="primary"
-                size="lg"
-                className="flex-1"
-              >
-                <Play className="w-4 h-4 mr-2" />
-                Run
-              </Button>
-              <Button
-                onClick={handleClearAll}
-                variant="secondary"
-                size="lg"
-                className="flex-1"
-              >
-                Clear
-              </Button>
-            </div>
-
-            {/* Response Output */}
-            <ResponseViewer
-              response={response}
-              loading={loading}
-              onCopy={handleCopyResponse}
-            />
-          </div>
-
-          {/* Settings Sidebar */}
-          <div className="lg:col-span-1">
-            <SettingsPanel
-              temperature={temperature}
-              maxTokens={maxTokens}
-              topP={topP}
-              onTemperatureChange={setTemperature}
-              onMaxTokensChange={setMaxTokens}
-              onTopPChange={setTopP}
-            />
+            {/* Model Responses Grid */}
+            {selectedModels.length > 0 && (
+              <div>
+                <h2 className="text-lg font-semibold text-foreground mb-4">
+                  Responses
+                </h2>
+                <div
+                  className={`grid gap-6 ${
+                    selectedModels.length === 1
+                      ? 'grid-cols-1'
+                      : selectedModels.length === 2
+                        ? 'grid-cols-1 md:grid-cols-2'
+                        : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                  }`}
+                >
+                  {selectedModels.map((model, index) => {
+                    const key = generateModelKey(model)
+                    return (
+                      <ModelCard
+                        key={key}
+                        provider={model.provider}
+                        model={model.model}
+                        response={responses[key]}
+                        isLoading={loading[key] || false}
+                        error={errors[key]}
+                      />
+                    )
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
     </div>
   )
+}
+
+// Mock response generator
+function generateMockResponse(provider: string, prompt: string): string {
+  const responses: Record<string, string[]> = {
+    OpenAI: [
+      `This is a response from OpenAI's GPT-4 model. Based on your prompt: "${prompt.substring(0, 50)}..."\n\nThe AI-powered playground allows you to compare responses from multiple language models side by side. This helps you understand how different models approach the same task with different writing styles, perspectives, and levels of detail.`,
+      `OpenAI's model provides a sophisticated response to your query. Using advanced transformer architecture and reinforcement learning from human feedback (RLHF), the model generates coherent and contextually relevant text.`,
+    ],
+    Anthropic: [
+      `Claude's response to your prompt: "${prompt.substring(0, 50)}..."\n\nAnthropically trained models focus on being helpful, harmless, and honest. This model attempts to provide a balanced and thoughtful response while considering potential implications and edge cases.`,
+      `Anthropic's Claude model approaches this task by first understanding the context and intent behind your prompt, then generating a response that aims to be both informative and respectful of important nuances.`,
+    ],
+    Groq: [
+      `Groq's fast inference model responds: "${prompt.substring(0, 50)}..."\n\nKnown for speed and efficiency, Groq's language models are optimized for rapid token generation while maintaining quality outputs. This makes them ideal for real-time applications.`,
+      `This response from Groq demonstrates the model's ability to provide quick, relevant answers. The model is optimized for low-latency inference without sacrificing too much in terms of response quality.`,
+    ],
+    Google: [
+      `Google's Gemini model responds: "${prompt.substring(0, 50)}..."\n\nBuilt with advanced training techniques, Gemini can process both text and visual information, providing a multimodal approach to understanding and responding to prompts.`,
+      `Google's response showcases the model's ability to understand complex queries and provide detailed, well-structured responses that incorporate current information and research.`,
+    ],
+  }
+
+  const options = responses[provider] || responses.OpenAI
+  return options[Math.floor(Math.random() * options.length)]
 }
