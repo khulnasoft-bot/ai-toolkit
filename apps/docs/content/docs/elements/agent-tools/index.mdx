@@ -1,0 +1,27 @@
+---
+title: Agent Tools
+description: Tool accordion components for displaying agent tool calls
+---
+
+
+Displays a tool accordion with `type="multiple"` by default. Each `AgentTool` renders a tool description, schema (JSON), and input schema editor.
+
+## Import
+
+```tsx
+import { AgentTools, AgentTool } from '@ai-toolkit/elements';
+```
+
+## Usage
+
+```tsx
+<AgentTools>
+  <AgentTool
+    name="getWeather"
+    description="Get the current weather for a city."
+    input={{ city: 'San Francisco' }}
+  />
+</AgentTools>
+```
+
+See the [Elements overview](/docs/elements/overview) and the [reference](/docs/reference) for more details.

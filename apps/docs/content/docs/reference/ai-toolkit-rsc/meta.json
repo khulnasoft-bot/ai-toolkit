@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "stream-ui",
+    "create-ai",
+    "create-streamable-ui",
+    "create-streamable-value",
+    "read-streamable-value",
+    "get-ai-state",
+    "get-mutable-ai-state",
+    "use-ai-state",
+    "use-actions",
+    "use-ui-state",
+    "use-streamable-value",
+    "render"
+  ],
+  "defaultOpen": false
+}

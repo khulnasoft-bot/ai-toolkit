@@ -1,0 +1,24 @@
+{
+  "pages": [
+    "overview",
+    "generating-text",
+    "generating-structured-data",
+    "tools-and-tool-calling",
+    "mcp-tools",
+    "prompt-engineering",
+    "settings",
+    "embeddings",
+    "reranking",
+    "image-generation",
+    "transcription",
+    "speech",
+    "video-generation",
+    "middleware",
+    "provider-management",
+    "error-handling",
+    "testing",
+    "telemetry",
+    "devtools"
+  ],
+  "title": "AI TOOLKIT Core"
+}

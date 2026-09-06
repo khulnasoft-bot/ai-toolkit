@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import './globals.css';
+import '@ai-toolkit/design/globals.css';
 import { Nav } from '@/components/nav';
 import { Footer } from '@/components/footer';
 

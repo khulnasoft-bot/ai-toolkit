@@ -2,8 +2,8 @@
 
 import { Braces, Feather, History, Plus, Sparkles, Timer } from 'lucide-react';
 import { useState } from 'react';
-import { CodeBlock } from '@/components/code-block';
-import { IconButton } from '@/components/icon-button';
+import { CodeBlock } from '@ai-toolkit/design/code-block';
+import { IconButton } from '@ai-toolkit/design/icon-button';
 import { cn } from '@/lib/utils';
 
 const comparisons = [

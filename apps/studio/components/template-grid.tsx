@@ -2,7 +2,7 @@
 
 import { ArrowUpRight } from 'lucide-react';
 import { useState } from 'react';
-import { FilterBar } from '@/components/filter-bar';
+import { FilterBar } from '@ai-toolkit/design/filter-bar';
 import { frameworkLabels } from '@/lib/templates';
 import type { TemplateEntry } from '@/lib/types';
 

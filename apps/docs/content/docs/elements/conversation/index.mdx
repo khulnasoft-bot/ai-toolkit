@@ -1,0 +1,50 @@
+---
+title: Conversation
+description: Scrollable conversation container for AI chat UIs
+---
+
+
+Scrollable `role="log"` container. Scrolls to the bottom when children change unless `autoScroll={false}`.
+
+## Import
+
+```tsx
+import { Conversation } from '@ai-toolkit/elements';
+```
+
+## Usage
+
+```tsx
+<Conversation>
+  {messages.map(message => (
+    <Message key={message.id} message={message} />
+  ))}
+</Conversation>
+```
+
+## Props
+
+| Prop | Type | Description |
+| ---- | ---- | ----------- |
+| `autoScroll` | `boolean` | Whether to auto-scroll to bottom. Default `true`. |
+| `className` | `string` | Tailwind class name override. |
+| `style` | `React.CSSProperties` | Inline style override. |
+
+## Example
+
+```tsx
+import { useChat } from '@ai-toolkit/react';
+import { Conversation, Message } from '@ai-toolkit/elements';
+
+export function Chat() {
+  const { messages, sendMessage, status } = useChat();
+
+  return (
+    <Conversation>
+      {messages.map(message => (
+        <Message key={message.id} message={message} />
+      ))}
+    </Conversation>
+  );
+}
+```

@@ -16,7 +16,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { GlobalSearch } from './global-search';
+import { CommandPalette } from './command-palette';
 import type { SearchItem } from '@/lib/types';
 
 const sections: {
@@ -157,7 +157,7 @@ export function StudioShell({
             <Brand />
           </div>
           <div className="min-w-0 flex-1 lg:max-w-lg">
-            <GlobalSearch items={items} />
+            <CommandPalette items={items} />
           </div>
           <div className="hidden items-center gap-1 xl:flex">
             <a

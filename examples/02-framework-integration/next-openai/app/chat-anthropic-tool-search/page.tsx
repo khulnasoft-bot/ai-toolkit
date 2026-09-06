@@ -28,7 +28,7 @@ export default function ChatAnthropicToolSearch() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap mb-4">
           <div className="font-semibold text-gray-500 mb-1">
-            {message.role === 'user' ? 'User' : 'AI'}
+            {message.role === 'user' ? 'User' : 'ai-toolkit'}
           </div>
           <div className="flex flex-col gap-2">
             {message.parts.map((part, index) => {

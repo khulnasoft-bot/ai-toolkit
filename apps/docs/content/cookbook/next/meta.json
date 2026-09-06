@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "generate-text",
+    "generate-text-with-chat-prompt",
+    "generate-image-with-chat-prompt",
+    "stream-text",
+    "stream-text-with-chat-prompt",
+    "stream-text-with-image-prompt",
+    "chat-with-pdf",
+    "stream-text-multistep",
+    "markdown-chatbot-with-memoization",
+    "generate-object",
+    "generate-object-with-file-prompt",
+    "stream-object",
+    "call-tools",
+    "call-tools-multiple-steps",
+    "mcp-tools",
+    "use-shared-chat-context",
+    "human-in-the-loop",
+    "track-agent-token-usage",
+    "send-custom-body-from-use-chat",
+    "custom-stream-format",
+    "render-visual-interface-in-chat",
+    "caching-middleware"
+  ],
+  "title": "Next.js"
+}

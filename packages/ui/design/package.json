@@ -1,0 +1,125 @@
+{
+  "name": "@ai-toolkit/design",
+  "version": "0.1.0",
+  "description": "AI TOOLKIT design tokens, Tailwind preset, and shared primitives for the site and dashboard apps.",
+  "license": "Apache-2.0",
+  "sideEffects": [
+    "src/globals.css"
+  ],
+  "stability": "alpha",
+  "owners": [
+    "@khulnasoft/ai-toolkit"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "source": "./src/index.ts",
+  "files": [
+    "dist/**/*",
+    "src/globals.css",
+    "src/tailwind-preset.cjs",
+    "CHANGELOG.md",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "pnpm clean && tsc --emitDeclarationOnly --project tsconfig.build.json && tsup --tsconfig tsconfig.build.json",
+    "build:watch": "pnpm clean && tsc --emitDeclarationOnly --project tsconfig.build.json --watch & tsup --tsconfig tsconfig.build.json --watch",
+    "clean": "del-cli dist *.tsbuildinfo",
+    "lint": "eslint \"./**/*.ts*\" --ignore-pattern \"dist/**\" --ignore-pattern \"*.tsbuildinfo\"",
+    "type-check": "tsc --build",
+    "prettier-check": "prettier --check \"./**/*.{ts,tsx,js,cjs,css}\""
+  },
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.ts",
+      "import": "./dist/utils.mjs",
+      "require": "./dist/utils.js"
+    },
+    "./panel": {
+      "types": "./dist/panel.d.ts",
+      "import": "./dist/panel.mjs",
+      "require": "./dist/panel.js"
+    },
+    "./section": {
+      "types": "./dist/section.d.ts",
+      "import": "./dist/section.mjs",
+      "require": "./dist/section.js"
+    },
+    "./status-pill": {
+      "types": "./dist/status-pill.d.ts",
+      "import": "./dist/status-pill.mjs",
+      "require": "./dist/status-pill.js"
+    },
+    "./kpi-card": {
+      "types": "./dist/kpi-card.d.ts",
+      "import": "./dist/kpi-card.mjs",
+      "require": "./dist/kpi-card.js"
+    },
+    "./sparkline": {
+      "types": "./dist/chart/sparkline.d.ts",
+      "import": "./dist/chart/sparkline.mjs",
+      "require": "./dist/chart/sparkline.js"
+    },
+    "./bars": {
+      "types": "./dist/chart/bars.d.ts",
+      "import": "./dist/chart/bars.mjs",
+      "require": "./dist/chart/bars.js"
+    },
+    "./donut": {
+      "types": "./dist/chart/donut.d.ts",
+      "import": "./dist/chart/donut.mjs",
+      "require": "./dist/chart/donut.js"
+    },
+    "./icon-button": {
+      "types": "./dist/icon-button.d.ts",
+      "import": "./dist/icon-button.mjs",
+      "require": "./dist/icon-button.js"
+    },
+    "./code-block": {
+      "types": "./dist/code-block.d.ts",
+      "import": "./dist/code-block.mjs",
+      "require": "./dist/code-block.js"
+    },
+    "./data-table": {
+      "types": "./dist/data-table.d.ts",
+      "import": "./dist/data-table.mjs",
+      "require": "./dist/data-table.js"
+    },
+    "./filter-bar": {
+      "types": "./dist/filter-bar.d.ts",
+      "import": "./dist/filter-bar.mjs",
+      "require": "./dist/filter-bar.js"
+    },
+    "./drawer": {
+      "types": "./dist/drawer.d.ts",
+      "import": "./dist/drawer.mjs",
+      "require": "./dist/drawer.js"
+    },
+    "./globals.css": "./src/globals.css",
+    "./tailwind-preset": "./src/tailwind-preset.cjs"
+  },
+  "dependencies": {
+    "lucide-react": "^0.545.0"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "@khulnasoft/ai-tsconfig": "workspace:*",
+    "@types/node": "20.17.24",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "del-cli": "^6.0.0",
+    "eslint-config-khulnasoft-ai": "workspace:*",
+    "tsup": "^7.2.0",
+    "typescript": "5.8.3"
+  }
+}

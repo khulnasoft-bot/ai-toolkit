@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { DataTable } from '@/components/data-table';
-import { StatusPill } from '@/components/status-pill';
+import { DataTable } from '@ai-toolkit/design/data-table';
+import { StatusPill } from '@ai-toolkit/design/status-pill';
 import { formatLatency, formatRequests } from '@/lib/metrics';
 import type { GatewayRow } from '@/lib/gateways';
 import type { ModelEntry, Metric } from '@/lib/types';
-import type { Column } from '@/components/data-table';
+import type { Column } from '@ai-toolkit/design/data-table';
 
 export type TopModel = ModelEntry & { metrics: Metric };
 

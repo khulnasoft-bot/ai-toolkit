@@ -1,0 +1,16 @@
+{
+  "pages": [
+    "overview",
+    "streaming-react-components",
+    "generative-ui-state",
+    "saving-and-restoring-states",
+    "multistep-interfaces",
+    "streaming-values",
+    "loading-state",
+    "error-handling",
+    "authentication",
+    "migrating-to-ui"
+  ],
+  "title": "AI TOOLKIT RSC",
+  "defaultOpen": false
+}

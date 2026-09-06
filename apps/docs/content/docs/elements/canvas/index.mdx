@@ -1,0 +1,65 @@
+---
+title: Canvas
+description: React Flow diagram canvas using @xyflow/react
+---
+
+
+React Flow-based diagram canvas using `@xyflow/react`. Supports nodes, edges, and temporary edge preview. Requires the xyflow stylesheet to be loaded.
+
+## Import
+
+```tsx
+import { Canvas } from '@ai-toolkit/elements';
+```
+
+## Prerequisites
+
+Add the xyflow stylesheet to your app:
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@xyflow/react/dist/style.css">
+```
+
+## Usage
+
+```tsx
+<Canvas
+  nodes={[]}
+  edges={[]}
+  onNodeSelect={node => console.log(node)}
+  onEdgeSelect={edge => console.log(edge)}
+>
+  <div>Content</div>
+</Canvas>
+```
+
+## Props
+
+| Prop | Type | Description |
+| ---- | ---- | ----------- |
+| `nodes` | `Node[]` | Array of nodes in the canvas. |
+| `edges` | `Edge[]` | Array of edges connecting nodes. |
+| `onNodeSelect` | `(node: Node) => void` | Callback when a node is selected. |
+| `onEdgeSelect` | `(edge: Edge) => void` | Callback when an edge is selected. |
+| `className` | `string` | Tailwind class name override. |
+
+## Example
+
+```tsx
+import { useChat } from '@ai-toolkit/react';
+import { Canvas } from '@ai-toolkit/elements';
+
+export function Chat() {
+  return (
+    <Canvas
+      nodes={[
+        { id: '1', position: { x: 0, y: 0 }, data: { label: 'User' } },
+        { id: '2', position: { x: 200, y: 0 }, data: { label: 'Assistant' } },
+      ]}
+      edges={[
+        { id: 'e1', source: '1', target: '2' },
+      ]}
+    />
+  );
+}
+```

@@ -13,7 +13,8 @@
     "lucide-react": "^0.545.0",
     "next": "^15.5.9",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "@ai-toolkit/design": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.17.24",

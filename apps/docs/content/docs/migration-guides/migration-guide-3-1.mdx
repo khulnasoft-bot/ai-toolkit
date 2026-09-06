@@ -1,0 +1,167 @@
+---
+title: Migrate AI TOOLKIT 3.0 to 3.1
+description: Learn how to upgrade AI TOOLKIT 3.0 to 3.1.
+---
+
+
+<Note>
+  Check out the [AI TOOLKIT 3.1 release blog
+  post](https://vercel.com/blog/vercel-ai-toolkit-3-1-modelfusion-joins-the-team)
+  for more information about the release.
+</Note>
+
+This guide will help you:
+
+- Upgrade to AI TOOLKIT 3.1
+- Migrate from Legacy Providers to AI TOOLKIT Core
+- Migrate from [`render`](/docs/reference/ai-toolkit-rsc/render) to [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui)
+
+Upgrading to AI TOOLKIT 3.1 does not require using the newly released AI TOOLKIT Core API or [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function.
+
+## Upgrading
+
+### AI TOOLKIT
+
+To update to AI TOOLKIT version 3.1, run the following command using your preferred package manager:
+
+<Snippet text="pnpm add ai@3.1" />
+
+## Next Steps
+
+The release of AI TOOLKIT 3.1 introduces several new features that improve the way you build AI applications with the SDK:
+
+- AI TOOLKIT Core, a brand new unified API for interacting with large language models (LLMs).
+- [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui), a new abstraction, built upon AI TOOLKIT Core functions that simplifies building streaming UIs.
+
+## Migrating from Legacy Providers to AI TOOLKIT Core
+
+Prior to AI TOOLKIT Core, you had to use a model provider's SDK to query their models.
+
+In the following Route Handler, you use the OpenAI TOOLKIT to query their model. You then pipe that response into the [`OpenAIStream`](/docs/reference/stream-helpers/openai-stream) function which returns a [`ReadableStream`](https://developer.mozilla.org/en-US/docs/Web/API/ReadableStream) that you can pass to the client using a new [`StreamingTextResponse`](/docs/reference/stream-helpers/streaming-text-response).
+
+```tsx
+import OpenAI from 'openai';
+import { OpenAIStream, StreamingTextResponse } from 'ai-toolkit';
+
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY!,
+});
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4.1',
+    stream: true,
+    messages,
+  });
+
+  const stream = OpenAIStream(response);
+
+  return new StreamingTextResponse(stream);
+}
+```
+
+With AI TOOLKIT Core you have a unified API for any provider that implements the [AI TOOLKIT Language Model Specification](/providers/community-providers/custom-providers).
+
+Let’s take a look at the example above, but refactored to utilize the AI TOOLKIT Core API alongside the AI TOOLKIT OpenAI provider. In this example, you import the LLM function you want to use from the `ai` package, import the OpenAI provider from `@ai-toolkit/openai`, and then you call the model and return the response using the `toDataStreamResponse()` helper function.
+
+```tsx
+import { streamText } from 'ai-toolkit';
+import { openai } from '@ai-toolkit/openai';
+__PROVIDER_IMPORT__;
+
+export async function POST(req: Request) {
+  const { messages } = await req.json();
+
+  const result = await streamText({
+    model: __MODEL__,
+    messages,
+  });
+
+  return result.toUIMessageStreamResponse();
+}
+```
+
+## Migrating from `render` to `streamUI`
+
+The AI TOOLKIT RSC API was launched as part of version 3.0. This API introduced the [`render`](/docs/reference/ai-toolkit-rsc/render) function, a helper function to create streamable UIs with OpenAI models. With the new AI TOOLKIT Core API, it became possible to make streamable UIs possible with any compatible provider.
+
+The following example Server Action uses the `render` function using the model provider directly from OpenAI. You first create an OpenAI provider instance with the OpenAI TOOLKIT. Then, you pass it to the provider key of the render function alongside a tool that returns a React Server Component, defined in the `render` key of the tool.
+
+```tsx
+import { render } from '@ai-toolkit/rsc';
+import OpenAI from 'openai';
+import { z } from 'zod';
+import { Spinner, Weather } from '@/components';
+import { getWeather } from '@/utils';
+
+const openai = new OpenAI();
+
+async function submitMessage(userInput = 'What is the weather in SF?') {
+  'use server';
+
+  return render({
+    provider: openai,
+    model: 'gpt-4.1',
+    messages: [
+      { role: 'system', content: 'You are a helpful assistant' },
+      { role: 'user', content: userInput },
+    ],
+    text: ({ content }) => <p>{content}</p>,
+    tools: {
+      get_city_weather: {
+        description: 'Get the current weather for a city',
+        parameters: z
+          .object({
+            city: z.string().describe('the city'),
+          })
+          .required(),
+        render: async function* ({ city }) {
+          yield <Spinner />;
+          const weather = await getWeather(city);
+          return <Weather info={weather} />;
+        },
+      },
+    },
+  });
+}
+```
+
+With the new [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function, you can now use any compatible AI TOOLKIT provider. In this example, you import the AI TOOLKIT OpenAI provider. Then, you pass it to the [`model`](/docs/reference/ai-toolkit-rsc/stream-ui#model) key of the new [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function. Finally, you declare a tool and return a React Server Component, defined in the [`generate`](/docs/reference/ai-toolkit-rsc/stream-ui#tools.tool.generate) key of the tool.
+
+```tsx
+import { streamUI } from '@ai-toolkit/rsc';
+import { openai } from '@ai-toolkit/openai';
+import { z } from 'zod';
+import { Spinner, Weather } from '@/components';
+import { getWeather } from '@/utils';
+
+async function submitMessage(userInput = 'What is the weather in SF?') {
+  'use server';
+
+  const result = await streamUI({
+    model: __MODEL__,
+    system: 'You are a helpful assistant',
+    messages: [{ role: 'user', content: userInput }],
+    text: ({ content }) => <p>{content}</p>,
+    tools: {
+      get_city_weather: {
+        description: 'Get the current weather for a city',
+        parameters: z
+          .object({
+            city: z.string().describe('Name of the city'),
+          })
+          .required(),
+        generate: async function* ({ city }) {
+          yield <Spinner />;
+          const weather = await getWeather(city);
+          return <Weather info={weather} />;
+        },
+      },
+    },
+  });
+
+  return result.value;
+}
+```

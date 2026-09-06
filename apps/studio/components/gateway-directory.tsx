@@ -1,14 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { CodeBlock } from '@/components/code-block';
-import { DataTable } from '@/components/data-table';
-import { Drawer } from '@/components/drawer';
-import { FilterBar } from '@/components/filter-bar';
-import { StatusPill } from '@/components/status-pill';
+import { CodeBlock } from '@ai-toolkit/design/code-block';
+import { DataTable } from '@ai-toolkit/design/data-table';
+import { Drawer } from '@ai-toolkit/design/drawer';
+import { FilterBar } from '@ai-toolkit/design/filter-bar';
+import { StatusPill } from '@ai-toolkit/design/status-pill';
 import { formatCost, formatLatency, formatRequests } from '@/lib/metrics';
 import type { GatewayRow } from '@/lib/gateways';
-import type { Column } from '@/components/data-table';
+import type { Column } from '@ai-toolkit/design/data-table';
 
 const ALL = 'all';
 

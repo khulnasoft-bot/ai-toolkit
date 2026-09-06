@@ -1,0 +1,9 @@
+{
+  "pages": [
+    "custom-providers",
+    "lmstudio",
+    "nim",
+    "clarifai",
+    "heroku"
+  ]
+}

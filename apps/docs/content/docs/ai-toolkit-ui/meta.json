@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "overview",
+    "chatbot",
+    "chatbot-message-persistence",
+    "chatbot-resume-streams",
+    "chatbot-tool-usage",
+    "generative-user-interfaces",
+    "completion",
+    "object-generation",
+    "streaming-data",
+    "error-handling",
+    "transport",
+    "reading-ui-message-streams",
+    "message-metadata",
+    "stream-protocol"
+  ],
+  "title": "AI TOOLKIT UI"
+}

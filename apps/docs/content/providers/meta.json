@@ -1,0 +1,11 @@
+{
+  "title": "AI TOOLKIT Providers",
+  "root": true,
+  "pages": [
+    "ai-toolkit-providers",
+    "openai-compatible-providers",
+    "community-providers",
+    "adapters",
+    "observability"
+  ]
+}

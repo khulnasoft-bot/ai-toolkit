@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { GatewayDirectory } from '@/components/gateway-directory';
-import { KpiCard } from '@/components/kpi-card';
+import { KpiCard } from '@ai-toolkit/design/kpi-card';
 import { PageHeader } from '@/components/page-header';
 import {
   getGatewayDevelopers,

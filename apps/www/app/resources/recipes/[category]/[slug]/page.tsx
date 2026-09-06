@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import { ArrowUpRight, BookOpen, Clock, Github } from 'lucide-react';
-import { CodeBlock } from '@/components/code-block';
+import { CodeBlock } from '@ai-toolkit/design/code-block';
 import { CommandRow } from '@/components/command-row';
 import { InlineText } from '@/components/inline-text';
 import { getRecipe, getAllRecipePaths } from '@/lib/recipes';
@@ -45,7 +45,10 @@ export default async function RecipePage({
             Recipes
           </a>
           <span>/</span>
-          <a href={`/resources/recipes?category=${recipe.category}`} className="hover:text-foreground">
+          <a
+            href={`/resources/recipes?category=${recipe.category}`}
+            className="hover:text-foreground"
+          >
             {recipe.categoryTitle}
           </a>
         </div>
@@ -148,7 +151,7 @@ export default async function RecipePage({
       {/* Related */}
       <div className="mt-16 border-t border-border pt-8">
         <a
-href="/resources/recipes"
+          href="/resources/recipes"
           className="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
         >
           Browse all recipes

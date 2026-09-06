@@ -57,7 +57,7 @@ export default function TestOpenAIResponsesMCPApproval() {
 
       {messages.map(message => (
         <div key={message.id} className="mb-4 whitespace-pre-wrap">
-          <div className="mb-2 font-semibold">{message.role === 'user' ? 'User' : 'AI'}:</div>
+          <div className="mb-2 font-semibold">{message.role === 'user' ? 'User' : 'ai-toolkit'}:</div>
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':

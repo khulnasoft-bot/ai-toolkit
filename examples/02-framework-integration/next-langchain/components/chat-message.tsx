@@ -22,7 +22,7 @@ export function ChatMessage({ message }: ChatMessageProps) {
             : 'bg-gradient-to-br from-amber-700 to-yellow-600 text-white'
         }`}
       >
-        {isUser ? 'U' : 'AI'}
+        {isUser ? 'U' : 'ai-toolkit'}
       </div>
 
       {/* Message content */}

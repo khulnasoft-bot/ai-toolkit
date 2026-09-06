@@ -1,13 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { DataTable } from '@/components/data-table';
-import { Drawer } from '@/components/drawer';
-import { FilterBar } from '@/components/filter-bar';
+import { DataTable } from '@ai-toolkit/design/data-table';
+import { Drawer } from '@ai-toolkit/design/drawer';
+import { FilterBar } from '@ai-toolkit/design/filter-bar';
 import { formatCost, formatLatency, formatRequests } from '@/lib/metrics';
 import type { ModelEntry } from '@/lib/types';
 import type { Metric } from '@/lib/types';
-import type { Column } from '@/components/data-table';
+import type { Column } from '@ai-toolkit/design/data-table';
 
 const ALL = 'all';
 

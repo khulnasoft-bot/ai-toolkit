@@ -1,0 +1,18 @@
+{
+  "title": "AI TOOLKIT Documentation",
+  "root": true,
+  "pages": [
+    "introduction",
+    "foundations",
+    "getting-started",
+    "agents",
+    "ai-toolkit-core",
+    "ai-toolkit-ui",
+    "ai-toolkit-rsc",
+    "advanced",
+    "elements",
+    "reference",
+    "migration-guides",
+    "troubleshooting"
+  ]
+}

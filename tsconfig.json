@@ -148,6 +148,9 @@
       "path": "packages/special/devtools"
     },
     {
+      "path": "packages/ui/design"
+    },
+    {
       "path": "packages/ui/elements"
     },
     {
