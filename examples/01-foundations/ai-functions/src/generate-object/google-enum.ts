@@ -1,5 +1,5 @@
 import { google } from '@ai-toolkit/google';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

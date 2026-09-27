@@ -1,6 +1,6 @@
 import { anthropic } from '@ai-toolkit/anthropic';
 import { valibotSchema } from '@ai-toolkit/valibot';
-import { generateText, Output } from 'ai-toolkit';
+import { generateText, Output } from '@ai-toolkit/ai';
 import * as v from 'valibot';
 import { run } from '../lib/run';
 

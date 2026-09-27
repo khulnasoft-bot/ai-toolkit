@@ -16,13 +16,13 @@
   ],
   "references": [
     {
-      "path": "../../core/provider-utils"
+      "path": "../../foundation/utils"
     },
     {
-      "path": "../../infrastructure/test-server"
+      "path": "../../testing/test-server"
     },
     {
-      "path": "../../validation/provider"
+      "path": "../../foundation/provider"
     },
     {
       "path": "../anthropic"

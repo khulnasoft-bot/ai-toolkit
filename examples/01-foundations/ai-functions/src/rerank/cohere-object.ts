@@ -1,5 +1,5 @@
 import { cohere, CohereRerankingOptions } from '@ai-toolkit/cohere';
-import { rerank } from 'ai-toolkit';
+import { rerank } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 import { print } from '../lib/print';
 import { documents } from './documents';

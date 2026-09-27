@@ -1,5 +1,5 @@
 import { mistral } from '@ai-toolkit/mistral';
-import { embed } from 'ai-toolkit';
+import { embed } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

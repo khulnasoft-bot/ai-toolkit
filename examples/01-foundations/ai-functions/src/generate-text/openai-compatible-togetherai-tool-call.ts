@@ -1,5 +1,5 @@
 import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
-import { generateText, tool } from 'ai-toolkit';
+import { generateText, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
@@ -12,7 +12,9 @@ run(async () => {
       Authorization: `Bearer ${process.env.TOGETHER_AI_API_KEY}`,
     },
   });
-  const model = togetherai.chatModel('meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo');
+  const model = togetherai.chatModel(
+    'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
+  );
   const result = await generateText({
     model,
     maxOutputTokens: 512,
@@ -22,7 +24,8 @@ run(async () => {
         inputSchema: z.object({ city: z.string() }),
       }),
     },
-    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    prompt:
+      'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   // typed tool calls:

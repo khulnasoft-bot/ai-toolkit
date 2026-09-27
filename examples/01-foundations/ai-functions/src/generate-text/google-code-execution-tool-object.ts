@@ -1,4 +1,4 @@
-import { generateText, Output } from 'ai-toolkit';
+import { generateText, Output } from '@ai-toolkit/ai';
 import { google } from '@ai-toolkit/google';
 import { z } from 'zod';
 import { run } from '../lib/run';

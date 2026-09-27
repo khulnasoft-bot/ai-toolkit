@@ -1,5 +1,5 @@
 import { anthropic, AnthropicProviderOptions } from '@ai-toolkit/anthropic';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { run } from '../lib/run';
 
@@ -82,7 +82,10 @@ run(async () => {
     ],
   });
 
-  console.log('Usage information:', cachedResult.providerMetadata?.anthropic?.usage);
+  console.log(
+    'Usage information:',
+    cachedResult.providerMetadata?.anthropic?.usage,
+  );
 
   // e.g.
   // Usage information: {

@@ -4,7 +4,7 @@ import ChatInput from '@/components/chat-input';
 import DynamicToolView from '@/components/tool/dynamic-tool-view';
 import OpenAIMCPView from '@/components/tool/openai-mcp-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 import { OpenAIResponsesMCPMessage } from '../api/chat-openai-responses-mcp/route';
 
 export default function TestOpenAIResponsesMCP() {
@@ -20,7 +20,9 @@ export default function TestOpenAIResponsesMCP() {
 
       {messages.map(message => (
         <div key={message.id} className="mb-4 whitespace-pre-wrap">
-          <div className="mb-2 font-semibold">{message.role === 'user' ? 'User' : 'ai-toolkit'}:</div>
+          <div className="mb-2 font-semibold">
+            {message.role === 'user' ? 'User' : 'ai-toolkit'}:
+          </div>
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':

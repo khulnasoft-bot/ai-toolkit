@@ -1,0 +1,21 @@
+{
+  "extends": "./node_modules/@khulnasoft/ai-tsconfig/ts-library.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "build", "node_modules", "tsup.config.ts"],
+  "references": [
+    {
+      "path": "../../foundation/utils"
+    },
+    {
+      "path": "../../testing/test-server"
+    },
+    {
+      "path": "../validation/provider"
+    }
+  ]
+}

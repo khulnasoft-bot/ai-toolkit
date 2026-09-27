@@ -1,5 +1,5 @@
 import { xai } from '@ai-toolkit/xai';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -15,7 +15,8 @@ run(async () => {
     messages: [
       {
         role: 'user',
-        content: 'my name is john doe, i am 35 years old and work as a software engineer',
+        content:
+          'my name is john doe, i am 35 years old and work as a software engineer',
       },
     ],
     providerOptions: {

@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { deepinfra } from '@ai-toolkit/deepinfra';
-import { generateImage } from 'ai-toolkit';
+import { generateImage } from '@ai-toolkit/ai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

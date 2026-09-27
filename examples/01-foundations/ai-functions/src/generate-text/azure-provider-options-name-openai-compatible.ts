@@ -1,4 +1,4 @@
-import { generateText, stepCountIs, tool } from 'ai-toolkit';
+import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 import { azure } from '@ai-toolkit/azure';
@@ -11,7 +11,8 @@ run(async () => {
     model: azure.responses('gpt-5.1-codex-max'),
     tools: {
       calculator: tool({
-        description: 'A minimal calculator for basic arithmetic. Call it once per step.',
+        description:
+          'A minimal calculator for basic arithmetic. Call it once per step.',
         inputSchema: z.object({
           a: z.number().describe('First operand.'),
           b: z.number().describe('Second operand.'),

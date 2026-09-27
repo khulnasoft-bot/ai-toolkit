@@ -5,14 +5,15 @@ import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestOpenAISmoothStream() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<OpenAIBasicMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-smooth-stream',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<OpenAIBasicMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-smooth-stream',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">

@@ -1,5 +1,8 @@
-import { openai, type OpenAIChatLanguageModelOptions } from '@ai-toolkit/openai';
-import { generateText } from 'ai-toolkit';
+import {
+  openai,
+  type OpenAIChatLanguageModelOptions,
+} from '@ai-toolkit/openai';
+import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

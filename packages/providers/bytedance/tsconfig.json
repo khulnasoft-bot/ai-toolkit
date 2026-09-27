@@ -7,8 +7,8 @@
   },
   "exclude": ["dist", "build", "node_modules", "tsup.config.ts"],
   "references": [
-    { "path": "../../core/provider-utils" },
-    { "path": "../../infrastructure/test-server" },
-    { "path": "../../validation/provider" }
+    { "path": "../../foundation/utils" },
+    { "path": "../../testing/test-server" },
+    { "path": "../../foundation/provider" }
   ]
 }

@@ -1,5 +1,5 @@
 import { khulnasoft } from '@ai-toolkit/khulnasoft';
-import { streamObject } from 'ai-toolkit';
+import { streamObject } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

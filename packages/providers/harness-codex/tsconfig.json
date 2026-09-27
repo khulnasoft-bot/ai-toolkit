@@ -5,21 +5,16 @@
     "rootDir": "src",
     "outDir": "dist"
   },
-  "exclude": [
-    "dist",
-    "build",
-    "node_modules",
-    "tsup.config.ts"
-  ],
+  "exclude": ["dist", "build", "node_modules", "tsup.config.ts"],
   "references": [
     {
-      "path": "../../core/provider-utils"
+      "path": "../../foundation/utils"
     },
     {
-      "path": "../../infrastructure/test-server"
+      "path": "../../testing/test-server"
     },
     {
-      "path": "../../validation/provider"
+      "path": "../../foundation/provider"
     },
     {
       "path": "../harness-acp"

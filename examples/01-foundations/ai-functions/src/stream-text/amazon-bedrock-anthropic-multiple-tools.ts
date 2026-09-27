@@ -1,5 +1,5 @@
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
-import { streamText, tool } from 'ai-toolkit';
+import { streamText, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -31,7 +31,8 @@ run(async () => {
         }),
       }),
     },
-    prompt: 'What is the weather in Tokyo? Also, what is the stock price of GOOGL?',
+    prompt:
+      'What is the weather in Tokyo? Also, what is the stock price of GOOGL?',
   });
 
   for await (const part of result.fullStream) {

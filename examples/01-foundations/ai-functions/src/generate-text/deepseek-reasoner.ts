@@ -1,5 +1,5 @@
 import { deepseek, DeepSeekChatOptions } from '@ai-toolkit/deepseek';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 

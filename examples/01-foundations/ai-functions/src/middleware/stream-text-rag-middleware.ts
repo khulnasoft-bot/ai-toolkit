@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamText, wrapLanguageModel } from 'ai-toolkit';
+import { streamText, wrapLanguageModel } from '@ai-toolkit/ai';
 import { yourRagMiddleware } from './your-rag-middleware';
 import { run } from '../lib/run';
 

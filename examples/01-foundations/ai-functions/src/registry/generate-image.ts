@@ -1,4 +1,4 @@
-import { generateImage } from 'ai-toolkit';
+import { generateImage } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { myImageModels } from './setup-registry';
 import { run } from '../lib/run';

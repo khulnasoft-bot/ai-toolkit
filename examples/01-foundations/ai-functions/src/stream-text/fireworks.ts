@@ -1,5 +1,5 @@
 import { fireworks } from '@ai-toolkit/fireworks';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import { createApplyPatchExecutor } from '../lib/apply-patch-file-editor';

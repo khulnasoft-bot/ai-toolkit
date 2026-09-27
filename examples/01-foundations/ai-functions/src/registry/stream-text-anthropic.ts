@@ -1,4 +1,4 @@
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { registry } from './setup-registry';
 import { run } from '../lib/run';
 

@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { z } from 'zod';
 import { run } from '../lib/run';

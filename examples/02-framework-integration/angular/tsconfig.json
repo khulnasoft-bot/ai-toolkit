@@ -3,10 +3,10 @@
   "compilerOptions": {},
   "references": [
     {
-      "path": "../../../packages/adapters/angular"
+      "path": "../../../packages/integrations/angular"
     },
     {
-      "path": "../../../packages/core/ai-toolkit"
+      "path": "../../../packages/ai/core"
     },
     {
       "path": "../../../packages/providers/openai"

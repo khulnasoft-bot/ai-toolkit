@@ -1,4 +1,4 @@
-import { ModelMessage, generateText } from 'ai-toolkit';
+import { ModelMessage, generateText } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
 import { weatherTool } from '../tools/weather-tool';
 import { cohere } from '@ai-toolkit/cohere';
@@ -34,11 +34,15 @@ run(async () => {
     }
 
     for (const { toolName, input } of toolCalls) {
-      process.stdout.write(`\nTool call: '${toolName}' ${JSON.stringify(input)}`);
+      process.stdout.write(
+        `\nTool call: '${toolName}' ${JSON.stringify(input)}`,
+      );
     }
 
     for (const { toolName, output } of toolResults) {
-      process.stdout.write(`\nTool response: '${toolName}' ${JSON.stringify(output)}`);
+      process.stdout.write(
+        `\nTool response: '${toolName}' ${JSON.stringify(output)}`,
+      );
     }
 
     process.stdout.write('\n\n');

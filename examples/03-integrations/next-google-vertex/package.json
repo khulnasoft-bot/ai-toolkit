@@ -2,6 +2,7 @@
   "name": "@example/next-google-vertex",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -14,7 +15,7 @@
     "next": "^15.5.9",
     "react": "^18",
     "react-dom": "^18",
-    "ai-toolkit": "workspace:*"
+    "@ai-toolkit/ai": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.17.24",

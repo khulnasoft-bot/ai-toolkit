@@ -1,5 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { stepCountIs, streamText } from 'ai-toolkit';
+import { stepCountIs, streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

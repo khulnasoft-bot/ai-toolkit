@@ -5,7 +5,7 @@ import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import AnthropicCodeExecutionView from '@/components/tool/anthropic-code-execution-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestAnthropicCodeExecution() {
   const { error, status, sendMessage, messages, regenerate } =
@@ -30,7 +30,9 @@ export default function TestAnthropicCodeExecution() {
                 return <Response key={index}>{part.text}</Response>;
               }
               case 'tool-code_execution': {
-                return <AnthropicCodeExecutionView invocation={part} key={index} />;
+                return (
+                  <AnthropicCodeExecutionView invocation={part} key={index} />
+                );
               }
             }
           })}

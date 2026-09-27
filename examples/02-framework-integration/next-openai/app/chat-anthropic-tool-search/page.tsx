@@ -7,7 +7,7 @@ import AnthropicToolSearchView from '@/components/tool/anthropic-tool-search-vie
 import WeatherView from '@/components/tool/weather-view';
 import SendEmailView from '@/components/tool/send-email-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function ChatAnthropicToolSearch() {
   const { error, status, sendMessage, messages, regenerate } =
@@ -21,8 +21,8 @@ export default function ChatAnthropicToolSearch() {
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
       <h1 className="mb-4 text-xl font-bold">Anthropic Tool Search</h1>
       <p className="mb-6 text-sm text-gray-600">
-        Ask about weather or send emails. Claude will use the tool search to discover and load the
-        appropriate tools dynamically.
+        Ask about weather or send emails. Claude will use the tool search to
+        discover and load the appropriate tools dynamically.
       </p>
 
       {messages.map(message => (
@@ -37,7 +37,9 @@ export default function ChatAnthropicToolSearch() {
                   return <Response key={index}>{part.text}</Response>;
                 }
                 case 'tool-toolSearch': {
-                  return <AnthropicToolSearchView invocation={part} key={index} />;
+                  return (
+                    <AnthropicToolSearchView invocation={part} key={index} />
+                  );
                 }
                 case 'tool-weather': {
                   return <WeatherView invocation={part} key={index} />;

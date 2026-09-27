@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { convertBase64ToUint8Array } from '../lib/convert-base64';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
@@ -7,7 +7,8 @@ import { run } from '../lib/run';
 run(async () => {
   const result = streamText({
     model: openai('gpt-5'),
-    prompt: 'Generate an image of an echidna swimming across the Mozambique channel.',
+    prompt:
+      'Generate an image of an echidna swimming across the Mozambique channel.',
     tools: {
       image_generation: openai.tools.imageGeneration({
         outputFormat: 'webp',

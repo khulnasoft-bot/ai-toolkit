@@ -1,5 +1,5 @@
 import { Chat } from './chat';
-import { createIdGenerator } from 'ai-toolkit';
+import { createIdGenerator } from '@ai-toolkit/ai';
 
 const generateId = createIdGenerator({ size: 32 });
 

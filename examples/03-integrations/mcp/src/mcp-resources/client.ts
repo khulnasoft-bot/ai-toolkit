@@ -1,6 +1,6 @@
 import { createMCPClient } from '@ai-toolkit/mcp';
 import { openai } from '@ai-toolkit/openai';
-import { generateText, stepCountIs } from 'ai-toolkit';
+import { generateText, stepCountIs } from '@ai-toolkit/ai';
 
 async function main() {
   const mcpClient = await createMCPClient({

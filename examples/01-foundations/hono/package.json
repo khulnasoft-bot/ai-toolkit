@@ -5,7 +5,7 @@
   "dependencies": {
     "@ai-toolkit/openai": "workspace:*",
     "@hono/node-server": "1.13.7",
-    "ai-toolkit": "workspace:*",
+    "@ai-toolkit/ai": "workspace:*",
     "dotenv": "16.4.5",
     "hono": "4.6.9"
   },

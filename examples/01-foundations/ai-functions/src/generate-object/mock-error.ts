@@ -1,5 +1,5 @@
-import { generateObject, NoObjectGeneratedError } from 'ai-toolkit';
-import { MockLanguageModelV3 } from 'ai-toolkit/test';
+import { generateObject, NoObjectGeneratedError } from '@ai-toolkit/ai';
+import { MockLanguageModelV3 } from '@ai-toolkit/ai/test';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

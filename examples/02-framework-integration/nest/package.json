@@ -21,7 +21,7 @@
     "@nestjs/platform-express": "^10.4.9",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "ai-toolkit": "workspace:*"
+    "@ai-toolkit/ai": "workspace:*"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.8",

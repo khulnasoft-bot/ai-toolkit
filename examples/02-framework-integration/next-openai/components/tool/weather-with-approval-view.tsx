@@ -1,5 +1,5 @@
 import type { WeatherUIToolWithApprovalInvocation } from '@/tool/weather-tool-with-approval';
-import type { ChatAddToolApproveResponseFunction } from 'ai-toolkit';
+import type { ChatAddToolApproveResponseFunction } from '@ai-toolkit/ai';
 
 export default function WeatherWithApprovalView({
   invocation,

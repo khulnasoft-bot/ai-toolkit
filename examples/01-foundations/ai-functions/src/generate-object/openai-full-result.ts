@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -9,7 +9,9 @@ run(async () => {
     schema: z.object({
       recipe: z.object({
         name: z.string(),
-        ingredients: z.array(z.object({ name: z.string(), amount: z.string() })),
+        ingredients: z.array(
+          z.object({ name: z.string(), amount: z.string() }),
+        ),
         steps: z.array(z.string()),
       }),
     }),

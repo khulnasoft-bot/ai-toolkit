@@ -1,10 +1,14 @@
 # Root governance
 * @khulnasoft/ai-toolkit-maintainers
 
-# ===== CORE LAYER =====
-packages/core/ @khulnasoft/ai-toolkit-core
-packages/core/ai-toolkit/ @khulnasoft/ai-toolkit-core
-packages/core/runtime/ @khulnasoft/ai-toolkit-core
+# ===== FOUNDATION LAYER =====
+packages/foundation/ @khulnasoft/ai-toolkit-core
+
+# ===== AI CORE LAYER =====
+packages/ai/ @khulnasoft/ai-toolkit-core
+
+# ===== GATEWAY LAYER =====
+packages/gateway/ @khulnasoft/ai-toolkit-core
 
 # ===== PROVIDER LAYER =====
 packages/providers/ @khulnasoft/ai-toolkit-providers
@@ -23,13 +27,15 @@ packages/providers/cohere/ @cohere-team @khulnasoft/ai-toolkit-providers
 packages/providers/mistral/ @mistral-team @khulnasoft/ai-toolkit-providers
 packages/providers/openai-compatible/ @khulnasoft/ai-toolkit-providers
 
-# ===== ADAPTER LAYER =====
-packages/adapters/ @khulnasoft/ai-toolkit-adapters
-packages/adapters/react/ @khulnasoft/ai-react-team
-packages/adapters/rsc/ @khulnasoft/ai-nextjs-team
-packages/adapters/angular/ @angular-community @khulnasoft/ai-toolkit-adapters
-packages/adapters/svelte/ @svelte-community @khulnasoft/ai-toolkit-adapters
-packages/adapters/vue/ @vue-community @khulnasoft/ai-toolkit-adapters
+# ===== INTEGRATION LAYER =====
+packages/integrations/ @khulnasoft/ai-toolkit-adapters
+packages/integrations/react/ @khulnasoft/ai-react-team
+packages/integrations/rsc/ @khulnasoft/ai-nextjs-team
+packages/integrations/angular/ @angular-community @khulnasoft/ai-toolkit-adapters
+packages/integrations/svelte/ @svelte-community @khulnasoft/ai-toolkit-adapters
+packages/integrations/vue/ @vue-community @khulnasoft/ai-toolkit-adapters
+packages/integrations/langchain/ @langchain-community @khulnasoft/ai-toolkit-adapters
+packages/integrations/llamaindex/ @llamaindex-community @khulnasoft/ai-toolkit-adapters
 
 # ===== UI LAYER =====
 packages/ui/ @khulnasoft/ai-react-team
@@ -37,13 +43,27 @@ packages/ui/ @khulnasoft/ai-react-team
 # ===== MCP LAYER =====
 packages/mcp/ @khulnasoft/ai-mcp
 
-# ===== SPECIAL & INFRASTRUCTURE =====
-packages/special/ @khulnasoft/ai-toolkit-core
-packages/special/codemod/ @khulnasoft/developer-tools-team
-packages/special/devtools/ @khulnasoft/developer-tools-team
-packages/validation/ @khulnasoft/ai-toolkit-core
-packages/validation/capabilities/ @khulnasoft/ai-toolkit-core
-packages/infrastructure/ @khulnasoft/ai-toolkit-infrastructure
+# ===== TOOLING LAYER =====
+packages/tooling/ @khulnasoft/developer-tools-team
+packages/tooling/codemod/ @khulnasoft/developer-tools-team
+packages/tooling/devtools/ @khulnasoft/developer-tools-team
+
+# ===== TESTING LAYER =====
+packages/testing/ @khulnasoft/ai-toolkit-infrastructure
+
+# ===== FUTURE DOMAINS (400% Platform Vision) =====
+# These domains are planned but not yet implemented
+# See architecture/FUTURE_DOMAINS.md for implementation plans
+packages/agents/ @khulnasoft/ai-toolkit-core
+packages/workflow/ @khulnasoft/ai-toolkit-core
+packages/memory/ @khulnasoft/ai-toolkit-core
+packages/context/ @khulnasoft/ai-toolkit-core
+packages/retrieval/ @khulnasoft/ai-toolkit-core
+packages/tools/ @khulnasoft/ai-toolkit-core
+packages/sandbox/ @khulnasoft/ai-toolkit-core
+packages/evals/ @khulnasoft/ai-toolkit-core
+packages/observability/ @khulnasoft/ai-toolkit-core
+packages/security/ @khulnasoft/ai-toolkit-core
 
 # ===== EXAMPLES =====
 examples/ @khulnasoft/ai-toolkit-developers

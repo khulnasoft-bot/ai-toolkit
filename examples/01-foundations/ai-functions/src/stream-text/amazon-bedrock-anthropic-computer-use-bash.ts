@@ -1,5 +1,5 @@
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
-import { stepCountIs, streamText } from 'ai-toolkit';
+import { stepCountIs, streamText } from '@ai-toolkit/ai';
 import 'dotenv/config';
 import { run } from '../lib/run';
 
@@ -30,9 +30,13 @@ README.md     build         data          node_modules  package.json  src       
     if (part.type === 'text-delta') {
       process.stdout.write(part.text);
     } else if (part.type === 'tool-call') {
-      console.log(`\nTool call: ${part.toolName}(${JSON.stringify(part.input)})`);
+      console.log(
+        `\nTool call: ${part.toolName}(${JSON.stringify(part.input)})`,
+      );
     } else if (part.type === 'tool-result') {
-      console.log(`Tool result: ${JSON.stringify(part.output).substring(0, 100)}...`);
+      console.log(
+        `Tool result: ${JSON.stringify(part.output).substring(0, 100)}...`,
+      );
     }
   }
 

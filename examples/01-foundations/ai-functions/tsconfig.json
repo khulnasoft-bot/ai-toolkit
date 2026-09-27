@@ -4,14 +4,9 @@
     "declaration": true,
     "sourceMap": true,
     "target": "es2022",
-    "lib": [
-      "es2022",
-      "dom"
-    ],
+    "lib": ["es2022", "dom"],
     "module": "esnext",
-    "types": [
-      "node"
-    ],
+    "types": ["node"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "moduleResolution": "Bundler",
@@ -20,15 +15,13 @@
     "skipLibCheck": true,
     "composite": true
   },
-  "include": [
-    "src/**/*.ts"
-  ],
+  "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../../../packages/core/ai-toolkit"
+      "path": "../../../packages/ai/core"
     },
     {
-      "path": "../../../packages/mcp"
+      "path": "../../../packages/mcp/core"
     },
     {
       "path": "../../../packages/providers/amazon-bedrock"
@@ -127,16 +120,16 @@
       "path": "../../../packages/providers/xai"
     },
     {
-      "path": "../../../packages/special/gateway"
+      "path": "../../../packages/gateway/core"
     },
     {
-      "path": "../../../packages/special/khulnasoft"
+      "path": "../../../packages/foundation/khulnasoft"
     },
     {
-      "path": "../../../packages/validation/provider"
+      "path": "../../../packages/foundation/provider"
     },
     {
-      "path": "../../../packages/validation/valibot"
+      "path": "../../../packages/foundation/valibot"
     }
   ]
 }

@@ -46,7 +46,4 @@ for (const category of readdirSync(examplesDir)) {
 }
 
 // next test server
-cleanup(
-  '.',
-  new URL('../../packages/adapters/rsc/tests/e2e/next-server', import.meta.url),
-);
+cleanup('.', new URL('../../packages/adapters/rsc/tests/e2e/next-server', import.meta.url));

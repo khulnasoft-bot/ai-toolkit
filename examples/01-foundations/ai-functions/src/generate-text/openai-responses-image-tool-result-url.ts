@@ -1,4 +1,4 @@
-import { generateText, stepCountIs, tool } from 'ai-toolkit';
+import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 import { z } from 'zod';
 import { openai } from '@ai-toolkit/openai';
@@ -43,7 +43,8 @@ run(async () => {
         reasoningEffort: 'minimal',
       },
     },
-    prompt: 'Please read the image using the tool provided and return the summary of that image',
+    prompt:
+      'Please read the image using the tool provided and return the summary of that image',
     tools: {
       readImage,
     },

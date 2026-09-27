@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { deepinfra } from '@ai-toolkit/deepinfra';
-import { generateImage } from 'ai-toolkit';
+import { generateImage } from '@ai-toolkit/ai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 
@@ -10,7 +10,8 @@ run(async () => {
 
   console.log('INPUT IMAGES: cat and dog');
 
-  const prompt = 'Create a scene with both animals together, a cat and a dog playing as friends';
+  const prompt =
+    'Create a scene with both animals together, a cat and a dog playing as friends';
   console.log(`PROMPT: ${prompt}`);
 
   const { images } = await generateImage({

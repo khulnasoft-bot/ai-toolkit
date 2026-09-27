@@ -2,7 +2,7 @@
 
 import ChatInput from '@/components/chat-input';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function Chat() {
   const { status, sendMessage, messages } = useChat({
@@ -17,7 +17,10 @@ export default function Chat() {
           {message.parts.map((part, index) => {
             if (part.type === 'text') {
               return <div key={index}>{part.text}</div>;
-            } else if (part.type === 'file' && part.mediaType.startsWith('image/')) {
+            } else if (
+              part.type === 'file' &&
+              part.mediaType.startsWith('image/')
+            ) {
               return (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img key={index} src={part.url} alt="Generated image" />

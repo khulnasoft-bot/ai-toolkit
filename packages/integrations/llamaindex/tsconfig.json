@@ -1,0 +1,15 @@
+{
+  "extends": "../../../tools/tsconfig/ts-library.json",
+  "compilerOptions": {
+    "composite": true,
+    "rootDir": "src",
+    "outDir": "dist",
+    "lib": ["dom", "dom.iterable", "esnext"]
+  },
+  "exclude": ["dist", "build", "node_modules", "tsup.config.ts"],
+  "references": [
+    {
+      "path": "../../ai/core"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { huggingface } from '@ai-toolkit/huggingface';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -17,7 +17,8 @@ run(async () => {
       },
       {
         role: 'user',
-        content: 'I want to visit in spring to see cherry blossoms. What cities should I visit?',
+        content:
+          'I want to visit in spring to see cherry blossoms. What cities should I visit?',
       },
     ],
   });

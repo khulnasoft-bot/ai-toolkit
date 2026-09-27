@@ -1,5 +1,10 @@
-import { Source, Sources, SourcesContent, SourcesTrigger } from './ai-elements/sources';
-import { SourceUrlUIPart } from 'ai-toolkit';
+import {
+  Source,
+  Sources,
+  SourcesContent,
+  SourcesTrigger,
+} from './ai-elements/sources';
+import { SourceUrlUIPart } from '@ai-toolkit/ai';
 
 const SourcesView = ({ sources }: { sources: SourceUrlUIPart[] }) => {
   if (sources.length === 0) {

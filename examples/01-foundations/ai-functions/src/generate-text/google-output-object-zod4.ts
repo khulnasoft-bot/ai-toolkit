@@ -1,5 +1,5 @@
 import { google } from '@ai-toolkit/google';
-import { generateText, Output } from 'ai-toolkit';
+import { generateText, Output } from '@ai-toolkit/ai';
 import { z as z4 } from 'zod/v4';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
@@ -11,7 +11,9 @@ run(async () => {
       schema: z4.object({
         recipe: z4.object({
           name: z4.string(),
-          ingredients: z4.array(z4.object({ name: z4.string(), amount: z4.string() })),
+          ingredients: z4.array(
+            z4.object({ name: z4.string(), amount: z4.string() }),
+          ),
           steps: z4.array(z4.string()),
         }),
       }),

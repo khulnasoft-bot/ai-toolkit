@@ -1,4 +1,4 @@
-import { UIToolInvocation, tool } from 'ai-toolkit';
+import { UIToolInvocation, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 export const weatherTool = tool({
@@ -11,7 +11,8 @@ export const weatherTool = tool({
     await new Promise(resolve => setTimeout(resolve, 2000));
 
     const weatherOptions = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy'];
-    const weather = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
+    const weather =
+      weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
 
     yield {
       state: 'ready' as const,

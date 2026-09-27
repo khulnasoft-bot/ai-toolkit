@@ -1,4 +1,4 @@
-import { UIToolInvocation, tool } from 'ai-toolkit';
+import { UIToolInvocation, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 function randomWeather() {
@@ -14,7 +14,9 @@ export const weatherToolWithApproval = tool({
     yield { state: 'loading' as const };
 
     // Add randomized delay of 1 and 5 seconds (to mix up tool result ordering)
-    await new Promise(resolve => setTimeout(resolve, 1000 + Math.floor(Math.random() * 4000)));
+    await new Promise(resolve =>
+      setTimeout(resolve, 1000 + Math.floor(Math.random() * 4000)),
+    );
 
     yield {
       state: 'ready' as const,
@@ -24,4 +26,6 @@ export const weatherToolWithApproval = tool({
   },
 });
 
-export type WeatherUIToolWithApprovalInvocation = UIToolInvocation<typeof weatherToolWithApproval>;
+export type WeatherUIToolWithApprovalInvocation = UIToolInvocation<
+  typeof weatherToolWithApproval
+>;

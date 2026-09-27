@@ -8,15 +8,15 @@ import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport, ProviderMetadata } from 'ai-toolkit';
+import { DefaultChatTransport, ProviderMetadata } from '@ai-toolkit/ai';
 import { useRef } from 'react';
 
 export default function OpenPreviousResponseIdPage() {
   // Keep the last provider metadata so we can supply previousResponseId on the next request.
   const providerMetadataRef = useRef<ProviderMetadata | undefined>(undefined);
 
-  const { error, status, sendMessage, messages, regenerate } = useChat<PreviousResponseIdUIMessage>(
-    {
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<PreviousResponseIdUIMessage>({
       transport: new DefaultChatTransport({
         api: '/api/chat-openai-previous-response-id',
         prepareSendMessagesRequest: ({ messages }) => {
@@ -39,8 +39,7 @@ export default function OpenPreviousResponseIdPage() {
           }
         }
       },
-    },
-  );
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">

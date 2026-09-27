@@ -1,5 +1,5 @@
 import { anthropic } from '@ai-toolkit/anthropic';
-import { streamText, tool } from 'ai-toolkit';
+import { streamText, tool } from '@ai-toolkit/ai';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';
 import { print } from '../lib/print';
@@ -11,7 +11,9 @@ run(async () => {
     messages: [
       {
         role: 'user',
-        content: [{ type: 'text', text: 'weather for berlin, london and paris' }],
+        content: [
+          { type: 'text', text: 'weather for berlin, london and paris' },
+        ],
       },
       {
         role: 'assistant',

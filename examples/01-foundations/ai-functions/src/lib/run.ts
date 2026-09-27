@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { APICallError } from 'ai-toolkit';
+import { APICallError } from '@ai-toolkit/ai';
 import { print } from './print';
 
 export function run(fn: () => Promise<void>) {

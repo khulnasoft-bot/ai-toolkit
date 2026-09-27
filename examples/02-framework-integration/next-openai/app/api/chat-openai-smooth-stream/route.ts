@@ -1,5 +1,5 @@
 import { openaiBasicAgent } from '@/agent/openai-basic-agent';
-import { createAgentUIStreamResponse, smoothStream } from 'ai-toolkit';
+import { createAgentUIStreamResponse, smoothStream } from '@ai-toolkit/ai';
 
 export async function POST(req: Request) {
   const body = await req.json();

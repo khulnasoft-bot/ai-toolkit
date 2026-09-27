@@ -1,5 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { embed } from 'ai-toolkit';
+import { embed } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

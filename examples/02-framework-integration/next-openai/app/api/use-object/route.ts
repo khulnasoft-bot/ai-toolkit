@@ -1,4 +1,4 @@
-import { Output, streamText } from 'ai-toolkit';
+import { Output, streamText } from '@ai-toolkit/ai';
 import { notificationSchema } from './schema';
 
 // Allow streaming responses up to 30 seconds

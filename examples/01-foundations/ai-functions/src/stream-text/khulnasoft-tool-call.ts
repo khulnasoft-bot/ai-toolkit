@@ -4,7 +4,7 @@ import {
   ToolCallPart,
   ToolResultPart,
   ModelMessage,
-} from 'ai-toolkit';
+} from '@ai-toolkit/ai';
 import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
 

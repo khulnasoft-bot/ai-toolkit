@@ -1,5 +1,5 @@
 import { khulnasoft } from '@ai-toolkit/khulnasoft';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { run } from '../lib/run';
 

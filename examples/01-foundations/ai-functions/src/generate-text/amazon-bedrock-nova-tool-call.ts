@@ -1,4 +1,4 @@
-import { generateText, tool } from 'ai-toolkit';
+import { generateText, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { weatherTool } from '../tools/weather-tool';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
@@ -15,7 +15,8 @@ run(async () => {
     },
     temperature: 0,
     topK: 1,
-    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    prompt:
+      'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   for (const toolCall of result.toolCalls) {

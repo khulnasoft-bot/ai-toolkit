@@ -1,5 +1,5 @@
 import { createOpenAI } from '@ai-toolkit/openai';
-import { streamObject } from 'ai-toolkit';
+import { streamObject } from '@ai-toolkit/ai';
 import { notificationSchema } from '~/shared/notification-schema';
 
 export default defineLazyEventHandler(async () => {

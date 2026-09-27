@@ -1,5 +1,5 @@
-import { generateText } from 'ai-toolkit';
-import { MockLanguageModelV3 } from 'ai-toolkit/test';
+import { generateText } from '@ai-toolkit/ai';
+import { MockLanguageModelV3 } from '@ai-toolkit/ai/test';
 import { run } from '../lib/run';
 
 run(async () => {

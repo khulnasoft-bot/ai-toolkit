@@ -1,5 +1,8 @@
-import { streamObject } from 'ai-toolkit';
-import { convertArrayToReadableStream, MockLanguageModelV3 } from 'ai-toolkit/test';
+import { streamObject } from '@ai-toolkit/ai';
+import {
+  convertArrayToReadableStream,
+  MockLanguageModelV3,
+} from '@ai-toolkit/ai/test';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

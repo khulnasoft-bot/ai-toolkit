@@ -1,5 +1,5 @@
 import { huggingface } from '@ai-toolkit/huggingface';
-import { streamObject } from 'ai-toolkit';
+import { streamObject } from '@ai-toolkit/ai';
 import { z } from 'zod/v4';
 import { run } from '../lib/run';
 
@@ -15,7 +15,8 @@ run(async () => {
         }),
       ),
     }),
-    prompt: 'Generate a list of 3 major cities with their populations. IN JSON FORMAT',
+    prompt:
+      'Generate a list of 3 major cities with their populations. IN JSON FORMAT',
   });
 
   // Stream partial objects

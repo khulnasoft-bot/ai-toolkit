@@ -1,5 +1,5 @@
 import { createGoogleGenerativeAI } from '@ai-toolkit/google';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';

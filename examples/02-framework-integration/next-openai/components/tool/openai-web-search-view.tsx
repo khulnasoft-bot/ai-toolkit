@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { UIToolInvocation } from 'ai-toolkit';
+import { UIToolInvocation } from '@ai-toolkit/ai';
 
 export default function OpenAIWebSearchView({
   invocation,

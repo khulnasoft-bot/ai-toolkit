@@ -4,7 +4,7 @@ import {
   pipeAgentUIStreamToResponse,
   pipeUIMessageStreamToResponse,
   streamText,
-} from 'ai-toolkit';
+} from '@ai-toolkit/ai';
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import { openaiWebSearchAgent } from './openai-web-search-agent.js';

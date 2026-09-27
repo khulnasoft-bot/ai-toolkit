@@ -179,7 +179,7 @@ Set the \`${envPrefix}_API_KEY\` environment variable (or pass \`apiKey\` / \`ba
 
 \`\`\`ts
 import { ${camelName} } from '@ai-toolkit/${name}';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 
 const result = await generateText({
   model: ${camelName}('${exampleModel}'),

@@ -1,5 +1,5 @@
 import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -15,7 +15,10 @@ run(async () => {
   try {
     const abortController = new AbortController();
     const timeoutSignal = AbortSignal.timeout(connectionTimeout);
-    const finalSignal = AbortSignal.any([timeoutSignal, abortController.signal]);
+    const finalSignal = AbortSignal.any([
+      timeoutSignal,
+      abortController.signal,
+    ]);
 
     const result = streamText({
       model: openaiCompatible('deepseek-chat'),

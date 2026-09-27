@@ -1,5 +1,5 @@
 import { groq } from '@ai-toolkit/groq';
-import { experimental_transcribe as transcribe } from 'ai-toolkit';
+import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
 import { readFile } from 'fs/promises';
 import { run } from '../lib/run';
 

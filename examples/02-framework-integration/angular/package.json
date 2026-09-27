@@ -27,7 +27,7 @@
     "tslib": "^2.3.0",
     "zod": "3.25.76",
     "zone.js": "~0.15.0",
-    "ai-toolkit": "workspace:*"
+    "@ai-toolkit/ai": "workspace:*"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.3.3",

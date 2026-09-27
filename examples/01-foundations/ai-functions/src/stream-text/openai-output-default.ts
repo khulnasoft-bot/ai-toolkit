@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { stepCountIs, streamText } from 'ai-toolkit';
+import { stepCountIs, streamText } from '@ai-toolkit/ai';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';

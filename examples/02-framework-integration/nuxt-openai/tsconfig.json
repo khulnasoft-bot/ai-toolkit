@@ -2,10 +2,10 @@
   "extends": "./.nuxt/tsconfig.json",
   "references": [
     {
-      "path": "../../../packages/adapters/vue"
+      "path": "../../../packages/integrations/vue"
     },
     {
-      "path": "../../../packages/core/ai-toolkit"
+      "path": "../../../packages/ai/core"
     },
     {
       "path": "../../../packages/providers/openai"

@@ -1,5 +1,5 @@
 import { google } from '@ai-toolkit/google';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -46,7 +46,10 @@ run(async () => {
       case 'tool-call':
         console.log('\nTool call:', chunk.toolName, chunk.input);
         if (chunk.providerMetadata?.google?.thoughtSignature) {
-          console.log('[Tool signature]:', chunk.providerMetadata.google.thoughtSignature);
+          console.log(
+            '[Tool signature]:',
+            chunk.providerMetadata.google.thoughtSignature,
+          );
         }
         break;
     }

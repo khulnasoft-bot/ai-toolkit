@@ -1,11 +1,12 @@
 import { perplexity } from '@ai-toolkit/perplexity';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
   const result = streamText({
     model: perplexity('sonar-pro'),
-    prompt: 'Tell me about the earliest cave drawings known and include images.',
+    prompt:
+      'Tell me about the earliest cave drawings known and include images.',
     providerOptions: {
       perplexity: {
         return_images: true,
@@ -20,5 +21,8 @@ run(async () => {
   console.log();
   console.log('Token usage:', await result.usage);
   console.log('Finish reason:', await result.finishReason);
-  console.log('Metadata:', JSON.stringify(await result.providerMetadata, null, 2));
+  console.log(
+    'Metadata:',
+    JSON.stringify(await result.providerMetadata, null, 2),
+  );
 });

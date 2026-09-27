@@ -1,5 +1,5 @@
 import { xai } from '@ai-toolkit/xai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { run } from '../lib/run';
 

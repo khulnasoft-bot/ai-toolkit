@@ -11,7 +11,7 @@ import {
   UIDataTypes,
   UIMessage,
   validateUIMessages,
-} from 'ai-toolkit';
+} from '@ai-toolkit/ai';
 
 const tools = {
   code_interpreter: azure.tools.codeInterpreter(),
@@ -30,7 +30,8 @@ export type AzureOpenAICodeInterpreterMessage = UIMessage<
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
-  const uiMessages = await validateUIMessages<AzureOpenAICodeInterpreterMessage>({ messages });
+  const uiMessages =
+    await validateUIMessages<AzureOpenAICodeInterpreterMessage>({ messages });
 
   // Collect sources with container file citations as they're generated
   const containerFileSources: Array<{

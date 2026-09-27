@@ -1,4 +1,4 @@
-import { generateText, tool } from 'ai-toolkit';
+import { generateText, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { weatherTool } from '../tools/weather-tool';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
@@ -18,7 +18,8 @@ run(async () => {
       type: 'tool',
       toolName: 'weather',
     },
-    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    prompt:
+      'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   console.log(JSON.stringify(result, null, 2));

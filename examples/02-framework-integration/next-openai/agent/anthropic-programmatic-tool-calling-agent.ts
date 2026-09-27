@@ -4,7 +4,7 @@ import {
   AnthropicProviderOptions,
   forwardAnthropicContainerIdFromLastStep,
 } from '@ai-toolkit/anthropic';
-import { InferAgentUIMessage, ToolLoopAgent } from 'ai-toolkit';
+import { InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 export const anthropicProgrammaticToolCallingAgent = new ToolLoopAgent({

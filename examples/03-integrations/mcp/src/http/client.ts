@@ -1,11 +1,13 @@
 import { openai } from '@ai-toolkit/openai';
 import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
-import { generateText, stepCountIs } from 'ai-toolkit';
+import { generateText, stepCountIs } from '@ai-toolkit/ai';
 import 'dotenv/config';
 import { createMCPClient, MCPClient } from '@ai-toolkit/mcp';
 
 async function main() {
-  const transport = new StreamableHTTPClientTransport(new URL('http://localhost:3000/mcp'));
+  const transport = new StreamableHTTPClientTransport(
+    new URL('http://localhost:3000/mcp'),
+  );
 
   const mcpClient: MCPClient = await createMCPClient({
     transport,

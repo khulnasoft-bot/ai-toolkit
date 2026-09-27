@@ -2,7 +2,7 @@
 
 import { Card } from '@/app/components';
 import { useChat } from '@ai-toolkit/react';
-import { getStaticToolName, isStaticToolUIPart } from 'ai-toolkit';
+import { getStaticToolName, isStaticToolUIPart } from '@ai-toolkit/ai';
 import { GeistMono } from 'geist/font/mono';
 import { useState } from 'react';
 

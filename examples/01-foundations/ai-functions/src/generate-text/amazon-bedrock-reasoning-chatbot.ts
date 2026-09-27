@@ -1,5 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { ModelMessage, generateText, stepCountIs } from 'ai-toolkit';
+import { ModelMessage, generateText, stepCountIs } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
 import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
@@ -41,7 +41,10 @@ run(async () => {
 
       if (step.toolCalls) {
         for (const toolCall of step.toolCalls) {
-          console.log(`\x1b[33m${toolCall.toolName}\x1b[0m` + JSON.stringify(toolCall.input));
+          console.log(
+            `\x1b[33m${toolCall.toolName}\x1b[0m` +
+              JSON.stringify(toolCall.input),
+          );
         }
       }
     }

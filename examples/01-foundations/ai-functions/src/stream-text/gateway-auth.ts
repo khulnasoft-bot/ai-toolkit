@@ -1,4 +1,4 @@
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { gateway } from '@ai-toolkit/gateway';
 import { run } from '../lib/run';
 

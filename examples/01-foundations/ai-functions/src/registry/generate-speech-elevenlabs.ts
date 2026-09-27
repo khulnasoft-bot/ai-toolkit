@@ -1,4 +1,4 @@
-import { experimental_generateSpeech as generateSpeech } from 'ai-toolkit';
+import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
 import { registry } from './setup-registry';
 import { run } from '../lib/run';
 
