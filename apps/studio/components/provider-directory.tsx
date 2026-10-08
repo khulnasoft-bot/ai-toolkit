@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { DataTable } from '@/components/data-table';
-import { Drawer } from '@/components/drawer';
-import { FilterBar } from '@/components/filter-bar';
-import type { Column } from '@/components/data-table';
+import { DataTable } from '@ai-toolkit/design/data-table';
+import { Drawer } from '@ai-toolkit/design/drawer';
+import { FilterBar } from '@ai-toolkit/design/filter-bar';
+import type { Column } from '@ai-toolkit/design/data-table';
 
 const ALL = 'all';
 

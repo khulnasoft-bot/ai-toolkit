@@ -1,5 +1,5 @@
 import { groq, GroqProviderOptions } from '@ai-toolkit/groq';
-import { generateText, Output } from 'ai-toolkit';
+import { generateText, Output } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

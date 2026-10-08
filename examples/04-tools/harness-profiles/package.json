@@ -1,0 +1,24 @@
+{
+  "name": "@example/harness-profiles",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "type-check": "tsc --build"
+  },
+  "dependencies": {
+    "@ai-toolkit/harness": "workspace:*",
+    "@ai-toolkit/harness-acp": "workspace:*",
+    "@ai-toolkit/harness-claude-code": "workspace:*",
+    "@ai-toolkit/harness-cline": "workspace:*",
+    "@ai-toolkit/harness-codex": "workspace:*",
+    "@ai-toolkit/harness-cursor": "workspace:*",
+    "@ai-toolkit/harness-grok-build": "workspace:*",
+    "@ai-toolkit/harness-opencode": "workspace:*",
+    "@ai-toolkit/harness-pi": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.24",
+    "typescript": "5.8.3"
+  }
+}

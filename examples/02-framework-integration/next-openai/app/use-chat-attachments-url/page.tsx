@@ -3,7 +3,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useChat } from '@ai-toolkit/react';
 import { upload } from '@vercel/blob/client';
-import { FileUIPart } from 'ai-toolkit';
+import { FileUIPart } from '@ai-toolkit/ai';
 import { useRef, useState } from 'react';
 
 export default function Page() {
@@ -26,10 +26,17 @@ export default function Page() {
                 if (part.type === 'text') {
                   return <div key={index}>{part.text}</div>;
                 }
-                if (part.type === 'file' && part.mediaType?.startsWith('image/')) {
+                if (
+                  part.type === 'file' &&
+                  part.mediaType?.startsWith('image/')
+                ) {
                   return (
                     <div key={index}>
-                      <img className="rounded-md w-60" src={part.url} alt={part.filename} />
+                      <img
+                        className="rounded-md w-60"
+                        src={part.url}
+                        alt={part.filename}
+                      />
                     </div>
                   );
                 }
@@ -61,7 +68,11 @@ export default function Page() {
             .filter(file => file.mediaType?.startsWith('image/'))
             .map(file => (
               <div key={file.url}>
-                <img className="w-24 rounded-md" src={file.url} alt={file.filename} />
+                <img
+                  className="w-24 rounded-md"
+                  src={file.url}
+                  alt={file.filename}
+                />
                 <span className="text-sm text-zinc-500">{file.filename}</span>
               </div>
             ))}

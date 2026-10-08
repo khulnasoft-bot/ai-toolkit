@@ -1,4 +1,4 @@
-import { DeepPartial } from 'ai-toolkit';
+import { DeepPartial } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 // define a schema for the notifications

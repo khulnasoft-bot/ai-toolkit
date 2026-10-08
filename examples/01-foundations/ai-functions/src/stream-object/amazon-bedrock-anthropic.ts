@@ -1,5 +1,5 @@
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
-import { streamObject } from 'ai-toolkit';
+import { streamObject } from '@ai-toolkit/ai';
 import 'dotenv/config';
 import { z } from 'zod';
 import { run } from '../lib/run';

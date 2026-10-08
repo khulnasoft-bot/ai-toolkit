@@ -1,5 +1,5 @@
 import { huggingface } from '@ai-toolkit/huggingface';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -18,7 +18,9 @@ run(async () => {
       console.log('Sources:');
       sources.forEach((source, index) => {
         if (source.type === 'source' && source.sourceType === 'url') {
-          console.log(`${index + 1}. ${source.title || 'Untitled'}: ${source.url}`);
+          console.log(
+            `${index + 1}. ${source.title || 'Untitled'}: ${source.url}`,
+          );
         }
       });
     }

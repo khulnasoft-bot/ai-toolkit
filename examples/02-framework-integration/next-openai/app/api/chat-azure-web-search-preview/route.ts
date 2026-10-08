@@ -6,7 +6,7 @@ import {
   ToolSet,
   UIDataTypes,
   UIMessage,
-} from 'ai-toolkit';
+} from '@ai-toolkit/ai';
 
 const tools = {
   web_search_preview: azure.tools.webSearchPreview({}),
@@ -19,7 +19,8 @@ export type AzureWebSearchPreviewMessage = UIMessage<
 >;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: AzureWebSearchPreviewMessage[] } = await req.json();
+  const { messages }: { messages: AzureWebSearchPreviewMessage[] } =
+    await req.json();
 
   const result = streamText({
     model: azure.responses('gpt-4.1-mini'),

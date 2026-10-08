@@ -1,5 +1,5 @@
 import { vertex } from '@ai-toolkit/google-vertex';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

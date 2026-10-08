@@ -1,5 +1,5 @@
 import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { run } from '../lib/run';
 

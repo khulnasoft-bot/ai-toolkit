@@ -1,5 +1,5 @@
 import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

@@ -1,5 +1,5 @@
 import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -29,7 +29,12 @@ run(async () => {
       console.log('Text chunk', textChunkCount, ':', chunk.text);
     } else if (chunk.type === 'raw') {
       rawChunkCount++;
-      console.log('Raw chunk', rawChunkCount, ':', JSON.stringify(chunk.rawValue));
+      console.log(
+        'Raw chunk',
+        rawChunkCount,
+        ':',
+        JSON.stringify(chunk.rawValue),
+      );
     } else {
       otherChunkCount++;
       console.log('Other chunk', otherChunkCount, ':', chunk.type);

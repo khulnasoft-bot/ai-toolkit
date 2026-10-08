@@ -1,0 +1,24 @@
+---
+title: Harness
+description: Shared harness contracts for HarnessAgent harnesses.
+---
+
+The shared base package exposes `HarnessPermissionMode`, the `Harness` identity interface, and `HarnessCapabilityUnsupportedError`. It has no runtime behavior; per-agent adapters live in `@ai-toolkit/harness-acp` and `@ai-toolkit/harness-<agent>`.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness
+```
+
+## Usage
+
+```ts
+import { HarnessCapabilityUnsupportedError } from '@ai-toolkit/harness';
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)

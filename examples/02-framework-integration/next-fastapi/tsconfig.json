@@ -27,10 +27,10 @@
   "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../../../packages/adapters/react"
+      "path": "../../../packages/integrations/react"
     },
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/ai/core"
     }
   ]
 }

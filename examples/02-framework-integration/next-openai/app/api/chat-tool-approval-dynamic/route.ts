@@ -1,5 +1,5 @@
 import { dynamicWeatherWithApprovalAgent } from '@/agent/dynamic-weather-with-approval-agent';
-import { createAgentUIStreamResponse } from 'ai-toolkit';
+import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
 
 export async function POST(request: Request) {
   const body = await request.json();

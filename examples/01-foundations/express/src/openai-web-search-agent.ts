@@ -1,5 +1,5 @@
 import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
-import { ToolLoopAgent } from 'ai-toolkit';
+import { ToolLoopAgent } from '@ai-toolkit/ai';
 
 export const openaiWebSearchAgent = new ToolLoopAgent({
   model: openai('gpt-5-mini'),

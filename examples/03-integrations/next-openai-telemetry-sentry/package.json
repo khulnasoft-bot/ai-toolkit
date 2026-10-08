@@ -2,6 +2,7 @@
   "name": "@example/next-openai-telemetry-sentry",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -21,7 +22,7 @@
     "react": "^18",
     "react-dom": "^18",
     "zod": "3.25.76",
-    "ai-toolkit": "workspace:*"
+    "@ai-toolkit/ai": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.17.24",

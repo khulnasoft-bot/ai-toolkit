@@ -1,11 +1,11 @@
 ---
-title: Vercel
-description: Learn how to use Vercel's v0 models with the AI TOOLKIT.
+title: Khulnasoft
+description: Learn how to use Khulnasoft's v0 models with the AI TOOLKIT.
 ---
 
-# Vercel Provider
+# Khulnasoft Provider
 
-The [Vercel](https://vercel.com) provider gives you access to the [v0 API](https://v0.app/docs/api/model), designed for building modern web applications. The v0 models support text and image inputs and provide fast streaming responses.
+The Khulnasoft provider gives you access to the [v0 API](https://v0.app/docs/api/model), designed for building modern web applications. The v0 models support text and image inputs and provide fast streaming responses.
 
 You can create your Vercel API key at [v0.dev](https://v0.dev/chat/settings/keys).
 
@@ -25,7 +25,7 @@ You can create your Vercel API key at [v0.dev](https://v0.dev/chat/settings/keys
 
 ## Setup
 
-The Vercel provider is available via the `@ai-toolkit/khulnasoft` module. You can install it with:
+The Khulnasoft provider is available via the `@ai-toolkit/khulnasoft` module. You can install it with:
 
 <Tabs items={['pnpm', 'npm', 'yarn', 'bun']}>
   <Tab>
@@ -45,23 +45,23 @@ The Vercel provider is available via the `@ai-toolkit/khulnasoft` module. You ca
 
 ## Provider Instance
 
-You can import the default provider instance `vercel` from `@ai-toolkit/khulnasoft`:
+You can import the default provider instance `khulnasoft` from `@ai-toolkit/khulnasoft`:
 
 ```ts
-import { vercel } from '@ai-toolkit/khulnasoft';
+import { khulnasoft } from '@ai-toolkit/khulnasoft';
 ```
 
-If you need a customized setup, you can import `createVercel` from `@ai-toolkit/khulnasoft` and create a provider instance with your settings:
+If you need a customized setup, you can import `createKhulnasoft` from `@ai-toolkit/khulnasoft` and create a provider instance with your settings:
 
 ```ts
-import { createVercel } from '@ai-toolkit/khulnasoft';
+import { createKhulnasoft } from '@ai-toolkit/khulnasoft';
 
-const vercel = createVercel({
-  apiKey: process.env.VERCEL_API_KEY ?? '',
+const khulnasoft = createKhulnasoft({
+  apiKey: process.env.KHULNASOFT_API_KEY ?? '',
 });
 ```
 
-You can use the following optional settings to customize the Vercel provider instance:
+You can use the following optional settings to customize the Khulnasoft provider instance:
 
 - **baseURL** _string_
 
@@ -70,7 +70,7 @@ You can use the following optional settings to customize the Vercel provider ins
 - **apiKey** _string_
 
   API key that is being sent using the `Authorization` header. It defaults to
-  the `VERCEL_API_KEY` environment variable.
+  the `KHULNASOFT_API_KEY` environment variable.
 
 - **headers** _Record&lt;string,string&gt;_
 
@@ -88,16 +88,16 @@ You can use the following optional settings to customize the Vercel provider ins
 You can create language models using a provider instance. The first argument is the model ID, for example:
 
 ```ts
-import { vercel } from '@ai-toolkit/khulnasoft';
+import { khulnasoft } from '@ai-toolkit/khulnasoft';
 import { generateText } from 'ai-toolkit';
 
 const { text } = await generateText({
-  model: vercel('v0-1.0-md'),
+  model: khulnasoft('v0-1.0-md'),
   prompt: 'Create a Next.js AI chatbot',
 });
 ```
 
-Vercel language models can also be used in the `streamText` function (see [AI TOOLKIT Core](/docs/ai-toolkit-core)).
+Khulnasoft language models can also be used in the `streamText` function (see [AI TOOLKIT Core](/docs/ai-toolkit-core)).
 
 ## Models
 

@@ -18,10 +18,10 @@
   "include": ["src/**/*.ts"],
   "references": [
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/ai/core"
     },
     {
-      "path": "../../../packages/mcp"
+      "path": "../../../packages/mcp/core"
     },
     {
       "path": "../../../packages/providers/amazon-bedrock"
@@ -40,6 +40,9 @@
     },
     {
       "path": "../../../packages/providers/black-forest-labs"
+    },
+    {
+      "path": "../../../packages/providers/bytedance"
     },
     {
       "path": "../../../packages/providers/cerebras"
@@ -117,16 +120,16 @@
       "path": "../../../packages/providers/xai"
     },
     {
-      "path": "../../../packages/special/gateway"
+      "path": "../../../packages/gateway/core"
     },
     {
-      "path": "../../../packages/special/khulnasoft"
+      "path": "../../../packages/foundation/khulnasoft"
     },
     {
-      "path": "../../../packages/validation/provider"
+      "path": "../../../packages/foundation/provider"
     },
     {
-      "path": "../../../packages/validation/valibot"
+      "path": "../../../packages/foundation/valibot"
     }
   ]
 }

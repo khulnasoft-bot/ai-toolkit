@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
-import { generateImage } from 'ai-toolkit';
+import { generateImage } from '@ai-toolkit/ai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 
@@ -24,7 +24,8 @@ run(async () => {
     },
   ]);
 
-  const prompt = 'A sunlit indoor lounge area with a pool containing a flamingo';
+  const prompt =
+    'A sunlit indoor lounge area with a pool containing a flamingo';
   console.log(`PROMPT: ${prompt}`);
 
   const { images } = await generateImage({

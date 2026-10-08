@@ -1,5 +1,5 @@
 ---
-'@ai-toolkit/ai': major
+'ai-toolkit': major
 '@ai-toolkit/react': patch
 '@ai-toolkit/vue': patch
 '@ai-toolkit/svelte': patch
@@ -12,22 +12,21 @@
 '@ai-toolkit/llamaindex': patch
 ---
 
-Rename the core SDK package `ai` → `@ai-toolkit/ai` (scoped, consistent with
-`@ai-toolkit/provider`, `@ai-toolkit/provider-utils`, `@ai-toolkit/gateway`).
+Rename the core SDK package `ai` → `ai-toolkit` and remove the `@ai-toolkit/ai` shim (`packages/core/ai`).
 
 Migration for consumers:
 
 ```diff
-- import { generateText } from '@ai-toolkit/ai';
-+ import { generateText } from '@ai-toolkit/ai';
+- import { generateText } from 'ai';
++ import { generateText } from 'ai-toolkit';
 ```
 
-- `ai/test` → `@ai-toolkit/ai/test`, `ai/internal` → `@ai-toolkit/ai/internal`.
-- Run the new codemod: `npx @ai-toolkit/codemod v6/rename-ai-to-ai-toolkit <path>`
+- `ai/test` → `ai-toolkit/test`, `ai/internal` → `ai-toolkit/internal`.
+- `@ai-toolkit/ai`, `@ai-toolkit/ai/test`, `@ai-toolkit/ai/internal` → `ai-toolkit`, `ai-toolkit/test`, `ai-toolkit/internal`.
+- Run the codemod: `npx @ai-toolkit/codemod v6/rename-ai-to-ai-toolkit <path>`
   (also included in `upgrade` / `v6` bundles).
-- Historical `v4`–`v6` codemods now match both `'@ai-toolkit/ai'` and `'@ai-toolkit/ai'`
-  import specifiers.
-- Alternatively use an npm alias during transition:
-  `"@ai-toolkit/ai": "npm:@ai-toolkit/ai@<version>"`.
-- Added missing `default` export condition (ADR-006) on `.`, `./internal`,
-  `./test` entries.
+- Wire previously unwired public modules into the main entry: `upload-file`, `upload-skill`.
+- Land the typed per-tool context feature: `Tool` gains `CONTEXT` type param + `contextSchema`, `tool()` infers context, `execute` receives `options.context`, new `toolsContext` option on `generateText` / `streamText` / agents (validated via `validateToolContext`, `experimental_context` kept as deprecated fallback).
+- `batch`, `translate` remain unwired WIP: they depend on V4 model infrastructure (`resolveLanguageModel` V4, V4 prompt conversion, `resolveSpeechTranslationModel`) that does not exist yet.
+- `realtime` remains unwired WIP: it needs function-valued tool `description`s, which requires design decisions in fingerprinting (`tool-fingerprint`) and `prepare-tools-and-tool-choice`.
+- Fix `UploadFileResult` / `UploadSkillResult` warnings to `SharedV4Warning` (V4-native, matching `generate-video` precedent).

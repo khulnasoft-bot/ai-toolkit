@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -14,7 +14,10 @@ run(async () => {
       process.stdout.write(textPart);
     }
   } catch (error) {
-    if (error instanceof Error && (error.name === 'AbortError' || error.name === 'TimeoutError')) {
+    if (
+      error instanceof Error &&
+      (error.name === 'AbortError' || error.name === 'TimeoutError')
+    ) {
       console.log('\n\nAbortError: The run was aborted.');
     }
   }

@@ -1,4 +1,4 @@
-import { generateId } from 'ai-toolkit';
+import { generateId } from '@ai-toolkit/ai';
 import Chat from './chat/[chatId]/chat';
 
 export default async function ChatPage() {

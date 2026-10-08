@@ -1,6 +1,6 @@
 import { openai } from '@ai-toolkit/openai';
-import { generateText, stepCountIs, tool } from 'ai-toolkit';
-import { MockLanguageModelV3 } from 'ai-toolkit/test';
+import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
+import { MockLanguageModelV3 } from '@ai-toolkit/ai/test';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

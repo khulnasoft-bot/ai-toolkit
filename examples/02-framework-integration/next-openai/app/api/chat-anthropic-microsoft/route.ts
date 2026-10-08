@@ -1,4 +1,4 @@
-import { createAgentUIStreamResponse } from 'ai-toolkit';
+import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
 import { createAnthropicMicrosoftAgent } from '@/agent/anthropic-microsoft-agent';
 
 export async function POST(req: Request) {

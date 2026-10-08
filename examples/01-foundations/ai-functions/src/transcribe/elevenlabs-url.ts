@@ -1,5 +1,5 @@
 import { elevenlabs } from '@ai-toolkit/elevenlabs';
-import { experimental_transcribe as transcribe } from 'ai-toolkit';
+import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

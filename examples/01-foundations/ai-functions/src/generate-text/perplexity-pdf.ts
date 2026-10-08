@@ -1,5 +1,5 @@
 import { perplexity } from '@ai-toolkit/perplexity';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import fs from 'fs';
 import { run } from '../lib/run';
 

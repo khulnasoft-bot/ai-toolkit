@@ -1,5 +1,5 @@
 import { createOpenAI } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 const openai = createOpenAI({
@@ -23,7 +23,9 @@ const openai = createOpenAI({
             controller.enqueue(value);
 
             if (characterCount > 1000) {
-              controller.error(new Error('Injected error after 1000 characters'));
+              controller.error(
+                new Error('Injected error after 1000 characters'),
+              );
               break;
             }
           }

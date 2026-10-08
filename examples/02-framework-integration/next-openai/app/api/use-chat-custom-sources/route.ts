@@ -5,7 +5,7 @@ import {
   createUIMessageStreamResponse,
   streamText,
   UIMessage,
-} from 'ai-toolkit';
+} from '@ai-toolkit/ai';
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();

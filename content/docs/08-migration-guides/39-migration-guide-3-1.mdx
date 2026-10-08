@@ -129,7 +129,7 @@ async function submitMessage(userInput = 'What is the weather in SF?') {
 }
 ```
 
-With the new [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function, you can now use any compatible AI TOOLKIT provider. In this example, you import the AI TOOLKIT OpenAI provider. Then, you pass it to the [`model`](/docs/reference/ai-toolkit-rsc/stream-ui#model) key of the new [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function. Finally, you declare a tool and return a React Server Component, defined in the [`generate`](/docs/reference/ai-toolkit-rsc/stream-ui#tools-generate) key of the tool.
+With the new [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function, you can now use any compatible AI TOOLKIT provider. In this example, you import the AI TOOLKIT OpenAI provider. Then, you pass it to the [`model`](/docs/reference/ai-toolkit-rsc/stream-ui#model) key of the new [`streamUI`](/docs/reference/ai-toolkit-rsc/stream-ui) function. Finally, you declare a tool and return a React Server Component, defined in the [`generate`](/docs/reference/ai-toolkit-rsc/stream-ui#tools.tool.generate) key of the tool.
 
 ```tsx
 import { streamUI } from '@ai-toolkit/rsc';

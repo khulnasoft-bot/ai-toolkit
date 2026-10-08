@@ -44,7 +44,7 @@
       "order": 4,
       "title": "Tools",
       "description": "Developer tools and interactive playgrounds.",
-      "examples": ["playground"]
+      "examples": ["playground", "harness-profiles"]
     }
   ],
   "examples": [
@@ -278,6 +278,17 @@
       "description": "An interactive web-based playground for experimenting with AI models and providers using the AI TOOLKIT.",
       "tags": ["nextjs", "playground", "dashboard", "multi-provider"],
       "path": "examples/04-tools/playground"
+    },
+    {
+      "name": "harness-profiles",
+      "title": "Harness Profiles",
+      "category": "04-tools",
+      "categoryOrder": 4,
+      "framework": "node",
+      "primaryProvider": null,
+      "description": "Construct per-agent ACP harness profiles (Claude Code, Cline, Codex, Cursor, Grok Build, opencode, Pi) and print their stable bootstrap identities.",
+      "tags": ["harness", "acp", "agents", "node"],
+      "path": "examples/04-tools/harness-profiles"
     }
   ]
 }

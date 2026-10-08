@@ -12,16 +12,29 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
 const PACKAGES = path.join(ROOT, 'packages');
-const EXPECTED_DOMAINS = [
-  'core',
+const CURRENT_DOMAINS = [
+  'foundation',
+  'ai',
+  'gateway',
   'providers',
-  'adapters',
+  'integrations',
   'ui',
   'mcp',
-  'special',
-  'validation',
-  'infrastructure',
+  'tooling',
+  'testing',
+  'agents',
+  'tools',
+  'workflow',
+  'memory',
+  'context',
+  'sandbox',
+  'retrieval',
+  'evals',
+  'observability',
+  'security',
 ];
+const FUTURE_DOMAINS = [];
+const EXPECTED_DOMAINS = [...CURRENT_DOMAINS, ...FUTURE_DOMAINS];
 const NODE_BUILTINS = new Set([...builtinModules, ...builtinModules.map(name => `node:${name}`)]);
 const PRUNE = new Set(['node_modules', 'dist', '.git', '.next', '.turbo']);
 // Test files, dev scripts, and tooling configs execute under Node by design and
@@ -29,7 +42,16 @@ const PRUNE = new Set(['node_modules', 'dist', '.git', '.next', '.turbo']);
 // are excluded from the builtin scan.
 const TEST_PATH =
   /(\.test(-d)?\.tsx?$|[\\/]__tests__[\\/]|[\\/]test[\\/]|[\\/]__fixtures__[\\/]|[\\/]__snapshots__[\\/]|[\\/]scripts[\\/]|\.config\.(js|mjs|cjs|ts)$)/;
-const RUNTIME_NEUTRAL_DOMAINS = new Set(['core', 'validation']);
+const RUNTIME_NEUTRAL_DOMAINS = new Set(['foundation', 'ai']);
+// Packages that are ESM-only by design (tsup `format: ['esm']` /
+// svelte-package output): no correct `require` target exists, so the
+// ADR-006 `require` condition is waived with a standing warning.
+const ESM_ONLY_PACKAGES = new Set([
+  '@ai-toolkit/rsc',
+  '@ai-toolkit/google-vertex',
+  '@ai-toolkit/devtools',
+  '@ai-toolkit/svelte',
+]);
 const errors = [];
 const warnings = [];
 const packages = [];
@@ -105,6 +127,11 @@ function scanNodeImports(dir, out = new Set()) {
 
 function collectPackageNames(root, category) {
   if (!fs.existsSync(root)) return;
+  const rootManifestPath = path.join(root, 'package.json');
+  if (fs.existsSync(rootManifestPath)) {
+    const manifest = readJson(rootManifestPath);
+    if (manifest?.name) discoveredNames.set(manifest.name, { category, dir: root });
+  }
   const walk = dir => {
     let entries;
     try {
@@ -145,8 +172,7 @@ function collectPackages(dir, domain) {
   const rootManifestPath = path.join(dir, 'package.json');
   if (fs.existsSync(rootManifestPath)) {
     const manifest = readJson(rootManifestPath);
-    if (manifest)
-      packages.push({ dir, domain, manifest, manifestPath: rootManifestPath });
+    if (manifest) packages.push({ dir, domain, manifest, manifestPath: rootManifestPath });
   }
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
     if (entry.name.startsWith('.') || entry.name === 'node_modules') continue;
@@ -160,11 +186,20 @@ function collectPackages(dir, domain) {
 
 for (const domain of EXPECTED_DOMAINS) {
   const domainDir = path.join(PACKAGES, domain);
-  if (!fs.existsSync(domainDir)) reportError(`Missing domain directory: packages/${domain}`);
-  else if (!fs.statSync(domainDir).isDirectory())
+  if (!fs.existsSync(domainDir)) {
+    // Future domains are not yet implemented - warn instead of error
+    if (FUTURE_DOMAINS.includes(domain)) {
+      reportWarning(
+        `Future domain not yet implemented: packages/${domain} (see architecture/FUTURE_DOMAINS.md)`,
+      );
+    } else {
+      reportError(`Missing domain directory: packages/${domain}`);
+    }
+  } else if (!fs.statSync(domainDir).isDirectory()) {
     reportError(`Expected directory but found file: packages/${domain}`);
-  else if (!fs.existsSync(path.join(domainDir, 'README.md')))
+  } else if (!fs.existsSync(path.join(domainDir, 'README.md'))) {
     reportWarning(`Missing README.md in packages/${domain}`);
+  }
   collectPackages(domainDir, domain);
 }
 
@@ -200,14 +235,14 @@ for (const pkg of packages) {
   else names.set(pkg.manifest.name, pkg.manifestPath);
 
   if (!pkg.manifest.exports)
-    reportWarning(`Package has no exports map: ${path.relative(ROOT, pkg.dir)}`);
+    reportError(`Package has no exports map: ${path.relative(ROOT, pkg.dir)}`);
   if (!pkg.manifest.source)
     reportWarning(`Package has no source entry: ${path.relative(ROOT, pkg.dir)}`);
 
   if (!pkg.manifest.stability)
-    reportWarning(`Package missing stability label: ${path.relative(ROOT, pkg.dir)}`);
+    reportError(`Package missing stability label: ${path.relative(ROOT, pkg.dir)}`);
   if (!pkg.manifest.owners)
-    reportWarning(`Package missing owners metadata: ${path.relative(ROOT, pkg.dir)}`);
+    reportError(`Package missing owners metadata: ${path.relative(ROOT, pkg.dir)}`);
 
   const relDir = path.relative(ROOT, pkg.dir).split(path.sep).join('/');
   const inWorkspace = WORKSPACE_REGEXES.some(({ regex }) => regex.test(relDir));
@@ -243,15 +278,22 @@ for (const pkg of packages) {
     const main = pkg.manifest.exports['.'];
     if (main && typeof main === 'object') {
       const keys = Object.keys(main);
-      for (const required of ['types', 'import', 'require'])
+      for (const required of ['types', 'import', 'default'])
         if (!keys.includes(required))
-          reportWarning(
-            `Exports \".\" missing condition \"${required}\": ${path.relative(ROOT, pkg.dir)}`,
+          reportError(
+            `Exports "." missing condition "${required}": ${path.relative(ROOT, pkg.dir)}`,
           );
-      if (!keys.includes('default'))
-        reportWarning(
-          `Exports \".\" missing \"default\" condition: ${path.relative(ROOT, pkg.dir)}`,
-        );
+      // `require` is required by ADR-006 unless the package is ESM-only by
+      // design (no correct CJS target exists). Adding a CJS build to any of
+      // these is a maintainer decision; until then the warning stands.
+      if (!keys.includes('require')) {
+        if (ESM_ONLY_PACKAGES.has(pkg.manifest.name))
+          reportWarning(
+            `Exports "." missing "require" condition (ESM-only by design): ${path.relative(ROOT, pkg.dir)}`,
+          );
+        else
+          reportError(`Exports "." missing condition "require": ${path.relative(ROOT, pkg.dir)}`);
+      }
     }
   }
 }
@@ -260,9 +302,77 @@ const configs = ['pnpm-workspace.yaml', 'turbo.json', 'tsconfig.json', 'CODEOWNE
 for (const config of configs)
   if (!fs.existsSync(path.join(ROOT, config))) reportError(`Missing root config: ${config}`);
 
-// Docs are mirrored: root content/ (shipped by package prepack scripts) and
-// apps/docs/content/ (consumed by the docs site) must stay byte-identical.
-// Root content/ is canonical; mirror it after editing.
+// Docs are mirrored: root content/ is canonical (shipped by package prepack
+// scripts) and apps/docs/content/ is the derived Geistdocs site tree
+// (commit ebc7561). The site tree applies a mechanical migration:
+// numeric `NN-` prefixes stripped from every path segment, the leading H1
+// title dropped (title renders from frontmatter), code-fence metadata
+// rewritten (`filename=` -> `title=`, `highlight=".."` -> `{..}`,
+// `env` -> `dotenv`), plus site-only nav files (`**/meta.json`) and the
+// site-only `docs/elements/` section. Workflow: edit content/, then mirror
+// + transform into apps/docs/content. This check enforces (1) coverage: every
+// canonical page has a site counterpart, and (2) freshness: counterparts
+// match after normalizing the mechanical transform, so genuine editorial
+// drift in either tree surfaces as an error.
+function stripNumericPrefix(rel) {
+  return rel
+    .split('/')
+    .map(segment => segment.replace(/^[0-9]+-/, ''))
+    .join('/');
+}
+
+// Canonicalize the Geistdocs fence-syntax migration back to the content/
+// form so only genuine content drift is compared.
+function normalizeDocsContent(text) {
+  const lines = text.split('\n');
+  const out = [];
+  let inFrontmatter = false;
+  let frontmatterClosed = false;
+  let h1Dropped = false;
+  for (const line of lines) {
+    if (!frontmatterClosed && line.trim() === '---') {
+      if (!inFrontmatter) inFrontmatter = true;
+      else frontmatterClosed = true;
+      out.push(line);
+      continue;
+    }
+    if (frontmatterClosed && !h1Dropped) {
+      if (line.trim() === '') {
+        out.push(line);
+        continue;
+      }
+      h1Dropped = true;
+      if (/^#\s/.test(line)) continue; // site title comes from frontmatter
+    }
+    const fence = line.match(/^(\s*)```(\w+)(.*)$/);
+    if (fence) {
+      let [, indent, lang, meta] = fence;
+      if (lang === 'dotenv') lang = 'env';
+      meta = meta
+        .replace(/\btitle=/g, 'filename=')
+        .replace(/\bfile=/g, 'filename=')
+        .replace(/=\{"([^}"]*)"\}/g, '="$1"')
+        .replace(/=\{([^}]*)\}/g, '="$1"')
+        .replace(/\{([^}]*)\}/g, 'highlight="$1"')
+        .replace(/'/g, '"');
+      out.push(`${indent}\`\`\`${lang}${meta}`);
+      continue;
+    }
+    // Site anchor spans (<span id=".." />) have no canonical counterpart.
+    if (/^\s*<span id="[^"]*"\s*\/>\s*$/.test(line)) continue;
+    out.push(line);
+  }
+  // Blank-run differences (1 vs 2+ blank lines, often residue from dropped
+  // H1/span lines) are insignificant in MDX rendering; collapse them so only
+  // real content drift is compared.
+  return out.join('\n').replace(/\n{3,}/g, '\n\n');
+}
+
+// Site-only files with no canonical counterpart (explicit allowlist).
+function isSiteOnlyFile(rel) {
+  return rel.endsWith('/meta.json') || rel === 'meta.json' || rel.startsWith('docs/elements/');
+}
+
 function collectFiles(dir, base = dir, out = new Map()) {
   let entries;
   try {
@@ -276,10 +386,7 @@ function collectFiles(dir, base = dir, out = new Map()) {
       if (entry.name === 'node_modules' || entry.name.startsWith('.')) continue;
       collectFiles(full, base, out);
     } else {
-      out.set(
-        path.relative(base, full).split(path.sep).join('/'),
-        fs.readFileSync(full),
-      );
+      out.set(path.relative(base, full).split(path.sep).join('/'), fs.readFileSync(full));
     }
   }
   return out;
@@ -287,14 +394,33 @@ function collectFiles(dir, base = dir, out = new Map()) {
 
 const contentFiles = collectFiles(path.join(ROOT, 'content'));
 const siteContentFiles = collectFiles(path.join(ROOT, 'apps/docs/content'));
-for (const [rel, buf] of contentFiles) {
-  if (!siteContentFiles.has(rel))
-    reportError(`Docs mirror missing in apps/docs/content: ${rel}`);
-  else if (!buf.equals(siteContentFiles.get(rel)))
-    reportError(`Docs mirror diverged in apps/docs/content: ${rel}`);
+// Map canonical path -> site path via numeric-prefix stripping.
+const siteByStripped = new Map();
+for (const rel of siteContentFiles.keys()) siteByStripped.set(rel, rel);
+const contentToSite = new Map();
+for (const rel of contentFiles.keys()) contentToSite.set(rel, stripNumericPrefix(rel));
+for (const [rel, siteRel] of contentToSite) {
+  if (!siteContentFiles.has(siteRel)) {
+    if (path.basename(rel) === 'index.mdx')
+      reportWarning(`Docs index page has no site counterpart (nav uses meta.json): ${rel}`);
+    else reportError(`Docs page missing in apps/docs/content: ${rel} (expected ${siteRel})`);
+  } else if (
+    normalizeDocsContent(contentFiles.get(rel).toString('utf8')) !==
+    normalizeDocsContent(siteContentFiles.get(siteRel).toString('utf8'))
+  ) {
+    reportError(`Docs mirror content drift (beyond site transform): ${rel} <-> ${siteRel}`);
+  }
 }
 for (const rel of siteContentFiles.keys()) {
-  if (!contentFiles.has(rel))
+  if (isSiteOnlyFile(rel)) continue;
+  let covered = false;
+  for (const siteRel of contentToSite.values()) {
+    if (siteRel === rel) {
+      covered = true;
+      break;
+    }
+  }
+  if (!covered)
     reportError(`File only in apps/docs/content, missing in canonical content/: ${rel}`);
 }
 
@@ -319,8 +445,7 @@ if (fs.existsSync(examplesRoot)) {
       continue;
     const catDir = path.join(examplesRoot, entry.name);
     for (const sub of fs.readdirSync(catDir, { withFileTypes: true })) {
-      if (!sub.isDirectory() || sub.name.startsWith('.') || sub.name === 'node_modules')
-        continue;
+      if (!sub.isDirectory() || sub.name.startsWith('.') || sub.name === 'node_modules') continue;
       const rel = `${entry.name}/${sub.name}`;
       const metaPath = path.join(catDir, sub.name, 'example.json');
       if (!fs.existsSync(metaPath)) {
@@ -339,12 +464,12 @@ if (fs.existsSync(examplesRoot)) {
       if (meta.name !== sub.name)
         reportError(`example.json name "${meta.name}" mismatches dir: examples/${rel}`);
       if (meta.category !== entry.name)
-        reportError(
-          `example.json category "${meta.category}" mismatches dir: examples/${rel}`,
-        );
+        reportError(`example.json category "${meta.category}" mismatches dir: examples/${rel}`);
       const order = parseInt(entry.name.split('-')[0], 10);
       if (!Number.isNaN(order) && meta.categoryOrder !== order)
-        reportError(`example.json categoryOrder ${meta.categoryOrder} mismatches dir: examples/${rel}`);
+        reportError(
+          `example.json categoryOrder ${meta.categoryOrder} mismatches dir: examples/${rel}`,
+        );
     }
   }
 }
@@ -364,8 +489,7 @@ else {
       }
     }
     for (const rel of exampleMetas.keys())
-      if (!indexed.has(rel))
-        reportError(`Example not indexed in registry.json: examples/${rel}`);
+      if (!indexed.has(rel)) reportError(`Example not indexed in registry.json: examples/${rel}`);
   }
 }
 

@@ -1,6 +1,6 @@
 import { weatherTool } from '@/tool/weather-tool';
 import { anthropic } from '@ai-toolkit/anthropic';
-import { InferAgentUIMessage, ToolLoopAgent } from 'ai-toolkit';
+import { InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 
 export const anthropicToolsAgent = new ToolLoopAgent({
   model: anthropic('claude-haiku-4-5'),
@@ -9,4 +9,6 @@ export const anthropicToolsAgent = new ToolLoopAgent({
   },
 });
 
-export type AnthropicToolsAgentMessage = InferAgentUIMessage<typeof anthropicToolsAgent>;
+export type AnthropicToolsAgentMessage = InferAgentUIMessage<
+  typeof anthropicToolsAgent
+>;

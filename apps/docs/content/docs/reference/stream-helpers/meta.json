@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "ai-stream",
+    "streaming-text-response",
+    "stream-to-response",
+    "openai-stream",
+    "anthropic-stream",
+    "aws-bedrock-stream",
+    "aws-bedrock-anthropic-stream",
+    "aws-bedrock-messages-stream",
+    "aws-bedrock-cohere-stream",
+    "aws-bedrock-llama-2-stream",
+    "cohere-stream",
+    "google-generative-ai-stream",
+    "hugging-face-stream",
+    "langchain-adapter",
+    "llamaindex-adapter",
+    "mistral-stream",
+    "replicate-stream",
+    "inkeep-stream"
+  ],
+  "defaultOpen": false
+}

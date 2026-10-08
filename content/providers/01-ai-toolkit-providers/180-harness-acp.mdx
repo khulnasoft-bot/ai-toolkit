@@ -1,0 +1,139 @@
+---
+title: ACP Harness
+description: Connect HarnessAgent to ACP v1 runtimes with the ACP harness adapter.
+---
+
+# ACP Harness Adapter
+
+The ACP harness adapter (`@ai-toolkit/harness-acp`) connects `HarnessAgent` to any harness compatible with [ACP version 1](https://agentclientprotocol.com/). The generic adapter owns the bridge, ACP client, host-tool relay, event translation, approvals, and lifecycle behavior; the inline profile describes how to install and configure one ACP runtime.
+
+> Experimental: expect breaking changes between releases as this early API gets refined.
+
+<Note>
+  This is not the community ACP `LanguageModel` bridge
+  (`@mcpc-tech/acp-ai-provider`, see [ACP provider](./community-providers/acp)).
+  The harness adapter exposes ACP runtimes to `HarnessAgent`, not to
+  `generateText` / `streamText`.
+</Note>
+
+## Setup
+
+The ACP harness adapter is available in the `@ai-toolkit/harness-acp` module. You can install it with
+
+<InstallPackages packages="@ai-toolkit/harness-acp" />
+
+## Basic usage
+
+Define an ACP harness profile, such as one of the [built-in profiles](#built-in-profiles) below, and pass it to `HarnessAgent`:
+
+```ts
+import { codexACPHarness } from '@ai-toolkit/harness-acp';
+
+// const agent = new HarnessAgent({ harness: codexACPHarness, sandbox });
+```
+
+## Custom profile
+
+Use `createACP()` to describe how to install and configure one ACP runtime:
+
+```ts
+import { createACP } from '@ai-toolkit/harness-acp';
+
+export const myHarness = createACP({
+  harnessId: 'acp-my-agent',
+  source: {
+    type: 'npm-simple',
+    packageName: '@agentclientprotocol/codex-acp',
+    packageVersion: '1.1.4',
+  },
+  executable: 'codex-acp',
+  modelMapping: { type: 'session-config-option', path: 'model' },
+});
+```
+
+### Options
+
+- **harnessId** _string_ (required)
+
+  Stable kebab-case identity for this profile (e.g. `'acp-codex'`).
+
+- **version** _'v1'_ (optional, default `'v1'`)
+
+  ACP protocol version. Only `'v1'` is currently supported.
+
+- **source** (required)
+
+  How to acquire the ACP implementation:
+
+  - `{ type: 'npm-simple', packageName, packageVersion? }` — install a single package by name. Omit `packageVersion` to install the `latest` dist-tag (the omitted version also stays out of the harness identity, so a new upstream release does not invalidate cached lifecycle state).
+  - `{ type: 'npm-locked', packageJson, pnpmLockYaml, pnpmWorkspaceYaml? }` — freeze the complete installation with `pnpm install --frozen-lockfile`. Do not include credentials in these strings.
+  - `{ type: 'install-command', command }` — run a trusted Bash command in the deterministic bootstrap directory. The command must install `executable` into `$HOME/.local/bin`. Treat it as executable configuration and do not embed credentials.
+
+- **executable** _string_ (required)
+
+  The bare command name to launch from the acquired implementation.
+
+- **args** _string[]_ (optional)
+
+  Arguments passed to the executable.
+
+- **modelMapping** (required)
+
+  Static mapping from the `HarnessAgent` model to the ACP operation used by the implementation: `{ type: 'session-config-option', path }` (configuration option id) or `{ type: 'session-model', path }` (`session/set_model` request property).
+
+- **forwardEnv** _string[]_ (optional)
+
+  Non-credential host environment variable names forwarded into the sandbox.
+
+- **credentialEnv** _string[]_ / **credentialBrokering** (optional)
+
+  Host credential environment variable names plus a function receiving the effective host `env` and the sandbox `sandboxEnv`, returning additive outbound request transformations. Use the credential from `sandboxEnv` in exact request header matches and the real credential from `env` in transformed headers, so real values are injected only after requests leave the sandbox.
+
+- **auth** _'auto' | 'direct' | 'ai-gateway' | Record_ (optional, default `'auto'`)
+
+  Downstream provider authentication mode. `'auto'` uses the AI Gateway when gateway credentials and a `providerAuthentication` configuration are available, otherwise direct authentication. A record replaces the host environment for authentication discovery.
+
+- **providerAuthentication.gateway.env** (optional)
+
+  Environment variables the underlying ACP implementation uses for its provider endpoint and credentials. Values support `$source` placeholders resolved only after gateway selection: `gateway-api-key`, `gateway-base-url` (with optional `ensureSuffix`, e.g. `/v1`), `gateway-authorization`, `client-app`, `client-app-name`, `client-app-version`.
+
+- **instructionMapping** (optional)
+
+  Mapping from `HarnessAgent` instructions to the native prompt: `{ type: 'session-meta', path }`, `{ type: 'launch-env-json', variable, path }`, or `{ type: 'filesystem', path }` (written under the implementation's effective `$HOME`). When omitted, instructions are prepended to the first user prompt.
+
+- **permissionModeMapping** (optional)
+
+  Mappings from all three harness permission modes (`allow-reads`, `allow-edits`, `allow-all`) to ACP session modes or config options. Set an entry to `null` when unsupported — selecting it throws `HarnessACPCapabilityUnsupportedError`. When omitted, the adapter applies `permissionMode` to ACP permission requests by tool kind.
+
+- **outputSchemaMapping** (optional)
+
+  ACP v1 defines no structured output. Profiles for implementations with a private prompt-metadata extension can opt in with `{ type: 'session-prompt-meta', path }`; without it, structured output throws instead of assuming support.
+
+- **skillsDirectory** _string_ (optional, default `'.agents/skills'`), **mcpServers**, **hostToolMcpTransport** _'stdio' | 'http'_ (default `'stdio'`), **env**, **builtinTools**, **authentication**, **clientCapabilities**, **askUserQuestions**, **sessionMeta**, **port**, **startupTimeoutMs** (default `120_000`), **mintBridgeToken**, **clientApp** (defaults to the `ai-toolkit/harness-acp/<version>` identity).
+
+## Built-in profiles
+
+```ts
+import {
+  claudeCodeACPHarness,
+  codexACPHarness,
+  cursorACPHarness,
+  grokBuildACPHarness,
+} from '@ai-toolkit/harness-acp';
+```
+
+- **Claude Code** (`acp-claude-code`, `@agentclientprotocol/claude-agent-acp`) — direct auth via `ANTHROPIC_API_KEY` / `ANTHROPIC_AUTH_TOKEN`; gateway uses the Anthropic-compatible root URL without `/v1`.
+- **Codex** (`acp-codex`, `@agentclientprotocol/codex-acp`) — supports only `permissionMode: 'allow-all'`; OpenAI-compatible endpoint must end in `/v1`.
+- **Cursor** (`cursor-acp`, Bash installer) — exposes ACP via `agent --disable-auto-update acp`.
+- **Grok Build** (`acp-grok-build`, `@xai-official/grok`, `grok agent stdio`) — no `permissionModeMapping`; permission requests fall back to tool-kind behavior.
+
+## Sandbox
+
+Every ACP harness requires a network sandbox with at least one exposed port. Bridge packages, ACP installations, and replay state live in adapter-owned directories outside the session project; skills are written below the implementation's `$HOME`. If no exposed port is available, session startup throws `HarnessACPCapabilityUnsupportedError`.
+
+## Limitations
+
+- ACP v1 exposes no model-step boundaries or per-step usage; terminal prompt usage supplies the turn total.
+- No portable manual compaction or mid-turn steering API.
+- No portable built-in tool filtering API (`activeTools` / `inactiveTools` filter host-executed tools only).
+- A changed host-tool catalog requires the ACP implementation to refresh its MCP tool list.

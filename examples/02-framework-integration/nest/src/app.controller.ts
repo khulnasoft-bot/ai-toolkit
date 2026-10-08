@@ -4,7 +4,7 @@ import {
   createUIMessageStream,
   streamText,
   pipeUIMessageStreamToResponse,
-} from 'ai-toolkit';
+} from '@ai-toolkit/ai';
 import { Response } from 'express';
 
 @Controller()

@@ -1,5 +1,5 @@
 import { deepseek } from '@ai-toolkit/deepseek';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';
 

@@ -2,7 +2,7 @@
 
 import ChatInput from '@/components/chat-input';
 import { UIMessage, useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function Chat({
   id,
@@ -28,7 +28,9 @@ export default function Chat({
       {messages.map(m => (
         <div key={m.id} className="whitespace-pre-wrap">
           {m.role === 'user' ? 'User: ' : 'AI: '}
-          {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
+          {m.parts
+            .map(part => (part.type === 'text' ? part.text : ''))
+            .join('')}
         </div>
       ))}
 

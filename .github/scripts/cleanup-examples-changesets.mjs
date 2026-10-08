@@ -13,29 +13,37 @@ import { join } from 'path';
 function cleanup(app, url) {
   const appPath = join(fileURLToPath(url), app);
 
+  if (!statSync(appPath).isDirectory()) return;
+
   console.log('Cleaning up', appPath);
 
-  if (statSync(appPath).isDirectory()) {
-    const packageJsonPath = join(appPath, 'package.json');
-    const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
-    packageJson.version = '0.0.0';
-    writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
+  const packageJsonPath = join(appPath, 'package.json');
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf8'));
+  packageJson.version = '0.0.0';
+  writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2) + '\n');
 
-    try {
-      const changelogUrl = new URL(`examples/${app}/CHANGELOG.md`, url);
-      console.log('Deleting', changelogUrl);
-      unlinkSync(changelogUrl);
-    } catch (err) {
-      if (err.code !== 'ENOENT') throw err;
-    }
+  try {
+    const changelogPath = join(appPath, 'CHANGELOG.md');
+    console.log('Deleting', changelogPath);
+    unlinkSync(changelogPath);
+  } catch (err) {
+    if (err.code !== 'ENOENT') throw err;
   }
 }
 
-// examples
-const examplesUrl = new URL('../../examples', import.meta.url);
-for (const app of readdirSync(fileURLToPath(examplesUrl))) {
-  cleanup(app, examplesUrl);
+// examples are categorized: examples/<category>/<name>/
+const examplesUrl = new URL('../../examples/', import.meta.url);
+const examplesDir = fileURLToPath(examplesUrl);
+for (const category of readdirSync(examplesDir)) {
+  if (category.startsWith('.')) continue;
+  const categoryDir = join(examplesDir, category);
+  if (!statSync(categoryDir).isDirectory()) continue;
+  const categoryUrl = new URL(`${category}/`, examplesUrl);
+  for (const app of readdirSync(categoryDir)) {
+    if (app.startsWith('.')) continue;
+    cleanup(app, categoryUrl);
+  }
 }
 
 // next test server
-cleanup('.', new URL('../../packages/rsc/tests/e2e/next-server', import.meta.url));
+cleanup('.', new URL('../../packages/adapters/rsc/tests/e2e/next-server', import.meta.url));

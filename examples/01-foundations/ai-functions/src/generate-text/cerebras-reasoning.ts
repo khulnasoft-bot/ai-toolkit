@@ -1,5 +1,5 @@
 import { cerebras as provider } from '@ai-toolkit/cerebras';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

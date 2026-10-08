@@ -1,5 +1,17 @@
 # Add new provider
 
+## Scaffold with create-ai-provider (recommended)
+
+Generate a repo-convention-complete package instead of hand-writing the boilerplate:
+
+```bash
+node tools/create-ai-provider/src/index.js <provider-name> --archetype openai-compatible
+```
+
+Archetypes: `openai-compatible` (default), `harness-acp` (agent harness profile), `full-custom` (`LanguageModelV3` skeleton). See `tools/create-ai-provider/README.md` for all options (`--models`, `--executable`, `--with-docs`, `--with-example`, `-y`, `--no-install`).
+
+The tool wires the root `tsconfig.json` reference and install for you. Still manual afterwards: steps 3–5 below (changeset, example, docs prose), then `node tools/scripts/validate-structure.mjs`.
+
 ## `@ai-toolkit/<provider>` vs 3rd party package
 
 Every provider is welcome to create a 3rd party package. We are happy to link to it from our documentation.

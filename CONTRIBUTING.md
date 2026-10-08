@@ -135,7 +135,7 @@ Please run `pnpm update-references` in workspace root to update the `references`
 
 ## Learn More
 
-- **Architecture**: `ARCHITECTURE_REDESIGN.md`
+- **Architecture**: `architecture/PROJECT-STRUCTURE.md` + `architecture/domain-mapping.md`
 - **Quick Reference**: `ARCHITECTURE_QUICK_REFERENCE.md`
 - **Onboarding**: `CONTRIBUTOR_ONBOARDING.md`
 - **Decisions**: `ADR/` directory

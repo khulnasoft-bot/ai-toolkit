@@ -1,5 +1,5 @@
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import 'dotenv/config';
 import { run } from '../lib/run';
 
@@ -17,7 +17,8 @@ run(async () => {
       },
       {
         role: 'user',
-        content: 'What is the difference between interface and type in TypeScript?',
+        content:
+          'What is the difference between interface and type in TypeScript?',
       },
     ],
     maxOutputTokens: 500,

@@ -4,14 +4,15 @@ import { OpenAIImageGenerationMessage } from '@/agent/openai-image-generation-ag
 import ChatInput from '@/components/chat-input';
 import ImageGenerationView from '@/components/tool/openai-image-generation-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestOpenAIWebSearch() {
-  const { status, sendMessage, messages } = useChat<OpenAIImageGenerationMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-image-generation',
-    }),
-  });
+  const { status, sendMessage, messages } =
+    useChat<OpenAIImageGenerationMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-image-generation',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">

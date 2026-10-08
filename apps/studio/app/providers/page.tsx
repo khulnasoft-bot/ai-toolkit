@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { KpiCard } from '@/components/kpi-card';
+import { KpiCard } from '@ai-toolkit/design/kpi-card';
 import { PageHeader } from '@/components/page-header';
 import { ProviderDirectory } from '@/components/provider-directory';
 import { getGatewayModels, getModelProviders } from '@/lib/models';

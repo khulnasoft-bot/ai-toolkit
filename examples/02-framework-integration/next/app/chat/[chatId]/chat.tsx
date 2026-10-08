@@ -3,7 +3,7 @@
 import { invalidateRouterCache } from '@/app/actions';
 import type { MyUIMessage } from '@/util/chat-schema';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 import { useEffect, useRef } from 'react';
 import ChatInput from './chat-input';
 import Message from './message';

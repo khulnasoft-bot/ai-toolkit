@@ -1,5 +1,5 @@
 import { vertex } from '@ai-toolkit/google-vertex';
-import { ModelMessage, streamText } from 'ai-toolkit';
+import { ModelMessage, streamText } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';

@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamObject, LanguageModelUsage } from 'ai-toolkit';
+import { streamObject, LanguageModelUsage } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

@@ -3,7 +3,7 @@ import {
   AnthropicMessageMetadata,
   AnthropicProviderOptions,
 } from '@ai-toolkit/anthropic';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { print } from '../lib/print';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';
@@ -29,7 +29,8 @@ run(async () => {
   await printFullStream({ result });
 
   const anthropicContainer = (
-    (await result.providerMetadata)?.anthropic as unknown as AnthropicMessageMetadata
+    (await result.providerMetadata)
+      ?.anthropic as unknown as AnthropicMessageMetadata
   )?.container;
 
   print('container', anthropicContainer);

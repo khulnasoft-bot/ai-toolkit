@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { Shield, Check, X } from 'lucide-react';
-import { UIMessage } from 'ai-toolkit';
+import { UIMessage } from '@ai-toolkit/ai';
 
 /**
  * Tool Approval Card Component
@@ -37,7 +37,9 @@ export function ToolApprovalCard({
       <div className="space-y-2">
         <div className="text-sm text-[var(--foreground-secondary)]">
           Tool:{' '}
-          <code className="bg-[var(--background-tertiary)] px-2 py-0.5 rounded">{toolName}</code>
+          <code className="bg-[var(--background-tertiary)] px-2 py-0.5 rounded">
+            {toolName}
+          </code>
         </div>
 
         <pre className="bg-[var(--background-tertiary)] border border-[var(--border)] rounded-lg p-3 text-sm overflow-x-auto">

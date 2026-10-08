@@ -5,7 +5,7 @@ import type { AI } from './ai';
 import { useActions } from '@ai-toolkit/rsc';
 
 import { useAIState, useUIState } from '@ai-toolkit/rsc';
-import { generateId } from 'ai-toolkit';
+import { generateId } from '@ai-toolkit/ai';
 import { Message } from './message';
 
 export default function Home() {
@@ -41,7 +41,10 @@ export default function Home() {
             }
           }}
         />
-        <button className="p-2 bg-zinc-900 text-zinc-100 rounded-md" onClick={handleSubmission}>
+        <button
+          className="p-2 bg-zinc-900 text-zinc-100 rounded-md"
+          onClick={handleSubmission}
+        >
           Send
         </button>
       </div>

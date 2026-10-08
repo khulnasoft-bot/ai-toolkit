@@ -1,5 +1,5 @@
 import { anthropic, AnthropicProviderOptions } from '@ai-toolkit/anthropic';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { run } from '../lib/run';
 
@@ -38,5 +38,8 @@ run(async () => {
   console.log();
 
   console.log('Cache read tokens:', result.usage.cachedInputTokens);
-  console.log('Cache write tokens:', result.providerMetadata?.anthropic?.cacheCreationInputTokens);
+  console.log(
+    'Cache write tokens:',
+    result.providerMetadata?.anthropic?.cacheCreationInputTokens,
+  );
 });

@@ -37,5 +37,5 @@ Requires Tailwind v4 with the shadcn/new-york CSS variables in your app.
 
 ## Source
 
-Components originate from https://github.com/vercel/ai-elements
+Components originate from https://github.com/khulnasoft/ai-toolkit-elements
 (`packages/shadcn-ui/components/ui`), Apache-2.0.

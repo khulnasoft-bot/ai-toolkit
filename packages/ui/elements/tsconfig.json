@@ -12,6 +12,9 @@
   "exclude": ["dist", "build", "node_modules", "tsup.config.ts"],
   "references": [
     {
+      "path": "../../ai/core"
+    },
+    {
       "path": "../shadcn-ui"
     }
   ]

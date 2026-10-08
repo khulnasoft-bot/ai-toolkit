@@ -1,5 +1,5 @@
 import { createBaseten } from '@ai-toolkit/baseten';
-import { embed } from 'ai-toolkit';
+import { embed } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

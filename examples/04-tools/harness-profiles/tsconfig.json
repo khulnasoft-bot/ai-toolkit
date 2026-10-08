@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "target": "es2022",
+    "lib": ["es2022"],
+    "module": "esnext",
+    "types": ["node"],
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "Bundler",
+    "rootDir": "./src",
+    "outDir": "./build",
+    "skipLibCheck": true,
+    "composite": true
+  },
+  "include": ["src/**/*.ts"],
+  "references": [
+    {
+      "path": "../../../packages/providers/harness"
+    },
+    {
+      "path": "../../../packages/providers/harness-acp"
+    },
+    {
+      "path": "../../../packages/providers/harness-claude-code"
+    },
+    {
+      "path": "../../../packages/providers/harness-cline"
+    },
+    {
+      "path": "../../../packages/providers/harness-codex"
+    },
+    {
+      "path": "../../../packages/providers/harness-cursor"
+    },
+    {
+      "path": "../../../packages/providers/harness-grok-build"
+    },
+    {
+      "path": "../../../packages/providers/harness-opencode"
+    },
+    {
+      "path": "../../../packages/providers/harness-pi"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { anthropic } from '@ai-toolkit/anthropic';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -13,5 +13,8 @@ run(async () => {
   console.log();
   console.log('Token usage:', result.usage);
   console.log('Finish reason:', result.finishReason);
-  console.log('Stop sequence:', result.providerMetadata?.anthropic?.stopSequence);
+  console.log(
+    'Stop sequence:',
+    result.providerMetadata?.anthropic?.stopSequence,
+  );
 });

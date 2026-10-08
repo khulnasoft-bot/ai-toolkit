@@ -1,7 +1,7 @@
 import { openai } from '@ai-toolkit/openai';
 import { Ratelimit } from '@upstash/ratelimit';
 import { kv } from '@vercel/kv';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -16,7 +16,9 @@ export async function POST(req: Request) {
       limiter: Ratelimit.slidingWindow(5, '10s'),
     });
 
-    const { success, limit, reset, remaining } = await ratelimit.limit(`ratelimit_${ip}`);
+    const { success, limit, reset, remaining } = await ratelimit.limit(
+      `ratelimit_${ip}`,
+    );
 
     if (!success) {
       return new Response('You have reached your request limit for the day.', {

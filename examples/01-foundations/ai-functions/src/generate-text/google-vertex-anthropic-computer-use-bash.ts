@@ -1,6 +1,6 @@
 import { run } from '../lib/run';
 import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
-import { generateText, stepCountIs } from 'ai-toolkit';
+import { generateText, stepCountIs } from '@ai-toolkit/ai';
 
 run(async () => {
   const result = await generateText({

@@ -1,5 +1,5 @@
 import { weatherAgent } from '@/agent/weather-agent';
-import { createAgentUIStreamResponse } from 'ai-toolkit';
+import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
 
 export async function POST(request: Request) {
   const { messages } = await request.json();

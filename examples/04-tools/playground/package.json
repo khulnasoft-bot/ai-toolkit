@@ -2,6 +2,7 @@
   "name": "@example/playground",
   "version": "0.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -46,7 +47,7 @@
     "@radix-ui/react-toast": "^1.2.3",
     "@radix-ui/react-tooltip": "^1.1.4",
     "@uiw/react-md-editor": "^4.0.5",
-    "ai-toolkit": "workspace:*",
+    "@ai-toolkit/ai": "workspace:*",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.545.0",

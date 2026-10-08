@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -24,7 +24,12 @@ run(async () => {
   for await (const chunk of result.fullStream) {
     if (chunk.type === 'raw') {
       rawChunkCount++;
-      console.log('Raw chunk', rawChunkCount, ':', JSON.stringify(chunk.rawValue));
+      console.log(
+        'Raw chunk',
+        rawChunkCount,
+        ':',
+        JSON.stringify(chunk.rawValue),
+      );
     } else {
       console.log('Processed chunk:', chunk.type, JSON.stringify(chunk));
     }

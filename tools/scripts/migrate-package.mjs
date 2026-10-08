@@ -36,8 +36,6 @@ const DOMAIN_MAP = {
   // Validation
   provider: 'validation',
   valibot: 'validation',
-  langchain: 'validation',
-  llamaindex: 'validation',
 
   // Providers
   'amazon-bedrock': 'providers',
@@ -78,6 +76,8 @@ const DOMAIN_MAP = {
   angular: 'adapters',
   svelte: 'adapters',
   vue: 'adapters',
+  langchain: 'adapters',
+  llamaindex: 'adapters',
 
   // UI
   elements: 'ui',

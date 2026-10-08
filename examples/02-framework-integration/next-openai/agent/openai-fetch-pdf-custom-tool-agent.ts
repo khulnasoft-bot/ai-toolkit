@@ -1,6 +1,6 @@
 import { fetchPdfTool } from '@/tool/fetch-pdf-tool';
 import { openai } from '@ai-toolkit/openai';
-import { ToolLoopAgent, InferAgentUIMessage } from 'ai-toolkit';
+import { ToolLoopAgent, InferAgentUIMessage } from '@ai-toolkit/ai';
 
 export const openaiFetchPdfCustomToolAgent = new ToolLoopAgent({
   model: openai('gpt-5-mini'),

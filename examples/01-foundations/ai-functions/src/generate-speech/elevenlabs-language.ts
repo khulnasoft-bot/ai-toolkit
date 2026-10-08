@@ -1,5 +1,5 @@
 import { elevenlabs } from '@ai-toolkit/elevenlabs';
-import { experimental_generateSpeech as generateSpeech } from 'ai-toolkit';
+import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
 import { saveAudioFile } from '../lib/save-audio';
 import { run } from '../lib/run';
 

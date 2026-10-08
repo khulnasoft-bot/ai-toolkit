@@ -6,14 +6,15 @@ import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import WeatherView from '@/components/tool/weather-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function ChatDeepSeekTools() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<DeepSeekToolsAgentMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-deepseek-tools',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<DeepSeekToolsAgentMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-deepseek-tools',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">

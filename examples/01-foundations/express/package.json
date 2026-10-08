@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@ai-toolkit/openai": "workspace:*",
-    "ai-toolkit": "workspace:*",
+    "@ai-toolkit/ai": "workspace:*",
     "dotenv": "16.4.5",
     "express": "5.0.1"
   },

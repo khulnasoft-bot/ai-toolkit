@@ -1,4 +1,4 @@
-import { Experimental_GeneratedImage as GeneratedImage } from 'ai-toolkit';
+import { Experimental_GeneratedImage as GeneratedImage } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import imageType from 'image-type';
 import path from 'node:path';
@@ -35,7 +35,10 @@ export async function presentImages(images: GeneratedImage[]) {
 
     // Save the original image to a file.
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    const filePath = path.join(OUTPUT_DIR, `image-${timestamp}-${index}.${extension}`);
+    const filePath = path.join(
+      OUTPUT_DIR,
+      `image-${timestamp}-${index}.${extension}`,
+    );
     await fs.promises.writeFile(filePath, srcBuffer);
     console.log(`Saved image to ${filePath}`);
   }

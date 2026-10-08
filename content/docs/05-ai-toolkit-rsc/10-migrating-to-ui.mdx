@@ -25,7 +25,7 @@ Due to these limitations, AI TOOLKIT RSC is marked as experimental, and we do no
 
 As a result, we strongly recommend migrating to AI TOOLKIT UI, which has undergone extensive development to provide a more stable and production grade experience.
 
-In building [v0](https://v0.dev), we have invested considerable time exploring how to create the best chat experience on the web. AI TOOLKIT UI ships with many of these best practices and commonly used patterns like [language model middleware](/docs/ai-toolkit-core/middleware), [multi-step tool calls](/docs/ai-toolkit-core/tools-and-tool-calling#multi-step-calls), [attachments](/docs/ai-toolkit-ui/chatbot#attachments-experimental), [telemetry](/docs/ai-toolkit-core/telemetry), [provider registry](/docs/ai-toolkit-core/provider-management#provider-registry), and many more. These features have been considerately designed into a neat abstraction that you can use to reliably integrate AI into your applications.
+In building [v0](https://v0.dev), we have invested considerable time exploring how to create the best chat experience on the web. AI TOOLKIT UI ships with many of these best practices and commonly used patterns like [language model middleware](/docs/ai-toolkit-core/middleware), [multi-step tool calls](/docs/ai-toolkit-core/tools-and-tool-calling#multi-step-calls-using-stopwhen), [attachments](/docs/ai-toolkit-ui/chatbot#attachments), [telemetry](/docs/ai-toolkit-core/telemetry), [provider registry](/docs/ai-toolkit-core/provider-management#provider-registry), and many more. These features have been considerately designed into a neat abstraction that you can use to reliably integrate AI into your applications.
 
 ## Streaming Chat Completions
 
@@ -547,7 +547,7 @@ As messages are typically loaded from the database, we can use a server actions 
 import { Chat } from '@/app/components/chat';
 import { getChatById } from '@/utils/queries';
 
-// link to example implementation: https://github.com/vercel/ai-chatbot/blob/00b125378c998d19ef60b73fe576df0fe5a0e9d4/lib/utils.ts#L87-L127
+// link to example implementation: https://github.com/khulnasoft/ai-toolkit-chatbot/blob/00b125378c998d19ef60b73fe576df0fe5a0e9d4/lib/utils.ts#L87-L127
 import { convertToUIMessages } from '@/utils/functions';
 
 export default async function Page({ params }: { params: any }) {

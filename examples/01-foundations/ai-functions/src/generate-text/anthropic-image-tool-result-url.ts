@@ -1,4 +1,4 @@
-import { generateText, stepCountIs, tool } from 'ai-toolkit';
+import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 import { z } from 'zod';
 import { anthropic } from '@ai-toolkit/anthropic';
@@ -38,7 +38,8 @@ run(async () => {
 
   const result = await generateText({
     model: anthropic('claude-sonnet-4-0'),
-    prompt: 'Please read the image using the tool provided and return the summary of that image',
+    prompt:
+      'Please read the image using the tool provided and return the summary of that image',
     tools: {
       readImage,
     },

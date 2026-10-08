@@ -1,7 +1,7 @@
-import { generateText, streamText, tool } from 'ai-toolkit';
+import { generateText, streamText, tool } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
-import { stepCountIs } from 'ai-toolkit';
+import { stepCountIs } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -11,18 +11,23 @@ run(async () => {
   }
 
   console.log('Step 1: Creating conversation via OpenAI API...');
-  const createConvResponse = await fetch('https://api.openai.com/v1/conversations', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      'Content-Type': 'application/json',
+  const createConvResponse = await fetch(
+    'https://api.openai.com/v1/conversations',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({}),
     },
-    body: JSON.stringify({}),
-  });
+  );
 
   if (!createConvResponse.ok) {
     const errorText = await createConvResponse.text();
-    throw new Error(`Failed to create conversation: ${createConvResponse.status} - ${errorText}`);
+    throw new Error(
+      `Failed to create conversation: ${createConvResponse.status} - ${errorText}`,
+    );
   }
 
   const convData = await createConvResponse.json();

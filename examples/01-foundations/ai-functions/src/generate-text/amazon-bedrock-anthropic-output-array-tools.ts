@@ -1,5 +1,5 @@
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
-import { generateText, Output, stepCountIs, tool } from 'ai-toolkit';
+import { generateText, Output, stepCountIs, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -23,7 +23,9 @@ run(async () => {
         execute: async ({ location }) => ({
           location,
           temperature: Math.floor(Math.random() * 30) + 50,
-          condition: ['sunny', 'cloudy', 'rainy'][Math.floor(Math.random() * 3)],
+          condition: ['sunny', 'cloudy', 'rainy'][
+            Math.floor(Math.random() * 3)
+          ],
         }),
       }),
     },

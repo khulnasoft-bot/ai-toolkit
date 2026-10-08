@@ -1,5 +1,5 @@
 import { huggingface } from '@ai-toolkit/huggingface';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import { z } from 'zod/v4';
 import { run } from '../lib/run';
 
@@ -11,7 +11,8 @@ run(async () => {
       age: z.number(),
       email: z.string(),
     }),
-    prompt: 'Generate a simple person profile with name, age, and email. Return only valid JSON.',
+    prompt:
+      'Generate a simple person profile with name, age, and email. Return only valid JSON.',
   });
 
   console.log('Generated object:', result.object);

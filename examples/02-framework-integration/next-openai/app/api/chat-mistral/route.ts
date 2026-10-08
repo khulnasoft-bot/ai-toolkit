@@ -1,5 +1,5 @@
 import { mistral } from '@ai-toolkit/mistral';
-import { convertToModelMessages, streamText, UIMessage } from 'ai-toolkit';
+import { convertToModelMessages, streamText, UIMessage } from '@ai-toolkit/ai';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;

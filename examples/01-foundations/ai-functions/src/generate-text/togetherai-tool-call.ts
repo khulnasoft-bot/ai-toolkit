@@ -1,5 +1,5 @@
 import { togetherai } from '@ai-toolkit/togetherai';
-import { generateText, tool } from 'ai-toolkit';
+import { generateText, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
@@ -14,7 +14,8 @@ run(async () => {
         inputSchema: z.object({ city: z.string() }),
       }),
     },
-    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    prompt:
+      'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   // typed tool calls:

@@ -27,7 +27,7 @@
   "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/ai/core"
     },
     {
       "path": "../../../packages/providers/google-vertex"

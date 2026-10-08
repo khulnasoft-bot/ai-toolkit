@@ -1,5 +1,5 @@
 import { azure } from '@ai-toolkit/azure';
-import { embedMany } from 'ai-toolkit';
+import { embedMany } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

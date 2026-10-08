@@ -1,5 +1,5 @@
 import { google } from '@ai-toolkit/google';
-import { generateText, stepCountIs, tool } from 'ai-toolkit';
+import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -46,7 +46,9 @@ const imageAnalysisTool = tool({
 });
 
 run(async () => {
-  console.log('🔍 Testing Google model image analysis with tool-returned images...\n');
+  console.log(
+    '🔍 Testing Google model image analysis with tool-returned images...\n',
+  );
 
   const result = await generateText({
     model: google('gemini-2.5-flash'),

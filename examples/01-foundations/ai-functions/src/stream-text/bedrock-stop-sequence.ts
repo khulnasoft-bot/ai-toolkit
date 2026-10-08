@@ -1,5 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -16,5 +16,8 @@ run(async () => {
   console.log();
   console.log('Token usage:', await result.usage);
   console.log('Finish reason:', await result.finishReason);
-  console.log('Stop sequence:', (await result.providerMetadata)?.bedrock?.stopSequence);
+  console.log(
+    'Stop sequence:',
+    (await result.providerMetadata)?.bedrock?.stopSequence,
+  );
 });

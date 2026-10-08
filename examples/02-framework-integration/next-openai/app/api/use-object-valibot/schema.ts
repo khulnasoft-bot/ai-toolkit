@@ -1,4 +1,4 @@
-import { DeepPartial } from 'ai-toolkit';
+import { DeepPartial } from '@ai-toolkit/ai';
 import * as v from 'valibot';
 import { valibotSchema } from '@ai-toolkit/valibot';
 

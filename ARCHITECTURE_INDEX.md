@@ -21,7 +21,7 @@ Complete guide to navigating the enterprise architecture redesign documents.
 **Approve or request changes:**
 
 1. **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** — Quick overview (5 min)
-2. **[ARCHITECTURE_REDESIGN.md](ARCHITECTURE_REDESIGN.md#executive-summary)** — Executive summary (10 min)
+2. **[AGENTS.md](AGENTS.md)** — Current structure + governance (10 min)
 3. **[MIGRATION_PLAN.md](MIGRATION_PLAN.md#phase-overview)** — Timeline & phases (10 min)
 
 **Questions?** See IMPLEMENTATION_SUMMARY.md FAQ section
@@ -30,9 +30,9 @@ Complete guide to navigating the enterprise architecture redesign documents.
 
 **Deep dive into design:**
 
-1. **[ARCHITECTURE_REDESIGN.md](ARCHITECTURE_REDESIGN.md)** — Complete blueprint
-   - Read sections: 1-5 (architecture), 7-10 (details)
-   - Reference: Appendices A-C for templates
+1. **[AGENTS.md](AGENTS.md)** — Current structure + governance
+   - Read: repository structure, architecture, coding standards
+   - Reference: `architecture/` (domain mapping, runtime support, capabilities)
 2. **[ADR/](ADR/)** — Architecture Decision Records
    - Review template
    - Create ADRs for team decisions
@@ -46,7 +46,7 @@ Complete guide to navigating the enterprise architecture redesign documents.
    - Find your wave/phase
    - Execute detailed tasks
    - Track progress
-2. **[ARCHITECTURE_REDESIGN.md](ARCHITECTURE_REDESIGN.md)** — Reference as needed
+2. **[AGENTS.md](AGENTS.md)** — Reference as needed
 3. **[ARCHITECTURE_QUICK_REFERENCE.md](ARCHITECTURE_QUICK_REFERENCE.md)** — Keep open while coding
 
 ### For New Contributors
@@ -55,45 +55,36 @@ Complete guide to navigating the enterprise architecture redesign documents.
 
 1. **[CONTRIBUTOR_ONBOARDING.md](CONTRIBUTOR_ONBOARDING.md)** — 30-minute onboarding
 2. **[ARCHITECTURE_QUICK_REFERENCE.md](ARCHITECTURE_QUICK_REFERENCE.md)** — Daily reference
-3. **[ARCHITECTURE_REDESIGN.md](ARCHITECTURE_REDESIGN.md#public-api-vs-internal-api-strategy)** — API boundaries
+3. **[AGENTS.md](AGENTS.md#architecture)** — API boundaries and provider pattern
 
 ---
 
 ## 📖 Document Descriptions
 
-### ARCHITECTURE_REDESIGN.md
+### AGENTS.md + architecture/
 
-**Type**: Complete Architecture Proposal  
-**Length**: ~1,260 lines, 25-minute read  
-**Audience**: Architects, tech leads, stakeholders
+**Type**: Current Architecture Reference
+**Audience**: Architects, tech leads, stakeholders, contributors
 
-**What it contains**:
+**What it contains** (replaces the former `ARCHITECTURE_REDESIGN.md` blueprint,
+removed after the migration completed):
 
-- Current state analysis & problems
-- Enterprise architecture principles
-- New directory structure (detailed tree)
-- Package organization by layer
-- Ownership & responsibilities
-- Public vs internal API strategy
-- Testing strategy
-- CI/CD pipeline organization
-- CODEOWNERS template
-- Scaling guidelines for future growth
-- Appendices with mapping & templates
+- `AGENTS.md` — repository structure, provider architecture, coding standards
+- `architecture/domain-mapping.md` — canonical package-to-domain mapping
+- `architecture/runtime-support.md` + `architecture/model-capabilities.md` — matrices
+- `architecture/PROJECT-STRUCTURE.md` — full tree
+- `ADR/` — decisions 004–009 (replaces proposal appendices)
 
 **When to read**:
 
-- Need complete understanding of new architecture
+- Need complete understanding of the architecture
 - Making architectural decisions
 - Planning implementation details
-- Reviewing proposal
 
-**Key sections**:
+**Key sources**:
 
-- [Executive Summary](ARCHITECTURE_REDESIGN.md#executive-summary)
-- [Architecture Principles](ARCHITECTURE_REDESIGN.md#enterprise-architecture-principles)
-- [Proposed Repository Structure](ARCHITECTURE_REDESIGN.md#proposed-repository-structure)
-- [Testing Strategy](ARCHITECTURE_REDESIGN.md#testing-strategy)
+- [AGENTS.md Architecture](AGENTS.md#architecture)
+- [domain-mapping.md](architecture/domain-mapping.md)
 
 ---
 
@@ -282,10 +273,10 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
    - Understand what's changing
    - See key numbers & improvements
    - Read FAQ
-2. **ARCHITECTURE_REDESIGN.md** → Sections 1-4 (10 min)
-   - Current problems
+2. **AGENTS.md + `architecture/`** → Sections on structure & governance (10 min)
+   - Current structure
    - Architecture principles
-   - Executive summary of new structure
+   - Domain mapping
 3. **MIGRATION_PLAN.md** → Phase Overview (5 min)
    - Understand timeline
    - See team effort needed
@@ -299,8 +290,8 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
    - Understand all 6 phases
    - Find your phase/wave
    - Review task breakdown
-2. **ARCHITECTURE_REDESIGN.md** (1 hour)
-   - Understand complete structure
+2. **AGENTS.md + `architecture/`** (1 hour)
+   - Understand current structure
    - Reference during implementation
    - Review testing strategy
 3. **ARCHITECTURE_QUICK_REFERENCE.md** (15 min)
@@ -329,7 +320,7 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
 
 ⏱️ **Time**: 4-5 hours
 
-1. **ARCHITECTURE_REDESIGN.md** (2 hours)
+1. **AGENTS.md + `architecture/`** (2 hours)
    - Read completely
    - Deep understand of design
 2. **MIGRATION_PLAN.md** (1.5 hours)
@@ -346,7 +337,7 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
 
 1. **IMPLEMENTATION_SUMMARY.md** (15 min)
    - Overview & goals
-2. **ARCHITECTURE_REDESIGN.md** (1 hour)
+2. **AGENTS.md + `architecture/`** (1 hour)
    - Focus on: principles, structure, API strategy
 3. **MIGRATION_PLAN.md** → Risk section (15 min)
    - Review risk mitigation
@@ -359,7 +350,7 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
 
 ### Q: Where do I find the new directory structure?
 
-→ **ARCHITECTURE_REDESIGN.md** → [Proposed Repository Structure](ARCHITECTURE_REDESIGN.md#proposed-repository-structure)
+→ **`architecture/PROJECT-STRUCTURE.md`** (+ `pnpm-workspace.yaml` as source of truth)
 
 ### Q: How do I contribute?
 
@@ -371,12 +362,11 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
 
 ### Q: Who owns what?
 
-→ **ARCHITECTURE_REDESIGN.md** → [Directory Ownership](ARCHITECTURE_REDESIGN.md#directory-ownership--responsibilities)
-→ Or search **CODEOWNERS** file
+→ **CODEOWNERS** file (see also `AGENTS.md` architecture section)
 
 ### Q: What changes are breaking?
 
-→ **ARCHITECTURE_REDESIGN.md** → [Public API vs Internal API](ARCHITECTURE_REDESIGN.md#public-api-vs-internal-api-strategy)
+→ **AGENTS.md** → provider pattern, changesets section
 
 ### Q: When should I use this?
 
@@ -394,15 +384,15 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
 
 ## 📊 Document Statistics
 
-| Document                        | Lines     | Read Time  | Best For               |
-| ------------------------------- | --------- | ---------- | ---------------------- |
-| ARCHITECTURE_REDESIGN.md        | 1,261     | 25 min     | Complete understanding |
-| CONTRIBUTOR_ONBOARDING.md       | 544       | 15 min     | Getting started        |
-| MIGRATION_PLAN.md               | 728       | 20 min     | Implementation         |
-| ARCHITECTURE_QUICK_REFERENCE.md | 456       | Reference  | Daily use              |
-| IMPLEMENTATION_SUMMARY.md       | 558       | 10 min     | Overview               |
-| ADR/template.md                 | 86        | Reference  | Decision docs          |
-| **TOTAL**                       | **3,633** | **70 min** |                        |
+| Document                        | Lines     | Read Time  | Best For                       |
+| ------------------------------- | --------- | ---------- | ------------------------------ |
+| AGENTS.md + `architecture/`     | —         | 10 min     | Current structure + governance |
+| CONTRIBUTOR_ONBOARDING.md       | 544       | 15 min     | Getting started                |
+| MIGRATION_PLAN.md               | 728       | 20 min     | Implementation                 |
+| ARCHITECTURE_QUICK_REFERENCE.md | 456       | Reference  | Daily use                      |
+| IMPLEMENTATION_SUMMARY.md       | 558       | 10 min     | Overview                       |
+| ADR/template.md                 | 86        | Reference  | Decision docs                  |
+| **TOTAL**                       | **3,633** | **70 min** |                                |
 
 ---
 
@@ -410,11 +400,14 @@ cp ADR/template.md ADR/ADR-001-monorepo-strategy.md
 
 Use this to verify you have everything:
 
-- [x] ARCHITECTURE_REDESIGN.md — Complete blueprint
+- [x] AGENTS.md + `architecture/` — Current structure + governance
 - [x] CONTRIBUTOR_ONBOARDING.md — Quick start guide
 - [x] MIGRATION_PLAN.md — Implementation roadmap
 - [x] ARCHITECTURE_QUICK_REFERENCE.md — Daily cheat sheet
-- [x] IMPLEMENTATION_SUMMARY.md — Executive overview
+- [x] ARCHITECTURE_EXECUTIVE_SUMMARY.md — Architectural recommendation and roadmap
+- [x] IMPLEMENTATION_CHECKLIST.md — Phase-by-phase execution checklist
+- [x] PACKAGE_INVENTORY.md — All 63 packages classified by layer
+- [x] DEPENDENCY_RULES.md — Layer dependency rules and enforcement
 - [x] ADR/template.md — Decision record template
 - [x] This file (ARCHITECTURE_INDEX.md) — Navigation guide
 
@@ -425,14 +418,14 @@ Use this to verify you have everything:
 ### For Approval
 
 1. Read IMPLEMENTATION_SUMMARY.md
-2. Review ARCHITECTURE_REDESIGN.md sections 1-4
+2. Review AGENTS.md structure + governance sections
 3. Check MIGRATION_PLAN.md timeline
 4. Make decision
 
 ### For Implementation
 
 1. Read MIGRATION_PLAN.md (complete)
-2. Review ARCHITECTURE_REDESIGN.md (reference)
+2. Review AGENTS.md + `architecture/` (reference)
 3. Create task board using MIGRATION_PLAN.md tasks
 4. Assign owners
 5. Begin Phase 1
@@ -449,7 +442,7 @@ Use this to verify you have everything:
 ## 📞 Questions?
 
 **Architecture questions?**
-→ See ARCHITECTURE_REDESIGN.md
+→ See AGENTS.md + `architecture/` docs
 
 **How to contribute?**
 → See CONTRIBUTOR_ONBOARDING.md
@@ -471,9 +464,9 @@ Use this to verify you have everything:
 ## 📝 Document Status
 
 **Created**: June 2026  
-**Version**: 1.0  
-**Status**: Phase 2 Implementation In Progress  
-**Last Updated**: June 2026
+**Version**: 1.1 (redesign blueprint removed after migration completed; see AGENTS.md)  
+**Status**: Migration complete  
+**Last Updated**: September 2026
 
 ---
 

@@ -1,5 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { rerank } from 'ai-toolkit';
+import { rerank } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 import { print } from '../lib/print';
 import { documents } from './documents';

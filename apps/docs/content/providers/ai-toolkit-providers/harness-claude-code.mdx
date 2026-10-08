@@ -1,0 +1,27 @@
+---
+title: Claude Code Harness
+description: Connect HarnessAgent to Claude Code via ACP v1.
+---
+
+Direct auth uses `ANTHROPIC_API_KEY` or `ANTHROPIC_AUTH_TOKEN`. The AI Gateway uses the Anthropic-compatible root URL (no `/v1` suffix). Permission modes map to Claude session modes (`default` / `acceptEdits` / `bypassPermissions`).
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-claude-code
+```
+
+## Usage
+
+```ts
+import { claudeCodeHarness } from '@ai-toolkit/harness-claude-code';
+
+// const agent = new HarnessAgent({ harness: claudeCodeHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `@agentclientprotocol/claude-agent-acp` (`claude-agent-acp`)

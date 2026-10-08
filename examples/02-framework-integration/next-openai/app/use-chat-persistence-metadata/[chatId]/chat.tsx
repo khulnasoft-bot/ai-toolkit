@@ -3,7 +3,7 @@
 import ChatInput from '@/components/chat-input';
 import { zodSchema } from '@ai-toolkit/provider-utils';
 import { UIMessage, useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 export default function Chat({
@@ -32,7 +32,9 @@ export default function Chat({
         <div key={m.id} className="whitespace-pre-wrap">
           {m.role === 'user' ? 'User: ' : 'AI: '}
           {m.metadata?.createdAt && (
-            <div>Created at: {new Date(m.metadata.createdAt).toLocaleString()}</div>
+            <div>
+              Created at: {new Date(m.metadata.createdAt).toLocaleString()}
+            </div>
           )}
           {m.parts.map((part, index) => {
             if (part.type === 'text') {

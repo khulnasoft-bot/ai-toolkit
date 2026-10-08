@@ -1,4 +1,4 @@
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 
 export async function POST(req: Request) {

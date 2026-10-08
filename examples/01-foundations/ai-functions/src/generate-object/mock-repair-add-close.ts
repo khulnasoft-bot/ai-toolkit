@@ -1,5 +1,5 @@
-import { generateObject, JSONParseError } from 'ai-toolkit';
-import { MockLanguageModelV3 } from 'ai-toolkit/test';
+import { generateObject, JSONParseError } from '@ai-toolkit/ai';
+import { MockLanguageModelV3 } from '@ai-toolkit/ai/test';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -22,7 +22,9 @@ run(async () => {
         },
         warnings: [],
         finishReason: { raw: undefined, unified: 'tool-calls' },
-        content: [{ type: 'text', text: `{ "content": "provider metadata test"` }],
+        content: [
+          { type: 'text', text: `{ "content": "provider metadata test"` },
+        ],
       }),
     }),
     schema: z.object({ content: z.string() }),

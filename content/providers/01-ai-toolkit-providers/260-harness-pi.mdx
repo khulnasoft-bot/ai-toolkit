@@ -1,0 +1,29 @@
+---
+title: Pi Harness
+description: Connect HarnessAgent to the Pi coding agent via ACP v1.
+---
+
+# Pi Harness
+
+Installs the community `pi-acp` ACP adapter from npm, which embeds the Pi coding agent and exposes ACP v1 over stdio.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-pi
+```
+
+## Usage
+
+```ts
+import { piHarness } from '@ai-toolkit/harness-pi';
+
+// const agent = new HarnessAgent({ harness: piHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `pi-acp` (`pi-acp`)

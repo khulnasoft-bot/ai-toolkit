@@ -2,6 +2,7 @@
 .cache
 .env
 .envrc
+.memory-benchmark-context-*
 .next
 .turbo
 dist
@@ -17,3 +18,5 @@ tsconfig.vitest-temp.json
 *.local
 *.tsbuildinfo
 packages/ai/docs
+.vercel
+.env*

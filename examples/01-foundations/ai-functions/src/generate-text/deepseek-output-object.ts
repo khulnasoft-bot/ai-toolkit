@@ -1,5 +1,5 @@
 import { deepseek } from '@ai-toolkit/deepseek';
-import { generateText, Output, stepCountIs } from 'ai-toolkit';
+import { generateText, Output, stepCountIs } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { run } from '../lib/run';

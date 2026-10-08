@@ -38,6 +38,20 @@ export interface Metric {
   deltaPct: number;
 }
 
+export interface OverviewDeltas {
+  providers: number;
+  models: number;
+  gateways: number;
+  tools: number;
+}
+
+export interface OverviewMetrics {
+  provider: string;
+  generatedAt: string;
+  global: Metric;
+  deltas: OverviewDeltas;
+}
+
 export interface SearchItem {
   label: string;
   href: string;

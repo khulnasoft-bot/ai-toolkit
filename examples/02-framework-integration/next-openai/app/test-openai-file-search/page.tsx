@@ -3,7 +3,7 @@
 import ChatInput from '@/components/chat-input';
 import FileSearchView from '@/components/tool/openai-file-search-view';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from 'ai-toolkit';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
 import { OpenAIFileSearchMessage } from '../api/chat-openai-file-search/route';
 
 export default function TestOpenAIFileSearch() {

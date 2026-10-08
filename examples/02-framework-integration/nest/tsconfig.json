@@ -21,7 +21,7 @@
   },
   "references": [
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/ai/core"
     },
     {
       "path": "../../../packages/providers/openai"

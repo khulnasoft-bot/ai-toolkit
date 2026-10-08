@@ -1,5 +1,5 @@
 import { vertex } from '@ai-toolkit/google-vertex';
-import { embed } from 'ai-toolkit';
+import { embed } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

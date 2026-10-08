@@ -1,7 +1,7 @@
 'use server';
 
 import { openai } from '@ai-toolkit/openai';
-import { streamObject } from 'ai-toolkit';
+import { streamObject } from '@ai-toolkit/ai';
 import { createStreamableValue } from '@ai-toolkit/rsc';
 import { PartialNotification, notificationSchema } from './schema';
 

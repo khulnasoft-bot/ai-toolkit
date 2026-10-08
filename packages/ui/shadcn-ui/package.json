@@ -5,12 +5,18 @@
   "license": "Apache-2.0",
   "sideEffects": false,
   "stability": "beta",
-  "owners": ["@khulnasoft/ai-react-team"],
+  "owners": [
+    "@khulnasoft/ai-react-team"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "source": "./src/index.ts",
-  "files": ["dist/**/*", "CHANGELOG.md", "README.md"],
+  "files": [
+    "dist/**/*",
+    "CHANGELOG.md",
+    "README.md"
+  ],
   "scripts": {
     "build": "pnpm clean && tsup --tsconfig tsconfig.build.json",
     "build:watch": "pnpm clean && tsup --watch",
@@ -44,13 +50,13 @@
   "devDependencies": {
     "@khulnasoft/ai-tsconfig": "workspace:*",
     "@types/node": "20.17.24",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "del-cli": "^6.0.0",
     "eslint": "8.57.1",
     "eslint-config-khulnasoft-ai": "workspace:*",
-    "react": "^18",
-    "react-dom": "^18",
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1",
     "tsup": "^7.2.0",
     "typescript": "5.8.3"
   }

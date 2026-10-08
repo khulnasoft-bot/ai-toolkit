@@ -1,4 +1,4 @@
-import { InferUITools, UIDataTypes, UIMessage } from 'ai-toolkit';
+import { InferUITools, UIDataTypes, UIMessage } from '@ai-toolkit/ai';
 import { tools } from './tools';
 
 export type MyTools = InferUITools<typeof tools>;

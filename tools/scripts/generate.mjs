@@ -35,65 +35,15 @@ if (!type || !name || type === '--help' || type === '-h') {
 }
 
 const generators = {
-  provider() {
-    const targetDir = path.join(ROOT, 'packages', 'providers', name);
-    if (fs.existsSync(targetDir)) {
-      console.error(`❌ Provider "${name}" already exists at packages/providers/${name}`);
-      process.exit(1);
-    }
-    fs.mkdirSync(path.join(targetDir, 'src'), { recursive: true });
-    fs.mkdirSync(path.join(targetDir, 'tests'), { recursive: true });
-
-    fs.writeFileSync(
-      path.join(targetDir, 'package.json'),
-      JSON.stringify(
-        {
-          name: `@ai-toolkit/${name}`,
-          version: '0.0.1',
-          private: false,
-          type: 'module',
-          scripts: {
-            build: 'tsup',
-            test: 'vitest',
-            'type-check': 'tsc --noEmit',
-          },
-          peerDependencies: {
-            '@ai-toolkit/provider': 'workspace:*',
-          },
-        },
-        null,
-        2,
-      ) + '\n',
-    );
-
-    fs.writeFileSync(
-      path.join(targetDir, 'src', 'index.ts'),
-      `// ${name} provider
-// TODO: Implement createLanguageModel() and other exports
-`,
-    );
-
-    fs.writeFileSync(
-      path.join(targetDir, 'README.md'),
-      `# @ai-toolkit/${name}
-
-${name} provider for the AI TOOLKIT.
-
-## Installation
-
-\`\`\`bash
-pnpm add @ai-toolkit/${name}
-\`\`\`
-
-## Usage
-
-\`\`\`typescript
-import { create${name.charAt(0).toUpperCase() + name.slice(1)} } from '@ai-toolkit/${name}';
-\`\`\`
-`,
-    );
-
-    console.log(`✅ Created provider at packages/providers/${name}`);
+  async provider() {
+    // Canonical provider scaffolding lives in tools/create-ai-provider.
+    // This branch forwards so `pnpm generate provider` keeps working.
+    const { spawn } = await import('child_process');
+    const createScript = path.join(ROOT, 'tools', 'create-ai-provider', 'src', 'index.js');
+    const child = spawn(process.execPath, [createScript, name, '--no-install'], {
+      stdio: 'inherit',
+    });
+    child.on('exit', code => process.exit(code ?? 1));
   },
 
   adapter() {

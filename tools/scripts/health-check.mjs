@@ -87,6 +87,7 @@ check('Domain directories exist', () => {
     'core',
     'providers',
     'adapters',
+    'ui',
     'mcp',
     'special',
     'validation',

@@ -1,5 +1,5 @@
 import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
-import { Output, stepCountIs, streamText } from 'ai-toolkit';
+import { Output, stepCountIs, streamText } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { run } from '../lib/run';

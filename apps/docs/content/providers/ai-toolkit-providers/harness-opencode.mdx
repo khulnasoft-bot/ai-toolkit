@@ -1,0 +1,27 @@
+---
+title: opencode Harness
+description: Connect HarnessAgent to opencode via ACP v1.
+---
+
+Installs the `opencode` CLI from npm and launches `opencode acp` over stdio. Session models are set via the native ACP `set_model` request.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-opencode
+```
+
+## Usage
+
+```ts
+import { opencodeHarness } from '@ai-toolkit/harness-opencode';
+
+// const agent = new HarnessAgent({ harness: opencodeHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `opencode` (`opencode acp`)

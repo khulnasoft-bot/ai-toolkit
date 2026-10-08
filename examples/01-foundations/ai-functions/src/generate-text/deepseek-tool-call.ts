@@ -1,5 +1,5 @@
 import { deepseek } from '@ai-toolkit/deepseek';
-import { generateText, stepCountIs } from 'ai-toolkit';
+import { generateText, stepCountIs } from '@ai-toolkit/ai';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';

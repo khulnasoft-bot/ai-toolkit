@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { generateText, jsonSchema, tool } from 'ai-toolkit';
+import { generateText, jsonSchema, tool } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -32,7 +32,8 @@ run(async () => {
         }),
       }),
     },
-    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    prompt:
+      'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   // typed tool calls:

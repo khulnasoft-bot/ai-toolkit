@@ -23,7 +23,7 @@
 # Make sure you have a branch pushed to GitHub, and make sure that branch has
 # a changeset committed. You can generate a changeset with "pnpm changeset".
 #
-# Then open github.com/vercel/ai and click on Actions > Release Snapshot
+# Then open github.com/khulnasoft/ai-toolkit and click on Actions > Release Snapshot
 # Then click "Run workflow" on the right and select the branch you want to
 # create a snapshot release for and click the "Run workflow" button.
 

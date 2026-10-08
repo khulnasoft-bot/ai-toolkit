@@ -125,7 +125,7 @@ This project will use the following stack:
 
 ### Clone Repo
 
-To reduce the scope of this guide, you will be starting with a [repository](https://github.com/vercel/ai-toolkit-rag-starter) that already has a few things set up for you:
+To reduce the scope of this guide, you will be starting with a [repository](https://github.com/khulnasoft/ai-toolkit-toolkit-rag-starter) that already has a few things set up for you:
 
 - Drizzle ORM (`lib/db`) including an initial migration and a script to migrate (`db:migrate`)
 - a basic schema for the `resources` table (this will be for source material)
@@ -135,7 +135,7 @@ To get started, clone the starter repository with the following command:
 
 <Snippet
   text={[
-    'git clone https://github.com/vercel/ai-toolkit-rag-starter',
+    'git clone https://github.com/khulnasoft/ai-toolkit-toolkit-rag-starter',
     'cd ai-toolkit-rag-starter',
   ]}
 />
@@ -551,7 +551,12 @@ Update your route handler with the following code:
 
 ```tsx filename="app/api/chat/route.ts" highlight="18-29"
 import { createResource } from '@/lib/actions/resources';
-import { convertToModelMessages, streamText, tool, UIMessage } from 'ai-toolkit';
+import {
+  convertToModelMessages,
+  streamText,
+  tool,
+  UIMessage,
+} from 'ai-toolkit';
 import { z } from 'zod';
 
 // Allow streaming responses up to 30 seconds
@@ -668,7 +673,7 @@ With this change, you now conditionally render the tool that has been called dir
 
 It would be nice if the model could summarize the action too. However, technically, once the model calls a tool, it has completed its generation as it ‘generated’ a tool call. How could you achieve this desired behavior?
 
-The AI TOOLKIT has a feature called [`stopWhen`](/docs/ai-toolkit-core/tools-and-tool-calling#multi-step-calls) which allows stopping conditions when the model generates a tool call. If those stopping conditions haven't been hit, the AI TOOLKIT will automatically send tool call results back to the model!
+The AI TOOLKIT has a feature called [`stopWhen`](/docs/ai-toolkit-core/tools-and-tool-calling#multi-step-calls-using-stopwhen) which allows stopping conditions when the model generates a tool call. If those stopping conditions haven't been hit, the AI TOOLKIT will automatically send tool call results back to the model!
 
 Open your root page (`api/chat/route.ts`) and add the following key to the `streamText` configuration object:
 
@@ -847,4 +852,4 @@ If you're using the Vercel setup above, you can run the command directly by eith
 - Going to the Neon console and entering the command there, or
 - Going back to the Vercel platform, navigating to the Quick Start section of your database, and finding the PSQL connection command (second tab). This will connect to your instance in the terminal where you can run the command directly.
 
-[More info](https://github.com/vercel/ai-toolkit-rag-starter/issues/1).
+[More info](https://github.com/khulnasoft/ai-toolkit-toolkit-rag-starter/issues/1).

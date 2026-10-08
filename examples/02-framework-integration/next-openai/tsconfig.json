@@ -29,19 +29,19 @@
   "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../../../packages/adapters/react"
+      "path": "../../../packages/integrations/react"
     },
     {
-      "path": "../../../packages/adapters/rsc"
+      "path": "../../../packages/integrations/rsc"
     },
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/ai/core"
     },
     {
-      "path": "../../../packages/core/provider-utils"
+      "path": "../../../packages/foundation/utils"
     },
     {
-      "path": "../../../packages/mcp"
+      "path": "../../../packages/mcp/core"
     },
     {
       "path": "../../../packages/providers/amazon-bedrock"
@@ -83,7 +83,7 @@
       "path": "../../../packages/providers/xai"
     },
     {
-      "path": "../../../packages/validation/valibot"
+      "path": "../../../packages/foundation/valibot"
     }
   ]
 }

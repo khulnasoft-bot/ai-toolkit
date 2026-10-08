@@ -34,7 +34,7 @@ below and the status summary at the end of this document.
 
 ### Deliverables
 
-- [x] ARCHITECTURE_REDESIGN.md (main document) — ✅ Done (`ARCHITECTURE_REDESIGN.md` exists at repo root)
+- [x] ARCHITECTURE_REDESIGN.md (main document) — ✅ Done at the time; removed after migration completed (superseded by `AGENTS.md` + `architecture/`)
 - [x] ADR template and initial ADRs — ✅ Done (`architecture/` directory contains decision docs: `provider-abstraction.md`, `runtime-support.md`, `domain-mapping.md`, `model-capabilities.md`, `PROJECT-STRUCTURE.md`)
 - [x] CONTRIBUTOR_ONBOARDING.md — ✅ Done
 - [x] Detailed task breakdown — ✅ Done (see "Detailed Task Breakdown" section + `tools/scripts/` validators)
@@ -577,7 +577,7 @@ examples/
 
 - [x] All packages migrated to domain buckets — ✅ Core, providers (33), adapters (5), special (2), validation (3), infrastructure (test-server) all moved. _(aws/ not present in repo; mcp/ kept as single package)_
 - [ ] All examples reorganized — ⏳ Deferred (Wave 5 not started)
-- [x] All documentation updated — ✅ ARCHITECTURE_REDESIGN.md, ADRs, onboarding guides in place; import examples updated via commit 6667a3b
+- [x] All documentation updated — ✅ ADRs, onboarding guides in place (redesign doc since removed after completion); import examples updated via commit 6667a3b
 - [x] All tests passing — ✅ Verified by migration test suite
 - [x] Build time acceptable (< 15 min) — ✅ Full build succeeds
 - [ ] v4.0 released on npm — ⏳ Pending (Phase 4 not started; changeset is `patch` only)

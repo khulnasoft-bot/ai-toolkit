@@ -4,7 +4,7 @@ import {
   geistdocsFrontmatterSchema,
   geistdocsMetaSchema,
   geistShikiTheme,
-} from 'source-config';
+} from '@vercel/geistdocs/source-config';
 import { rehypeCodeDefaultOptions } from 'fumadocs-core/mdx-plugins';
 import { defineDocs } from 'fumadocs-mdx/config';
 
@@ -34,8 +34,8 @@ export default defineGeistdocsSourceConfig({
       themes: { light: geistShikiTheme, dark: geistShikiTheme },
       transformers: [
         ...(rehypeCodeDefaultOptions.transformers ?? []),
-        // Supports `{1,3-5}` fence meta produced by the sync-content
-        // transform from the legacy `highlight="1,3-5"` convention.
+        // Supports `{1,3-5}` fence meta (content is normalized by
+        // scripts/normalize-content.mjs).
         transformerMetaHighlight(),
       ],
     },

@@ -1,7 +1,7 @@
 'use client';
 
 import { useChat } from '@ai-toolkit/react';
-import { DirectChatTransport, ToolLoopAgent } from 'ai-toolkit';
+import { DirectChatTransport, ToolLoopAgent } from '@ai-toolkit/ai';
 import { createOpenAI } from '@ai-toolkit/openai';
 import ChatInput from '@/components/chat-input';
 

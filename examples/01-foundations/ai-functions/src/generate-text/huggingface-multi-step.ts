@@ -1,5 +1,5 @@
 import { huggingface } from '@ai-toolkit/huggingface';
-import { generateText, stepCountIs, tool } from 'ai-toolkit';
+import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
 import { z } from 'zod/v4';
 import { run } from '../lib/run';
 
@@ -25,7 +25,9 @@ run(async () => {
         execute: async ({ location }) => ({
           location,
           temperature: 72 + Math.floor(Math.random() * 21) - 10,
-          condition: ['sunny', 'cloudy', 'rainy', 'snowy'][Math.floor(Math.random() * 4)],
+          condition: ['sunny', 'cloudy', 'rainy', 'snowy'][
+            Math.floor(Math.random() * 4)
+          ],
         }),
       }),
       recommendations: tool({
@@ -44,7 +46,9 @@ run(async () => {
           };
           return {
             location,
-            activities: activities[weather as keyof typeof activities] || ['explore the city'],
+            activities: activities[weather as keyof typeof activities] || [
+              'explore the city',
+            ],
           };
         },
       }),

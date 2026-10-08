@@ -309,7 +309,9 @@ describe('user messages', () => {
           content: [
             {
               type: 'file',
-              data: Buffer.from('sample text content', 'utf-8').toString('base64'),
+              data: Buffer.from('sample text content', 'utf-8').toString(
+                'base64',
+              ),
               mediaType: 'text/plain',
               filename: 'sample.txt',
             },
@@ -965,7 +967,8 @@ describe('assistant messages', () => {
             content: [
               {
                 type: 'thinking',
-                thinking: 'I need to count the number of "r"s in the word "strawberry".',
+                thinking:
+                  'I need to count the number of "r"s in the word "strawberry".',
                 signature: 'test-signature',
               },
               {
@@ -1224,7 +1227,7 @@ describe('assistant messages', () => {
           content: [
             {
               input: {
-                url: 'https://raw.githubusercontent.com/vercel/ai/blob/main/examples/ai-functions/data/ai.pdf',
+                url: 'https://raw.githubusercontent.com/khulnasoft/ai-toolkit/blob/main/examples/ai-functions/data/ai.pdf',
               },
               providerExecuted: true,
               toolCallId: 'srvtoolu_011cNtbtzFARKPcAcp7w4nh9',
@@ -1236,7 +1239,7 @@ describe('assistant messages', () => {
                 type: 'json',
                 value: {
                   type: 'web_fetch_result',
-                  url: 'https://raw.githubusercontent.com/vercel/ai/blob/main/examples/ai-functions/data/ai.pdf',
+                  url: 'https://raw.githubusercontent.com/khulnasoft/ai-toolkit/blob/main/examples/ai-functions/data/ai.pdf',
                   retrievedAt: '2025-01-01T00:00:00.000Z',
                   content: {
                     type: 'document',
@@ -1273,7 +1276,7 @@ describe('assistant messages', () => {
                   "cache_control": undefined,
                   "id": "srvtoolu_011cNtbtzFARKPcAcp7w4nh9",
                   "input": {
-                    "url": "https://raw.githubusercontent.com/vercel/ai/blob/main/examples/ai-functions/data/ai.pdf",
+                    "url": "https://raw.githubusercontent.com/khulnasoft/ai-toolkit/blob/main/examples/ai-functions/data/ai.pdf",
                   },
                   "name": "web_fetch",
                   "type": "server_tool_use",
@@ -1295,7 +1298,7 @@ describe('assistant messages', () => {
                     },
                     "retrieved_at": "2025-01-01T00:00:00.000Z",
                     "type": "web_fetch_result",
-                    "url": "https://raw.githubusercontent.com/vercel/ai/blob/main/examples/ai-functions/data/ai.pdf",
+                    "url": "https://raw.githubusercontent.com/khulnasoft/ai-toolkit/blob/main/examples/ai-functions/data/ai.pdf",
                   },
                   "tool_use_id": "srvtoolu_011cNtbtzFARKPcAcp7w4nh9",
                   "type": "web_fetch_tool_result",
@@ -2339,7 +2342,9 @@ describe('cache control', () => {
         toolNameMapping: defaultToolNameMapping,
       });
 
-      expect(result.prompt.messages[0].content[0]).not.toHaveProperty('cache_control');
+      expect(result.prompt.messages[0].content[0]).not.toHaveProperty(
+        'cache_control',
+      );
 
       expect(cacheControlValidator.getWarnings()).toMatchInlineSnapshot(`
         [
@@ -2710,7 +2715,9 @@ describe('citations', () => {
         prompt: [
           {
             role: 'user',
-            content: [{ type: 'text', text: 'weather for berlin, london and paris' }],
+            content: [
+              { type: 'text', text: 'weather for berlin, london and paris' },
+            ],
           },
           {
             role: 'assistant',

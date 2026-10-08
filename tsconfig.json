@@ -1,16 +1,103 @@
 {
   "references": [
     {
-      "path": "packages/core/ai"
+      "path": "packages/ai/core"
     },
     {
-      "path": "packages/core/ai-toolkit"
+      "path": "packages/ai/generation"
     },
     {
-      "path": "packages/core/provider-utils"
+      "path": "packages/agents/core"
     },
     {
-      "path": "packages/core/runtime"
+      "path": "packages/agents/delegation"
+    },
+    {
+      "path": "packages/agents/harness"
+    },
+    {
+      "path": "packages/agents/loop"
+    },
+    {
+      "path": "packages/agents/planner"
+    },
+    {
+      "path": "packages/agents/skills"
+    },
+    {
+      "path": "packages/agents/teams"
+    },
+    {
+      "path": "packages/tools/approval"
+    },
+    {
+      "path": "packages/tools/core"
+    },
+    {
+      "path": "packages/tools/discovery"
+    },
+    {
+      "path": "packages/tools/execution"
+    },
+    {
+      "path": "packages/tools/permissions"
+    },
+    {
+      "path": "packages/tools/registry"
+    },
+    {
+      "path": "packages/ai/multimodal"
+    },
+    {
+      "path": "packages/ai/reasoning"
+    },
+    {
+      "path": "packages/ai/structured"
+    },
+    {
+      "path": "packages/context/core"
+    },
+    {
+      "path": "packages/context/compression"
+    },
+    {
+      "path": "packages/context/routing"
+    },
+    {
+      "path": "packages/context/runtime"
+    },
+    {
+      "path": "packages/context/summarization"
+    },
+    {
+      "path": "packages/context/window"
+    },
+    {
+      "path": "packages/memory/core"
+    },
+    {
+      "path": "packages/memory/episodic"
+    },
+    {
+      "path": "packages/memory/long-term"
+    },
+    {
+      "path": "packages/memory/semantic"
+    },
+    {
+      "path": "packages/memory/short-term"
+    },
+    {
+      "path": "packages/memory/storage"
+    },
+    {
+      "path": "packages/foundation/utils"
+    },
+    {
+      "path": "packages/foundation/runtime"
+    },
+    {
+      "path": "packages/gateway/core"
     },
     {
       "path": "packages/providers/amazon-bedrock"
@@ -28,10 +115,10 @@
       "path": "packages/providers/baseten"
     },
     {
-      "path": "packages/providers/bytedance"
+      "path": "packages/providers/black-forest-labs"
     },
     {
-      "path": "packages/providers/black-forest-labs"
+      "path": "packages/providers/bytedance"
     },
     {
       "path": "packages/providers/cerebras"
@@ -68,6 +155,33 @@
     },
     {
       "path": "packages/providers/groq"
+    },
+    {
+      "path": "packages/providers/harness-acp"
+    },
+    {
+      "path": "packages/providers/harness-claude-code"
+    },
+    {
+      "path": "packages/providers/harness-cline"
+    },
+    {
+      "path": "packages/providers/harness-codex"
+    },
+    {
+      "path": "packages/providers/harness-cursor"
+    },
+    {
+      "path": "packages/providers/harness-grok-build"
+    },
+    {
+      "path": "packages/providers/harness-opencode"
+    },
+    {
+      "path": "packages/providers/harness-pi"
+    },
+    {
+      "path": "packages/providers/harness"
     },
     {
       "path": "packages/providers/huggingface"
@@ -109,43 +223,53 @@
       "path": "packages/providers/xai"
     },
     {
-      "path": "packages/adapters/angular"
+      "path": "packages/integrations/angular"
     },
     {
-      "path": "packages/adapters/react"
+      "path": "packages/integrations/langchain"
     },
     {
-      "path": "packages/adapters/rsc"
+      "path": "packages/integrations/llamaindex"
     },
     {
-      "path": "packages/adapters/svelte"
+      "path": "packages/integrations/react"
     },
     {
-      "path": "packages/adapters/vue"
+      "path": "packages/integrations/rsc"
     },
     {
-      "path": "packages/special/gateway"
+      "path": "packages/integrations/svelte"
     },
     {
-      "path": "packages/special/khulnasoft"
+      "path": "packages/integrations/vue"
     },
     {
-      "path": "packages/validation/capabilities"
+      "path": "packages/tooling/codemod"
     },
     {
-      "path": "packages/validation/provider"
+      "path": "packages/tooling/devtools"
+    },
+    {},
+    {
+      "path": "packages/foundation/platform"
     },
     {
-      "path": "packages/validation/valibot"
+      "path": "packages/foundation/khulnasoft"
     },
     {
-      "path": "packages/infrastructure/test-server"
+      "path": "packages/foundation/capabilities"
     },
     {
-      "path": "packages/special/codemod"
+      "path": "packages/foundation/provider"
     },
     {
-      "path": "packages/special/devtools"
+      "path": "packages/foundation/valibot"
+    },
+    {
+      "path": "packages/testing/test-server"
+    },
+    {
+      "path": "packages/ui/design"
     },
     {
       "path": "packages/ui/elements"
@@ -154,13 +278,58 @@
       "path": "packages/ui/shadcn-ui"
     },
     {
-      "path": "packages/langchain"
+      "path": "packages/mcp/core"
     },
     {
-      "path": "packages/llamaindex"
+      "path": "packages/retrieval/core"
     },
     {
-      "path": "packages/mcp"
+      "path": "packages/retrieval/reranking"
+    },
+    {
+      "path": "packages/retrieval/vector"
+    },
+    {
+      "path": "packages/retrieval/indexing"
+    },
+    {
+      "path": "packages/retrieval/embeddings"
+    },
+    {
+      "path": "packages/retrieval/rag"
+    },
+    {
+      "path": "packages/workflow/core"
+    },
+    {
+      "path": "packages/workflow/engine"
+    },
+    {
+      "path": "packages/workflow/durable"
+    },
+    {
+      "path": "packages/workflow/scheduler"
+    },
+    {
+      "path": "packages/workflow/events"
+    },
+    {
+      "path": "packages/workflow/queue"
+    },
+    {
+      "path": "packages/sandbox/core"
+    },
+    {
+      "path": "packages/sandbox/execution"
+    },
+    {
+      "path": "packages/sandbox/filesystem"
+    },
+    {
+      "path": "packages/sandbox/network"
+    },
+    {
+      "path": "packages/sandbox/isolation"
     },
     {
       "path": "examples/01-foundations/ai-functions"
@@ -173,6 +342,75 @@
     },
     {
       "path": "examples/01-foundations/hono"
+    },
+    {
+      "path": "packages/security/auth"
+    },
+    {
+      "path": "packages/security/rbac"
+    },
+    {
+      "path": "packages/security/policy"
+    },
+    {
+      "path": "packages/security/secrets"
+    },
+    {
+      "path": "packages/security/audit"
+    },
+    {
+      "path": "packages/security/isolation"
+    },
+    {
+      "path": "packages/observability/telemetry"
+    },
+    {
+      "path": "packages/observability/tracing"
+    },
+    {
+      "path": "packages/observability/metrics"
+    },
+    {
+      "path": "packages/observability/logging"
+    },
+    {
+      "path": "packages/observability/cost"
+    },
+    {
+      "path": "packages/observability/replay"
+    },
+    {
+      "path": "packages/evals/core"
+    },
+    {
+      "path": "packages/evals/datasets"
+    },
+    {
+      "path": "packages/evals/scorers"
+    },
+    {
+      "path": "packages/evals/experiments"
+    },
+    {
+      "path": "packages/evals/benchmarks"
+    },
+    {
+      "path": "packages/evals/regression"
+    },
+    {
+      "path": "packages/ui/studio"
+    },
+    {
+      "path": "packages/tooling/cli"
+    },
+    {
+      "path": "packages/tooling/codegen"
+    },
+    {
+      "path": "packages/gateway/router"
+    },
+    {
+      "path": "packages/gateway/load-balancer"
     },
     {
       "path": "examples/01-foundations/node-http-server"
@@ -221,6 +459,9 @@
     },
     {
       "path": "examples/03-integrations/next-openai-upstash-rate-limits"
+    },
+    {
+      "path": "examples/04-tools/harness-profiles"
     },
     {
       "path": "examples/04-tools/playground"

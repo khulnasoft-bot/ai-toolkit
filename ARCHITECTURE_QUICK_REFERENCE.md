@@ -7,13 +7,15 @@ A one-page cheat sheet for the AI Toolkit enterprise architecture.
 ## Directory Quick Map
 
 ```
-📦 packages/core/          Core SDK (generateText, streamText, generateObject)
-📦 packages/providers/     LLM providers (30+ integrations)
-📦 packages/adapters/      Framework support (React, Vue, Angular, Next.js)
-📦 packages/mcp/           Model Context Protocol
-📦 packages/special/       Gateway, internal tools
-📦 packages/validation/    Schema validation (Valibot, provider)
-📦 packages/infrastructure/ Testing utilities
+📦 packages/foundation/    Foundation layer (types, runtime, provider, capabilities)
+📦 packages/ai/           Core SDK (ai-toolkit: generateText, streamText, generateObject)
+📦 packages/gateway/      Gateway and routing
+📦 packages/providers/     LLM providers (40+ integrations)
+📦 packages/integrations/ Framework support (React, Vue, Angular, Svelte, RSC, LangChain, LlamaIndex)
+📦 packages/mcp/          Model Context Protocol
+📦 packages/tooling/      Developer tools (codemod, devtools)
+📦 packages/ui/           UI components (elements, design, shadcn-ui)
+📦 packages/testing/      Internal test utilities
 
 📚 examples/               Organized reference implementations (see registry.json)
   ├── 01-foundations/     Basic patterns (ai-functions, express, hono…)
@@ -23,7 +25,8 @@ A one-page cheat sheet for the AI Toolkit enterprise architecture.
 
 📖 apps/                   Public-facing applications
   ├── docs/               Main documentation
-  └── www/                Website
+  ├── www/                Website
+  └── studio/             Developer studio
 
 🛠️  tools/                 Development tools & scripts
 ```
@@ -32,14 +35,14 @@ A one-page cheat sheet for the AI Toolkit enterprise architecture.
 
 ## Finding Code
 
-| Goal               | Command                                       |
-| ------------------ | --------------------------------------------- |
-| List all providers | `ls packages/providers/`                      |
-| List all adapters  | `ls packages/adapters/`                       |
-| Find React code    | `find packages/adapters/react -name "*.ts"`   |
-| Find OpenAI code   | `find packages/providers/openai -name "*.ts"` |
-| Find examples      | `find examples -type d -maxdepth 2`           |
-| Find who owns X    | `grep "path/to/X" CODEOWNERS`                 |
+| Goal                  | Command                                         |
+| --------------------- | ----------------------------------------------- |
+| List all providers    | `ls packages/providers/`                        |
+| List all integrations | `ls packages/integrations/`                     |
+| Find React code       | `find packages/integrations/react -name "*.ts"` |
+| Find OpenAI code      | `find packages/providers/openai -name "*.ts"`   |
+| Find examples         | `find examples -type d -maxdepth 2`             |
+| Find who owns X       | `grep "path/to/X" CODEOWNERS`                   |
 
 ---
 
@@ -84,13 +87,15 @@ pnpm generate example --level=01-foundations --name=my-example
 
 ## Ownership & Review
 
-| Area                             | Owner                          | Review              |
-| -------------------------------- | ------------------------------ | ------------------- |
-| `packages/core/`                 | @khulnasoft/ai-toolkit-core        | 2 approvals         |
-| `packages/providers/{provider}/` | Provider team                  | 1 approval + 1 core |
-| `packages/adapters/`             | Framework teams                | 1 approval          |
+| Area                             | Owner                              | Review              |
+| -------------------------------- | ---------------------------------- | ------------------- |
+| `packages/foundation/`           | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/ai/`                   | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/providers/{provider}/` | Provider team                      | 1 approval + 1 core |
+| `packages/integrations/`         | Framework teams                    | 1 approval          |
+| `packages/gateway/`              | @khulnasoft/ai-toolkit-core        | 2 approvals         |
 | `examples/`                      | @khulnasoft/ai-toolkit-developers  | 1 approval          |
-| `.github/`                       | @khulnasoft/devops-team        | 1 approval          |
+| `.github/`                       | @khulnasoft/devops-team            | 1 approval          |
 | Root configs                     | @khulnasoft/ai-toolkit-maintainers | 1 approval          |
 
 **See**: `CODEOWNERS` file for complete mapping
@@ -138,16 +143,16 @@ import type { … } from 'ai-toolkit/internal';
 ## Package Naming Convention
 
 ```
-ai                              # Core SDK entry point (npm `ai`)
-@ai-toolkit/{provider}              # Provider (openai, anthropic, etc.)
-@ai-toolkit/{framework}             # Framework adapter (react, vue, angular)
-@ai-toolkit/{gateway,khulnasoft}    # Special-purpose packages
-@example/{name}                     # Examples (not published)
+ai-toolkit                      # Core SDK entry point (npm `ai-toolkit`)
+@ai-toolkit/{provider}          # Provider (openai, anthropic, etc.)
+@ai-toolkit/{framework}         # Framework adapter (react, vue, angular)
+@ai-toolkit/{gateway,khulnasoft} # Special-purpose packages
+@example/{name}                 # Examples (not published)
 ```
 
 **Examples**:
 
-- `ai` — Main SDK
+- `ai-toolkit` — Main SDK
 - `@ai-toolkit/openai` — OpenAI provider
 - `@ai-toolkit/react` — React hooks
 - `@ai-toolkit/google-vertex` — Google Vertex
@@ -235,34 +240,44 @@ Once approved and CI passes, auto-merge happens
 
 ## Testing by Layer
 
-| Layer     | Location                | Command                           |
-| --------- | ----------------------- | --------------------------------- |
-| Core      | `packages/core/*/`      | `pnpm test:core`                  |
-| Providers | `packages/providers/*/` | `pnpm test:providers`             |
-| Adapters  | `packages/adapters/*/`  | `pnpm test:adapters`              |
-| Examples  | `examples/*/*/`         | `pnpm test --filter="@example/*"` |
+| Layer        | Location                   | Command                           |
+| ------------ | -------------------------- | --------------------------------- |
+| Foundation   | `packages/foundation/*/`   | `pnpm test:core`                  |
+| AI Core      | `packages/ai/*/`           | `pnpm test:core`                  |
+| Providers    | `packages/providers/*/`    | `pnpm test:providers`             |
+| Integrations | `packages/integrations/*/` | `pnpm test:adapters`              |
+| Examples     | `examples/*/*/`            | `pnpm test --filter="@example/*"` |
 
 ---
 
 ## Dependencies
 
-### Core Layer Dependencies
+### Foundation Layer Dependencies
 
 ```
-ai ──▶ @ai-toolkit/provider-utils ──▶ @ai-toolkit/provider
-@ai-toolkit/runtime + @ai-toolkit/capabilities (no Node builtins; see ADR-004)
+@ai-toolkit/provider (no internal deps)
+@ai-toolkit/runtime (no internal deps)
+@ai-toolkit/capabilities → @ai-toolkit/runtime
+@ai-toolkit/provider-utils → @ai-toolkit/provider
+@ai-toolkit/valibot → @ai-toolkit/provider-utils
+```
+
+### AI Core Layer Dependencies
+
+```
+ai-toolkit → @ai-toolkit/gateway, @ai-toolkit/provider-utils, @ai-toolkit/provider
 ```
 
 ### Provider Layer Dependencies
 
 ```
-LLM API client → Provider → Core
+LLM API client → Provider → Foundation + Runtime
 ```
 
-### Adapter Layer Dependencies
+### Integration Layer Dependencies
 
 ```
-Framework library → Adapter → Core + Providers
+Framework library → Integration → AI Core + Foundation
 ```
 
 ### Example Dependencies
@@ -362,16 +377,19 @@ cat CODEOWNERS
 
 ## Useful Files
 
-| File                        | Purpose                                 |
-| --------------------------- | --------------------------------------- |
-| `ARCHITECTURE_REDESIGN.md`  | Full architecture document              |
-| `CONTRIBUTOR_ONBOARDING.md` | New contributor guide                   |
-| `MIGRATION_PLAN.md`         | Migration implementation guide          |
-| `CODEOWNERS`                | Package ownership & review requirements |
-| `ADR/`                      | Architecture decisions                  |
-| `turbo.json`                | Monorepo task configuration             |
-| `pnpm-workspace.yaml`       | Workspace definition                    |
-| `tsconfig.json`             | TypeScript project references           |
+| File                                | Purpose                                 |
+| ----------------------------------- | --------------------------------------- |
+| `AGENTS.md` + `architecture/`       | Architecture overview + domain docs     |
+| `architecture/domain-mapping.md`    | Canonical package-to-domain mapping     |
+| `architecture/DEPENDENCY_RULES.md`  | Layer dependency rules                  |
+| `architecture/FUTURE_DOMAINS.md`    | Future domain implementation plans      |
+| `CONTRIBUTOR_ONBOARDING.md`         | New contributor guide                   |
+| `ENHANCED_REFACTORING_STRUCTURE.md` | 400% platform architecture plan         |
+| `CODEOWNERS`                        | Package ownership & review requirements |
+| `ADR/`                              | Architecture decisions                  |
+| `turbo.json`                        | Monorepo task configuration             |
+| `pnpm-workspace.yaml`               | Workspace definition                    |
+| `tsconfig.json`                     | TypeScript project references           |
 
 ---
 
@@ -455,7 +473,7 @@ pnpm build -- --verbose
 - **Found a bug?** GitHub Issues
 - **Need help?** CONTRIBUTOR_ONBOARDING.md
 - **Want to contribute?** See CONTRIBUTING.md
-- **Architecture?** Read ARCHITECTURE_REDESIGN.md
+- **Architecture?** Read AGENTS.md + `architecture/` docs
 - **Decisions?** Check ADR/ directory
 
 ---

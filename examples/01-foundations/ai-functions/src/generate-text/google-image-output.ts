@@ -1,5 +1,5 @@
 import { google } from '@ai-toolkit/google';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

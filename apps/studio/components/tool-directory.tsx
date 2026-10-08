@@ -1,12 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-import { CodeBlock } from '@/components/code-block';
-import { DataTable } from '@/components/data-table';
-import { Drawer } from '@/components/drawer';
-import { FilterBar } from '@/components/filter-bar';
+import { CodeBlock } from '@ai-toolkit/design/code-block';
+import { DataTable } from '@ai-toolkit/design/data-table';
+import { Drawer } from '@ai-toolkit/design/drawer';
+import { FilterBar } from '@ai-toolkit/design/filter-bar';
 import type { Tool } from '@/lib/tools';
-import type { Column } from '@/components/data-table';
+import type { Column } from '@ai-toolkit/design/data-table';
 
 const ALL = 'all';
 

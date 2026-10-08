@@ -1,0 +1,27 @@
+---
+title: Cursor Harness
+description: Connect HarnessAgent to Cursor via ACP v1.
+---
+
+Installs the Cursor CLI with a Bash installer and exposes ACP via `agent --disable-auto-update acp`.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-cursor
+```
+
+## Usage
+
+```ts
+import { cursorHarness } from '@ai-toolkit/harness-cursor';
+
+// const agent = new HarnessAgent({ harness: cursorHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `Cursor CLI (Bash installer)` (`agent --disable-auto-update acp`)

@@ -27,13 +27,13 @@
   "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../../../packages/adapters/react"
+      "path": "../../../packages/integrations/react"
     },
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/ai/core"
     },
     {
-      "path": "../../../packages/core/provider-utils"
+      "path": "../../../packages/foundation/utils"
     },
     {
       "path": "../../../packages/providers/anthropic"
@@ -72,7 +72,7 @@
       "path": "../../../packages/providers/xai"
     },
     {
-      "path": "../../../packages/validation/provider"
+      "path": "../../../packages/foundation/provider"
     }
   ]
 }

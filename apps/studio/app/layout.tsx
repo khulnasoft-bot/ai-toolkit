@@ -5,8 +5,8 @@ import { getSearchIndex } from '@/lib/search';
 
 export const metadata: Metadata = {
   title: {
-    default: 'AI Studio',
-    template: '%s · AI Studio',
+    default: 'AI Toolkit',
+    template: '%s · AI Toolkit',
   },
   description:
     'Dashboard for the AI Toolkit — gateways, models, providers, tools, and templates.',

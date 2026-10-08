@@ -27,13 +27,13 @@
   "exclude": ["node_modules"],
   "references": [
     {
-      "path": "../../../packages/adapters/react"
+      "path": "../../../packages/integrations/langchain"
     },
     {
-      "path": "../../../packages/core/ai"
+      "path": "../../../packages/integrations/react"
     },
     {
-      "path": "../../../packages/langchain"
+      "path": "../../../packages/ai/core"
     }
   ]
 }

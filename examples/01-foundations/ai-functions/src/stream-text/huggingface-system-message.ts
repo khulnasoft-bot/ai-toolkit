@@ -1,11 +1,12 @@
 import { huggingface } from '@ai-toolkit/huggingface';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
   const result = streamText({
     model: huggingface('meta-llama/Llama-3.1-8B-Instruct'),
-    system: 'You are a knowledgeable chef who loves to share cooking tips and recipes.',
+    system:
+      'You are a knowledgeable chef who loves to share cooking tips and recipes.',
     prompt: 'How do I make the perfect scrambled eggs?',
   });
 

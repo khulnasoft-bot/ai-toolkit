@@ -1,4 +1,4 @@
-import type { GeneratedFile } from 'ai-toolkit';
+import type { GeneratedFile } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import path from 'node:path';
 

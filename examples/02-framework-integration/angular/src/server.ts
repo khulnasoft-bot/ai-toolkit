@@ -1,5 +1,9 @@
 import { openai } from '@ai-toolkit/openai';
-import { convertToModelMessages, streamObject, streamText } from 'ai-toolkit';
+import {
+  convertToModelMessages,
+  streamObject,
+  streamText,
+} from '@ai-toolkit/ai';
 import 'dotenv/config';
 import express, { Request, Response } from 'express';
 import z from 'zod';

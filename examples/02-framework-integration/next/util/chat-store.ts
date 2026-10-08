@@ -1,4 +1,4 @@
-import { generateId } from 'ai-toolkit';
+import { generateId } from '@ai-toolkit/ai';
 import { existsSync, mkdirSync } from 'fs';
 import { readdir, readFile, writeFile } from 'fs/promises';
 import path from 'path';
@@ -67,7 +67,9 @@ export async function readAllChats(): Promise<ChatData[]> {
   const chatDir = path.join(process.cwd(), '.chats');
   const files = await readdir(chatDir, { withFileTypes: true });
   return Promise.all(
-    files.filter(file => file.isFile()).map(async file => readChat(file.name.replace('.json', ''))),
+    files
+      .filter(file => file.isFile())
+      .map(async file => readChat(file.name.replace('.json', ''))),
   );
 }
 

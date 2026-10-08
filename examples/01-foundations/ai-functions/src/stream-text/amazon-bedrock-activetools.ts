@@ -1,5 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { streamText, tool, stepCountIs } from 'ai-toolkit';
+import { streamText, tool, stepCountIs } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -35,7 +35,9 @@ run(async () => {
         console.log('Step started');
         break;
       case 'tool-call':
-        console.log(`Tool call: ${part.toolName}(${JSON.stringify(part.input)})`);
+        console.log(
+          `Tool call: ${part.toolName}(${JSON.stringify(part.input)})`,
+        );
         break;
       case 'tool-result':
         console.log(`Tool result: ${JSON.stringify(part.output)}`);

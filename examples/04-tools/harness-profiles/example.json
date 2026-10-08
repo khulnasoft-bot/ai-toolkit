@@ -1,0 +1,10 @@
+{
+  "name": "harness-profiles",
+  "title": "Harness Profiles",
+  "category": "04-tools",
+  "categoryOrder": 4,
+  "framework": "node",
+  "primaryProvider": null,
+  "description": "Construct per-agent ACP harness profiles (Claude Code, Cline, Codex, Cursor, Grok Build, opencode, Pi) and print their stable bootstrap identities.",
+  "tags": ["harness", "acp", "agents", "node"]
+}

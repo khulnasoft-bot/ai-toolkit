@@ -1,5 +1,5 @@
 import { anthropic, AnthropicProviderOptions } from '@ai-toolkit/anthropic';
-import { ToolLoopAgent } from 'ai-toolkit';
+import { ToolLoopAgent } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import { print } from '../lib/print';
 import { run } from '../lib/run';

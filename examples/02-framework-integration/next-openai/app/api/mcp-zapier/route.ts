@@ -1,5 +1,9 @@
 import { openai } from '@ai-toolkit/openai';
-import { convertToModelMessages, stepCountIs, streamText } from 'ai-toolkit';
+import {
+  convertToModelMessages,
+  stepCountIs,
+  streamText,
+} from '@ai-toolkit/ai';
 import { createMCPClient } from '@ai-toolkit/mcp';
 
 export const maxDuration = 30;

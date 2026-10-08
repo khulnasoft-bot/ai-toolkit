@@ -1,13 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Play, Copy, Download } from 'lucide-react';
+import { Play, Copy, Download, X } from 'lucide-react';
 
 interface CodeEditorProps {
   initialCode?: string;
   language?: string;
   onGenerate?: (prompt: string) => void;
+  onClose?: () => void;
   isGenerating?: boolean;
 }
 
@@ -15,13 +16,40 @@ export function CodeEditor({
   initialCode = '',
   language = 'typescript',
   onGenerate,
+  onClose,
   isGenerating = false,
 }: CodeEditorProps) {
   const [code, setCode] = useState(initialCode);
   const [prompt, setPrompt] = useState('');
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code);
+  useEffect(() => {
+    setCode(initialCode);
+  }, [initialCode]);
+
+  useEffect(() => {
+    if (!onClose) return;
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(code);
+    } catch {
+      const textarea = document.createElement('textarea');
+      textarea.value = code;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+    }
   };
 
   const handleDownload = () => {
@@ -32,13 +60,16 @@ export function CodeEditor({
     a.download = `generated-code.${language === 'typescript' ? 'ts' : 'js'}`;
     document.body.appendChild(a);
     a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
+    window.setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 0);
   };
 
   const handleGenerate = () => {
     if (prompt.trim() && onGenerate) {
       onGenerate(prompt);
+      setPrompt('');
     }
   };
 
@@ -48,14 +79,35 @@ export function CodeEditor({
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold">Code Editor</h3>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm" onClick={handleCopy}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCopy}
+              aria-label="Copy code"
+            >
               <Copy className="h-4 w-4 mr-2" />
               Copy
             </Button>
-            <Button variant="outline" size="sm" onClick={handleDownload}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownload}
+              aria-label="Download code"
+            >
               <Download className="h-4 w-4 mr-2" />
               Download
             </Button>
+            {onClose && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={onClose}
+                aria-label="Close code editor"
+                className="p-2"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            )}
           </div>
         </div>
 
@@ -70,7 +122,11 @@ export function CodeEditor({
                 placeholder="Describe the code you want to generate..."
                 className="flex-1 px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               />
-              <Button onClick={handleGenerate} disabled={isGenerating || !prompt.trim()}>
+              <Button
+                onClick={handleGenerate}
+                disabled={isGenerating || !prompt.trim()}
+                aria-label="Generate code"
+              >
                 {isGenerating ? (
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                 ) : (
@@ -91,7 +147,9 @@ export function CodeEditor({
             className="w-full h-96 p-4 font-mono text-sm bg-muted border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-ring"
             spellCheck={false}
           />
-          <div className="absolute top-2 right-2 text-xs text-muted-foreground">{language}</div>
+          <div className="absolute top-2 right-2 text-xs text-muted-foreground">
+            {language}
+          </div>
         </div>
       </div>
     </div>

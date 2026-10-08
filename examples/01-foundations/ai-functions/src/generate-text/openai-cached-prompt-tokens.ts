@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { generateText } from 'ai-toolkit';
+import { generateText } from '@ai-toolkit/ai';
 import { setTimeout } from 'node:timers/promises';
 import { performance } from 'node:perf_hooks';
 import { run } from '../lib/run';
@@ -169,7 +169,11 @@ run(async () => {
   await setTimeout(1000); // wait for it to be cached?g
 
   start = performance.now();
-  const { text: text2, usage: usage2, providerMetadata: providerMetadata2 } = await runCompletion();
+  const {
+    text: text2,
+    usage: usage2,
+    providerMetadata: providerMetadata2,
+  } = await runCompletion();
   end = performance.now();
 
   console.log(`Second pass text:`, text2);

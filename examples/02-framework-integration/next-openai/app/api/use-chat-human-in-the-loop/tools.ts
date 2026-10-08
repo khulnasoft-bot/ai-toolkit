@@ -1,4 +1,4 @@
-import { tool, ToolSet } from 'ai-toolkit';
+import { tool, ToolSet } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 const getWeatherInformation = tool({

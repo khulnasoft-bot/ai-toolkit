@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { generateText, Output, stepCountIs } from 'ai-toolkit';
+import { generateText, Output, stepCountIs } from '@ai-toolkit/ai';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';

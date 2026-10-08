@@ -6,7 +6,7 @@
     "@ai-toolkit/openai": "workspace:*",
     "dotenv": "16.4.5",
     "zod": "3.25.76",
-    "ai-toolkit": "workspace:*"
+    "@ai-toolkit/ai": "workspace:*"
   },
   "scripts": {
     "type-check": "tsc --build",

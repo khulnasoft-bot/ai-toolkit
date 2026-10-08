@@ -1,0 +1,33 @@
+{
+  "name": "create-ai-provider",
+  "version": "0.0.1",
+  "description": "Scaffold AI TOOLKIT provider packages quickly",
+  "type": "module",
+  "main": "src/index.js",
+  "bin": {
+    "create-ai-provider": "src/index.js"
+  },
+  "files": [
+    "src/**/*",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "node --test test/golden.test.js"
+  },
+  "keywords": [
+    "ai",
+    "scaffold",
+    "cli",
+    "provider"
+  ],
+  "dependencies": {
+    "chalk": "^5.6.2"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

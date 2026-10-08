@@ -1,4 +1,4 @@
-import { createAgentUIStreamResponse } from 'ai-toolkit';
+import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
 import { openaiImageGenerationAgent } from '@/agent/openai-image-generation-agent';
 
 export async function POST(req: Request) {

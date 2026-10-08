@@ -1,5 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import { streamText } from 'ai-toolkit';
+import { streamText } from '@ai-toolkit/ai';
 import { setTimeout } from 'node:timers/promises';
 import { performance } from 'node:perf_hooks';
 import { run } from '../lib/run';

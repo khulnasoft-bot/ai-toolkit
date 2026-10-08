@@ -59,6 +59,127 @@ jobs:
       - name: Run Prettier check
         run: pnpm run prettier-check
 
+  structure:
+    name: 'Structure'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run structure validation
+        run: pnpm run validate-structure
+
+      - name: Run dependency direction validation
+        run: pnpm run arch:deps
+
+      - name: Check capability matrix freshness
+        run: pnpm run arch:capabilities:check
+
+  scaffolder:
+    name: 'Scaffolder'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run scaffolder golden tests
+        run: pnpm --filter create-ai-provider test
+
+      - name: Scaffold probe packages
+        run: |
+          node tools/create-ai-provider/src/index.js ci-probe-acme -a openai-compatible -m "ci-probe-model" -y --no-install
+          node tools/create-ai-provider/src/index.js ci-probe-agent -a harness-acp -e "ci-probe-agent --acp" -y --no-install
+
+      - name: Validate scaffolded structure
+        run: pnpm run validate-structure
+
+      - name: Run dependency direction validation
+        run: pnpm run arch:deps
+
+      - name: Remove probe packages
+        run: |
+          rm -rf packages/providers/ci-probe-acme packages/providers/ci-probe-agent
+          git checkout -- tsconfig.json
+
+  health:
+    name: 'Health'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run health check
+        run: pnpm run health-check
+
+  inventory:
+    name: 'Inventory'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check inventory freshness
+        run: pnpm run inventory:check
+
+      - name: Check capability matrix freshness
+        run: pnpm run arch:capabilities:check
+
   eslint:
     name: 'ESLint'
     runs-on: ubuntu-latest

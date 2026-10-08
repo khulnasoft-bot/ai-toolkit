@@ -1,5 +1,5 @@
 import { weatherValibotAgent } from '@/agent/weather-valibot-agent';
-import { createAgentUIStreamResponse } from 'ai-toolkit';
+import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
 
 export async function POST(request: Request) {
   const { messages } = await request.json();

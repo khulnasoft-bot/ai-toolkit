@@ -1,5 +1,5 @@
 import { convertUint8ArrayToBase64 } from '@ai-toolkit/provider-utils';
-import { UIToolInvocation, tool } from 'ai-toolkit';
+import { UIToolInvocation, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 export const fetchPdfTool = tool({
@@ -8,7 +8,7 @@ export const fetchPdfTool = tool({
   inputSchema: z.object({}),
   async execute() {
     const response = await fetch(
-      'https://raw.githubusercontent.com/vercel/ai/main/examples/ai-functions/data/ai.pdf',
+      'https://raw.githubusercontent.com/khulnasoft/ai-toolkit/main/examples/ai-functions/data/ai.pdf',
     );
 
     const arrayBuffer = await response.arrayBuffer();

@@ -1,5 +1,5 @@
 import { anthropic } from '@ai-toolkit/anthropic';
-import { stepCountIs, generateText } from 'ai-toolkit';
+import { stepCountIs, generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 import { anthropicLocalFsMemoryTool } from '../lib/anthropic-local-fs-memory-tool';
 

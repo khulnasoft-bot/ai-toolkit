@@ -1,5 +1,5 @@
 import { perplexity } from '@ai-toolkit/perplexity';
-import { generateObject } from 'ai-toolkit';
+import { generateObject } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

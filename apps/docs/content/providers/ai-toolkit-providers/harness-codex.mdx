@@ -1,0 +1,27 @@
+---
+title: Codex Harness
+description: Connect HarnessAgent to Codex via ACP v1.
+---
+
+Supports only `permissionMode: 'allow-all'` (other modes throw `HarnessACPCapabilityUnsupportedError`). The OpenAI-compatible endpoint must end in `/v1`.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-codex
+```
+
+## Usage
+
+```ts
+import { codexHarness } from '@ai-toolkit/harness-codex';
+
+// const agent = new HarnessAgent({ harness: codexHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `@agentclientprotocol/codex-acp` (`codex-acp`)
