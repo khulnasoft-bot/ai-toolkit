@@ -1,1 +1,1 @@
-packages/core/ai-toolkit/README.md
+packages/ai/core/README.md
