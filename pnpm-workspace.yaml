@@ -36,3 +36,19 @@ packages:
   - 'apps'
   # Examples are organized into categorized subdirectories (01-foundations, 02-framework-integration, 03-integrations, 04-tools)
   - 'examples/*/*'
+allowBuilds:
+  '@google/genai': false
+  '@mongodb-js/zstd': false
+  '@nestjs/core': false
+  '@parcel/watcher': false
+  '@sentry/cli': false
+  '@swc/core': false
+  '@xai-official/grok': false
+  cbor-extract: false
+  esbuild: true
+  lmdb: false
+  msgpackr-extract: false
+  msw: false
+  node-liblzma: false
+  protobufjs: false
+  sharp: false

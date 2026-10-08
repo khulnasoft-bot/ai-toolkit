@@ -2,9 +2,9 @@
   "private": true,
   "name": "ai-monorepo",
   "scripts": {
-    "build": "turbo build --concurrency 1",
-    "build:examples": "turbo --filter \"./examples/**\" build --concurrency 1",
-    "build:packages": "turbo --filter \"./packages/**\" build",
+    "build": "turbo build --concurrency 16",
+    "build:examples": "turbo --filter ./examples/*",
+    "build:packages": "turbo --filter ./packages/*",
     "build:core": "turbo build:core",
     "build:providers": "turbo build:providers",
     "build:adapters": "turbo build:adapters",
@@ -59,27 +59,24 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
     "@changesets/cli": "2.27.10",
-    "@playwright/test": "^1.44.1",
+    "@playwright/test": "^1.61.1",
     "del-cli": "^5.1.0",
-    "eslint": "8.57.1",
     "eslint-config-khulnasoft-ai": "workspace:*",
     "husky": "^8.0.0",
-    "lint-staged": "15.2.10",
-    "next": "15.0.7",
-    "playwright": "^1.44.1",
-    "prettier": "3.5.3",
-    "prettier-plugin-svelte": "^3.3.3",
+    "lint-staged": "15.5.1",
+    "next": "16.3.6",
+    "playwright": "^1.61.1",
     "publint": "0.2.12",
     "react": "19.0.0-rc-cc1ec60d0d-20240607",
     "react-dom": "19.0.0-rc-cc1ec60d0d-20240607",
-    "remark-cli": "^12.0.1",
-    "turbo": "2.4.4",
-    "typescript": "5.8.3",
+    "semver": "^7.8.5",
+    "turbo": "2.9.14",
+    "typescript": "6.0.3",
     "update-ts-references": "^3.6.0",
-    "vitest": "2.1.4"
+    "vitest": "4.1.11"
   },
   "engines": {
-    "node": "^18.0.0 || ^20.0.0 || ^22.0.0"
+    "node": "^22.13.0 || ^24.0.0 || ^26.0.0"
   },
   "homepage": "https://studio.khulnasoft.com/docs",
   "repository": {
@@ -93,7 +90,7 @@
   "keywords": [
     "ai"
   ],
-  "packageManager": "pnpm@10.11.0",
+  "packageManager": "pnpm@11.23.0",
   "prettier": {
     "tabWidth": 2,
     "useTabs": false,
