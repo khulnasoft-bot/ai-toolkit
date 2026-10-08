@@ -1,10 +1,10 @@
-import { AISDKError } from '@ai-toolkit/provider';
+import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_SerializationError';
 const marker = `vercel.ai.error.${name}`;
 const symbol = Symbol.for(marker);
 
-export class SerializationError extends AISDKError {
+export class SerializationError extends AITOOLKITError {
   private readonly [symbol] = true; // used in isInstance
 
   constructor({
@@ -18,6 +18,6 @@ export class SerializationError extends AISDKError {
   }
 
   static isInstance(error: unknown): error is SerializationError {
-    return AISDKError.hasMarker(error, marker);
+    return AITOOLKITError.hasMarker(error, marker);
   }
 }

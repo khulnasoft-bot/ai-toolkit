@@ -84,14 +84,25 @@ check('CODEOWNERS exists', () => {
 
 check('Domain directories exist', () => {
   const domains = [
-    'core',
+    'foundation',
+    'ai',
+    'gateway',
     'providers',
-    'adapters',
-    'ui',
     'mcp',
-    'special',
-    'validation',
-    'infrastructure',
+    'integrations',
+    'ui',
+    'tooling',
+    'testing',
+    'agents',
+    'workflow',
+    'memory',
+    'context',
+    'evals',
+    'observability',
+    'security',
+    'sandbox',
+    'retrieval',
+    'tools',
   ];
   const missing = domains.filter(d => !fs.existsSync(path.join(ROOT, 'packages', d)));
   if (missing.length > 0) throw new Error(`Missing: packages/${missing.join(', packages/')}`);

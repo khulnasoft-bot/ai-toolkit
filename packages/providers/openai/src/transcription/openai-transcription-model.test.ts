@@ -202,19 +202,18 @@ describe('doGenerate', () => {
       },
     });
 
-    expect(await server.calls[0].requestBodyMultipart).toMatchInlineSnapshot(`
-      {
-        "file": File {
-          Symbol(kHandle): Blob {},
-          Symbol(kLength): 40169,
-          Symbol(kType): "audio/wav",
-        },
-        "model": "whisper-1",
-        "response_format": "verbose_json",
-        "temperature": "0",
-        "timestamp_granularities[]": "word",
-      }
-    `);
+    const multipart = await server.calls[0].requestBodyMultipart;
+
+    expect(multipart).toMatchObject({
+      model: 'whisper-1',
+      response_format: 'verbose_json',
+      temperature: '0',
+      'timestamp_granularities[]': 'word',
+    });
+    expect(multipart.file).toBeInstanceOf(File);
+    expect(multipart.file.type).toBe('audio/wav');
+    expect(multipart.file.name).toBe('audio.wav');
+    expect(multipart.file.size).toBe(40169);
   });
 
   it('should not set pass response_format to "verbose_json" when model is "gpt-4o-transcribe"', async () => {
@@ -231,19 +230,18 @@ describe('doGenerate', () => {
       },
     });
 
-    expect(await server.calls[0].requestBodyMultipart).toMatchInlineSnapshot(`
-      {
-        "file": File {
-          Symbol(kHandle): Blob {},
-          Symbol(kLength): 40169,
-          Symbol(kType): "audio/wav",
-        },
-        "model": "gpt-4o-transcribe",
-        "response_format": "json",
-        "temperature": "0",
-        "timestamp_granularities[]": "word",
-      }
-    `);
+    const multipart = await server.calls[0].requestBodyMultipart;
+
+    expect(multipart).toMatchObject({
+      model: 'gpt-4o-transcribe',
+      response_format: 'json',
+      temperature: '0',
+      'timestamp_granularities[]': 'word',
+    });
+    expect(multipart.file).toBeInstanceOf(File);
+    expect(multipart.file.type).toBe('audio/wav');
+    expect(multipart.file.name).toBe('audio.wav');
+    expect(multipart.file.size).toBe(40169);
   });
 
   it('should pass timestamp_granularities when specified', async () => {
@@ -259,19 +257,18 @@ describe('doGenerate', () => {
       },
     });
 
-    expect(await server.calls[0].requestBodyMultipart).toMatchInlineSnapshot(`
-      {
-        "file": File {
-          Symbol(kHandle): Blob {},
-          Symbol(kLength): 40169,
-          Symbol(kType): "audio/wav",
-        },
-        "model": "whisper-1",
-        "response_format": "verbose_json",
-        "temperature": "0",
-        "timestamp_granularities[]": "segment",
-      }
-    `);
+    const multipart = await server.calls[0].requestBodyMultipart;
+
+    expect(multipart).toMatchObject({
+      model: 'whisper-1',
+      response_format: 'verbose_json',
+      temperature: '0',
+      'timestamp_granularities[]': 'segment',
+    });
+    expect(multipart.file).toBeInstanceOf(File);
+    expect(multipart.file.type).toBe('audio/wav');
+    expect(multipart.file.name).toBe('audio.wav');
+    expect(multipart.file.size).toBe(40169);
   });
 
   it('should work when no words, language, or duration are returned', async () => {
@@ -310,7 +307,7 @@ describe('doGenerate', () => {
             "text": "Hello from the Vercel AI TOOLKIT!",
           },
           "headers": {
-            "content-length": "85",
+            "content-length": "89",
             "content-type": "application/json",
           },
           "modelId": "whisper-1",

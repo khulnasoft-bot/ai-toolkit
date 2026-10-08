@@ -70,6 +70,7 @@ function readWorkspaceGlobs() {
     if (trimmed.startsWith('- ')) {
       const glob = trimmed
         .slice(2)
+        .replace(/\s+#.*$/, '')
         .trim()
         .replace(/^['"]|['"]$/g, '');
       if (glob && !glob.startsWith('#')) globs.push(glob);

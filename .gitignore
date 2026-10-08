@@ -18,5 +18,8 @@ tsconfig.vitest-temp.json
 *.local
 *.tsbuildinfo
 packages/ai/docs
+content/*/registry.js
+content/*/registry.d.ts
+content/*/registry.d.ts.map
 .vercel
 .env*

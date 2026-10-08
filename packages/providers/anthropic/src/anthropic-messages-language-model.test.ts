@@ -3785,20 +3785,36 @@ describe('AnthropicMessagesLanguageModel', () => {
         body: '{"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"}}',
       };
 
-      await expect(
-        model.doGenerate({ prompt: TEST_PROMPT }),
-      ).rejects.toThrowError(
-        new APICallError({
-          message: 'Overloaded',
-          url: 'https://api.anthropic.com/v1/messages',
-          requestBodyValues: {},
-          statusCode: 529,
-          responseHeaders: {},
-          responseBody:
-            '{"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"}}',
-          isRetryable: true,
-        }),
-      );
+      try {
+        await model.doGenerate({ prompt: TEST_PROMPT });
+        expect.fail('Expected an error to be thrown');
+      } catch (error) {
+        expect(error).toBeInstanceOf(APICallError);
+        const apiCallError = error as APICallError;
+        expect({
+          message: apiCallError.message,
+          url: apiCallError.url,
+          statusCode: apiCallError.statusCode,
+          responseBody: apiCallError.responseBody,
+          data: apiCallError.data,
+          isRetryable: apiCallError.isRetryable,
+        }).toMatchInlineSnapshot(`
+          {
+            "data": {
+              "error": {
+                "message": "Overloaded",
+                "type": "overloaded_error",
+              },
+              "type": "error",
+            },
+            "isRetryable": true,
+            "message": "Overloaded",
+            "responseBody": "{"type":"error","error":{"details":null,"type":"overloaded_error","message":"Overloaded"}}",
+            "statusCode": 529,
+            "url": "https://api.anthropic.com/v1/messages",
+          }
+        `);
+      }
     });
 
     describe('temperature clamping', () => {

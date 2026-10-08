@@ -49,10 +49,13 @@ vi.mock('@ai-toolkit/provider-utils', async () => {
 });
 
 vi.mock('@basetenlabs/performance-client', () => ({
-  PerformanceClient: vi.fn().mockImplementation(() => ({
-    embed: vi.fn(),
-    embedBatch: vi.fn(),
-  })),
+  // must be constructible: the provider instantiates it with `new`
+  PerformanceClient: vi.fn().mockImplementation(function () {
+    return {
+      embed: vi.fn(),
+      embedBatch: vi.fn(),
+    };
+  }),
 }));
 
 vi.mock('./version', () => ({

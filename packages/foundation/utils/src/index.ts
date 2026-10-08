@@ -2,6 +2,11 @@ export { asArray, type Arrayable } from './as-array';
 export * from './combine-headers';
 export { convertAsyncIteratorToReadableStream } from './convert-async-iterator-to-readable-stream';
 export {
+  createProviderStreamError,
+  isProviderStreamError,
+  type ProviderStreamError,
+} from './create-provider-stream-error';
+export {
   createToolNameMapping,
   type ToolNameMapping,
 } from './create-tool-name-mapping';

@@ -8,7 +8,7 @@
   "exclude": ["dist", "node_modules", "tsup.config.ts"],
   "references": [
     {
-      "path": "../../core/runtime"
+      "path": "../runtime"
     }
   ]
 }

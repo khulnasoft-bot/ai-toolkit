@@ -28,7 +28,7 @@
   "exclude": ["src/server.ts"],
   "references": [
     {
-      "path": "../../packages/adapters/angular"
+      "path": "../../../packages/integrations/angular"
     }
   ]
 }

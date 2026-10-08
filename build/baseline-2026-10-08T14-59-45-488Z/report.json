@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-10-08T15:00:04.458Z",
+  "summary": [
+    {
+      "label": "inventory",
+      "status": "ok",
+      "durationMs": 475
+    },
+    {
+      "label": "health-check",
+      "status": "failed",
+      "durationMs": 2230,
+      "code": null
+    },
+    {
+      "label": "validate-structure",
+      "status": "failed",
+      "durationMs": 813,
+      "code": null
+    },
+    {
+      "label": "types:check",
+      "status": "failed",
+      "durationMs": 8241,
+      "code": null
+    },
+    {
+      "label": "build:runtime",
+      "status": "ok",
+      "durationMs": 1057
+    },
+    {
+      "label": "test:runtime",
+      "status": "failed",
+      "durationMs": 6130,
+      "code": null
+    }
+  ]
+}

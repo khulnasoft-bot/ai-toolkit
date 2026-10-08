@@ -58,9 +58,12 @@ describe('createEventSourceResponseHandler', () => {
     const frame = createFrame(dummyPayload);
 
     const mockDecode = vi.fn().mockReturnValue(message);
-    (EventStreamCodec as unknown as MockInstance).mockImplementation(() => ({
-      decode: mockDecode,
-    }));
+    // must be constructible: the handler instantiates it with `new`
+    (EventStreamCodec as unknown as MockInstance).mockImplementation(function () {
+      return {
+        decode: mockDecode,
+      };
+    });
 
     // Create a stream that enqueues the complete frame.
     const stream = new ReadableStream({
@@ -103,9 +106,12 @@ describe('createEventSourceResponseHandler', () => {
     const frame = createFrame(dummyPayload);
 
     const mockDecode = vi.fn().mockReturnValue(message);
-    (EventStreamCodec as unknown as MockInstance).mockImplementation(() => ({
-      decode: mockDecode,
-    }));
+    // must be constructible: the handler instantiates it with `new`
+    (EventStreamCodec as unknown as MockInstance).mockImplementation(function () {
+      return {
+        decode: mockDecode,
+      };
+    });
 
     const stream = new ReadableStream({
       start(controller) {
@@ -145,9 +151,12 @@ describe('createEventSourceResponseHandler', () => {
     const frame = createFrame(dummyPayload);
 
     const mockDecode = vi.fn().mockReturnValue(message);
-    (EventStreamCodec as unknown as MockInstance).mockImplementation(() => ({
-      decode: mockDecode,
-    }));
+    // must be constructible: the handler instantiates it with `new`
+    (EventStreamCodec as unknown as MockInstance).mockImplementation(function () {
+      return {
+        decode: mockDecode,
+      };
+    });
 
     const stream = new ReadableStream({
       start(controller) {
@@ -198,9 +207,12 @@ describe('createEventSourceResponseHandler', () => {
         throw new Error('Incomplete data');
       })
       .mockReturnValue(message);
-    (EventStreamCodec as unknown as MockInstance).mockImplementation(() => ({
-      decode: mockDecode,
-    }));
+    // must be constructible: the handler instantiates it with `new`
+    (EventStreamCodec as unknown as MockInstance).mockImplementation(function () {
+      return {
+        decode: mockDecode,
+      };
+    });
 
     const stream = new ReadableStream({
       start(controller) {

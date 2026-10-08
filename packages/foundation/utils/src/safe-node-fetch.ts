@@ -1,12 +1,20 @@
 import type * as nodeDnsModule from 'node:dns';
 import type * as nodeModule from 'node:module';
-import type * as undiciModule from 'undici';
 import type { FetchFunction } from './fetch-function';
 import { validateDownloadAddress } from './validate-download-url';
 
 type NodeDns = typeof nodeDnsModule;
 type NodeModule = typeof nodeModule;
-type Undici = typeof undiciModule;
+
+// `undici` is provided by Node.js at runtime and loaded indirectly, so it is
+// not a dependency of this package. Only the parts used below are typed here.
+type Undici = {
+  Agent: new (options?: { connect?: { lookup?: unknown } }) => unknown;
+  fetch: (
+    input: Parameters<FetchFunction>[0],
+    init?: Parameters<FetchFunction>[1] & { dispatcher?: unknown },
+  ) => Promise<Response>;
+};
 
 type LookupAddress = {
   address: string;
@@ -159,13 +167,10 @@ function createSafeNodeFetch(): FetchFunction {
   });
 
   return ((input, init) =>
-    fetch(
-      input as Parameters<typeof fetch>[0],
-      {
-        ...init,
-        dispatcher,
-      } as Parameters<typeof fetch>[1],
-    ) as unknown as Promise<Response>) satisfies FetchFunction;
+    fetch(input, {
+      ...init,
+      dispatcher,
+    })) satisfies FetchFunction;
 }
 
 function loadBuiltinModule<T>(id: string): T {
