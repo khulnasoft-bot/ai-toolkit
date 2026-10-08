@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Chat } from '@ai-toolkit/vue';
-import { createIdGenerator, DefaultChatTransport } from 'ai-toolkit';
+import { createIdGenerator, DefaultChatTransport } from '@ai-toolkit/ai';
 import { computed, ref } from 'vue';
 
 const chat = new Chat({

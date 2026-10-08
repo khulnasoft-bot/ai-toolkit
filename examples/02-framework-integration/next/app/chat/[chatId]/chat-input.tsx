@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type RefObject } from 'react';
 
 export default function ChatInput({
   status,
@@ -8,7 +8,7 @@ export default function ChatInput({
 }: {
   status: string;
   onSubmit: (text: string) => void;
-  inputRef: React.RefObject<HTMLInputElement>;
+  inputRef: RefObject<HTMLInputElement>;
   stop: () => void;
 }) {
   const [text, setText] = useState('');

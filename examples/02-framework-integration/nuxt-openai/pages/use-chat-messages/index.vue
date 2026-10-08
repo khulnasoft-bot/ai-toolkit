@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import type { UIMessage } from 'ai-toolkit';
+import type { UIMessage } from '@ai-toolkit/ai';
 import { Chat } from '@ai-toolkit/vue';
-import { createIdGenerator } from 'ai-toolkit';
+import { createIdGenerator } from '@ai-toolkit/ai';
 import { computed, ref } from 'vue';
 
 const messages = ref<UIMessage[]>([
