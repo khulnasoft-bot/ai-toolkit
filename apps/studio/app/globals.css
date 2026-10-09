@@ -1,5 +1,0 @@
-@import "@ai-toolkit/design/globals.css";
-
-@source '../app/**/*.{ts,tsx}';
-@source '../components/**/*.{ts,tsx}';
-@source '../../packages/ui/design/src/**/*.{ts,tsx}';

@@ -1,17 +1,21 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": false,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "incremental": true,
     "plugins": [
       {
@@ -19,29 +23,19 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
-    },
-    "noEmit": true
+      "@/*": [
+        "./*"
+      ]
+    }
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "../../content/tools-registry/registry.ts",
-    "../../content/gateways-registry/registry.ts",
-    "../../examples/registry.json"
+    ".next/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"],
-  "references": [
-    {
-      "path": "../../packages/integrations/react"
-    },
-    {
-      "path": "../../packages/ai/core"
-    },
-    {
-      "path": "../../packages/ui/design"
-    }
+  "exclude": [
+    "node_modules"
   ]
 }

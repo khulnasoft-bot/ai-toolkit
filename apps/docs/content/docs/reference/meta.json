@@ -1,9 +1,0 @@
-{
-  "pages": [
-    "ai-toolkit-core",
-    "ai-toolkit-ui",
-    "ai-toolkit-rsc",
-    "stream-helpers",
-    "ai-toolkit-errors"
-  ]
-}
