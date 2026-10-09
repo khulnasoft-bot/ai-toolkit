@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "rag-chatbot",
+    "multi-modal-chatbot",
+    "slackbot",
+    "natural-language-postgres",
+    "computer-use",
+    "gemini",
+    "claude-4",
+    "openai-responses",
+    "google-gemini-image-generation",
+    "sonnet-3-7",
+    "llama-3_1",
+    "gpt-5",
+    "o1",
+    "o3",
+    "r1",
+    "deepseek-v3-2"
+  ]
+}

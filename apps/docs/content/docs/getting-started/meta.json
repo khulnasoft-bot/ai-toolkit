@@ -1,0 +1,13 @@
+{
+  "pages": [
+    "choosing-a-provider",
+    "navigating-the-library",
+    "nextjs-app-router",
+    "nextjs-pages-router",
+    "svelte",
+    "nuxt",
+    "nodejs",
+    "expo",
+    "tanstack-start"
+  ]
+}

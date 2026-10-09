@@ -1,0 +1,27 @@
+---
+title: Cline Harness
+description: Connect HarnessAgent to Cline via ACP v1.
+---
+
+Installs the `cline` CLI from npm and launches `cline --acp` over stdio. Authenticate once with `cline auth`; saved credentials are reused automatically.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-cline
+```
+
+## Usage
+
+```ts
+import { clineHarness } from '@ai-toolkit/harness-cline';
+
+// const agent = new HarnessAgent({ harness: clineHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `cline` (`cline --acp`)

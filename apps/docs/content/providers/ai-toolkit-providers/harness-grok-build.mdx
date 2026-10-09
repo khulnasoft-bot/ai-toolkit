@@ -1,0 +1,27 @@
+---
+title: Grok Build Harness
+description: Connect HarnessAgent to Grok Build via ACP v1.
+---
+
+Runs `grok agent stdio` from `@xai-official/grok`. No `permissionModeMapping`: permission requests fall back to tool-kind behavior. Instructions map to `.grok/AGENTS.md`.
+
+> Experimental: expect breaking changes between releases.
+
+## Setup
+
+```bash
+npm i @ai-toolkit/harness-grok-build
+```
+
+## Usage
+
+```ts
+import { grokBuildHarness } from '@ai-toolkit/harness-grok-build';
+
+// const agent = new HarnessAgent({ harness: grokBuildHarness, sandbox });
+```
+
+## Details
+
+- Protocol: ACP v1 (`createACP` from `@ai-toolkit/harness-acp`)
+- Source: `@xai-official/grok` (`grok agent stdio`)

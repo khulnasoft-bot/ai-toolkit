@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "overview",
+    "agent-tools",
+    "canvas",
+    "conversation",
+    "message",
+    "prompt-input",
+    "reference"
+  ]
+}

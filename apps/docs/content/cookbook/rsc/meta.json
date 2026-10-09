@@ -1,0 +1,19 @@
+{
+  "pages": [
+    "generate-text",
+    "generate-text-with-chat-prompt",
+    "stream-text",
+    "stream-text-with-chat-prompt",
+    "generate-object",
+    "stream-object",
+    "call-tools",
+    "call-tools-in-parallel",
+    "save-messages-to-database",
+    "restore-messages-from-database",
+    "render-visual-interface-in-chat",
+    "stream-updates-to-visual-interfaces",
+    "stream-ui-record-token-usage"
+  ],
+  "title": "React Server Components",
+  "defaultOpen": false
+}
