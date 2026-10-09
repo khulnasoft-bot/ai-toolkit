@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 export default function Playground() {
-  const [prompt, setPrompt] = useState('Explain how streaming AI responses work in one paragraph.');
+  const [prompt, setPrompt] = useState(
+    'Explain how streaming AI responses work in one paragraph.',
+  );
   const [ran, setRan] = useState(false);
   return (
     <main className="shell" style={{ paddingTop: 48 }}>
@@ -74,19 +76,21 @@ export default function Playground() {
           >
             SETTINGS
           </label>
-          {['Temperature 0.7', 'Max tokens 1024', 'Streaming on'].map(setting => (
-            <div
-              key={setting}
-              style={{
-                padding: '14px 0',
-                borderBottom: '1px solid var(--line)',
-                fontSize: 13,
-                color: 'var(--muted)',
-              }}
-            >
-              {setting}
-            </div>
-          ))}
+          {['Temperature 0.7', 'Max tokens 1024', 'Streaming on'].map(
+            setting => (
+              <div
+                key={setting}
+                style={{
+                  padding: '14px 0',
+                  borderBottom: '1px solid var(--line)',
+                  fontSize: 13,
+                  color: 'var(--muted)',
+                }}
+              >
+                {setting}
+              </div>
+            ),
+          )}
         </aside>
         <section style={{ display: 'flex', flexDirection: 'column' }}>
           <div
@@ -135,7 +139,9 @@ export default function Playground() {
               alignItems: 'center',
             }}
           >
-            <span style={{ fontSize: 12, color: 'var(--muted)' }}>{prompt.length} characters</span>
+            <span style={{ fontSize: 12, color: 'var(--muted)' }}>
+              {prompt.length} characters
+            </span>
             <button
               onClick={() => setRan(true)}
               style={{
@@ -162,13 +168,17 @@ export default function Playground() {
                 color: '#d4d4d8',
               }}
             >
-              <span className="mono" style={{ fontSize: 11, color: 'var(--accent)' }}>
+              <span
+                className="mono"
+                style={{ fontSize: 11, color: 'var(--accent)' }}
+              >
                 RESPONSE · 1.2s
               </span>
               <p>
-                Streaming lets an AI application show tokens as they are generated, rather than
-                waiting for the complete response. This makes interfaces feel faster and gives users
-                immediate feedback while the model continues working.
+                Streaming lets an AI application show tokens as they are
+                generated, rather than waiting for the complete response. This
+                makes interfaces feel faster and gives users immediate feedback
+                while the model continues working.
               </p>
             </div>
           )}

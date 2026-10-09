@@ -7,4 +7,6 @@ import type { ToolSet } from '@ai-toolkit/provider-utils';
  * at runtime, so the type is restricted to the string keys of the configured
  * tool set.
  */
-export type ActiveTools<TOOLS extends ToolSet> = ReadonlyArray<keyof TOOLS & string> | undefined;
+export type ActiveTools<TOOLS extends ToolSet> =
+  | ReadonlyArray<keyof TOOLS & string>
+  | undefined;

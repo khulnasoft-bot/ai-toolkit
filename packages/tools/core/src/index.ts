@@ -13,7 +13,10 @@ export type ToolResult = {
 
 export interface ToolExecutor {
   execute(tool: Tool, args: Record<string, unknown>): Promise<ToolResult>;
-  executeStream(tool: Tool, args: Record<string, unknown>): AsyncIterable<ToolResult>;
+  executeStream(
+    tool: Tool,
+    args: Record<string, unknown>,
+  ): AsyncIterable<ToolResult>;
 }
 
 export interface ToolRegistry {

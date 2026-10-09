@@ -44,7 +44,10 @@ export type LanguageModelV4Message =
       }
     | {
         role: 'tool';
-        content: Array<LanguageModelV4ToolResultPart | LanguageModelV4ToolApprovalResponsePart>;
+        content: Array<
+          | LanguageModelV4ToolResultPart
+          | LanguageModelV4ToolApprovalResponsePart
+        >;
       }
   ) & {
     /**

@@ -1,4 +1,8 @@
-import { decodeRealtimeAudio, encodeRealtimeAudio, resampleAudio } from './audio-utils';
+import {
+  decodeRealtimeAudio,
+  encodeRealtimeAudio,
+  resampleAudio,
+} from './audio-utils';
 
 export type BrowserRealtimeAudioOptions = {
   captureSampleRate: number;
@@ -135,7 +139,11 @@ export class BrowserRealtimeAudio {
 
     while (this.playbackQueue.length > 0) {
       const samples = this.playbackQueue.shift()!;
-      const buffer = ctx.createBuffer(1, samples.length, this.playbackSampleRate);
+      const buffer = ctx.createBuffer(
+        1,
+        samples.length,
+        this.playbackSampleRate,
+      );
       buffer.getChannelData(0).set(samples);
 
       const source = ctx.createBufferSource();

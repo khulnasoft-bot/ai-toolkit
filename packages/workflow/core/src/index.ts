@@ -11,7 +11,12 @@ export type WorkflowStep = {
   readonly dependencies: readonly string[];
 };
 
-export type WorkflowStatus = 'draft' | 'running' | 'completed' | 'failed' | 'cancelled';
+export type WorkflowStatus =
+  | 'draft'
+  | 'running'
+  | 'completed'
+  | 'failed'
+  | 'cancelled';
 
 export interface WorkflowEngine {
   register(workflow: WorkflowDefinition): void;

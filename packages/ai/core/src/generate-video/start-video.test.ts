@@ -25,7 +25,9 @@ const createStartResponse = (overrides: object = {}) => ({
 
 describe('experimental_startVideo', () => {
   it('should call doStart with a fully populated spec call-options object', async () => {
-    let capturedOptions: (VideoModelV4CallOptions & { webhookUrl?: string }) | undefined;
+    let capturedOptions:
+      | (VideoModelV4CallOptions & { webhookUrl?: string })
+      | undefined;
 
     const result = await experimental_startVideo({
       model: new MockVideoModelV4({
@@ -93,7 +95,9 @@ describe('experimental_startVideo', () => {
 
     expect(capturedHeaders?.['idempotency-key']).toBe('caller-key-1');
     expect(
-      Object.keys(capturedHeaders ?? {}).filter(key => key.toLowerCase() === 'idempotency-key'),
+      Object.keys(capturedHeaders ?? {}).filter(
+        key => key.toLowerCase() === 'idempotency-key',
+      ),
     ).toHaveLength(1);
   });
 
@@ -103,7 +107,9 @@ describe('experimental_startVideo', () => {
     await experimental_startVideo({
       model: new MockVideoModelV4({
         doStart: async options => {
-          seenKeys.push(options.headers?.['idempotency-key'] as string | undefined);
+          seenKeys.push(
+            options.headers?.['idempotency-key'] as string | undefined,
+          );
           if (seenKeys.length === 1) {
             throw new APICallError({
               message: 'lost response',
@@ -195,12 +201,12 @@ describe('experimental_startVideo', () => {
     const doStart = vi.fn(async () => createStartResponse());
     const model = new MockVideoModelV4({ doStart });
 
-    await expect(experimental_startVideo({ model, prompt, n: 0 })).rejects.toThrow(
-      'Invalid n: expected a positive integer, received 0.',
-    );
-    await expect(experimental_startVideo({ model, prompt, n: 1.5 })).rejects.toThrow(
-      'Invalid n: expected a positive integer, received 1.5.',
-    );
+    await expect(
+      experimental_startVideo({ model, prompt, n: 0 }),
+    ).rejects.toThrow('Invalid n: expected a positive integer, received 0.');
+    await expect(
+      experimental_startVideo({ model, prompt, n: 1.5 }),
+    ).rejects.toThrow('Invalid n: expected a positive integer, received 1.5.');
     expect(doStart).not.toHaveBeenCalled();
   });
 
@@ -214,7 +220,9 @@ describe('experimental_startVideo', () => {
         prompt,
         n: 3,
       }),
-    ).rejects.toThrow('supports at most 2 video(s) per call, but 3 were requested');
+    ).rejects.toThrow(
+      'supports at most 2 video(s) per call, but 3 were requested',
+    );
   });
 
   it('should invoke a functional maxVideosPerCall', async () => {
@@ -275,7 +283,9 @@ describe('experimental_getVideoStatus', () => {
       new MockVideoModelV4({
         doStatus: async () => ({
           status: 'completed' as const,
-          videos: [{ type: 'base64' as const, data: 'AAAA', mediaType: 'video/mp4' }],
+          videos: [
+            { type: 'base64' as const, data: 'AAAA', mediaType: 'video/mp4' },
+          ],
           warnings: [],
           response: {
             timestamp: testDate,

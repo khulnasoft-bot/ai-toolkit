@@ -10,7 +10,10 @@ import { now } from '../util/now';
 import { executeToolCall } from './execute-tool-call';
 import type { TypedToolCall } from './tool-call';
 import type { TypedToolResult } from './tool-result';
-import type { ToolExecutionEndEvent, ToolExecutionStartEvent } from './tool-execution-events';
+import type {
+  ToolExecutionEndEvent,
+  ToolExecutionStartEvent,
+} from './tool-execution-events';
 
 // mock now function
 vi.mock('../util/now', () => ({
@@ -25,7 +28,9 @@ describe('executeToolCall', () => {
     mockNow.mockReturnValue(0);
   });
 
-  const createToolCall = (overrides: Partial<TypedToolCall<any>> = {}): TypedToolCall<any> =>
+  const createToolCall = (
+    overrides: Partial<TypedToolCall<any>> = {},
+  ): TypedToolCall<any> =>
     ({
       type: 'tool-call',
       toolCallId: 'call-1',

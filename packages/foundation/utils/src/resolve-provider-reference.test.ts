@@ -46,7 +46,9 @@ describe('resolveProviderReference', () => {
     } catch (error) {
       expect(NoSuchProviderReferenceError.isInstance(error)).toBe(true);
       expect((error as NoSuchProviderReferenceError).provider).toBe('openai');
-      expect((error as NoSuchProviderReferenceError).reference).toStrictEqual({});
+      expect((error as NoSuchProviderReferenceError).reference).toStrictEqual(
+        {},
+      );
     }
   });
 

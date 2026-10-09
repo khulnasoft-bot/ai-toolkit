@@ -6,7 +6,11 @@ export type ReplayEntry = {
 };
 
 export interface ReplayEngine {
-  record(executionId: string, traces: readonly string[], logs: readonly string[]): Promise<void>;
+  record(
+    executionId: string,
+    traces: readonly string[],
+    logs: readonly string[],
+  ): Promise<void>;
   replay(executionId: string): Promise<ReplayEntry>;
   isDeterministic(executionId: string): Promise<boolean>;
 }

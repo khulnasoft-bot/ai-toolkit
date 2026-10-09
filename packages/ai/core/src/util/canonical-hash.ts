@@ -21,7 +21,8 @@ export function canonicalJSON(value: unknown): string {
   }
   const keys = Object.keys(value as Record<string, unknown>).sort();
   const entries = keys.map(
-    k => `${JSON.stringify(k)}:${canonicalJSON((value as Record<string, unknown>)[k])}`,
+    k =>
+      `${JSON.stringify(k)}:${canonicalJSON((value as Record<string, unknown>)[k])}`,
   );
   return `{${entries.join(',')}}`;
 }
@@ -37,6 +38,9 @@ export function toBase64url(bytes: Uint8Array): string {
  * Canonical SHA-256 digest (base64url) of an arbitrary JSON-serializable value.
  */
 export async function hashCanonical(value: unknown): Promise<string> {
-  const digest = await crypto.subtle.digest('SHA-256', encoder.encode(canonicalJSON(value)));
+  const digest = await crypto.subtle.digest(
+    'SHA-256',
+    encoder.encode(canonicalJSON(value)),
+  );
   return toBase64url(new Uint8Array(digest));
 }

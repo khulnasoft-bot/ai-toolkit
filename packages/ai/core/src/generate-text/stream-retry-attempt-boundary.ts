@@ -21,5 +21,9 @@ export function createStreamRetryAttemptBoundaryPart({
 export function isStreamRetryAttemptBoundaryPart(
   part: unknown,
 ): part is StreamRetryAttemptBoundaryPart {
-  return typeof part === 'object' && part != null && streamRetryAttemptBoundarySymbol in part;
+  return (
+    typeof part === 'object' &&
+    part != null &&
+    streamRetryAttemptBoundarySymbol in part
+  );
 }

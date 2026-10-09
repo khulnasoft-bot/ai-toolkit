@@ -9,6 +9,8 @@ describe('isBrowserRuntime', () => {
   it('returns false when there is no window (server runtimes)', () => {
     expect(isBrowserRuntime({})).toBe(false);
     expect(isBrowserRuntime({ window: undefined })).toBe(false);
-    expect(isBrowserRuntime({ process: { versions: { node: '22' } } })).toBe(false);
+    expect(isBrowserRuntime({ process: { versions: { node: '22' } } })).toBe(
+      false,
+    );
   });
 });

@@ -23,7 +23,9 @@ describe('jsxPreview', () => {
   });
 
   it('has relative positioning by default', () => {
-    const { container } = render(<JSXPreview jsx="<div>Test</div>">Content</JSXPreview>);
+    const { container } = render(
+      <JSXPreview jsx="<div>Test</div>">Content</JSXPreview>,
+    );
     expect(container.firstChild).toHaveClass('relative');
   });
 });
@@ -158,7 +160,10 @@ describe('jSXPreview with custom components', () => {
     } as JSXPreviewProps['components'];
 
     render(
-      <JSXPreview components={components} jsx="<CustomButton>Click me</CustomButton>">
+      <JSXPreview
+        components={components}
+        jsx="<CustomButton>Click me</CustomButton>"
+      >
         <JSXPreviewContent />
       </JSXPreview>,
     );
@@ -192,7 +197,10 @@ describe('jSXPreview with bindings', () => {
 
   it('provides multiple bindings', () => {
     render(
-      <JSXPreview bindings={{ first: 'Hello', second: 'World' }} jsx="<div>{first} {second}</div>">
+      <JSXPreview
+        bindings={{ first: 'Hello', second: 'World' }}
+        jsx="<div>{first} {second}</div>"
+      >
         <JSXPreviewContent />
       </JSXPreview>,
     );

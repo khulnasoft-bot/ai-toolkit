@@ -14,7 +14,10 @@ import type {
 import { describe, expectTypeOf, it } from 'vitest';
 import type { ExtractLiteralUnion } from '../util/extract-literal-union';
 import { customProvider } from './custom-provider';
-import { createProviderRegistry, type ProviderRegistryProvider } from './provider-registry';
+import {
+  createProviderRegistry,
+  type ProviderRegistryProvider,
+} from './provider-registry';
 import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
 import { MockEmbeddingModelV4 } from '../test/mock-embedding-model-v4';
 import { MockImageModelV3 } from '../test/mock-image-model-v3';
@@ -41,7 +44,9 @@ type RegistryLanguageModelIdentifier<
 > = {
   [providerKey in keyof registeredProviders]: providerKey extends string
     ? `${providerKey & string}${separator}${ExtractLiteralUnion<
-        Parameters<NonNullable<registeredProviders[providerKey]['languageModel']>>[0]
+        Parameters<
+          NonNullable<registeredProviders[providerKey]['languageModel']>
+        >[0]
       >}`
     : never;
 }[keyof registeredProviders];
@@ -52,7 +57,9 @@ type RegistryEmbeddingModelIdentifier<
 > = {
   [providerKey in keyof registeredProviders]: providerKey extends string
     ? `${providerKey & string}${separator}${ExtractLiteralUnion<
-        Parameters<NonNullable<registeredProviders[providerKey]['embeddingModel']>>[0]
+        Parameters<
+          NonNullable<registeredProviders[providerKey]['embeddingModel']>
+        >[0]
       >}`
     : never;
 }[keyof registeredProviders];
@@ -63,7 +70,9 @@ type RegistryImageModelIdentifier<
 > = {
   [providerKey in keyof registeredProviders]: providerKey extends string
     ? `${providerKey & string}${separator}${ExtractLiteralUnion<
-        Parameters<NonNullable<registeredProviders[providerKey]['imageModel']>>[0]
+        Parameters<
+          NonNullable<registeredProviders[providerKey]['imageModel']>
+        >[0]
       >}`
     : never;
 }[keyof registeredProviders];
@@ -74,7 +83,9 @@ type RegistryTranscriptionModelIdentifier<
 > = {
   [providerKey in keyof registeredProviders]: providerKey extends string
     ? `${providerKey & string}${separator}${ExtractLiteralUnion<
-        Parameters<NonNullable<registeredProviders[providerKey]['transcriptionModel']>>[0]
+        Parameters<
+          NonNullable<registeredProviders[providerKey]['transcriptionModel']>
+        >[0]
       >}`
     : never;
 }[keyof registeredProviders];
@@ -85,7 +96,9 @@ type RegistrySpeechModelIdentifier<
 > = {
   [providerKey in keyof registeredProviders]: providerKey extends string
     ? `${providerKey & string}${separator}${ExtractLiteralUnion<
-        Parameters<NonNullable<registeredProviders[providerKey]['speechModel']>>[0]
+        Parameters<
+          NonNullable<registeredProviders[providerKey]['speechModel']>
+        >[0]
       >}`
     : never;
 }[keyof registeredProviders];
@@ -96,7 +109,9 @@ type RegistryRerankingModelIdentifier<
 > = {
   [providerKey in keyof registeredProviders]: providerKey extends string
     ? `${providerKey & string}${separator}${ExtractLiteralUnion<
-        Parameters<NonNullable<registeredProviders[providerKey]['rerankingModel']>>[0]
+        Parameters<
+          NonNullable<registeredProviders[providerKey]['rerankingModel']>
+        >[0]
       >}`
     : never;
 }[keyof registeredProviders];
@@ -185,8 +200,12 @@ describe('createProviderRegistry autocomplete / literal identifiers', () => {
       RegistryLanguageModelIdentifier<typeof registeredProviders>
     >().toEqualTypeOf<ExpectedLanguageModelIdentifiers>();
 
-    expectTypeOf(registry.languageModel('openai:gpt-5')).toEqualTypeOf<LanguageModelV4>();
-    expectTypeOf(registry.languageModel('anthropic:haiku')).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(
+      registry.languageModel('openai:gpt-5'),
+    ).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(
+      registry.languageModel('anthropic:haiku'),
+    ).toEqualTypeOf<LanguageModelV4>();
 
     expectTypeOf<'anthropic:opus'>().toMatchTypeOf<
       RegistryLanguageModelIdentifier<typeof registeredProviders>
@@ -238,25 +257,36 @@ describe('createProviderRegistry autocomplete / literal identifiers', () => {
       RegistryVideoModelIdentifier<typeof registeredProviders>
     >().toEqualTypeOf<ExpectedVideoModelIdentifiers>();
 
-    expectTypeOf(registry.embeddingModel('anthropic:small')).toEqualTypeOf<EmbeddingModelV4>();
-    expectTypeOf(registry.imageModel('openai:dalle')).toEqualTypeOf<ImageModelV4>();
+    expectTypeOf(
+      registry.embeddingModel('anthropic:small'),
+    ).toEqualTypeOf<EmbeddingModelV4>();
+    expectTypeOf(
+      registry.imageModel('openai:dalle'),
+    ).toEqualTypeOf<ImageModelV4>();
     expectTypeOf(
       registry.transcriptionModel('anthropic:whisper-1'),
     ).toEqualTypeOf<TranscriptionModelV4>();
-    expectTypeOf(registry.speechModel('anthropic:tts1')).toEqualTypeOf<SpeechModelV4>();
-    expectTypeOf(registry.rerankingModel('anthropic:rerank')).toEqualTypeOf<RerankingModelV4>();
-    expectTypeOf(registry.videoModel('openai:sora')).toEqualTypeOf<Experimental_VideoModelV4>();
+    expectTypeOf(
+      registry.speechModel('anthropic:tts1'),
+    ).toEqualTypeOf<SpeechModelV4>();
+    expectTypeOf(
+      registry.rerankingModel('anthropic:rerank'),
+    ).toEqualTypeOf<RerankingModelV4>();
+    expectTypeOf(
+      registry.videoModel('openai:sora'),
+    ).toEqualTypeOf<Experimental_VideoModelV4>();
   });
 
   it('uses the custom separator in template-literal identifiers', () => {
-    const registryWithCustomSeparator = createProviderRegistry(registeredProviders, {
-      separator: ' > ',
-    });
+    const registryWithCustomSeparator = createProviderRegistry(
+      registeredProviders,
+      {
+        separator: ' > ',
+      },
+    );
 
-    type ExpectedLanguageModelIdentifiersWithSeparator = RegistryLanguageModelIdentifier<
-      typeof registeredProviders,
-      ' > '
-    >;
+    type ExpectedLanguageModelIdentifiersWithSeparator =
+      RegistryLanguageModelIdentifier<typeof registeredProviders, ' > '>;
 
     expectTypeOf<
       RegistryLanguageModelIdentifier<typeof registeredProviders, ' > '>
@@ -366,23 +396,39 @@ describe('createProviderRegistry ProviderV3 typing', () => {
   });
 
   it('accepts ProviderV3 providers and exposes ProviderV4 models', () => {
-    expectTypeOf(registry).toEqualTypeOf<ProviderRegistryProvider<{ v3: MockProviderV3 }, ':'>>();
+    expectTypeOf(registry).toEqualTypeOf<
+      ProviderRegistryProvider<{ v3: MockProviderV3 }, ':'>
+    >();
 
-    expectTypeOf(registry.languageModel('v3:language')).toEqualTypeOf<LanguageModelV4>();
-    expectTypeOf(registry.embeddingModel('v3:embedding')).toEqualTypeOf<EmbeddingModelV4>();
+    expectTypeOf(
+      registry.languageModel('v3:language'),
+    ).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(
+      registry.embeddingModel('v3:embedding'),
+    ).toEqualTypeOf<EmbeddingModelV4>();
     expectTypeOf(registry.imageModel('v3:image')).toEqualTypeOf<ImageModelV4>();
     expectTypeOf(
       registry.transcriptionModel('v3:transcription'),
     ).toEqualTypeOf<TranscriptionModelV4>();
-    expectTypeOf(registry.speechModel('v3:speech')).toEqualTypeOf<SpeechModelV4>();
-    expectTypeOf(registry.rerankingModel('v3:reranking')).toEqualTypeOf<RerankingModelV4>();
-    expectTypeOf(registry.videoModel('v3:video')).toEqualTypeOf<Experimental_VideoModelV4>();
+    expectTypeOf(
+      registry.speechModel('v3:speech'),
+    ).toEqualTypeOf<SpeechModelV4>();
+    expectTypeOf(
+      registry.rerankingModel('v3:reranking'),
+    ).toEqualTypeOf<RerankingModelV4>();
+    expectTypeOf(
+      registry.videoModel('v3:video'),
+    ).toEqualTypeOf<Experimental_VideoModelV4>();
   });
 
   it('keeps ProviderV3 registry identifiers scoped to registered provider keys', () => {
-    type looseLanguageModelArgument = Parameters<(typeof registry)['languageModel']>[0];
+    type looseLanguageModelArgument = Parameters<
+      (typeof registry)['languageModel']
+    >[0];
 
-    expectTypeOf<RegistryLanguageModelIdentifier<{ v3: MockProviderV3 }>>().toEqualTypeOf<never>();
+    expectTypeOf<
+      RegistryLanguageModelIdentifier<{ v3: MockProviderV3 }>
+    >().toEqualTypeOf<never>();
     expectTypeOf<looseLanguageModelArgument>().toMatchTypeOf<`v3:${string}`>();
 
     registry.languageModel('v3:anything-goes');
@@ -411,7 +457,9 @@ describe('createProviderRegistry negative typing', () => {
     }),
   };
 
-  const registryAnthropicOnly = createProviderRegistry(anthropicOnlyRegisteredProviders);
+  const registryAnthropicOnly = createProviderRegistry(
+    anthropicOnlyRegisteredProviders,
+  );
 
   it('rejects registry identifiers whose provider key is not registered (language model)', () => {
     registryAnthropicOnly.languageModel('anthropic:haiku');
@@ -440,9 +488,12 @@ describe('createProviderRegistry negative typing', () => {
   });
 
   it('rejects the default colon separator when the registry uses a custom separator', () => {
-    const registryWithCustomSeparator = createProviderRegistry(anthropicOnlyRegisteredProviders, {
-      separator: ' > ',
-    });
+    const registryWithCustomSeparator = createProviderRegistry(
+      anthropicOnlyRegisteredProviders,
+      {
+        separator: ' > ',
+      },
+    );
 
     registryWithCustomSeparator.languageModel('anthropic > haiku');
 
@@ -457,7 +508,9 @@ describe('createProviderRegistry negative typing', () => {
         embeddingModels: { 'text-embedding-3-small': embeddingModel },
       }),
     };
-    const registryOpenaiOnly = createProviderRegistry(registeredProvidersOpenaiOnly);
+    const registryOpenaiOnly = createProviderRegistry(
+      registeredProvidersOpenaiOnly,
+    );
 
     registryOpenaiOnly.languageModel('openai:gpt-5');
     registryOpenaiOnly.embeddingModel('openai:text-embedding-3-small');
@@ -477,7 +530,9 @@ describe('createProviderRegistry negative typing', () => {
         languageModels: { haiku: languageModel },
       }),
     };
-    const multiProviderRegistry = createProviderRegistry(multiRegisteredProviders);
+    const multiProviderRegistry = createProviderRegistry(
+      multiRegisteredProviders,
+    );
 
     multiProviderRegistry.languageModel('openai:gpt-5');
     multiProviderRegistry.languageModel('anthropic:haiku');

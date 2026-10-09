@@ -27,7 +27,15 @@ export class BrowserRealtimeTransport {
     this.onClose = options.onClose;
   }
 
-  connect({ token, url, onOpen }: { token: string; url: string; onOpen: () => void }): void {
+  connect({
+    token,
+    url,
+    onOpen,
+  }: {
+    token: string;
+    url: string;
+    onOpen: () => void;
+  }): void {
     this.ws?.close();
     this.ws = null;
 

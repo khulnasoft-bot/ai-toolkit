@@ -19,9 +19,12 @@ export function getFiles(ctx) {
     .split(' ')
     .map(s => s.trim())
     .filter(Boolean);
-  const argsLine = args.length > 0 ? `\n  args: [${args.map(a => `'${a}'`).join(', ')}],` : '';
+  const argsLine =
+    args.length > 0 ? `\n  args: [${args.map(a => `'${a}'`).join(', ')}],` : '';
   // `my-agent` (npm package) -> `acp-my-agent` harness id convention.
-  const harnessId = name.startsWith('harness-') ? name.replace(/^harness-/, 'acp-') : `acp-${name}`;
+  const harnessId = name.startsWith('harness-')
+    ? name.replace(/^harness-/, 'acp-')
+    : `acp-${name}`;
   const exportName = `${camelName}Harness`;
 
   const profileTs = `import { createACP } from '@ai-toolkit/harness-acp';

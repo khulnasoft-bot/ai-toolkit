@@ -22,12 +22,16 @@ export async function prepareTools<TOOLS extends ToolSet>({
   toolOrder?: ToolOrder<TOOLS>;
   toolsContext?: InferToolSetContext<TOOLS>;
   experimental_sandbox?: SandboxSession;
-}): Promise<Array<LanguageModelV4FunctionTool | LanguageModelV4ProviderTool> | undefined> {
+}): Promise<
+  Array<LanguageModelV4FunctionTool | LanguageModelV4ProviderTool> | undefined
+> {
   if (!isNonEmptyObject(tools)) {
     return undefined;
   }
 
-  const languageModelTools: Array<LanguageModelV4FunctionTool | LanguageModelV4ProviderTool> = [];
+  const languageModelTools: Array<
+    LanguageModelV4FunctionTool | LanguageModelV4ProviderTool
+  > = [];
   for (const [name, tool] of orderToolEntries({ tools, toolOrder })) {
     const toolType = tool.type;
 
@@ -90,7 +94,9 @@ function orderToolEntries<TOOLS extends ToolSet>({
 
   const orderedTools = toolEntries
     .filter(([name]) => toolOrder.includes(name))
-    .sort(([nameA], [nameB]) => toolOrder.indexOf(nameA) - toolOrder.indexOf(nameB));
+    .sort(
+      ([nameA], [nameB]) => toolOrder.indexOf(nameA) - toolOrder.indexOf(nameB),
+    );
 
   const unorderedTools = toolEntries
     .filter(([name]) => !toolOrder.includes(name))

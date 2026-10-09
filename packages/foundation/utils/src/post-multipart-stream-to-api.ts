@@ -47,7 +47,10 @@ interface MultipartBody {
   dispose: (reason?: unknown) => Promise<void>;
 }
 
-function createMultipartBody(parts: Array<MultipartStreamPart>, boundary: string): MultipartBody {
+function createMultipartBody(
+  parts: Array<MultipartStreamPart>,
+  boundary: string,
+): MultipartBody {
   const encoder = new TextEncoder();
 
   let disposed = false;
@@ -71,7 +74,10 @@ function createMultipartBody(parts: Array<MultipartStreamPart>, boundary: string
       const filenameParameter = `; filename="${escapeMultipartHeaderValue(
         part.filename ?? 'blob',
       )}"`;
-      const mediaType = (part.mediaType ?? 'application/octet-stream').replace(/[\r\n]/g, '');
+      const mediaType = (part.mediaType ?? 'application/octet-stream').replace(
+        /[\r\n]/g,
+        '',
+      );
 
       yield encoder.encode(
         `${disposition}${filenameParameter}\r\nContent-Type: ${mediaType}\r\n\r\n`,
@@ -173,7 +179,9 @@ export const postMultipartStreamToApi = async <T>({
   const requestBodyValues = Object.fromEntries(
     parts.map(part => [
       part.name,
-      part.type === 'field' ? part.value : `<file:${part.filename ?? part.name}>`,
+      part.type === 'field'
+        ? part.value
+        : `<file:${part.filename ?? part.name}>`,
     ]),
   );
 

@@ -1,4 +1,7 @@
-import { TypeValidationContext, TypeValidationError } from '@ai-toolkit/provider';
+import {
+  TypeValidationContext,
+  TypeValidationError,
+} from '@ai-toolkit/provider';
 import { FlexibleSchema, asSchema } from './schema';
 
 /**

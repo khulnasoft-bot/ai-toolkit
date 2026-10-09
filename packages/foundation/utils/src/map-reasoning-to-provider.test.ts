@@ -95,7 +95,13 @@ describe('isCustomReasoning', () => {
   });
 
   it('returns true for all reasoning levels', () => {
-    for (const value of ['minimal', 'low', 'medium', 'high', 'xhigh'] as const) {
+    for (const value of [
+      'minimal',
+      'low',
+      'medium',
+      'high',
+      'xhigh',
+    ] as const) {
       expect(isCustomReasoning(value)).toBe(true);
     }
   });

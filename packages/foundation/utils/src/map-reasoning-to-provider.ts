@@ -1,4 +1,7 @@
-import type { LanguageModelV4CallOptions, SharedV4Warning } from '@ai-toolkit/provider';
+import type {
+  LanguageModelV4CallOptions,
+  SharedV4Warning,
+} from '@ai-toolkit/provider';
 
 export type ReasoningLevel = Exclude<
   LanguageModelV4CallOptions['reasoning'],
@@ -7,7 +10,10 @@ export type ReasoningLevel = Exclude<
 
 export function isCustomReasoning(
   reasoning: LanguageModelV4CallOptions['reasoning'],
-): reasoning is Exclude<LanguageModelV4CallOptions['reasoning'], 'provider-default' | undefined> {
+): reasoning is Exclude<
+  LanguageModelV4CallOptions['reasoning'],
+  'provider-default' | undefined
+> {
   return reasoning !== undefined && reasoning !== 'provider-default';
 }
 

@@ -25,7 +25,9 @@ export function KpiCard({
         {spark && <Sparkline data={spark} className="h-8 w-20 text-primary" />}
       </div>
       <div className="mt-2 flex items-baseline gap-2">
-        <span className="text-2xl font-semibold tracking-tight tabular-nums">{value}</span>
+        <span className="text-2xl font-semibold tracking-tight tabular-nums">
+          {value}
+        </span>
         {typeof delta === 'number' && (
           <span
             className={cn(
@@ -33,7 +35,11 @@ export function KpiCard({
               positive ? 'text-emerald-400' : 'text-amber-400',
             )}
           >
-            {positive ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />}
+            {positive ? (
+              <ArrowUpRight className="size-3" />
+            ) : (
+              <ArrowDownRight className="size-3" />
+            )}
             {Math.abs(delta)}%
           </span>
         )}

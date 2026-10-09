@@ -54,7 +54,10 @@ export async function startTextBatch<TOOLS extends ToolSet>({
   validateRequests(requests);
 
   const model = resolveBatchLanguageModel(modelArg);
-  const operationAbortSignal = mergeAbortSignals(abortSignal, getTotalTimeoutMs(timeout));
+  const operationAbortSignal = mergeAbortSignals(
+    abortSignal,
+    getTotalTimeoutMs(timeout),
+  );
   const supportedUrls = await model.supportedUrls;
   const preparedTools = await prepareTools({
     tools,
@@ -86,7 +89,10 @@ export async function startTextBatch<TOOLS extends ToolSet>({
     operationAbortSignal?.throwIfAborted();
   }
 
-  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
+  const headersWithUserAgent = withUserAgentSuffix(
+    headers ?? {},
+    `ai/${VERSION}`,
+  );
   try {
     const result = await model.experimental_doStartBatch({
       requests: normalizedRequests,
@@ -132,7 +138,10 @@ export async function getBatchStatus({
   const model = resolveBatchLanguageModel(modelArg);
   validateBatchReference({ model, batch });
 
-  const operationAbortSignal = mergeAbortSignals(abortSignal, getTotalTimeoutMs(timeout));
+  const operationAbortSignal = mergeAbortSignals(
+    abortSignal,
+    getTotalTimeoutMs(timeout),
+  );
   const { retry } = prepareRetries({
     maxRetries,
     abortSignal: operationAbortSignal,
@@ -189,7 +198,9 @@ export function getBatchResults<TOOLS extends ToolSet>({
     },
 
     cancel(reason) {
-      streamAbortController.abort(reason ?? new Error('Batch results stream was cancelled.'));
+      streamAbortController.abort(
+        reason ?? new Error('Batch results stream was cancelled.'),
+      );
     },
   };
   const transform = new TransformStream<
@@ -219,7 +230,9 @@ export function getBatchResults<TOOLS extends ToolSet>({
   return asAsyncIterableStream(transform.readable);
 }
 
-function resolveBatchLanguageModel(modelArg: StartTextBatchOptions['model']): BatchLanguageModelV4 {
+function resolveBatchLanguageModel(
+  modelArg: StartTextBatchOptions['model'],
+): BatchLanguageModelV4 {
   const model = resolveLanguageModel(modelArg);
 
   if (!isBatchLanguageModel(model)) {
@@ -232,7 +245,9 @@ function resolveBatchLanguageModel(modelArg: StartTextBatchOptions['model']): Ba
   return model;
 }
 
-function isBatchLanguageModel(model: LanguageModelV4): model is BatchLanguageModelV4 {
+function isBatchLanguageModel(
+  model: LanguageModelV4,
+): model is BatchLanguageModelV4 {
   const candidate = model as Partial<BatchLanguageModelV4>;
   return (
     typeof candidate.experimental_doStartBatch === 'function' &&
@@ -326,7 +341,9 @@ async function convertGenerateResult<TOOLS extends ToolSet>({
 }): Promise<TextBatchGenerationResult<TOOLS>> {
   const toolCalls = await Promise.all(
     result.content
-      .filter((part): part is LanguageModelV4ToolCall => part.type === 'tool-call')
+      .filter(
+        (part): part is LanguageModelV4ToolCall => part.type === 'tool-call',
+      )
       .map(toolCall =>
         parseToolCall<TOOLS>({
           toolCall,
@@ -350,7 +367,10 @@ async function convertGenerateResult<TOOLS extends ToolSet>({
   return {
     content,
     text: result.content
-      .filter((part): part is Extract<typeof part, { type: 'text' }> => part.type === 'text')
+      .filter(
+        (part): part is Extract<typeof part, { type: 'text' }> =>
+          part.type === 'text',
+      )
       .map(part => part.text)
       .join(''),
     finishReason: result.finishReason.unified,

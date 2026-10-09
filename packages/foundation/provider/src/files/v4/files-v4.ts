@@ -29,7 +29,9 @@ export type FilesV4 = {
    * Uploads a file to the provider and returns a provider reference
    * that can be used in subsequent API calls.
    */
-  uploadFile(options: FilesV4UploadFileCallOptions): PromiseLike<FilesV4UploadFileResult>;
+  uploadFile(
+    options: FilesV4UploadFileCallOptions,
+  ): PromiseLike<FilesV4UploadFileResult>;
 
   /**
    * Retrieves metadata for a previously uploaded file.
@@ -43,11 +45,15 @@ export type FilesV4 = {
    * Downloads the content of a previously uploaded file as a byte stream.
    * Optional: presence signals that the provider supports content download.
    */
-  downloadFile?(options: FilesV4DownloadFileCallOptions): PromiseLike<FilesV4DownloadFileResult>;
+  downloadFile?(
+    options: FilesV4DownloadFileCallOptions,
+  ): PromiseLike<FilesV4DownloadFileResult>;
 
   /**
    * Deletes a previously uploaded file.
    * Optional: presence signals that the provider supports deletion.
    */
-  deleteFile?(options: FilesV4DeleteFileCallOptions): PromiseLike<FilesV4DeleteFileResult>;
+  deleteFile?(
+    options: FilesV4DeleteFileCallOptions,
+  ): PromiseLike<FilesV4DeleteFileResult>;
 };

@@ -31,7 +31,9 @@ export class NoVideoGeneratedError extends AITOOLKITError {
   /**
    * @deprecated use `isInstance` instead
    */
-  static isNoVideoGeneratedError(error: unknown): error is NoVideoGeneratedError {
+  static isNoVideoGeneratedError(
+    error: unknown,
+  ): error is NoVideoGeneratedError {
     return error instanceof Error &&
       error.name === name &&
       typeof (error as NoVideoGeneratedError).responses !== 'undefined'

@@ -105,7 +105,9 @@ describe('AbstractRealtimeSession', () => {
     await flush();
 
     expect(onError).toHaveBeenCalledOnce();
-    expect(onError.mock.calls[0][0].message).toContain('No handler provided for tool');
+    expect(onError.mock.calls[0][0].message).toContain(
+      'No handler provided for tool',
+    );
   });
 
   it('requests a single response after all tool outputs are submitted', async () => {
@@ -121,7 +123,9 @@ describe('AbstractRealtimeSession', () => {
     await transport.emitServerEvent(responseDone());
     await flush();
 
-    const responseCreates = sentEvents.filter(e => e.type === 'response-create');
+    const responseCreates = sentEvents.filter(
+      e => e.type === 'response-create',
+    );
     expect(responseCreates).toHaveLength(1);
 
     const outputs = sentEvents.filter(
@@ -143,10 +147,14 @@ describe('AbstractRealtimeSession', () => {
     // Output submitted before response-done arrives.
     await transport.emitServerEvent(functionCallDone('call-1', 'a'));
     await flush();
-    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(0);
+    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(
+      0,
+    );
 
     await transport.emitServerEvent(responseDone());
     await flush();
-    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(1);
+    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(
+      1,
+    );
   });
 });

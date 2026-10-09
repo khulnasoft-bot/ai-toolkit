@@ -1,5 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import { createInitialRealtimeState, RealtimeEventReducer } from './realtime-event-reducer';
+import {
+  createInitialRealtimeState,
+  RealtimeEventReducer,
+} from './realtime-event-reducer';
 
 describe('RealtimeEventReducer', () => {
   it('assembles streamed text into UI messages', async () => {
@@ -30,7 +33,9 @@ describe('RealtimeEventReducer', () => {
 
     expect(state.messages).toHaveLength(1);
     expect(state.messages[0].role).toBe('assistant');
-    expect(state.messages[0].parts).toEqual([{ type: 'text', text: 'Hello', state: 'done' }]);
+    expect(state.messages[0].parts).toEqual([
+      { type: 'text', text: 'Hello', state: 'done' },
+    ]);
   });
 
   it('keeps tool names available when adding tool output', async () => {

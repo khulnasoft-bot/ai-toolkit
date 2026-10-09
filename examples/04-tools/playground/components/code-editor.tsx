@@ -79,11 +79,21 @@ export function CodeEditor({
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold">Code Editor</h3>
           <div className="flex space-x-2">
-            <Button variant="outline" size="sm" onClick={handleCopy} aria-label="Copy code">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleCopy}
+              aria-label="Copy code"
+            >
               <Copy className="h-4 w-4 mr-2" />
               Copy
             </Button>
-            <Button variant="outline" size="sm" onClick={handleDownload} aria-label="Download code">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleDownload}
+              aria-label="Download code"
+            >
               <Download className="h-4 w-4 mr-2" />
               Download
             </Button>
@@ -137,7 +147,9 @@ export function CodeEditor({
             className="w-full h-96 p-4 font-mono text-sm bg-muted border rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-ring"
             spellCheck={false}
           />
-          <div className="absolute top-2 right-2 text-xs text-muted-foreground">{language}</div>
+          <div className="absolute top-2 right-2 text-xs text-muted-foreground">
+            {language}
+          </div>
         </div>
       </div>
     </div>

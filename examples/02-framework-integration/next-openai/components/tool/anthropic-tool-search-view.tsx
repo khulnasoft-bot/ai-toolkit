@@ -4,7 +4,9 @@ import { UIToolInvocation } from '@ai-toolkit/ai';
 export default function AnthropicToolSearchView({
   invocation,
 }: {
-  invocation: UIToolInvocation<ReturnType<typeof anthropic.tools.toolSearchBm25_20251119>>;
+  invocation: UIToolInvocation<
+    ReturnType<typeof anthropic.tools.toolSearchBm25_20251119>
+  >;
 }) {
   switch (invocation.state) {
     case 'input-available': {

@@ -18,7 +18,10 @@ import type { Warning } from '../types/warning';
 import { asAsyncIterableStream } from '../util/async-iterable-stream';
 import { mergeAbortSignals } from '../util/merge-abort-signals';
 import { VERSION } from '../version';
-import type { StreamTranslationResult, TranslationStreamPart } from './stream-translate-result';
+import type {
+  StreamTranslationResult,
+  TranslationStreamPart,
+} from './stream-translate-result';
 
 /**
  * Streams speech-to-speech translations using a speech translation model.
@@ -114,15 +117,23 @@ export function streamTranslate({
 
   const doStream = resolvedModel.doStream.bind(resolvedModel);
 
-  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
+  const headersWithUserAgent = withUserAgentSuffix(
+    headers ?? {},
+    `ai/${VERSION}`,
+  );
 
   const sourceTextPromise = new DelayedPromise<string>();
   const translationTextPromise = new DelayedPromise<string>();
   const durationInSecondsPromise = new DelayedPromise<number | undefined>();
-  const usagePromise = new DelayedPromise<Experimental_SpeechTranslationModelV4Usage | undefined>();
+  const usagePromise = new DelayedPromise<
+    Experimental_SpeechTranslationModelV4Usage | undefined
+  >();
   const warningsPromise = new DelayedPromise<Array<Warning>>();
-  const responsePromise = new DelayedPromise<SpeechTranslationModelResponseMetadata>();
-  const providerMetadataPromise = new DelayedPromise<Record<string, JSONObject>>();
+  const responsePromise =
+    new DelayedPromise<SpeechTranslationModelResponseMetadata>();
+  const providerMetadataPromise = new DelayedPromise<
+    Record<string, JSONObject>
+  >();
 
   const rejectPendingPromises = (error: unknown) => {
     for (const promise of [
@@ -240,7 +251,9 @@ export function streamTranslate({
     },
 
     cancel(reason) {
-      pipeAbortController.abort(reason ?? new Error('Translation stream was cancelled.'));
+      pipeAbortController.abort(
+        reason ?? new Error('Translation stream was cancelled.'),
+      );
     },
   };
 
@@ -275,7 +288,8 @@ export function streamTranslate({
       signal: pipeAbortController.signal,
     });
   })().catch(error => {
-    const reason = error ?? new Error('Translation stream was cancelled or errored.');
+    const reason =
+      error ?? new Error('Translation stream was cancelled or errored.');
     rejectPendingPromises(reason);
     // When `doStream` rejects before the model stream exists (e.g. auth or
     // header resolution failure), nothing has taken ownership of `audio` yet,
@@ -292,7 +306,8 @@ export function streamTranslate({
   // unlike streamText we cannot retain an unread tee branch for replay. The
   // output stream has one owner: either fullStream, or the first result promise
   // getter which claims and drains it internally.
-  let streamOwner: 'unclaimed' | 'full-stream' | 'result-promises' = 'unclaimed';
+  let streamOwner: 'unclaimed' | 'full-stream' | 'result-promises' =
+    'unclaimed';
 
   function consumeStream() {
     if (streamOwner === 'full-stream' || streamOwner === 'result-promises') {

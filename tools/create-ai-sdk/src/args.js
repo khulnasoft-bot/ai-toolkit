@@ -27,23 +27,36 @@ export function parseArgs(argv) {
   }
 
   if (!options.name && !options.help) {
-    throw new Error('Project name is required. Run create-ai-sdk --help for usage.');
+    throw new Error(
+      'Project name is required. Run create-ai-sdk --help for usage.',
+    );
   }
 
   return options;
 }
 
 export function validateArgs(options) {
-  const validTemplates = ['next-react', 'next-rsc', 'vite-react', 'vue', 'svelte', 'node'];
+  const validTemplates = [
+    'next-react',
+    'next-rsc',
+    'vite-react',
+    'vue',
+    'svelte',
+    'node',
+  ];
 
   const validProviders = ['openai', 'anthropic', 'google', 'azure', 'bedrock'];
 
   if (options.template && !validTemplates.includes(options.template)) {
-    throw new Error(`Invalid template: ${options.template}. Valid: ${validTemplates.join(', ')}`);
+    throw new Error(
+      `Invalid template: ${options.template}. Valid: ${validTemplates.join(', ')}`,
+    );
   }
 
   if (options.provider && !validProviders.includes(options.provider)) {
-    throw new Error(`Invalid provider: ${options.provider}. Valid: ${validProviders.join(', ')}`);
+    throw new Error(
+      `Invalid provider: ${options.provider}. Valid: ${validProviders.join(', ')}`,
+    );
   }
 
   return true;

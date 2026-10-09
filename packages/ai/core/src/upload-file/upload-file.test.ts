@@ -1,9 +1,15 @@
-import type { FilesV4, FilesV4UploadFileResult, ProviderV4 } from '@ai-toolkit/provider';
+import type {
+  FilesV4,
+  FilesV4UploadFileResult,
+  ProviderV4,
+} from '@ai-toolkit/provider';
 import { describe, expect, it, vi } from 'vitest';
 import { uploadFile } from './upload-file';
 
 describe('uploadFile', () => {
-  function createMockFiles(options: { uploadFile: FilesV4['uploadFile'] }): FilesV4 {
+  function createMockFiles(options: {
+    uploadFile: FilesV4['uploadFile'];
+  }): FilesV4 {
     return {
       specificationVersion: 'v4',
       provider: 'mock-provider',
@@ -107,7 +113,9 @@ describe('uploadFile', () => {
   it('should cancel stream data when the provider upload rejects', async () => {
     const cancelSpy = vi.fn();
     const stream = new ReadableStream<Uint8Array>({ cancel: cancelSpy });
-    const uploadFileSpy = vi.fn().mockRejectedValue(new Error('validation failed'));
+    const uploadFileSpy = vi
+      .fn()
+      .mockRejectedValue(new Error('validation failed'));
 
     await expect(
       uploadFile({
@@ -220,7 +228,9 @@ describe('uploadFile', () => {
       filename: 'test.pdf',
     });
 
-    expect(result.warnings).toEqual([{ type: 'unsupported', feature: 'filename' }]);
+    expect(result.warnings).toEqual([
+      { type: 'unsupported', feature: 'filename' },
+    ]);
   });
 
   it('should resolve FilesV4 from ProviderV4 with files() method', async () => {

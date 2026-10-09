@@ -7,7 +7,8 @@ describe('array output strategy', () => {
   it.each(['definitions', '$defs'] as const)(
     'should preserve root-level %s when wrapping the element schema',
     async keyword => {
-      const reference = keyword === 'definitions' ? '#/definitions/Shared' : '#/$defs/Shared';
+      const reference =
+        keyword === 'definitions' ? '#/definitions/Shared' : '#/$defs/Shared';
       const strategy = getOutputStrategy({
         output: 'array',
         schema: jsonSchema({
@@ -39,7 +40,8 @@ describe('array output strategy', () => {
           },
         },
       });
-      const elementsSchema = (result as JSONSchema7).properties?.elements as JSONSchema7;
+      const elementsSchema = (result as JSONSchema7).properties
+        ?.elements as JSONSchema7;
       const itemsSchema = elementsSchema.items as JSONSchema7;
 
       expect(itemsSchema).not.toHaveProperty(keyword);

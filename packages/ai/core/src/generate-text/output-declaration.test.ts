@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-const isEdgeRuntime = (globalThis as { EdgeRuntime?: unknown }).EdgeRuntime !== undefined;
+const isEdgeRuntime =
+  (globalThis as { EdgeRuntime?: unknown }).EdgeRuntime !== undefined;
 
 describe.skipIf(isEdgeRuntime)('Output declaration emit', () => {
   it('emits declarations for exported values with inferred output types', async () => {
@@ -33,12 +34,14 @@ export const aiUtils = {
     const readFile = host.readFile.bind(host);
     let declaration = '';
 
-    host.fileExists = candidate => candidate === fileName || fileExists(candidate);
+    host.fileExists = candidate =>
+      candidate === fileName || fileExists(candidate);
     host.getSourceFile = (candidate, languageVersion, ...rest) =>
       candidate === fileName
         ? ts.createSourceFile(candidate, sourceText, languageVersion, true)
         : getSourceFile(candidate, languageVersion, ...rest);
-    host.readFile = candidate => (candidate === fileName ? sourceText : readFile(candidate));
+    host.readFile = candidate =>
+      candidate === fileName ? sourceText : readFile(candidate);
     host.writeFile = (outputFileName, text) => {
       if (outputFileName.endsWith('.d.ts')) {
         declaration = text;
@@ -51,7 +54,10 @@ export const aiUtils = {
       host,
     });
     const emitResult = program.emit();
-    const diagnostics = [...ts.getPreEmitDiagnostics(program), ...emitResult.diagnostics];
+    const diagnostics = [
+      ...ts.getPreEmitDiagnostics(program),
+      ...emitResult.diagnostics,
+    ];
 
     expect(
       diagnostics.map(

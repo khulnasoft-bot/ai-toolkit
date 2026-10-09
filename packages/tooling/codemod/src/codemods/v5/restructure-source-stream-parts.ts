@@ -18,7 +18,8 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       return (
         path.node.source.type === 'StringLiteral' &&
-        (path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit')
+        (path.node.source.value === 'ai-toolkit' ||
+          path.node.source.value === 'ai-toolkit')
       );
     })
     .forEach(path => {
@@ -70,7 +71,10 @@ export default createTransformer((fileInfo, api, options, context) => {
       const left = path.node.left;
       if (left.type === 'VariableDeclaration' && left.declarations[0]) {
         const declaration = left.declarations[0];
-        if (declaration.type === 'VariableDeclarator' && declaration.id.type === 'Identifier') {
+        if (
+          declaration.type === 'VariableDeclarator' &&
+          declaration.id.type === 'Identifier'
+        ) {
           fullStreamIteratorVariables.add(declaration.id.name);
         }
       }
@@ -127,7 +131,8 @@ export default createTransformer((fileInfo, api, options, context) => {
       if (
         typeProperty &&
         sourceProperty &&
-        (sourceProperty.type === 'ObjectProperty' || sourceProperty.type === 'Property') &&
+        (sourceProperty.type === 'ObjectProperty' ||
+          sourceProperty.type === 'Property') &&
         sourceProperty.value.type === 'ObjectExpression'
       ) {
         // Extract all properties from the nested source object
@@ -208,11 +213,16 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       const callee = path.node.callee;
       if (callee.type !== 'MemberExpression') return false;
-      if (callee.property.type !== 'Identifier' || callee.property.name !== 'map') return false;
+      if (
+        callee.property.type !== 'Identifier' ||
+        callee.property.name !== 'map'
+      )
+        return false;
       if (callee.object.type !== 'CallExpression') return false;
 
       const filterCall = callee.object;
-      if (!filterCall.callee || filterCall.callee.type !== 'MemberExpression') return false;
+      if (!filterCall.callee || filterCall.callee.type !== 'MemberExpression')
+        return false;
       if (
         filterCall.callee.property.type !== 'Identifier' ||
         filterCall.callee.property.name !== 'filter'
@@ -223,7 +233,10 @@ export default createTransformer((fileInfo, api, options, context) => {
     })
     .forEach(path => {
       const callee = path.node.callee;
-      if (callee.type === 'MemberExpression' && callee.object.type === 'CallExpression') {
+      if (
+        callee.type === 'MemberExpression' &&
+        callee.object.type === 'CallExpression'
+      ) {
         const filterCall = callee.object;
         if (filterCall.arguments && filterCall.arguments[0]) {
           const filterCallback = filterCall.arguments[0];

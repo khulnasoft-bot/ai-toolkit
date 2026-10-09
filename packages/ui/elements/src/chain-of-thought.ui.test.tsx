@@ -22,9 +22,9 @@ describe('chainOfThought', () => {
     // Suppress console.error for this test
     const spy = vi.spyOn(console, 'error').mockImplementation(vi.fn());
 
-    expect(() => render(<ChainOfThoughtHeader>Test</ChainOfThoughtHeader>)).toThrow(
-      'ChainOfThought components must be used within ChainOfThought',
-    );
+    expect(() =>
+      render(<ChainOfThoughtHeader>Test</ChainOfThoughtHeader>),
+    ).toThrow('ChainOfThought components must be used within ChainOfThought');
 
     spy.mockRestore();
   });

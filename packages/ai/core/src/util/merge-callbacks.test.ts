@@ -27,9 +27,11 @@ describe('mergeCallbacks', () => {
     );
 
     let mergedResolved = false;
-    const mergedPromise = Promise.resolve(merged({ value: 'hello' })).then(() => {
-      mergedResolved = true;
-    });
+    const mergedPromise = Promise.resolve(merged({ value: 'hello' })).then(
+      () => {
+        mergedResolved = true;
+      },
+    );
     calls.push('after call');
 
     await Promise.resolve();

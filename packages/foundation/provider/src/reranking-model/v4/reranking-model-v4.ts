@@ -24,5 +24,7 @@ export type RerankingModelV4 = {
    * Reranking a list of documents using the query.
    */
   // Naming: "do" prefix to prevent accidental direct usage of the method by the user.
-  doRerank(options: RerankingModelV4CallOptions): PromiseLike<RerankingModelV4Result>;
+  doRerank(
+    options: RerankingModelV4CallOptions,
+  ): PromiseLike<RerankingModelV4Result>;
 };

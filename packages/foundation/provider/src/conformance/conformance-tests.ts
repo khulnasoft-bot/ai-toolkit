@@ -138,7 +138,10 @@ export function runImageModelConformanceTests(
   });
 }
 
-export function runConformanceTests(config: ConformanceTestSet, ctx: ConformanceContext): void {
+export function runConformanceTests(
+  config: ConformanceTestSet,
+  ctx: ConformanceContext,
+): void {
   if (config.languageModel) {
     runLanguageModelConformanceTests(config.languageModel, ctx);
   }

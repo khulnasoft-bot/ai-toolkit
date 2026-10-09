@@ -3,7 +3,9 @@ import { withoutTrailingSlash } from './without-trailing-slash';
 
 describe('withoutTrailingSlash', () => {
   it('removes a trailing slash', () => {
-    expect(withoutTrailingSlash('https://example.com/')).toBe('https://example.com');
+    expect(withoutTrailingSlash('https://example.com/')).toBe(
+      'https://example.com',
+    );
   });
 
   it('returns undefined when the URL is undefined', () => {

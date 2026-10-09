@@ -79,7 +79,8 @@ export async function fetchWithValidatedRedirects({
 }): Promise<Response> {
   // Left undefined when no headers are provided (bare request); otherwise
   // sanitized once and replaced on a cross-origin hop (credential drop below).
-  let currentHeaders = headers === undefined ? undefined : sanitizeRequestHeaders(headers);
+  let currentHeaders =
+    headers === undefined ? undefined : sanitizeRequestHeaders(headers);
 
   const perHopInit = (redirect: RequestRedirect): RequestInit => {
     const init: RequestInit = { signal: abortSignal, redirect };
@@ -97,14 +98,16 @@ export async function fetchWithValidatedRedirects({
   for (let redirectCount = 0; redirectCount <= maxRedirects; redirectCount++) {
     // The developer-configured origin is trusted by definition; validating it
     // would reject legitimate self-hosted / localhost deployments.
-    const isTrustedHop = trustedOrigin !== undefined && isSameOrigin(currentUrl, trustedOrigin);
+    const isTrustedHop =
+      trustedOrigin !== undefined && isSameOrigin(currentUrl, trustedOrigin);
 
     if (!isTrustedHop) {
       validateDownloadUrl(currentUrl);
     }
 
     const fetch =
-      customFetch ?? (isTrustedHop ? globalThis.fetch : await getDefaultDownloadFetch());
+      customFetch ??
+      (isTrustedHop ? globalThis.fetch : await getDefaultDownloadFetch());
 
     const response = await fetch(currentUrl, perHopInit('manual'));
 
@@ -133,7 +136,9 @@ export async function fetchWithValidatedRedirects({
       // nothing else stopping them from riding to a foreign host.
       if (currentHeaders !== undefined && !isSameOrigin(nextUrl, currentUrl)) {
         const userAgent = currentHeaders.get('user-agent');
-        currentHeaders = new Headers(userAgent == null ? undefined : { 'user-agent': userAgent });
+        currentHeaders = new Headers(
+          userAgent == null ? undefined : { 'user-agent': userAgent },
+        );
       }
 
       currentUrl = nextUrl;

@@ -10,7 +10,8 @@ import {
 } from './common.js';
 
 export const name = 'full-custom';
-export const description = 'Custom LanguageModelV3 from scratch (TODO skeleton)';
+export const description =
+  'Custom LanguageModelV3 from scratch (TODO skeleton)';
 
 export function getFiles(ctx) {
   const { name, pascalName, camelName, envPrefix } = ctx;

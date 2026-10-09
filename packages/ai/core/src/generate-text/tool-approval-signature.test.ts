@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { hashCanonical, toBase64url } from '../util/canonical-hash';
-import { signToolApproval, verifyToolApprovalSignature } from './tool-approval-signature';
+import {
+  signToolApproval,
+  verifyToolApprovalSignature,
+} from './tool-approval-signature';
 
 const secret = 'test-secret-key-for-hmac-signing';
 
@@ -141,14 +144,18 @@ describe('signToolApproval + verifyToolApprovalSignature', () => {
 
     // The signature issued for the newline-bearing tool must NOT verify against
     // the retupled tuple that targets a different registered tool.
-    expect(await verifyToolApprovalSignature({ secret, signature, ...retupled })).toBe(false);
+    expect(
+      await verifyToolApprovalSignature({ secret, signature, ...retupled }),
+    ).toBe(false);
 
     // The two tuples must produce distinct signatures.
     const retupledSignature = await signToolApproval({ secret, ...retupled });
     expect(signature).not.toBe(retupledSignature);
 
     // Sanity: each signature still verifies against its own tuple.
-    expect(await verifyToolApprovalSignature({ secret, signature, ...signed })).toBe(true);
+    expect(
+      await verifyToolApprovalSignature({ secret, signature, ...signed }),
+    ).toBe(true);
     expect(
       await verifyToolApprovalSignature({
         secret,
@@ -180,7 +187,9 @@ describe('signToolApproval + verifyToolApprovalSignature', () => {
       input: { path: '/tmp/target' },
     };
     const signature = await signToolApproval({ secret, ...signed });
-    expect(await verifyToolApprovalSignature({ secret, signature, ...retupled })).toBe(false);
+    expect(
+      await verifyToolApprovalSignature({ secret, signature, ...retupled }),
+    ).toBe(false);
   });
 
   // Backwards compatibility with pre-JSON signatures.

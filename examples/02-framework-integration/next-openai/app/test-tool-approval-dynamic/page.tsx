@@ -15,7 +15,8 @@ export default function TestToolApproval() {
       transport: new DefaultChatTransport({
         api: '/api/chat-tool-approval-dynamic',
       }),
-      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
+      sendAutomaticallyWhen:
+        lastAssistantMessageIsCompleteWithApprovalResponses,
     });
 
   console.log(structuredClone(messages));

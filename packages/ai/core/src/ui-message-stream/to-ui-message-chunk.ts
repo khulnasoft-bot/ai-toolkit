@@ -1,6 +1,10 @@
 import type { ToolSet } from '@ai-toolkit/provider-utils';
 import type { TextStreamPart } from '../generate-text/stream-text-result';
-import type { InferUIMessageData, InferUIMessageMetadata, UIMessage } from '../ui/ui-messages';
+import type {
+  InferUIMessageData,
+  InferUIMessageMetadata,
+  UIMessage,
+} from '../ui/ui-messages';
 import type { InferUIMessageChunk, UIMessageChunk } from './ui-message-chunks';
 
 export type ToUIMessageChunkOptions<
@@ -57,7 +61,9 @@ export function toUIMessageChunk<
       return {
         type: 'text-start',
         id: part.id,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -66,7 +72,9 @@ export function toUIMessageChunk<
         type: 'text-delta',
         id: part.id,
         delta: part.text,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -74,7 +82,9 @@ export function toUIMessageChunk<
       return {
         type: 'text-end',
         id: part.id,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -87,7 +97,9 @@ export function toUIMessageChunk<
       return {
         type: partType,
         id: part.id,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -100,7 +112,9 @@ export function toUIMessageChunk<
         type: 'reasoning-delta',
         id: part.id,
         delta: part.text,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -114,7 +128,9 @@ export function toUIMessageChunk<
         type: part.type,
         mediaType: part.file.mediaType,
         url: `data:${part.file.mediaType};base64,${part.file.base64}`,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -129,7 +145,9 @@ export function toUIMessageChunk<
           sourceId: part.id,
           url: part.url,
           title: part.title,
-          ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+          ...(part.providerMetadata != null
+            ? { providerMetadata: part.providerMetadata }
+            : {}),
         };
       }
 
@@ -140,7 +158,9 @@ export function toUIMessageChunk<
           mediaType: part.mediaType,
           title: part.title,
           filename: part.filename,
-          ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+          ...(part.providerMetadata != null
+            ? { providerMetadata: part.providerMetadata }
+            : {}),
         };
       }
 
@@ -151,7 +171,9 @@ export function toUIMessageChunk<
       return {
         type: 'custom',
         kind: part.kind,
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
       };
     }
 
@@ -162,9 +184,15 @@ export function toUIMessageChunk<
         type: 'tool-input-start',
         toolCallId: part.id,
         toolName: part.toolName,
-        ...(part.providerExecuted != null ? { providerExecuted: part.providerExecuted } : {}),
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-        ...(part.toolMetadata != null ? { toolMetadata: part.toolMetadata } : {}),
+        ...(part.providerExecuted != null
+          ? { providerExecuted: part.providerExecuted }
+          : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
+        ...(part.toolMetadata != null
+          ? { toolMetadata: part.toolMetadata }
+          : {}),
         ...(dynamic != null ? { dynamic } : {}),
         ...(part.title != null ? { title: part.title } : {}),
       };
@@ -187,9 +215,15 @@ export function toUIMessageChunk<
           toolCallId: part.toolCallId,
           toolName: part.toolName,
           input: part.input,
-          ...(part.providerExecuted != null ? { providerExecuted: part.providerExecuted } : {}),
-          ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-          ...(part.toolMetadata != null ? { toolMetadata: part.toolMetadata } : {}),
+          ...(part.providerExecuted != null
+            ? { providerExecuted: part.providerExecuted }
+            : {}),
+          ...(part.providerMetadata != null
+            ? { providerMetadata: part.providerMetadata }
+            : {}),
+          ...(part.toolMetadata != null
+            ? { toolMetadata: part.toolMetadata }
+            : {}),
           ...(dynamic != null ? { dynamic } : {}),
           errorText: onError(part.error),
           ...(part.title != null ? { title: part.title } : {}),
@@ -201,9 +235,15 @@ export function toUIMessageChunk<
         toolCallId: part.toolCallId,
         toolName: part.toolName,
         input: part.input,
-        ...(part.providerExecuted != null ? { providerExecuted: part.providerExecuted } : {}),
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-        ...(part.toolMetadata != null ? { toolMetadata: part.toolMetadata } : {}),
+        ...(part.providerExecuted != null
+          ? { providerExecuted: part.providerExecuted }
+          : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
+        ...(part.toolMetadata != null
+          ? { toolMetadata: part.toolMetadata }
+          : {}),
         ...(dynamic != null ? { dynamic } : {}),
         ...(part.title != null ? { title: part.title } : {}),
       };
@@ -226,7 +266,9 @@ export function toUIMessageChunk<
         approvalId: part.approvalId,
         approved: part.approved,
         ...(part.reason != null ? { reason: part.reason } : {}),
-        ...(part.providerExecuted != null ? { providerExecuted: part.providerExecuted } : {}),
+        ...(part.providerExecuted != null
+          ? { providerExecuted: part.providerExecuted }
+          : {}),
       };
     }
 
@@ -239,9 +281,15 @@ export function toUIMessageChunk<
         // UI stream chunks are serialized as JSON, which drops undefined
         // properties. Use null so tool outputs always keep the output field.
         output: part.output === undefined ? null : part.output,
-        ...(part.providerExecuted != null ? { providerExecuted: part.providerExecuted } : {}),
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-        ...(part.toolMetadata != null ? { toolMetadata: part.toolMetadata } : {}),
+        ...(part.providerExecuted != null
+          ? { providerExecuted: part.providerExecuted }
+          : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
+        ...(part.toolMetadata != null
+          ? { toolMetadata: part.toolMetadata }
+          : {}),
         ...(part.preliminary != null ? { preliminary: part.preliminary } : {}),
         ...(dynamic != null ? { dynamic } : {}),
       };
@@ -258,9 +306,15 @@ export function toUIMessageChunk<
             ? part.error
             : JSON.stringify(part.error)
           : onError(part.error),
-        ...(part.providerExecuted != null ? { providerExecuted: part.providerExecuted } : {}),
-        ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-        ...(part.toolMetadata != null ? { toolMetadata: part.toolMetadata } : {}),
+        ...(part.providerExecuted != null
+          ? { providerExecuted: part.providerExecuted }
+          : {}),
+        ...(part.providerMetadata != null
+          ? { providerMetadata: part.providerMetadata }
+          : {}),
+        ...(part.toolMetadata != null
+          ? { toolMetadata: part.toolMetadata }
+          : {}),
         ...(dynamic != null ? { dynamic } : {}),
       };
     }
@@ -296,7 +350,10 @@ export function toUIMessageChunk<
         type: 'start',
         ...(messageMetadata != null ? { messageMetadata } : {}),
         ...(responseMessageId != null ? { messageId: responseMessageId } : {}),
-      } as UIMessageChunk<InferUIMessageMetadata<UI_MESSAGE>, InferUIMessageData<UI_MESSAGE>>;
+      } as UIMessageChunk<
+        InferUIMessageMetadata<UI_MESSAGE>,
+        InferUIMessageData<UI_MESSAGE>
+      >;
     }
 
     case 'finish': {
@@ -308,7 +365,10 @@ export function toUIMessageChunk<
         type: 'finish',
         finishReason: part.finishReason,
         ...(messageMetadata != null ? { messageMetadata } : {}),
-      } as UIMessageChunk<InferUIMessageMetadata<UI_MESSAGE>, InferUIMessageData<UI_MESSAGE>>;
+      } as UIMessageChunk<
+        InferUIMessageMetadata<UI_MESSAGE>,
+        InferUIMessageData<UI_MESSAGE>
+      >;
     }
 
     case 'abort': {

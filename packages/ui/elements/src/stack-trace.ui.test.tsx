@@ -90,7 +90,9 @@ describe('stackTrace', () => {
       </StackTrace>,
     );
 
-    const trigger = container.querySelector("[data-slot='collapsible-trigger']");
+    const trigger = container.querySelector(
+      "[data-slot='collapsible-trigger']",
+    );
     expect(trigger).toBeInTheDocument();
     await user.click(trigger as Element);
 
@@ -116,7 +118,9 @@ describe('stackTraceHeader', () => {
       </StackTrace>,
     );
 
-    const trigger = container.querySelector("[data-slot='collapsible-trigger']");
+    const trigger = container.querySelector(
+      "[data-slot='collapsible-trigger']",
+    );
     expect(trigger).toBeInTheDocument();
     expect(screen.getByText('Header Content')).toBeInTheDocument();
   });
@@ -137,7 +141,9 @@ describe('stackTraceHeader', () => {
     const framesContainer = container.querySelector('.space-y-1');
     expect(framesContainer).not.toBeInTheDocument();
 
-    const trigger = container.querySelector("[data-slot='collapsible-trigger']");
+    const trigger = container.querySelector(
+      "[data-slot='collapsible-trigger']",
+    );
     expect(trigger).toBeInTheDocument();
     await user.click(trigger as Element);
 
@@ -422,8 +428,13 @@ describe('stackTraceContent', () => {
       </StackTrace>,
     );
 
-    const content = container.querySelector("[data-slot='collapsible-content']");
-    expect(content).toHaveAttribute('style', expect.stringContaining('max-height: 200px'));
+    const content = container.querySelector(
+      "[data-slot='collapsible-content']",
+    );
+    expect(content).toHaveAttribute(
+      'style',
+      expect.stringContaining('max-height: 200px'),
+    );
   });
 });
 
@@ -489,7 +500,11 @@ describe('stackTraceFrames', () => {
     const user = userEvent.setup();
 
     render(
-      <StackTrace defaultOpen onFilePathClick={onFilePathClick} trace={simpleStackTrace}>
+      <StackTrace
+        defaultOpen
+        onFilePathClick={onFilePathClick}
+        trace={simpleStackTrace}
+      >
         <StackTraceContent>
           <StackTraceFrames />
         </StackTraceContent>

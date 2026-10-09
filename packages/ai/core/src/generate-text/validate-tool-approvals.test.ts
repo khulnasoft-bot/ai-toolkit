@@ -176,7 +176,9 @@ describe('validateApprovedToolApprovals', () => {
     });
 
     expect(result.deniedToolApprovals).toHaveLength(1);
-    expect(result.deniedToolApprovals[0].approvalResponse.reason).toBe('policy changed');
+    expect(result.deniedToolApprovals[0].approvalResponse.reason).toBe(
+      'policy changed',
+    );
     expect(result.deniedToolApprovals[0].approvalResponse.approved).toBe(false);
   });
 

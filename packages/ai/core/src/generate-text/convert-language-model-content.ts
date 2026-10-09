@@ -30,7 +30,9 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
   const toolOutputsWithApprovalResponses: Array<ToolOutput<TOOLS>> = [];
   const toolOutputsWithoutApprovalResponses: Array<ToolOutput<TOOLS>> = [];
   const toolCallIdsWithApprovalResponses = new Set(
-    toolApprovalResponses.map(toolApprovalResponse => toolApprovalResponse.toolCall.toolCallId),
+    toolApprovalResponses.map(
+      toolApprovalResponse => toolApprovalResponse.toolCall.toolCallId,
+    ),
   );
 
   for (const part of content) {
@@ -47,16 +49,23 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
         contentParts.push({
           type: part.type as 'file' | 'reasoning-file',
           file: new DefaultGeneratedFile({
-            data: part.data.type === 'data' ? part.data.data : part.data.url.toString(),
+            data:
+              part.data.type === 'data'
+                ? part.data.data
+                : part.data.url.toString(),
             mediaType: part.mediaType,
           }),
-          ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
+          ...(part.providerMetadata != null
+            ? { providerMetadata: part.providerMetadata }
+            : {}),
         });
         break;
       }
 
       case 'tool-call': {
-        const toolCall = toolCalls.find(toolCall => toolCall.toolCallId === part.toolCallId);
+        const toolCall = toolCalls.find(
+          toolCall => toolCall.toolCallId === part.toolCallId,
+        );
 
         if (toolCall == null) {
           throw new Error(`Tool call ${part.toolCallId} not found.`);
@@ -67,7 +76,9 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
       }
 
       case 'tool-result': {
-        const toolCall = toolCalls.find(toolCall => toolCall.toolCallId === part.toolCallId);
+        const toolCall = toolCalls.find(
+          toolCall => toolCall.toolCallId === part.toolCallId,
+        );
 
         // Handle deferred results for provider-executed tools (e.g., programmatic tool calling).
         // When a server tool (like code_execution) triggers a client tool, the server tool's
@@ -75,7 +86,8 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
         // in the current response.
         if (toolCall == null) {
           const tool = getOwn(tools, part.toolName);
-          const supportsDeferredResults = tool?.type === 'provider' && tool.supportsDeferredResults;
+          const supportsDeferredResults =
+            tool?.type === 'provider' && tool.supportsDeferredResults;
 
           if (!supportsDeferredResults) {
             throw new Error(`Tool call ${part.toolCallId} not found.`);
@@ -91,8 +103,12 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
               error: part.result,
               providerExecuted: true,
               dynamic: part.dynamic,
-              ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-              ...(tool?.metadata != null ? { toolMetadata: tool.metadata } : {}),
+              ...(part.providerMetadata != null
+                ? { providerMetadata: part.providerMetadata }
+                : {}),
+              ...(tool?.metadata != null
+                ? { toolMetadata: tool.metadata }
+                : {}),
             } as TypedToolError<TOOLS>);
           } else {
             contentParts.push({
@@ -103,8 +119,12 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
               output: part.result,
               providerExecuted: true,
               dynamic: part.dynamic,
-              ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-              ...(tool?.metadata != null ? { toolMetadata: tool.metadata } : {}),
+              ...(part.providerMetadata != null
+                ? { providerMetadata: part.providerMetadata }
+                : {}),
+              ...(tool?.metadata != null
+                ? { toolMetadata: tool.metadata }
+                : {}),
             } as TypedToolResult<TOOLS>);
           }
           break;
@@ -119,8 +139,12 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
             error: part.result,
             providerExecuted: true,
             dynamic: toolCall.dynamic,
-            ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-            ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
+            ...(part.providerMetadata != null
+              ? { providerMetadata: part.providerMetadata }
+              : {}),
+            ...(toolCall.toolMetadata != null
+              ? { toolMetadata: toolCall.toolMetadata }
+              : {}),
           } as TypedToolError<TOOLS>);
         } else {
           contentParts.push({
@@ -131,15 +155,21 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
             output: part.result,
             providerExecuted: true,
             dynamic: toolCall.dynamic,
-            ...(part.providerMetadata != null ? { providerMetadata: part.providerMetadata } : {}),
-            ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
+            ...(part.providerMetadata != null
+              ? { providerMetadata: part.providerMetadata }
+              : {}),
+            ...(toolCall.toolMetadata != null
+              ? { toolMetadata: toolCall.toolMetadata }
+              : {}),
           } as TypedToolResult<TOOLS>);
         }
         break;
       }
 
       case 'tool-approval-request': {
-        const toolCall = toolCalls.find(toolCall => toolCall.toolCallId === part.toolCallId);
+        const toolCall = toolCalls.find(
+          toolCall => toolCall.toolCallId === part.toolCallId,
+        );
 
         if (toolCall == null) {
           throw new ToolCallNotFoundForApprovalError({

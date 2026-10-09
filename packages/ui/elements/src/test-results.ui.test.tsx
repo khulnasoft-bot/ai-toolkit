@@ -77,7 +77,9 @@ describe('testResultsProgress', () => {
 describe('testResultsDuration', () => {
   it('formats milliseconds', () => {
     render(
-      <TestResults summary={{ duration: 500, failed: 0, passed: 1, skipped: 0, total: 1 }}>
+      <TestResults
+        summary={{ duration: 500, failed: 0, passed: 1, skipped: 0, total: 1 }}
+      >
         <TestResultsDuration />
       </TestResults>,
     );
@@ -86,7 +88,9 @@ describe('testResultsDuration', () => {
 
   it('formats seconds', () => {
     render(
-      <TestResults summary={{ duration: 3500, failed: 0, passed: 1, skipped: 0, total: 1 }}>
+      <TestResults
+        summary={{ duration: 3500, failed: 0, passed: 1, skipped: 0, total: 1 }}
+      >
         <TestResultsDuration />
       </TestResults>,
     );
@@ -218,7 +222,9 @@ describe('testError', () => {
 
 const renderFullTestResults = () =>
   render(
-    <TestResults summary={{ duration: 1000, failed: 1, passed: 2, skipped: 0, total: 3 }}>
+    <TestResults
+      summary={{ duration: 1000, failed: 1, passed: 2, skipped: 0, total: 3 }}
+    >
       <TestResultsHeader>
         <TestResultsSummary />
         <TestResultsDuration />

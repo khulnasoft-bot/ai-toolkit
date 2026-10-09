@@ -1,4 +1,8 @@
-import type { SpeechModelV2, SpeechModelV3, SpeechModelV4 } from '@ai-toolkit/provider';
+import type {
+  SpeechModelV2,
+  SpeechModelV3,
+  SpeechModelV4,
+} from '@ai-toolkit/provider';
 import { asSpeechModelV3 } from './as-speech-model-v3';
 
 export function asSpeechModelV4(
@@ -9,7 +13,8 @@ export function asSpeechModelV4(
   }
 
   // first convert v2 to v3, then proxy v3 as v4:
-  const v3Model = model.specificationVersion === 'v2' ? asSpeechModelV3(model) : model;
+  const v3Model =
+    model.specificationVersion === 'v2' ? asSpeechModelV3(model) : model;
 
   return new Proxy(v3Model, {
     get(target, prop: keyof SpeechModelV3) {

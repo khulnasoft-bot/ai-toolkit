@@ -60,7 +60,13 @@ async function promptForChoice(rl, label, choices, defaultChoice) {
 }
 
 export async function createAIProject(options) {
-  let { name, template, provider, install = true, interactive = true } = options;
+  let {
+    name,
+    template,
+    provider,
+    install = true,
+    interactive = true,
+  } = options;
 
   const targetDir = path.resolve(process.cwd(), name);
 
@@ -75,11 +81,21 @@ export async function createAIProject(options) {
     try {
       if (!template) {
         const templates = getAllTemplates();
-        template = await promptForChoice(rl, 'Select a template', templates, 'next-react');
+        template = await promptForChoice(
+          rl,
+          'Select a template',
+          templates,
+          'next-react',
+        );
       }
       if (!provider) {
         const providers = getAllProviders();
-        provider = await promptForChoice(rl, 'Select an AI provider', providers, 'openai');
+        provider = await promptForChoice(
+          rl,
+          'Select an AI provider',
+          providers,
+          'openai',
+        );
       }
     } finally {
       rl.close();
@@ -89,7 +105,9 @@ export async function createAIProject(options) {
   const templateConfig = getTemplate(template);
   const providerConfig = getProvider(provider);
 
-  ui.log(`Creating ${chalk.bold(templateConfig.description)} app: ${chalk.cyan(name)}`);
+  ui.log(
+    `Creating ${chalk.bold(templateConfig.description)} app: ${chalk.cyan(name)}`,
+  );
   ui.divider();
 
   fs.mkdirSync(targetDir, { recursive: true });
@@ -112,9 +130,15 @@ export async function createAIProject(options) {
 }
 
 function createFromTemplate(dir, templateName, provider) {
-  const packageJson = defaultFiles['package.json'].template(path.basename(dir), provider);
+  const packageJson = defaultFiles['package.json'].template(
+    path.basename(dir),
+    provider,
+  );
 
-  fs.writeFileSync(path.join(dir, 'package.json'), JSON.stringify(packageJson, null, 2) + '\n');
+  fs.writeFileSync(
+    path.join(dir, 'package.json'),
+    JSON.stringify(packageJson, null, 2) + '\n',
+  );
 
   fs.mkdirSync(path.join(dir, 'src', 'lib'), { recursive: true });
 
@@ -125,7 +149,10 @@ function createFromTemplate(dir, templateName, provider) {
 
   if (templateName.startsWith('next')) {
     fs.mkdirSync(path.join(dir, 'src', 'app'), { recursive: true });
-    fs.writeFileSync(path.join(dir, 'src', 'app', 'page.tsx'), getNextPage(templateName));
+    fs.writeFileSync(
+      path.join(dir, 'src', 'app', 'page.tsx'),
+      getNextPage(templateName),
+    );
     fs.writeFileSync(
       path.join(dir, 'src', 'app', 'layout.tsx'),
       `'use client';

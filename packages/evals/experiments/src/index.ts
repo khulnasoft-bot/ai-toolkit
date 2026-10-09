@@ -8,7 +8,10 @@ export type Experiment = {
 
 export interface ExperimentTracker {
   start(experiment: Experiment): Promise<void>;
-  complete(experimentId: string, metrics: Record<string, number>): Promise<void>;
+  complete(
+    experimentId: string,
+    metrics: Record<string, number>,
+  ): Promise<void>;
   getExperiment(id: string): Promise<Experiment | undefined>;
   listExperiments(): Promise<readonly Experiment[]>;
 }

@@ -27,7 +27,9 @@ describe('queue', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<Queue className="custom-class">Content</Queue>);
+    const { container } = render(
+      <Queue className="custom-class">Content</Queue>,
+    );
     expect(container.firstChild).toHaveClass('custom-class');
   });
 });
@@ -76,13 +78,17 @@ describe('queueItemContent', () => {
   });
 
   it('applies completed styling', () => {
-    const { container } = render(<QueueItemContent completed>Done</QueueItemContent>);
+    const { container } = render(
+      <QueueItemContent completed>Done</QueueItemContent>,
+    );
     expect(container.firstChild).toHaveClass('line-through');
     expect(container.firstChild).toHaveClass('text-muted-foreground/50');
   });
 
   it('applies pending styling', () => {
-    const { container } = render(<QueueItemContent completed={false}>Pending</QueueItemContent>);
+    const { container } = render(
+      <QueueItemContent completed={false}>Pending</QueueItemContent>,
+    );
     expect(container.firstChild).toHaveClass('text-muted-foreground');
     expect(container.firstChild).not.toHaveClass('line-through');
   });
@@ -113,7 +119,9 @@ describe('queueItemActions', () => {
 describe('queueItemAction', () => {
   it('renders action button', () => {
     render(<QueueItemAction>Click me</QueueItemAction>);
-    expect(screen.getByRole('button', { name: 'Click me' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Click me' }),
+    ).toBeInTheDocument();
   });
 
   it('calls onClick handler', async () => {
@@ -229,7 +237,9 @@ describe('queueSectionTrigger', () => {
         <QueueSectionContent>Content</QueueSectionContent>
       </QueueSection>,
     );
-    expect(screen.getByRole('button', { name: 'Trigger text' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Trigger text' }),
+    ).toBeInTheDocument();
   });
 });
 
@@ -240,7 +250,9 @@ describe('queueSectionLabel', () => {
   });
 
   it('renders with icon', () => {
-    render(<QueueSectionLabel count={3} icon={<span>🔥</span>} label="items" />);
+    render(
+      <QueueSectionLabel count={3} icon={<span>🔥</span>} label="items" />,
+    );
     expect(screen.getByText('🔥')).toBeInTheDocument();
     expect(screen.getByText('3 items')).toBeInTheDocument();
   });

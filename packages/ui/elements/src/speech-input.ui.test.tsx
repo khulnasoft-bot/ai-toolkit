@@ -624,7 +624,9 @@ describe('speechInput - MediaRecorder Fallback', () => {
     });
 
     await waitFor(() => {
-      expect(handleTranscriptionChange).toHaveBeenCalledWith('transcribed text');
+      expect(handleTranscriptionChange).toHaveBeenCalledWith(
+        'transcribed text',
+      );
     });
   });
 
@@ -667,7 +669,9 @@ describe('speechInput - MediaRecorder Fallback', () => {
   it('handles transcription errors gracefully', async () => {
     const ctx = setupMediaRecorderTests();
     const user = userEvent.setup();
-    const handleAudioRecorded = vi.fn().mockRejectedValue(new Error('Transcription failed'));
+    const handleAudioRecorded = vi
+      .fn()
+      .mockRejectedValue(new Error('Transcription failed'));
     const handleTranscriptionChange = vi.fn();
 
     render(

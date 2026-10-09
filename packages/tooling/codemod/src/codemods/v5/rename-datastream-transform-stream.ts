@@ -31,7 +31,10 @@ export default createTransformer((fileInfo, api, options, context) => {
           spec.imported.name = 'JsonToSseTransformStream';
 
           // If there's no alias, we also need to rename all usages in the file
-          if (!spec.local || spec.local.name === 'DataStreamToSSETransformStream') {
+          if (
+            !spec.local ||
+            spec.local.name === 'DataStreamToSSETransformStream'
+          ) {
             if (spec.local) {
               spec.local.name = 'JsonToSseTransformStream';
             }
@@ -42,7 +45,8 @@ export default createTransformer((fileInfo, api, options, context) => {
               .filter(typePath => {
                 return (
                   typePath.node.typeName.type === 'Identifier' &&
-                  typePath.node.typeName.name === 'DataStreamToSSETransformStream'
+                  typePath.node.typeName.name ===
+                    'DataStreamToSSETransformStream'
                 );
               })
               .forEach(typePath => {

@@ -6,7 +6,10 @@ import { ChevronDownIcon } from 'lucide-react';
 
 import { cn } from '../../lib/utils';
 
-type AccordionProps = Omit<React.ComponentProps<typeof AccordionPrimitive.Root>, 'type'> & {
+type AccordionProps = Omit<
+  React.ComponentProps<typeof AccordionPrimitive.Root>,
+  'type'
+> & {
   type?: 'single' | 'multiple';
 };
 
@@ -14,17 +17,22 @@ type AccordionProps = Omit<React.ComponentProps<typeof AccordionPrimitive.Root>,
 // single/multiple variants where `type` is required on both, which makes
 // forwarding arbitrary props from consumers overly strict. Default `type`
 // here and cast to the primitive's props.
-const Root = AccordionPrimitive.Root as unknown as React.ComponentType<AccordionProps>;
+const Root =
+  AccordionPrimitive.Root as unknown as React.ComponentType<AccordionProps>;
 
 function Accordion({ className, type = 'multiple', ...props }: AccordionProps) {
   return <Root data-slot="accordion" type={type} {...props} />;
 }
 
-type AccordionItemProps = Omit<React.ComponentProps<typeof AccordionPrimitive.Item>, 'type'> & {
+type AccordionItemProps = Omit<
+  React.ComponentProps<typeof AccordionPrimitive.Item>,
+  'type'
+> & {
   type?: 'single' | 'multiple';
 };
 
-const Item = AccordionPrimitive.Item as unknown as React.ComponentType<AccordionItemProps>;
+const Item =
+  AccordionPrimitive.Item as unknown as React.ComponentType<AccordionItemProps>;
 
 function AccordionItem({ className, ...props }: AccordionItemProps) {
   return (

@@ -27,7 +27,9 @@ export class InvalidToolApprovalSignatureError extends AITOOLKITError {
     this.toolCallId = toolCallId;
   }
 
-  static isInstance(error: unknown): error is InvalidToolApprovalSignatureError {
+  static isInstance(
+    error: unknown,
+  ): error is InvalidToolApprovalSignatureError {
     return AITOOLKITError.hasMarker(error, marker);
   }
 }

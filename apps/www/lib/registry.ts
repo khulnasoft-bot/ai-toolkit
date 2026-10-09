@@ -10,21 +10,24 @@ export const providers: CatalogItem[] = [
   {
     id: 'openai',
     name: 'OpenAI',
-    description: 'Production-ready models for text, vision, audio, and structured generation.',
+    description:
+      'Production-ready models for text, vision, audio, and structured generation.',
     tags: ['Text', 'Vision', 'Embeddings'],
     meta: '12 models',
   },
   {
     id: 'anthropic',
     name: 'Anthropic',
-    description: 'Build with Claude models designed for helpful, harmless, and honest AI.',
+    description:
+      'Build with Claude models designed for helpful, harmless, and honest AI.',
     tags: ['Reasoning', 'Tools', 'Vision'],
     meta: '8 models',
   },
   {
     id: 'google',
     name: 'Google Generative AI',
-    description: 'Fast multimodal models with long context and native tool use.',
+    description:
+      'Fast multimodal models with long context and native tool use.',
     tags: ['Multimodal', 'Long context'],
     meta: '10 models',
   },
@@ -40,7 +43,8 @@ export const recipes: CatalogItem[] = [
   {
     id: 'streaming-chat',
     name: 'Streaming chat',
-    description: 'Create a responsive streaming chat interface with a few lines of code.',
+    description:
+      'Create a responsive streaming chat interface with a few lines of code.',
     tags: ['Chat', 'Next.js'],
     meta: '8 min read',
   },
@@ -54,7 +58,8 @@ export const recipes: CatalogItem[] = [
   {
     id: 'tool-calling',
     name: 'Tool calling',
-    description: 'Give your model safe, typed tools to take action in your application.',
+    description:
+      'Give your model safe, typed tools to take action in your application.',
     tags: ['Tools', 'Agents'],
     meta: '12 min read',
   },
@@ -63,14 +68,16 @@ export const tools: CatalogItem[] = [
   {
     id: 'search',
     name: 'Web Search',
-    description: 'Search the web and return cited, grounded results to your model.',
+    description:
+      'Search the web and return cited, grounded results to your model.',
     tags: ['Search', 'Grounding'],
     meta: 'Official',
   },
   {
     id: 'code-interpreter',
     name: 'Code Interpreter',
-    description: 'Run Python in a secure sandbox for analysis and data workflows.',
+    description:
+      'Run Python in a secure sandbox for analysis and data workflows.',
     tags: ['Code', 'Sandbox'],
     meta: 'Community',
   },
@@ -86,7 +93,8 @@ export const showcase: CatalogItem[] = [
   {
     id: 'copilot',
     name: 'Support Copilot',
-    description: 'A context-aware support assistant built for fast-moving teams.',
+    description:
+      'A context-aware support assistant built for fast-moving teams.',
     tags: ['Next.js', 'Anthropic'],
     meta: 'Featured',
   },

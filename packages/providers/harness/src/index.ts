@@ -28,7 +28,9 @@ export class HarnessCapabilityUnsupportedError extends AITOOLKITError {
     super({ name, message, cause });
   }
 
-  static isInstance(error: unknown): error is HarnessCapabilityUnsupportedError {
+  static isInstance(
+    error: unknown,
+  ): error is HarnessCapabilityUnsupportedError {
     return AITOOLKITError.hasMarker(error, marker);
   }
 }

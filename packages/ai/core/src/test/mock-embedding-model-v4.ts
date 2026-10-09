@@ -39,7 +39,8 @@ export class MockEmbeddingModelV4 implements EmbeddingModelV4 {
     this.provider = provider;
     this.modelId = modelId;
     this.maxEmbeddingsPerCall = maxEmbeddingsPerCall ?? undefined;
-    this[EXPERIMENTAL_EMBEDDING_MODEL_MAX_INPUT_BYTES_PER_CALL] = maxInputBytesPerCall;
+    this[EXPERIMENTAL_EMBEDDING_MODEL_MAX_INPUT_BYTES_PER_CALL] =
+      maxInputBytesPerCall;
     this.supportsParallelCalls = supportsParallelCalls;
     this.doEmbed = async options => {
       this.doEmbedCalls.push(options);

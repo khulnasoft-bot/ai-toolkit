@@ -157,8 +157,14 @@ describe('BrowserRealtimeTransport', () => {
     resolveFirst?.();
     await flush();
 
-    expect(ws.send).toHaveBeenNthCalledWith(1, JSON.stringify({ type: 'first' }));
-    expect(ws.send).toHaveBeenNthCalledWith(2, JSON.stringify({ type: 'second' }));
+    expect(ws.send).toHaveBeenNthCalledWith(
+      1,
+      JSON.stringify({ type: 'first' }),
+    );
+    expect(ws.send).toHaveBeenNthCalledWith(
+      2,
+      JSON.stringify({ type: 'second' }),
+    );
   });
 
   it('sends serialized strings and binary data without JSON encoding', async () => {

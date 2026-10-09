@@ -161,12 +161,15 @@ describe('stream provider error integration', () => {
         region: 'us-east-1',
         baseURL: 'https://api.test.com/bedrock',
         fetch: async () =>
-          new Response(createAmazonBedrockExceptionStream({ type, data: details }), {
-            status: 200,
-            headers: {
-              'content-type': 'application/vnd.amazon.eventstream',
+          new Response(
+            createAmazonBedrockExceptionStream({ type, data: details }),
+            {
+              status: 200,
+              headers: {
+                'content-type': 'application/vnd.amazon.eventstream',
+              },
             },
-          }),
+          ),
       })('anthropic.claude-3-haiku-20240307-v1:0'),
       expected: {
         message: details.message,
@@ -385,22 +388,23 @@ describe('stream provider error integration', () => {
       },
     };
 
-    server.urls['https://api.test.com/moonshot/v1/chat/completions'].response = {
-      type: 'stream-chunks',
-      chunks: [
-        `data: ${JSON.stringify({
-          id: 'chatcmpl-test',
-          choices: [
-            {
-              delta: { role: 'assistant', content: 'Partial output' },
-              finish_reason: null,
-            },
-          ],
-        })}\n\n`,
-        `data: ${JSON.stringify(data)}\n\n`,
-        'data: [DONE]\n\n',
-      ],
-    };
+    server.urls['https://api.test.com/moonshot/v1/chat/completions'].response =
+      {
+        type: 'stream-chunks',
+        chunks: [
+          `data: ${JSON.stringify({
+            id: 'chatcmpl-test',
+            choices: [
+              {
+                delta: { role: 'assistant', content: 'Partial output' },
+                finish_reason: null,
+              },
+            ],
+          })}\n\n`,
+          `data: ${JSON.stringify(data)}\n\n`,
+          'data: [DONE]\n\n',
+        ],
+      };
 
     await expectNormalizedProviderError({
       model: createMoonshotAI({

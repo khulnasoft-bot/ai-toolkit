@@ -71,7 +71,8 @@ export default createTransformer((fileInfo, api, options, context) => {
         (arg.type === 'StringLiteral' || arg.type === 'Literal') &&
         renameSource((arg as { value?: unknown }).value)
       ) {
-        (arg as { value: string }).value = sourceMapping[(arg as { value: string }).value];
+        (arg as { value: string }).value =
+          sourceMapping[(arg as { value: string }).value];
         context.hasChanges = true;
       }
     });

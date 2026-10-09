@@ -145,7 +145,9 @@ function matches(record: PlatformRecordUnion, query: PlatformQuery): boolean {
   return true;
 }
 
-export function validateRegistry(snapshot: PlatformRegistrySnapshot): RegistryIssue[] {
+export function validateRegistry(
+  snapshot: PlatformRegistrySnapshot,
+): RegistryIssue[] {
   const issues: RegistryIssue[] = [];
   const ids = new Set<string>();
 
@@ -192,12 +194,16 @@ export class PlatformRegistry {
     }
 
     this.version = snapshot.registryVersion;
-    this.records = snapshot.records.slice().sort((a, b) => a.name.localeCompare(b.name));
+    this.records = snapshot.records
+      .slice()
+      .sort((a, b) => a.name.localeCompare(b.name));
   }
 
   list(query: PlatformQuery = {}): PlatformRecordUnion[] {
     const limit = Math.min(Math.max(query.limit ?? MAX_LIMIT, 1), MAX_LIMIT);
-    return this.records.filter(record => matches(record, query)).slice(0, limit);
+    return this.records
+      .filter(record => matches(record, query))
+      .slice(0, limit);
   }
 
   all(query: Omit<PlatformQuery, 'limit'> = {}): PlatformRecordUnion[] {
@@ -279,14 +285,19 @@ function collectionType(pathname: string): PlatformEntityType | undefined {
   return pluralTypes[match?.[1] ?? ''] ?? entityType(match?.[1] ?? null);
 }
 
-export function createPlatformApi(registry: PlatformRegistry, options: PlatformApiOptions = {}) {
+export function createPlatformApi(
+  registry: PlatformRegistry,
+  options: PlatformApiOptions = {},
+) {
   const headers = {
     'cache-control': 'public, max-age=60, s-maxage=300',
     etag: `"${registry.version}"`,
     'x-platform-registry-version': registry.version,
   };
 
-  return async function handle(request: PlatformApiRequest): Promise<PlatformApiResponse> {
+  return async function handle(
+    request: PlatformApiRequest,
+  ): Promise<PlatformApiResponse> {
     if (!request.pathname.startsWith('/api/platform/v1/')) {
       return { status: 404, body: { error: 'Not found' }, headers };
     }

@@ -115,10 +115,17 @@ export function connectToWebSocket({
   socket.onclose = event => {
     // Extract close diagnostics when the transport provides them (native
     // `CloseEvent` and `ws` both carry `code` and `reason`).
-    const closeEvent = event as { code?: unknown; reason?: unknown } | null | undefined;
-    const code = typeof closeEvent?.code === 'number' ? closeEvent.code : undefined;
-    const reason = typeof closeEvent?.reason === 'string' ? closeEvent.reason : undefined;
-    tail = tail.then(() => onClose?.({ code, reason })).catch(onProcessingError);
+    const closeEvent = event as
+      | { code?: unknown; reason?: unknown }
+      | null
+      | undefined;
+    const code =
+      typeof closeEvent?.code === 'number' ? closeEvent.code : undefined;
+    const reason =
+      typeof closeEvent?.reason === 'string' ? closeEvent.reason : undefined;
+    tail = tail
+      .then(() => onClose?.({ code, reason }))
+      .catch(onProcessingError);
   };
 
   return { socket, close };

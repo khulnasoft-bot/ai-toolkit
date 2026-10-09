@@ -123,7 +123,9 @@ function toolRecord(tool: Tool): ToolRecord {
 }
 
 function templates(): TemplateRecord[] {
-  const registry = JSON.parse(readFileSync(join(ROOT, 'examples/registry.json'), 'utf8')) as {
+  const registry = JSON.parse(
+    readFileSync(join(ROOT, 'examples/registry.json'), 'utf8'),
+  ) as {
     examples: Array<{
       name: string;
       title: string;
@@ -151,7 +153,9 @@ function templates(): TemplateRecord[] {
     framework: template.framework,
     category: template.category,
     categoryOrder: template.categoryOrder,
-    primaryProviderId: template.primaryProvider ? `provider:${template.primaryProvider}` : null,
+    primaryProviderId: template.primaryProvider
+      ? `provider:${template.primaryProvider}`
+      : null,
     sourcePath: template.path,
   }));
 }
@@ -165,7 +169,9 @@ function contentFiles(root: string): string[] {
   return readdirSync(root, { withFileTypes: true }).flatMap(entry => {
     const filePath = join(root, entry.name);
     if (entry.isDirectory()) return contentFiles(filePath);
-    return entry.name.endsWith('.mdx') && entry.name !== 'index.mdx' ? [filePath] : [];
+    return entry.name.endsWith('.mdx') && entry.name !== 'index.mdx'
+      ? [filePath]
+      : [];
   });
 }
 
@@ -179,7 +185,9 @@ function duplicateProviderSlugs(root: string): Set<string> {
       .replace(/^\d+-/, '');
     slugs.set(slug, (slugs.get(slug) ?? 0) + 1);
   }
-  return new Set([...slugs.entries()].filter(([, count]) => count > 1).map(([slug]) => slug));
+  return new Set(
+    [...slugs.entries()].filter(([, count]) => count > 1).map(([slug]) => slug),
+  );
 }
 
 function providers(): ProviderRecord[] {
@@ -194,7 +202,9 @@ function providers(): ProviderRecord[] {
     const categoryDirectory = filePath.split('/').at(-2) ?? '';
     const category = providerCategoryIds[categoryDirectory] ?? 'other';
     const source = readFileSync(filePath, 'utf8');
-    const providerSlug = duplicateSlugs.has(slug) ? `${category}/${slug}` : slug;
+    const providerSlug = duplicateSlugs.has(slug)
+      ? `${category}/${slug}`
+      : slug;
     return {
       ...baseRecord({
         id: `provider:${providerSlug}`,
@@ -250,7 +260,8 @@ function recipes(): RecipeRecord[] {
       .split('/')
       .pop()!
       .replace(/^\d+-/, '');
-    const category = filePath.split('/').at(-2)?.replace(/^\d+-/, '') ?? 'guides';
+    const category =
+      filePath.split('/').at(-2)?.replace(/^\d+-/, '') ?? 'guides';
     const description = frontmatter(source, 'description') ?? '';
     return {
       ...baseRecord({

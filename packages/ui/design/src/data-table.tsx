@@ -29,7 +29,9 @@ export function DataTable<T>({
   onRowClick?: (row: T) => void;
   emptyLabel?: string;
 }) {
-  const [sort, setSort] = useState<{ id: string; dir: 'asc' | 'desc' } | null>(null);
+  const [sort, setSort] = useState<{ id: string; dir: 'asc' | 'desc' } | null>(
+    null,
+  );
   const [page, setPage] = useState(0);
 
   const sorted = useMemo(() => {
@@ -55,7 +57,9 @@ export function DataTable<T>({
 
   function toggleSort(id: string) {
     setSort(prev =>
-      prev?.id === id ? { id, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { id, dir: 'asc' },
+      prev?.id === id
+        ? { id, dir: prev.dir === 'asc' ? 'desc' : 'asc' }
+        : { id, dir: 'asc' },
     );
   }
 
@@ -122,11 +126,15 @@ export function DataTable<T>({
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
                 className={cn(
                   'border-b border-alpha-border last:border-0',
-                  onRowClick && 'cursor-pointer transition-colors hover:bg-surface-200/60',
+                  onRowClick &&
+                    'cursor-pointer transition-colors hover:bg-surface-200/60',
                 )}
               >
                 {columns.map(column => (
-                  <td key={column.id} className={cn('px-4 py-3', column.className)}>
+                  <td
+                    key={column.id}
+                    className={cn('px-4 py-3', column.className)}
+                  >
                     {column.cell ? column.cell(row) : null}
                   </td>
                 ))}

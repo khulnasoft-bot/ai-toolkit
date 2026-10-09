@@ -54,7 +54,11 @@ describe('createSafeLookup', () => {
     const { lookup, result } = runLookup(addresses);
 
     await expect(result).resolves.toEqual(addresses);
-    expect(lookup).toHaveBeenCalledWith('files.example.com', { all: true }, expect.any(Function));
+    expect(lookup).toHaveBeenCalledWith(
+      'files.example.com',
+      { all: true },
+      expect.any(Function),
+    );
   });
 
   it('returns one address when the connector does not request all', async () => {
@@ -74,7 +78,11 @@ describe('createSafeLookup', () => {
     });
 
     await expect(result).resolves.toEqual(addresses[0]);
-    expect(lookup).toHaveBeenCalledWith('files.example.com', { all: true }, expect.any(Function));
+    expect(lookup).toHaveBeenCalledWith(
+      'files.example.com',
+      { all: true },
+      expect.any(Function),
+    );
   });
 
   it('blocks a hostname that resolves to a private address', async () => {
@@ -89,12 +97,16 @@ describe('createSafeLookup', () => {
       { address: '169.254.169.254', family: 4 },
     ]);
 
-    await expect(result).rejects.toThrow('resolved to disallowed IP address 169.254.169.254');
+    await expect(result).rejects.toThrow(
+      'resolved to disallowed IP address 169.254.169.254',
+    );
   });
 
   it('blocks private IPv6 DNS results', async () => {
     const { result } = runLookup([{ address: '::1', family: 6 }]);
 
-    await expect(result).rejects.toThrow('resolved to disallowed IP address ::1');
+    await expect(result).rejects.toThrow(
+      'resolved to disallowed IP address ::1',
+    );
   });
 });

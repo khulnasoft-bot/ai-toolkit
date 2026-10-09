@@ -10,10 +10,12 @@ import { WeatherValibotAgentUIMessage } from '@/agent/weather-valibot-agent';
 import WeatherValibotView from '@/components/tool/weather-valibot-view';
 
 export default function TestWeatherValibot() {
-  const { status, sendMessage, messages } = useChat<WeatherValibotAgentUIMessage>({
-    transport: new DefaultChatTransport({ api: '/api/chat-weather-valibot' }),
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
-  });
+  const { status, sendMessage, messages } =
+    useChat<WeatherValibotAgentUIMessage>({
+      transport: new DefaultChatTransport({ api: '/api/chat-weather-valibot' }),
+      sendAutomaticallyWhen:
+        lastAssistantMessageIsCompleteWithApprovalResponses,
+    });
 
   console.log(structuredClone(messages));
 

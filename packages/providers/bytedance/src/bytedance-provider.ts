@@ -4,7 +4,11 @@ import {
   type ImageModelV4,
   type ProviderV4,
 } from '@ai-toolkit/provider';
-import { loadApiKey, withoutTrailingSlash, type FetchFunction } from '@ai-toolkit/provider-utils';
+import {
+  loadApiKey,
+  withoutTrailingSlash,
+  type FetchFunction,
+} from '@ai-toolkit/provider-utils';
 import { ByteDanceImageModel } from './bytedance-image-model';
 import type { ByteDanceImageModelId } from './bytedance-image-settings';
 import { ByteDanceVideoModel } from './bytedance-video-model';
@@ -62,7 +66,9 @@ const defaultBaseURL = 'https://ark.ap-southeast.bytepluses.com/api/v3';
 /**
  * Create a ByteDance provider instance.
  */
-export function createByteDance(options: ByteDanceProviderSettings = {}): ByteDanceProvider {
+export function createByteDance(
+  options: ByteDanceProviderSettings = {},
+): ByteDanceProvider {
   const baseURL = withoutTrailingSlash(options.baseURL ?? defaultBaseURL);
 
   const getHeaders = () => ({

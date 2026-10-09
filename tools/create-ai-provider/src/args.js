@@ -1,6 +1,10 @@
 import { getAllArchetypes } from './templates/index.js';
 
-export const ARCHETYPE_NAMES = ['openai-compatible', 'harness-acp', 'full-custom'];
+export const ARCHETYPE_NAMES = [
+  'openai-compatible',
+  'harness-acp',
+  'full-custom',
+];
 
 export function parseArgs(argv) {
   const options = {
@@ -46,7 +50,9 @@ export function parseArgs(argv) {
   }
 
   if (!options.name && !options.help) {
-    throw new Error('Provider name is required. Run create-ai-provider --help for usage.');
+    throw new Error(
+      'Provider name is required. Run create-ai-provider --help for usage.',
+    );
   }
 
   return options;
@@ -60,7 +66,9 @@ export function validateArgs(options) {
   }
 
   if (options.archetype && !ARCHETYPE_NAMES.includes(options.archetype)) {
-    throw new Error(`Unknown archetype "${options.archetype}". Use: ${ARCHETYPE_NAMES.join(', ')}`);
+    throw new Error(
+      `Unknown archetype "${options.archetype}". Use: ${ARCHETYPE_NAMES.join(', ')}`,
+    );
   }
 
   return options;

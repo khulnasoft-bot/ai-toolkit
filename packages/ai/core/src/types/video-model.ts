@@ -7,6 +7,9 @@ import type {
 /**
  * A video model can be a string (model ID) or a video model object.
  */
-export type VideoModel = string | Experimental_VideoModelV4 | Experimental_VideoModelV3;
+export type VideoModel =
+  | string
+  | Experimental_VideoModelV4
+  | Experimental_VideoModelV3;
 
 export type VideoModelProviderMetadata = SharedV4ProviderMetadata;

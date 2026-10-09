@@ -75,7 +75,10 @@ export class Spinner {
  * @param fn - The async function to execute.
  * @returns The result of the async function.
  */
-export async function withSpinner<T>(message: string, fn: () => Promise<T>): Promise<T> {
+export async function withSpinner<T>(
+  message: string,
+  fn: () => Promise<T>,
+): Promise<T> {
   const spinner = new Spinner(message);
   spinner.start();
 

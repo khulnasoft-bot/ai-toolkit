@@ -35,7 +35,9 @@ export const acpSourceSchema = z.union([
 
 export type ACPNpmSimpleSource = z.infer<typeof acpNpmSimpleSourceSchema>;
 export type ACPNpmLockedSource = z.infer<typeof acpNpmLockedSourceSchema>;
-export type ACPInstallCommandSource = z.infer<typeof acpInstallCommandSourceSchema>;
+export type ACPInstallCommandSource = z.infer<
+  typeof acpInstallCommandSourceSchema
+>;
 export type ACPSource = z.infer<typeof acpSourceSchema>;
 
 /**

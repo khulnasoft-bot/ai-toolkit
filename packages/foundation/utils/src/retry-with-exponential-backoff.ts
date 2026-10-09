@@ -2,7 +2,9 @@ import { delay } from './delay';
 import { getErrorMessage } from './get-error-message';
 import { isAbortError } from './is-abort-error';
 
-export type RetryFunction = <OUTPUT>(fn: () => PromiseLike<OUTPUT>) => PromiseLike<OUTPUT>;
+export type RetryFunction = <OUTPUT>(
+  fn: () => PromiseLike<OUTPUT>,
+) => PromiseLike<OUTPUT>;
 
 export type RetryErrorReason = 'maxRetriesExceeded' | 'errorNotRetryable';
 
@@ -24,7 +26,9 @@ export type RetryDelayProvider = ({
   exponentialBackoffDelay: number;
 }) => number;
 
-export type ShouldRetryFunction = (error: unknown) => boolean | Promise<boolean>;
+export type ShouldRetryFunction = (
+  error: unknown,
+) => boolean | Promise<boolean>;
 
 /**
  * Retries a failed operation with exponential backoff.

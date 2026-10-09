@@ -1,4 +1,8 @@
-import type { EmbeddingModelV2, EmbeddingModelV3, EmbeddingModelV4 } from '@ai-toolkit/provider';
+import type {
+  EmbeddingModelV2,
+  EmbeddingModelV3,
+  EmbeddingModelV4,
+} from '@ai-toolkit/provider';
 import { asEmbeddingModelV3 } from './as-embedding-model-v3';
 
 export function asEmbeddingModelV4(
@@ -9,7 +13,8 @@ export function asEmbeddingModelV4(
   }
 
   // first convert v2 to v3, then proxy v3 as v4:
-  const v3Model = model.specificationVersion === 'v2' ? asEmbeddingModelV3(model) : model;
+  const v3Model =
+    model.specificationVersion === 'v2' ? asEmbeddingModelV3(model) : model;
 
   return new Proxy(v3Model, {
     get(target, prop: keyof EmbeddingModelV3) {

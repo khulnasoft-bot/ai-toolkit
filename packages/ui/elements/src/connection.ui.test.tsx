@@ -18,7 +18,9 @@ describe('connection', () => {
       toY: 100,
     };
 
-    const { container } = render(<Connection {...(props as ConnectionLineComponentProps<Node>)} />);
+    const { container } = render(
+      <Connection {...(props as ConnectionLineComponentProps<Node>)} />,
+    );
     const path = container.querySelector('path');
     const circle = container.querySelector('circle');
 
@@ -39,7 +41,9 @@ describe('connection', () => {
       toY: 120,
     };
 
-    const { container } = render(<Connection {...(props as ConnectionLineComponentProps<Node>)} />);
+    const { container } = render(
+      <Connection {...(props as ConnectionLineComponentProps<Node>)} />,
+    );
     const path = container.querySelector('path');
 
     expect(path).toHaveAttribute('d');
@@ -59,7 +63,9 @@ describe('connection', () => {
       toY: 100,
     };
 
-    const { container } = render(<Connection {...(props as ConnectionLineComponentProps<Node>)} />);
+    const { container } = render(
+      <Connection {...(props as ConnectionLineComponentProps<Node>)} />,
+    );
     const circle = container.querySelector('circle');
 
     expect(circle).toHaveAttribute('cx', '100');
@@ -80,7 +86,9 @@ describe('connection', () => {
       toY: 50,
     };
 
-    const { container } = render(<Connection {...(props as ConnectionLineComponentProps<Node>)} />);
+    const { container } = render(
+      <Connection {...(props as ConnectionLineComponentProps<Node>)} />,
+    );
     const path = container.querySelector('path');
     const d = path?.getAttribute('d');
 

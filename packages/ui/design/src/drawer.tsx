@@ -31,7 +31,9 @@ export function Drawer({
       <div className="absolute inset-0 bg-black/60" onClick={onClose} />
       <div className="absolute inset-y-0 right-0 flex w-full max-w-md flex-col border-l border-alpha-border-strong bg-surface-100 shadow-2xl">
         <div className="flex h-14 shrink-0 items-center justify-between border-b border-alpha-border bg-surface-200/80 px-4 backdrop-blur">
-          <p className="truncate text-sm font-semibold tracking-tight">{title}</p>
+          <p className="truncate text-sm font-semibold tracking-tight">
+            {title}
+          </p>
           <button
             onClick={onClose}
             aria-label="Close"

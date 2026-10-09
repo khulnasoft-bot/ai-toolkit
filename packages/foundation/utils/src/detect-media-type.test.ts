@@ -257,7 +257,8 @@ describe('detectMediaType signature matching', () => {
   describe('AVIF', () => {
     it('should detect AVIF from bytes', () => {
       const avifBytes = new Uint8Array([
-        0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69, 0x66, 0xff,
+        0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69, 0x66,
+        0xff,
       ]);
       expect(
         detectMediaType({
@@ -281,7 +282,8 @@ describe('detectMediaType signature matching', () => {
   describe('HEIC', () => {
     it('should detect HEIC from bytes', () => {
       const heicBytes = new Uint8Array([
-        0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63, 0xff,
+        0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63,
+        0xff,
       ]);
       expect(
         detectMediaType({
@@ -419,7 +421,9 @@ describe('detectMediaType signature matching', () => {
     // the base64 and raw-byte paths must agree.
     it('detects an ID3-tagged MP3 whose tag is at the scan limit', () => {
       const atLimit = buildID3Mp3(MAX_ID3_TAG_BYTES);
-      expect(detectMediaType({ data: atLimit, topLevelType: 'audio' })).toBe('audio/mpeg');
+      expect(detectMediaType({ data: atLimit, topLevelType: 'audio' })).toBe(
+        'audio/mpeg',
+      );
       expect(
         detectMediaType({
           data: convertUint8ArrayToBase64(atLimit),
@@ -433,7 +437,9 @@ describe('detectMediaType signature matching', () => {
     // reading the whole input; both representations must agree.
     it('does not detect an ID3-tagged MP3 whose tag exceeds the scan limit', () => {
       const overLimit = buildID3Mp3(MAX_ID3_TAG_BYTES + 1);
-      expect(detectMediaType({ data: overLimit, topLevelType: 'audio' })).toBeUndefined();
+      expect(
+        detectMediaType({ data: overLimit, topLevelType: 'audio' }),
+      ).toBeUndefined();
       expect(
         detectMediaType({
           data: convertUint8ArrayToBase64(overLimit),
@@ -886,7 +892,9 @@ describe('detectMediaType', () => {
     });
 
     it('detects video types', () => {
-      const mp4Bytes = new Uint8Array([0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70]);
+      const mp4Bytes = new Uint8Array([
+        0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70,
+      ]);
       expect(detectMediaType({ data: mp4Bytes })).toBe('video/mp4');
     });
 

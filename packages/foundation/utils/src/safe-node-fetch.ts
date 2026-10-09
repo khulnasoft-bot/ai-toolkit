@@ -32,10 +32,16 @@ type LookupOptions = {
 type Lookup = (
   hostname: string,
   options: LookupOptions & { all: true },
-  callback: (error: NodeJS.ErrnoException | null, addresses: LookupAddress[]) => void,
+  callback: (
+    error: NodeJS.ErrnoException | null,
+    addresses: LookupAddress[],
+  ) => void,
 ) => void;
 
-type LookupAllCallback = (error: NodeJS.ErrnoException | null, addresses: LookupAddress[]) => void;
+type LookupAllCallback = (
+  error: NodeJS.ErrnoException | null,
+  addresses: LookupAddress[],
+) => void;
 
 type LookupOneCallback = (
   error: NodeJS.ErrnoException | null,
@@ -44,8 +50,16 @@ type LookupOneCallback = (
 ) => void;
 
 type SafeLookup = {
-  (hostname: string, options: LookupOptions & { all: true }, callback: LookupAllCallback): void;
-  (hostname: string, options: LookupOptions & { all?: false }, callback: LookupOneCallback): void;
+  (
+    hostname: string,
+    options: LookupOptions & { all: true },
+    callback: LookupAllCallback,
+  ): void;
+  (
+    hostname: string,
+    options: LookupOptions & { all?: false },
+    callback: LookupOneCallback,
+  ): void;
 };
 
 /**
@@ -80,7 +94,11 @@ export function createSafeLookup(lookup: Lookup): SafeLookup {
         if (options.all === true) {
           (callback as LookupAllCallback)(null, addresses);
         } else {
-          (callback as LookupOneCallback)(null, firstAddress.address, firstAddress.family);
+          (callback as LookupOneCallback)(
+            null,
+            firstAddress.address,
+            firstAddress.family,
+          );
         }
       } catch (error) {
         (callback as (error: Error) => void)(
@@ -103,7 +121,10 @@ export function isNodeRuntime(): boolean {
       }
     | undefined;
 
-  return runtimeProcess?.release?.name === 'node' && runtimeProcess.versions?.bun == null;
+  return (
+    runtimeProcess?.release?.name === 'node' &&
+    runtimeProcess.versions?.bun == null
+  );
 }
 
 export async function getDefaultDownloadFetch(): Promise<FetchFunction> {
@@ -124,7 +145,10 @@ function isNodeDefaultFetch(fetch: unknown): boolean {
   }
 
   const source = Function.prototype.toString.call(fetch);
-  return source.includes('internal/deps/undici') || source.includes('lazy loading of undici');
+  return (
+    source.includes('internal/deps/undici') ||
+    source.includes('lazy loading of undici')
+  );
 }
 
 function createSafeNodeFetch(): FetchFunction {
@@ -132,7 +156,9 @@ function createSafeNodeFetch(): FetchFunction {
   // and Node built-ins into the browser-facing provider-utils entry point.
   const { createRequire } = loadBuiltinModule<NodeModule>('node:module');
   const { lookup } = loadBuiltinModule<NodeDns>('node:dns');
-  const { Agent, fetch } = createRequire(getCurrentModulePath())('undici') as Undici;
+  const { Agent, fetch } = createRequire(getCurrentModulePath())(
+    'undici',
+  ) as Undici;
 
   const dispatcher = new Agent({
     connect: {

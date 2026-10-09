@@ -113,15 +113,22 @@ export function streamTranscribe({
     });
   }
 
-  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
+  const headersWithUserAgent = withUserAgentSuffix(
+    headers ?? {},
+    `ai/${VERSION}`,
+  );
 
   const textPromise = new DelayedPromise<string>();
   const segmentsPromise = new DelayedPromise<Array<TranscriptSegment>>();
   const languagePromise = new DelayedPromise<string | undefined>();
   const durationInSecondsPromise = new DelayedPromise<number | undefined>();
   const warningsPromise = new DelayedPromise<Array<Warning>>();
-  const responsesPromise = new DelayedPromise<Array<TranscriptionModelResponseMetadata>>();
-  const providerMetadataPromise = new DelayedPromise<Record<string, JSONObject>>();
+  const responsesPromise = new DelayedPromise<
+    Array<TranscriptionModelResponseMetadata>
+  >();
+  const providerMetadataPromise = new DelayedPromise<
+    Record<string, JSONObject>
+  >();
 
   const rejectPendingPromises = (error: unknown) => {
     for (const promise of [
@@ -221,7 +228,9 @@ export function streamTranscribe({
     },
 
     cancel(reason) {
-      pipeAbortController.abort(reason ?? new Error('Transcription stream was cancelled.'));
+      pipeAbortController.abort(
+        reason ?? new Error('Transcription stream was cancelled.'),
+      );
     },
   };
 
@@ -253,7 +262,8 @@ export function streamTranscribe({
       signal: pipeAbortController.signal,
     });
   })().catch(error => {
-    const reason = error ?? new Error('Transcription stream was cancelled or errored.');
+    const reason =
+      error ?? new Error('Transcription stream was cancelled or errored.');
     rejectPendingPromises(reason);
     // When `doStream` rejects before the model stream exists (e.g. auth or
     // header resolution failure), nothing has taken ownership of `audio` yet,
@@ -270,7 +280,8 @@ export function streamTranscribe({
   // unlike streamText we cannot retain an unread tee branch for replay. The
   // output stream has one owner: either fullStream, or the first result promise
   // getter which claims and drains it internally.
-  let streamOwner: 'unclaimed' | 'full-stream' | 'result-promises' = 'unclaimed';
+  let streamOwner: 'unclaimed' | 'full-stream' | 'result-promises' =
+    'unclaimed';
 
   function consumeStream() {
     if (streamOwner === 'full-stream' || streamOwner === 'result-promises') {

@@ -1,5 +1,10 @@
 import { openai } from '@ai-toolkit/openai';
-import { consumeStream, convertToModelMessages, streamText, UIMessage } from '@ai-toolkit/ai';
+import {
+  consumeStream,
+  convertToModelMessages,
+  streamText,
+  UIMessage,
+} from '@ai-toolkit/ai';
 
 export const maxDuration = 30;
 

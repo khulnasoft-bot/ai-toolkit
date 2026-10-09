@@ -24,7 +24,8 @@ export function createEpisodicMemory(): EpisodicMemory {
 
   return {
     remember: event => events.push(event),
-    recall: type => (type ? events.filter(e => e.eventType === type) : [...events]),
+    recall: type =>
+      type ? events.filter(e => e.eventType === type) : [...events],
     forget: maxAge => {
       const cutoff = Date.now() - (maxAge ?? 86400000);
       for (let i = events.length - 1; i >= 0; i--) {

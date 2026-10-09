@@ -14,5 +14,7 @@ export type RealtimeFactoryV4GetTokenResult = {
 export interface RealtimeFactoryV4 {
   (modelId: string): RealtimeModelV4;
 
-  getToken(options: RealtimeFactoryV4GetTokenOptions): Promise<RealtimeFactoryV4GetTokenResult>;
+  getToken(
+    options: RealtimeFactoryV4GetTokenOptions,
+  ): Promise<RealtimeFactoryV4GetTokenResult>;
 }

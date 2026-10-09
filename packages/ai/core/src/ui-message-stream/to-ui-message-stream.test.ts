@@ -140,7 +140,9 @@ describe('toUIMessageStream', () => {
   });
 
   it('routes error parts through onError', async () => {
-    const parts: TextStreamPart<{}>[] = [{ type: 'error', error: new Error('boom') }];
+    const parts: TextStreamPart<{}>[] = [
+      { type: 'error', error: new Error('boom') },
+    ];
 
     const chunks = await convertReadableStreamToArray(
       toUIMessageStream({
@@ -380,7 +382,9 @@ describe('toUIMessageStream', () => {
       onEnd,
     });
 
-    await expect(convertReadableStreamToArray(stream)).rejects.toBe(sourceError);
+    await expect(convertReadableStreamToArray(stream)).rejects.toBe(
+      sourceError,
+    );
 
     expect(onEnd).toHaveBeenCalledTimes(1);
     expect(onEnd.mock.calls[0][0].outcome).toEqual({
@@ -441,7 +445,9 @@ describe('toUIMessageStream', () => {
       onEnd,
     });
 
-    await expect(convertReadableStreamToArray(stream)).rejects.toBe(sourceError);
+    await expect(convertReadableStreamToArray(stream)).rejects.toBe(
+      sourceError,
+    );
 
     expect(onEnd).toHaveBeenCalledTimes(1);
     expect(onEnd.mock.calls[0][0].outcome).toEqual({
@@ -470,7 +476,9 @@ describe('toUIMessageStream', () => {
       onEnd,
     });
 
-    await expect(convertReadableStreamToArray(stream)).rejects.toBe(metadataError);
+    await expect(convertReadableStreamToArray(stream)).rejects.toBe(
+      metadataError,
+    );
 
     expect(onEnd).toHaveBeenCalledTimes(1);
     expect(onEnd.mock.calls[0][0].outcome).toEqual({
@@ -494,7 +502,9 @@ describe('toUIMessageStream', () => {
       onEnd,
     });
 
-    await expect(convertReadableStreamToArray(stream)).rejects.toBe(conversionError);
+    await expect(convertReadableStreamToArray(stream)).rejects.toBe(
+      conversionError,
+    );
 
     expect(onEnd).toHaveBeenCalledTimes(1);
     expect(onEnd.mock.calls[0][0].outcome).toEqual({

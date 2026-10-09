@@ -32,9 +32,9 @@ describe('fetchWithValidatedRedirects', () => {
     const fetchMock = vi.fn();
     globalThis.fetch = fetchMock;
 
-    await expect(fetchWithValidatedRedirects({ url: 'http://localhost/file' })).rejects.toThrow(
-      DownloadError,
-    );
+    await expect(
+      fetchWithValidatedRedirects({ url: 'http://localhost/file' }),
+    ).rejects.toThrow(DownloadError);
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
@@ -63,19 +63,25 @@ describe('fetchWithValidatedRedirects', () => {
 
     expect(response.ok).toBe(true);
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(fetchMock).toHaveBeenNthCalledWith(2, 'https://cdn.example.com/file', {
-      signal: undefined,
-      redirect: 'manual',
-    });
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      'https://cdn.example.com/file',
+      {
+        signal: undefined,
+        redirect: 'manual',
+      },
+    );
   });
 
   it('rejects a redirect to a private address without requesting it', async () => {
-    const fetchMock = vi.fn().mockResolvedValueOnce(redirectResponse('http://169.254.169.254/'));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(redirectResponse('http://169.254.169.254/'));
     globalThis.fetch = fetchMock;
 
-    await expect(fetchWithValidatedRedirects({ url: 'https://evil.com/redirect' })).rejects.toThrow(
-      DownloadError,
-    );
+    await expect(
+      fetchWithValidatedRedirects({ url: 'https://evil.com/redirect' }),
+    ).rejects.toThrow(DownloadError);
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
 
@@ -102,9 +108,9 @@ describe('fetchWithValidatedRedirects', () => {
       .mockResolvedValueOnce(redirectWithBody('http://169.254.169.254/'));
     globalThis.fetch = fetchMock;
 
-    await expect(fetchWithValidatedRedirects({ url: 'https://example.com/file' })).rejects.toThrow(
-      DownloadError,
-    );
+    await expect(
+      fetchWithValidatedRedirects({ url: 'https://example.com/file' }),
+    ).rejects.toThrow(DownloadError);
 
     // Both the followed hop and the hop rejected by the SSRF guard must have
     // their bodies cancelled so the redirect chain does not leak sockets.
@@ -120,16 +126,22 @@ describe('fetchWithValidatedRedirects', () => {
 
     await fetchWithValidatedRedirects({ url: 'https://example.com/start' });
 
-    expect(fetchMock).toHaveBeenNthCalledWith(2, 'https://example.com/internal', {
-      signal: undefined,
-      redirect: 'manual',
-    });
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      'https://example.com/internal',
+      {
+        signal: undefined,
+        redirect: 'manual',
+      },
+    );
   });
 
   it.each([301, 302, 303, 307, 308])('follows a %d redirect', async status => {
     const fetchMock = vi
       .fn()
-      .mockResolvedValueOnce(redirectResponse('https://cdn.example.com/file', status))
+      .mockResolvedValueOnce(
+        redirectResponse('https://cdn.example.com/file', status),
+      )
       .mockResolvedValueOnce(okResponse());
     globalThis.fetch = fetchMock;
 
@@ -146,7 +158,9 @@ describe('fetchWithValidatedRedirects', () => {
       // not even to a private address.
       const fetchMock = vi
         .fn()
-        .mockResolvedValueOnce(redirectResponse('http://169.254.169.254/', status));
+        .mockResolvedValueOnce(
+          redirectResponse('http://169.254.169.254/', status),
+        );
       globalThis.fetch = fetchMock;
 
       const response = await fetchWithValidatedRedirects({
@@ -159,7 +173,9 @@ describe('fetchWithValidatedRedirects', () => {
   );
 
   it('rejects once the redirect limit is exceeded', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(redirectResponse('https://example.com/next'));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(redirectResponse('https://example.com/next'));
     globalThis.fetch = fetchMock;
 
     await expect(
@@ -251,7 +267,9 @@ describe('fetchWithValidatedRedirects', () => {
   });
 
   it('validates hops on other origins even when trustedOrigin is set', async () => {
-    const fetchMock = vi.fn().mockResolvedValueOnce(redirectResponse('http://169.254.169.254/'));
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(redirectResponse('http://169.254.169.254/'));
 
     await expect(
       fetchWithValidatedRedirects({
