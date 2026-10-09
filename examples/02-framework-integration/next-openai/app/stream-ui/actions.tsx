@@ -33,7 +33,7 @@ export async function submitUserMessage(content: string) {
   });
 
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>;
-  let textNode: React.ReactNode;
+  let textNode: JSX.Element;
 
   const result = await streamUI({
     model: openai('gpt-4-turbo'),
