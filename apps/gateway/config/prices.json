@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "currency": "USD",
+  "entries": [
+    {
+      "modelPattern": "openai/gpt-4o",
+      "inputPer1k": 2.5,
+      "outputPer1k": 10,
+      "currency": "USD"
+    },
+    {
+      "modelPattern": "openai/gpt-4o-mini",
+      "inputPer1k": 0.15,
+      "outputPer1k": 0.6,
+      "currency": "USD"
+    },
+    {
+      "modelPattern": "anthropic/*",
+      "inputPer1k": 3,
+      "outputPer1k": 15,
+      "currency": "USD"
+    },
+    {
+      "modelPattern": "google/*",
+      "inputPer1k": 0.1,
+      "outputPer1k": 0.4,
+      "currency": "USD"
+    },
+    {
+      "modelPattern": "groq/*",
+      "inputPer1k": 0.59,
+      "outputPer1k": 0.79,
+      "currency": "USD"
+    },
+    {
+      "modelPattern": "mistral/*",
+      "inputPer1k": 2,
+      "outputPer1k": 6,
+      "currency": "USD"
+    }
+  ]
+}

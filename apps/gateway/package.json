@@ -1,0 +1,33 @@
+{
+  "name": "gateway",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "type-check": "tsc --noEmit",
+    "keys:create": "tsx scripts/create-key.ts"
+  },
+  "dependencies": {
+    "@ai-toolkit/ai": "workspace:*",
+    "@ai-toolkit/anthropic": "workspace:*",
+    "@ai-toolkit/gateway-router": "workspace:*",
+    "@ai-toolkit/google": "workspace:*",
+    "@ai-toolkit/groq": "workspace:*",
+    "@ai-toolkit/mistral": "workspace:*",
+    "@ai-toolkit/observability-cost": "workspace:*",
+    "@ai-toolkit/openai": "workspace:*",
+    "@ai-toolkit/security-auth": "workspace:*",
+    "next": "16.3.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.0.0"
+  }
+}

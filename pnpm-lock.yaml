@@ -68,6 +68,61 @@ importers:
 
   apps: {}
 
+  apps/gateway:
+    dependencies:
+      '@ai-toolkit/ai':
+        specifier: workspace:*
+        version: link:../../packages/ai/core
+      '@ai-toolkit/anthropic':
+        specifier: workspace:*
+        version: link:../../packages/providers/anthropic
+      '@ai-toolkit/gateway-router':
+        specifier: workspace:*
+        version: link:../../packages/gateway/router
+      '@ai-toolkit/google':
+        specifier: workspace:*
+        version: link:../../packages/providers/google
+      '@ai-toolkit/groq':
+        specifier: workspace:*
+        version: link:../../packages/providers/groq
+      '@ai-toolkit/mistral':
+        specifier: workspace:*
+        version: link:../../packages/providers/mistral
+      '@ai-toolkit/observability-cost':
+        specifier: workspace:*
+        version: link:../../packages/observability/cost
+      '@ai-toolkit/openai':
+        specifier: workspace:*
+        version: link:../../packages/providers/openai
+      '@ai-toolkit/security-auth':
+        specifier: workspace:*
+        version: link:../../packages/security/auth
+      next:
+        specifier: 16.3.6
+        version: 16.3.6(@babel/core@7.29.7(supports-color@9.4.0))(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@22.19.19)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.90.0)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.7(@types/react@19.2.18)
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
+      typescript:
+        specifier: ^5.0.0
+        version: 5.8.3
+
   apps/www:
     dependencies:
       next:

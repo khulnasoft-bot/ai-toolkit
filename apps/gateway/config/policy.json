@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "modelPattern": "openai/gpt-4o",
+      "providers": [
+        { "provider": "openai", "model": "gpt-4o" },
+        { "provider": "azure", "model": "gpt-4o" }
+      ],
+      "strategy": "ordered",
+      "retryBudget": 3
+    },
+    {
+      "modelPattern": "openai/gpt-4o-mini",
+      "providers": [{ "provider": "openai", "model": "gpt-4o-mini" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "anthropic/*",
+      "providers": [{ "provider": "anthropic", "model": "claude-3-7-sonnet" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "google/*",
+      "providers": [{ "provider": "google", "model": "gemini-2.0-flash" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "groq/*",
+      "providers": [{ "provider": "groq", "model": "llama-3.3-70b-versatile" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "mistral/*",
+      "providers": [{ "provider": "mistral", "model": "mistral-large-latest" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    }
+  ],
+  "fallback": { "provider": "openai", "model": "gpt-4o-mini" }
+}
