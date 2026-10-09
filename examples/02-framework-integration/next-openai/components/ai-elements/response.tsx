@@ -1,10 +1,10 @@
 'use client';
 
 import { cn } from '@/lib/utils';
-import { type ComponentProps, memo } from 'react';
-import { Streamdown } from 'streamdown';
+import { memo } from 'react';
+import { Streamdown, type StreamdownProps } from 'streamdown';
 
-type ResponseProps = ComponentProps<typeof Streamdown>;
+type ResponseProps = StreamdownProps;
 
 export const Response = memo(
   ({ className, ...props }: ResponseProps) => (
