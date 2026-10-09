@@ -1521,7 +1521,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   toolName: toolNameMapping.toCustomToolName('code_interpreter'),
                   input: JSON.stringify({
                     code: value.code,
-                    containerId: toolCall.codeInterpreter?.containerId,
+                    containerId: toolCall.codeInterpreter?.containerId ?? '',
                   } satisfies InferSchema<typeof codeInterpreterInputSchema>),
                   providerExecuted: true,
                 });
@@ -1601,11 +1601,17 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 });
 
                 // mark the summary part as concluded
-                activeReasoning[value.item_id]?.summaryParts[value.summary_index] = 'concluded';
+                const activeReasoningPart = activeReasoning[value.item_id];
+                if (activeReasoningPart != null) {
+                  activeReasoningPart.summaryParts[value.summary_index] = 'concluded';
+                }
               } else {
                 // mark the summary part as can-conclude only
                 // because we need to have a final summary part with the encrypted content
-                activeReasoning[value.item_id]?.summaryParts[value.summary_index] = 'can-conclude';
+                const activeReasoningPart = activeReasoning[value.item_id];
+                if (activeReasoningPart != null) {
+                  activeReasoningPart.summaryParts[value.summary_index] = 'can-conclude';
+                }
               }
             } else if (isResponseFinishedChunk(value)) {
               finishReason = {
