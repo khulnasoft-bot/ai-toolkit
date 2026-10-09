@@ -6,14 +6,14 @@
  * Source: https://github.com/TooTallNate/nx.js/blob/main/.github/scripts/cleanup-examples.mjs
  */
 
-import { readdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 function cleanup(app, url) {
   const appPath = join(fileURLToPath(url), app);
 
-  if (!statSync(appPath).isDirectory()) return;
+  if (!existsSync(appPath) || !statSync(appPath).isDirectory()) return;
 
   console.log('Cleaning up', appPath);
 
@@ -46,4 +46,4 @@ for (const category of readdirSync(examplesDir)) {
 }
 
 // next test server
-cleanup('.', new URL('../../packages/adapters/rsc/tests/e2e/next-server', import.meta.url));
+cleanup('.', new URL('../../packages/integrations/rsc/tests/e2e/next-server', import.meta.url));

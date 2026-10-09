@@ -4,7 +4,7 @@ import { type StreamableValue, useStreamableValue } from '@ai-toolkit/rsc';
 
 export function BotMessage({ textStream }: { textStream: StreamableValue }) {
   const [text] = useStreamableValue(textStream);
-  return <Message>{text}</Message>;
+  return <Message role="assistant">{text}</Message>;
 }
 
 export function Message({ role, children }: { role: string; children: React.ReactNode }) {

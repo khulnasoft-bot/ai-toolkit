@@ -34,7 +34,7 @@ export async function submitUserMessage(content: string) {
 
   const result = await streamUI({
     model: openai('gpt-4-turbo'),
-    initial: <Message>Working on that...</Message>,
+    initial: <Message role="assistant">Working on that...</Message>,
     system: 'You are a weather assistant.',
     messages: aiState
       .get()
@@ -65,10 +65,10 @@ export async function submitUserMessage(content: string) {
           location: z.string(),
         }),
         generate: async function* ({ location }) {
-          yield <Message>Loading weather for {location}</Message>;
+          yield <Message role="assistant">Loading weather for {location}</Message>;
           const { temperature } = await fetchWeatherData(location);
           return (
-            <Message>
+            <Message role="assistant">
               <span>
                 The temperature in {location} is{' '}
                 <span className="font-semibold">{temperature}</span>

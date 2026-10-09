@@ -103,7 +103,7 @@ export async function processToolCalls<
       return {
         ...part,
         output: result,
-      };
+      } as typeof part;
     }),
   );
 
