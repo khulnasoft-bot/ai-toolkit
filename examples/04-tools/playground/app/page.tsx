@@ -10,21 +10,39 @@ import {
   Copy,
   Github,
   Grid2X2,
+  History,
   Layers3,
   Library,
+  Link2,
   Menu,
   Play,
   Plus,
   Search,
-  Settings2,
   Sparkles,
-  Terminal,
+  Trash2,
   Wrench,
   X,
 } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { ChatInterface } from '@/components/chat-interface';
+import {
+  clearSessions,
+  clearTranscripts,
+  createSession,
+  deleteSession,
+  loadSessions,
+  transcriptKey,
+  type PlaygroundSession,
+} from '@/lib/history';
+import { aiProviders, allModels, DEFAULT_MODEL } from '@/lib/providers';
 
-type Section = 'Playground' | 'Recipes' | 'Tools Registry' | 'Templates' | 'Showcase' | 'Providers';
+type Section =
+  | 'Playground'
+  | 'Recipes'
+  | 'Tools Registry'
+  | 'Templates'
+  | 'Showcase'
+  | 'Providers';
 
 const sections: { label: Section; icon: typeof Sparkles; count?: string }[] = [
   { label: 'Playground', icon: Sparkles },
@@ -35,36 +53,30 @@ const sections: { label: Section; icon: typeof Sparkles; count?: string }[] = [
   { label: 'Providers', icon: Layers3, count: '32' },
 ];
 
-const models = [
-  {
-    name: 'Claude 3.7 Sonnet',
-    id: 'anthropic/claude-3-7-sonnet',
-    provider: 'Anthropic',
-    latency: '0.8s',
-    color: 'bg-orange-400',
-  },
-  {
-    name: 'GPT-4.1',
-    id: 'openai/gpt-4.1',
-    provider: 'OpenAI',
-    latency: '0.6s',
-    color: 'bg-emerald-400',
-  },
-  {
-    name: 'Gemini 2.5 Pro',
-    id: 'google/gemini-2.5-pro',
-    provider: 'Google',
-    latency: '0.7s',
-    color: 'bg-blue-400',
-  },
-  {
-    name: 'Llama 4 Maverick',
-    id: 'meta/llama-4-maverick',
-    provider: 'Meta',
-    latency: '0.5s',
-    color: 'bg-cyan-400',
-  },
-];
+const providerColor: Record<string, string> = {
+  openai: 'bg-emerald-400',
+  anthropic: 'bg-orange-400',
+  google: 'bg-blue-400',
+  groq: 'bg-cyan-400',
+  mistral: 'bg-amber-400',
+  xai: 'bg-zinc-400',
+  deepseek: 'bg-violet-400',
+  cohere: 'bg-pink-400',
+  perplexity: 'bg-teal-400',
+};
+
+function shortName(modelId: string) {
+  return modelId.split('/').pop() ?? modelId;
+}
+
+function providerOf(modelId: string) {
+  return aiProviders.find(p => p.models.includes(modelId))?.name ?? 'Gateway';
+}
+
+function colorOf(modelId: string) {
+  const provider = aiProviders.find(p => p.models.includes(modelId));
+  return provider ? (providerColor[provider.id] ?? 'bg-primary') : 'bg-primary';
+}
 
 const catalog: Record<
   Exclude<Section, 'Playground'>,
@@ -83,7 +95,8 @@ const catalog: Record<
     cards: [
       {
         title: 'RAG with reranking',
-        description: 'Search, rerank, and stream grounded answers with citations.',
+        description:
+          'Search, rerank, and stream grounded answers with citations.',
         tag: 'RAG',
         meta: 'Next.js · 12 min',
       },
@@ -173,7 +186,8 @@ const catalog: Record<
       },
       {
         title: 'Replit Agent',
-        description: 'Turn ideas into software with an autonomous coding agent.',
+        description:
+          'Turn ideas into software with an autonomous coding agent.',
         tag: 'CODING',
         meta: 'Featured',
       },
@@ -230,67 +244,87 @@ function SelectBox({
   );
 }
 
-function ModelPanel({
+function ComparePane({
   index,
   modelId,
   setModelId,
-  response,
-  isRunning,
+  onRemove,
+  canRemove,
+  broadcast,
+  temperature,
+  maxOutputTokens,
+  system,
+  persistKey,
 }: {
   index: number;
   modelId: string;
   setModelId: (value: string) => void;
-  response: string;
-  isRunning: boolean;
+  onRemove: () => void;
+  canRemove: boolean;
+  broadcast: { text: string; nonce: number } | null;
+  temperature: number;
+  maxOutputTokens: number;
+  system?: string;
+  persistKey: string;
 }) {
-  const model = models.find(item => item.id === modelId) ?? models[0];
   return (
-    <div className="flex min-h-[355px] flex-col border-b border-border lg:border-b-0 lg:border-r last:border-0">
+    <div className="flex min-h-[560px] flex-col border-b border-border lg:border-b-0 lg:border-r last:border-0">
       <div className="flex items-center justify-between border-b border-border px-4 py-3">
         <div className="flex items-center gap-2">
-          <span className="font-mono text-[10px] text-muted-foreground">MODEL {index + 1}</span>
-          <span className={`size-2 rounded-full ${model.color}`} />
+          <span className="font-mono text-[10px] text-muted-foreground">
+            MODEL {index + 1}
+          </span>
+          <span className={`size-2 rounded-full ${colorOf(modelId)}`} />
         </div>
-        <button type="button" className="text-muted-foreground hover:text-foreground">
-          <Settings2 className="size-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          <span className="mr-1 hidden font-mono text-[10px] text-muted-foreground sm:inline">
+            {providerOf(modelId)}
+          </span>
+          {canRemove && (
+            <button
+              type="button"
+              onClick={onRemove}
+              className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+              aria-label={`Remove model ${index + 1}`}
+            >
+              <X className="size-4" />
+            </button>
+          )}
+        </div>
       </div>
       <div className="flex flex-col gap-3 p-4">
-        <SelectBox value={model.id} onChange={setModelId}>
-          {models.map(item => (
-            <option value={item.id} key={item.id}>
-              {item.name}
-            </option>
+        <SelectBox value={modelId} onChange={setModelId}>
+          {aiProviders.map(provider => (
+            <optgroup key={provider.id} label={provider.name}>
+              {provider.models.map(id => (
+                <option value={id} key={id}>
+                  {shortName(id)}
+                </option>
+              ))}
+            </optgroup>
           ))}
         </SelectBox>
         <div className="flex items-center justify-between text-[11px] text-muted-foreground">
-          <span>{model.provider}</span>
-          <span>{model.latency} avg latency</span>
+          <span>{providerOf(modelId)}</span>
+          <span>
+            <b className="font-mono text-foreground">
+              {temperature.toFixed(1)}
+            </b>
+            {' · '}
+            <b className="font-mono text-foreground">{maxOutputTokens}</b> tok
+          </span>
         </div>
       </div>
-      <div className="flex flex-1 flex-col justify-end gap-3 p-4">
-        <div className="rounded-md border border-border bg-muted/30 p-3 text-sm leading-6 text-muted-foreground">
-          <span className="mb-2 block font-mono text-[10px] uppercase tracking-widest text-primary">
-            {isRunning ? 'streaming' : 'response'}
-          </span>
-          {isRunning ? (
-            <span className="inline-flex items-center gap-1">
-              <span className="size-1.5 animate-pulse rounded-full bg-primary" />
-              <span className="size-1.5 animate-pulse rounded-full bg-primary [animation-delay:150ms]" />
-              <span className="size-1.5 animate-pulse rounded-full bg-primary [animation-delay:300ms]" />
-            </span>
-          ) : (
-            response || 'Run a prompt to compare model responses.'
-          )}
-        </div>
-        <div className="flex items-center justify-between border-t border-border pt-3 text-[11px] text-muted-foreground">
-          <span>
-            Temperature <b className="font-mono text-foreground">0.7</b>
-          </span>
-          <span>
-            Tokens <b className="font-mono text-foreground">1,024</b>
-          </span>
-        </div>
+      <div className="flex flex-1 flex-col px-4 pb-4">
+        <ChatInterface
+          modelId={modelId}
+          temperature={temperature}
+          maxOutputTokens={maxOutputTokens}
+          system={system || undefined}
+          broadcast={broadcast}
+          persistKey={persistKey}
+          compact
+        />
       </div>
     </div>
   );
@@ -299,13 +333,74 @@ function ModelPanel({
 export default function HomePage() {
   const [active, setActive] = useState<Section>('Playground');
   const [mobileNav, setMobileNav] = useState(false);
-  const [modelA, setModelA] = useState(models[0].id);
-  const [modelB, setModelB] = useState(models[1].id);
-  const [prompt, setPrompt] = useState('Explain how streaming responses work in the AI SDK.');
-  const [responses, setResponses] = useState(['', '']);
-  const [running, setRunning] = useState(false);
+  const [panes, setPanes] = useState<string[]>([
+    DEFAULT_MODEL,
+    allModels[3] ?? allModels[0],
+  ]);
+  const [prompt, setPrompt] = useState(
+    'Explain how streaming responses work in the AI SDK.',
+  );
+  const [broadcast, setBroadcast] = useState<{
+    text: string;
+    nonce: number;
+  } | null>(null);
+  const [temperature, setTemperature] = useState(0.7);
+  const [maxTokens, setMaxTokens] = useState(1024);
+  const [system, setSystem] = useState('');
   const [query, setQuery] = useState('');
   const [copied, setCopied] = useState(false);
+  const [linkCopied, setLinkCopied] = useState(false);
+  const [sessions, setSessions] = useState<PlaygroundSession[]>([]);
+  const [chatEpoch, setChatEpoch] = useState(0);
+
+  // Init from shareable URL (?models=a,b&prompt=...&temp=0.7&max=1024&sys=...)
+  // + local history.
+  useEffect(() => {
+    setSessions(loadSessions());
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const modelsParam = params.get('models');
+      const promptParam = params.get('prompt');
+      const tempParam = params.get('temp');
+      const maxParam = params.get('max');
+      const sysParam = params.get('sys');
+      if (modelsParam) {
+        const ids = modelsParam
+          .split(',')
+          .map(s => s.trim())
+          .filter(Boolean);
+        if (ids.length > 0) setPanes(ids.slice(0, 4));
+      }
+      if (promptParam) setPrompt(promptParam);
+      if (tempParam) {
+        const t = Number(tempParam);
+        if (Number.isFinite(t)) setTemperature(Math.min(2, Math.max(0, t)));
+      }
+      if (maxParam) {
+        const m = Number(maxParam);
+        if (Number.isFinite(m))
+          setMaxTokens(Math.min(8192, Math.max(64, Math.round(m))));
+      }
+      if (sysParam) setSystem(sysParam.slice(0, 2000));
+    } catch {
+      // ignore malformed URLs
+    }
+  }, []);
+
+  // Keep URL shareable without navigating.
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams();
+      params.set('models', panes.join(','));
+      if (prompt.trim()) params.set('prompt', prompt.trim().slice(0, 500));
+      params.set('temp', temperature.toFixed(1));
+      params.set('max', String(maxTokens));
+      if (system.trim()) params.set('sys', system.trim().slice(0, 500));
+      window.history.replaceState(null, '', `?${params.toString()}`);
+    } catch {
+      // ignore (SSR / restricted context)
+    }
+  }, [panes, prompt, temperature, maxTokens, system]);
 
   const filteredCards = useMemo(
     () =>
@@ -320,22 +415,75 @@ export default function HomePage() {
   );
   const runPrompt = () => {
     if (!prompt.trim()) return;
-    setRunning(true);
-    setResponses(['', '']);
-    window.setTimeout(() => {
-      setResponses([
-        'Streaming lets your UI render output as it arrives instead of waiting for a complete response. The Gateway keeps the interface consistent across providers.',
-        'The AI SDK exposes a unified stream so you can send model output directly to the client. This makes responses feel instant while preserving provider flexibility.',
-      ]);
-      setRunning(false);
-    }, 850);
+    setBroadcast({ text: prompt.trim(), nonce: Date.now() });
+    setSessions(prev => {
+      const latest = prev[0];
+      if (
+        latest &&
+        latest.prompt === prompt.trim() &&
+        latest.models.join(',') === panes.join(',') &&
+        Date.now() - latest.updatedAt < 30_000
+      ) {
+        return prev;
+      }
+      return [
+        createSession({
+          prompt: prompt.trim(),
+          models: panes,
+          temperature,
+          system: system.trim() || undefined,
+          maxOutputTokens: maxTokens,
+        }),
+        ...prev,
+      ].slice(0, 30);
+    });
+  };
+  const newSession = () => {
+    clearTranscripts(panes.length);
+    setPanes([DEFAULT_MODEL, allModels[3] ?? allModels[0]]);
+    setPrompt('');
+    setBroadcast(null);
+    setTemperature(0.7);
+    setMaxTokens(1024);
+    setSystem('');
+    setChatEpoch(e => e + 1);
+    try {
+      window.history.replaceState(null, '', window.location.pathname);
+    } catch {
+      // ignore
+    }
+  };
+  const restoreSession = (session: PlaygroundSession) => {
+    clearTranscripts(panes.length);
+    setPanes(session.models.slice(0, 4));
+    setPrompt(session.prompt);
+    setTemperature(session.temperature);
+    setMaxTokens(session.maxOutputTokens ?? 1024);
+    setSystem(session.system ?? '');
+    setBroadcast(null);
+    setChatEpoch(e => e + 1);
+    setMobileNav(false);
+  };
+  const addPane = () => {
+    if (panes.length >= 4) return;
+    const unused = allModels.find(m => !panes.includes(m)) ?? DEFAULT_MODEL;
+    setPanes([...panes, unused]);
   };
   const copyCode = async () => {
     await navigator.clipboard?.writeText(
-      `import { streamText } from '@ai-toolkit/ai'\n\nconst result = streamText({\n  model: '${modelA}',\n  prompt,\n})`,
+      `import { streamText } from '@ai-toolkit/ai'\n\nconst result = streamText({\n  model: '${panes[0] ?? DEFAULT_MODEL}',\n  prompt,\n})`,
     );
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1600);
+  };
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard?.writeText(window.location.href);
+      setLinkCopied(true);
+      window.setTimeout(() => setLinkCopied(false), 1600);
+    } catch {
+      // clipboard unavailable
+    }
   };
 
   return (
@@ -348,9 +496,16 @@ export default function HomePage() {
               onClick={() => setMobileNav(!mobileNav)}
               className="rounded-md p-2 hover:bg-muted lg:hidden"
             >
-              {mobileNav ? <X className="size-4" /> : <Menu className="size-4" />}
+              {mobileNav ? (
+                <X className="size-4" />
+              ) : (
+                <Menu className="size-4" />
+              )}
             </button>
-            <a href="/" className="flex items-center gap-2 font-semibold tracking-tight">
+            <a
+              href="/"
+              className="flex items-center gap-2 font-semibold tracking-tight"
+            >
               <span className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
                 <Sparkles className="size-4" />
               </span>
@@ -376,6 +531,9 @@ export default function HomePage() {
               className="hover:text-foreground"
             >
               GitHub
+            </a>
+            <a href="/recover" className="hover:text-foreground">
+              Recover data
             </a>
             <a
               href="https://discord.gg/khulnasoft"
@@ -422,33 +580,82 @@ export default function HomePage() {
                 className={`flex items-center justify-between rounded-md px-3 py-2.5 text-left text-sm ${active === label ? 'bg-muted font-medium text-foreground' : 'text-muted-foreground hover:bg-muted/60 hover:text-foreground'}`}
               >
                 <span className="flex items-center gap-3">
-                  <Icon className={active === label ? 'size-4 text-primary' : 'size-4'} />
+                  <Icon
+                    className={
+                      active === label ? 'size-4 text-primary' : 'size-4'
+                    }
+                  />
                   {label}
                 </span>
                 {count && (
-                  <span className="font-mono text-[10px] text-muted-foreground">{count}</span>
+                  <span className="font-mono text-[10px] text-muted-foreground">
+                    {count}
+                  </span>
                 )}
               </button>
             ))}
           </nav>
           <div className="mt-8 border-t border-border pt-6">
-            <p className="mb-3 px-3 font-mono text-[10px] uppercase tracking-[.2em] text-muted-foreground">
-              Your workspace
-            </p>
+            <div className="mb-3 flex items-center justify-between px-3">
+              <p className="font-mono text-[10px] uppercase tracking-[.2em] text-muted-foreground">
+                History
+              </p>
+              {sessions.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setSessions(clearSessions())}
+                  className="font-mono text-[10px] text-muted-foreground hover:text-foreground"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
             <button
               type="button"
+              onClick={newSession}
               className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
             >
               <Plus className="size-4" />
               New session
             </button>
-            <button
-              type="button"
-              className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
-            >
-              <Terminal className="size-4" />
-              Code snippets
-            </button>
+            {sessions.length === 0 ? (
+              <p className="px-3 py-2 text-xs leading-5 text-muted-foreground">
+                Runs are saved in this browser. Sign-in sync comes later.
+              </p>
+            ) : (
+              <div className="mt-2 flex max-h-64 flex-col gap-1 overflow-y-auto">
+                {sessions.map(session => (
+                  <div
+                    key={session.id}
+                    className="group flex items-center gap-1 rounded-md px-1 py-0.5 hover:bg-muted/60"
+                  >
+                    <button
+                      type="button"
+                      onClick={() => restoreSession(session)}
+                      className="min-w-0 flex-1 rounded-md px-2 py-2 text-left"
+                      title={session.prompt}
+                    >
+                      <span className="flex items-center gap-2 text-sm text-foreground">
+                        <History className="size-3.5 shrink-0 text-muted-foreground" />
+                        <span className="truncate">{session.title}</span>
+                      </span>
+                      <span className="mt-0.5 block truncate font-mono text-[10px] text-muted-foreground">
+                        {session.models.length} models ·{' '}
+                        {session.temperature.toFixed(1)}
+                      </span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setSessions(deleteSession(session.id))}
+                      className="rounded-md p-1.5 text-muted-foreground opacity-0 hover:text-foreground group-hover:opacity-100"
+                      aria-label="Delete session"
+                    >
+                      <Trash2 className="size-3.5" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           <div className="mt-8 rounded-md border border-border bg-muted/30 p-3">
             <p className="font-mono text-[10px] uppercase tracking-widest text-primary">
@@ -477,8 +684,8 @@ export default function HomePage() {
                     Playground
                   </h1>
                   <p className="mt-2 max-w-xl text-sm leading-6 text-muted-foreground">
-                    Experiment with models, prompts, and settings before you write a line of
-                    production code.
+                    Experiment with models, prompts, and settings before you
+                    write a line of production code.
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
@@ -490,9 +697,11 @@ export default function HomePage() {
                   </button>
                   <button
                     type="button"
-                    className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
+                    onClick={addPane}
+                    disabled={panes.length >= 4}
+                    className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50"
                   >
-                    <Plus className="size-3.5" /> Add model
+                    <Plus className="size-3.5" /> Add model ({panes.length}/4)
                   </button>
                 </div>
               </div>
@@ -501,8 +710,8 @@ export default function HomePage() {
                   <ZapIcon />
                 </span>
                 <span>
-                  <b className="text-foreground">AI Gateway</b> gives you access to 100+ models from
-                  one API key.
+                  <b className="text-foreground">AI Gateway</b> gives you access
+                  to 100+ models from one API key.
                 </span>
                 <a
                   href="https://studio.khulnasoft.com/docs/ai-sdk-core/providers-and-models"
@@ -521,58 +730,135 @@ export default function HomePage() {
                       Untitled comparison
                     </span>
                   </div>
-                  <button
-                    type="button"
-                    onClick={copyCode}
-                    className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
-                  >
-                    {copied ? (
-                      <Check className="size-3.5 text-primary" />
-                    ) : (
-                      <Copy className="size-3.5" />
-                    )}
-                    {copied ? 'Copied' : 'Copy code'}
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={copyLink}
+                      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      {linkCopied ? (
+                        <Check className="size-3.5 text-primary" />
+                      ) : (
+                        <Link2 className="size-3.5" />
+                      )}
+                      {linkCopied ? 'Link copied' : 'Copy link'}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={copyCode}
+                      className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
+                    >
+                      {copied ? (
+                        <Check className="size-3.5 text-primary" />
+                      ) : (
+                        <Copy className="size-3.5" />
+                      )}
+                      {copied ? 'Copied' : 'Copy code'}
+                    </button>
+                  </div>
                 </div>
-                <div className="grid lg:grid-cols-2">
-                  <ModelPanel
-                    index={0}
-                    modelId={modelA}
-                    setModelId={setModelA}
-                    response={responses[0]}
-                    isRunning={running}
-                  />
-                  <ModelPanel
-                    index={1}
-                    modelId={modelB}
-                    setModelId={setModelB}
-                    response={responses[1]}
-                    isRunning={running}
-                  />
+                <div
+                  className={`grid ${panes.length > 2 ? 'lg:grid-cols-2 xl:grid-cols-2' : 'lg:grid-cols-2'}`}
+                >
+                  {panes.map((modelId, index) => (
+                    <ComparePane
+                      key={`${chatEpoch}-${index}`}
+                      index={index}
+                      modelId={modelId}
+                      setModelId={value =>
+                        setPanes(items =>
+                          items.map((item, i) => (i === index ? value : item)),
+                        )
+                      }
+                      onRemove={() =>
+                        setPanes(items => items.filter((_, i) => i !== index))
+                      }
+                      canRemove={panes.length > 1}
+                      broadcast={broadcast}
+                      temperature={temperature}
+                      maxOutputTokens={maxTokens}
+                      system={system}
+                      persistKey={transcriptKey(index)}
+                    />
+                  ))}
                 </div>
                 <div className="border-t border-border bg-muted/20 p-4">
+                  <details className="mb-3">
+                    <summary className="cursor-pointer font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                      System prompt{system.trim() ? ' · set' : ' (optional)'}
+                    </summary>
+                    <textarea
+                      value={system}
+                      onChange={event => setSystem(event.target.value)}
+                      rows={2}
+                      className="mt-2 w-full resize-none rounded-md border border-border bg-background px-3 py-2 text-sm leading-6 outline-none placeholder:text-muted-foreground"
+                      placeholder="e.g. You are a concise senior engineer. Answer in bullet points."
+                    />
+                  </details>
                   <textarea
                     value={prompt}
                     onChange={event => setPrompt(event.target.value)}
+                    onKeyDown={event => {
+                      if (
+                        (event.metaKey || event.ctrlKey) &&
+                        event.key === 'Enter'
+                      ) {
+                        event.preventDefault();
+                        runPrompt();
+                      }
+                    }}
                     rows={3}
                     className="w-full resize-none bg-transparent text-sm leading-6 outline-none placeholder:text-muted-foreground"
-                    placeholder="Ask both models anything..."
+                    placeholder="Ask all models anything... (⌘↵ to run)"
                   />
                   <div className="flex items-center justify-between border-t border-border pt-3">
-                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <button type="button" className="rounded-md p-1.5 hover:bg-muted">
-                        <Plus className="size-4" />
-                      </button>
-                      <span className="hidden sm:inline">Add context or tools</span>
-                      <span className="font-mono text-[10px]">⌘ ↵ to run</span>
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-muted-foreground">
+                      <label className="flex items-center gap-2">
+                        Temperature
+                        <input
+                          type="range"
+                          min={0}
+                          max={2}
+                          step={0.1}
+                          value={temperature}
+                          onChange={event =>
+                            setTemperature(Number(event.target.value))
+                          }
+                          className="w-24"
+                        />
+                        <b className="font-mono text-foreground">
+                          {temperature.toFixed(1)}
+                        </b>
+                      </label>
+                      <label className="flex items-center gap-2">
+                        Max tokens
+                        <input
+                          type="number"
+                          min={64}
+                          max={8192}
+                          step={64}
+                          value={maxTokens}
+                          onChange={event => {
+                            const v = Number(event.target.value);
+                            if (Number.isFinite(v))
+                              setMaxTokens(
+                                Math.min(8192, Math.max(64, Math.round(v))),
+                              );
+                          }}
+                          className="w-20 rounded-md border border-border bg-background px-2 py-1 font-mono text-xs outline-none"
+                        />
+                      </label>
+                      <span className="hidden font-mono text-[10px] sm:inline">
+                        ⌘ ↵ to run
+                      </span>
                     </div>
                     <button
                       type="button"
                       onClick={runPrompt}
-                      disabled={running}
+                      disabled={!prompt.trim()}
                       className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground disabled:opacity-60"
                     >
-                      {running ? 'Running' : 'Run prompt'}
+                      Run prompt
                       <Play className="size-3.5" />
                     </button>
                   </div>
@@ -581,21 +867,28 @@ export default function HomePage() {
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-md border border-border p-4">
                   <Code2 className="size-4 text-primary" />
-                  <p className="mt-4 text-sm font-medium">Write less glue code</p>
+                  <p className="mt-4 text-sm font-medium">
+                    Write less glue code
+                  </p>
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
-                    One API for every provider, with typed primitives for your app.
+                    One API for every provider, with typed primitives for your
+                    app.
                   </p>
                 </div>
                 <div className="rounded-md border border-border p-4">
                   <Wrench className="size-4 text-primary" />
-                  <p className="mt-4 text-sm font-medium">Tools that just work</p>
+                  <p className="mt-4 text-sm font-medium">
+                    Tools that just work
+                  </p>
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
                     Give your agents capabilities with a few lines of code.
                   </p>
                 </div>
                 <div className="rounded-md border border-border p-4">
                   <Layers3 className="size-4 text-primary" />
-                  <p className="mt-4 text-sm font-medium">Ship with confidence</p>
+                  <p className="mt-4 text-sm font-medium">
+                    Ship with confidence
+                  </p>
                   <p className="mt-1 text-xs leading-5 text-muted-foreground">
                     Start from recipes and templates built by the community.
                   </p>
@@ -638,7 +931,9 @@ export default function HomePage() {
                       </span>
                       <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
                     </div>
-                    <h2 className="mt-8 text-lg font-medium tracking-tight">{card.title}</h2>
+                    <h2 className="mt-8 text-lg font-medium tracking-tight">
+                      {card.title}
+                    </h2>
                     <p className="mt-2 flex-1 text-sm leading-6 text-muted-foreground">
                       {card.description}
                     </p>
