@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
+import { Footer, Nav } from './site';
 
 export const metadata: Metadata = {
-  title: 'AI Gateway',
+  title: 'AI Gateway — One API key. Every model.',
   description:
-    'One API key for every model. Provider routing with spend tracking.',
+    'Self-hosted AI gateway: provider routing with automatic failover and per-call spend tracking.',
 };
 
 export default function RootLayout({
@@ -13,8 +14,17 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body style={{ fontFamily: 'system-ui, sans-serif', margin: 0 }}>
+      <body
+        style={{
+          fontFamily: 'system-ui, -apple-system, sans-serif',
+          margin: 0,
+          color: '#171717',
+          background: '#fff',
+        }}
+      >
+        <Nav />
         {children}
+        <Footer />
       </body>
     </html>
   );
