@@ -1,4 +1,4 @@
-import { JSONObject } from '@ai-toolkit/provider';
+import type { JSONObject } from '@ai-toolkit/provider';
 
 export interface AnthropicMessageMetadata {
   usage: JSONObject;

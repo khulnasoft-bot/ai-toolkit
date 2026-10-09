@@ -1,4 +1,4 @@
-import { ModelMessage } from '@ai-toolkit/ai';
+import type { ModelMessage } from '@ai-toolkit/ai';
 import { useState } from 'react';
 
 export default function Page() {
@@ -16,9 +16,9 @@ export default function Page() {
                 ? message.content
                 : message.content
                     .filter(part => part.type === 'text')
-                    .map((part, partIndex) => (
-                      // @ts-ignore
-                      <div key={partIndex}>{part.text}</div>
+                    .map(part => (
+                      // @ts-expect-error
+                      <div key={part.text}>{part.text}</div>
                     ))}
             </div>
           </div>
@@ -51,10 +51,7 @@ export default function Page() {
 
               const { messages: newMessages } = await response.json();
 
-              setMessages(currentMessages => [
-                ...currentMessages,
-                ...newMessages,
-              ]);
+              setMessages(currentMessages => [...currentMessages, ...newMessages]);
             }
           }}
         />

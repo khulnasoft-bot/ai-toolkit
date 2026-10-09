@@ -13,7 +13,7 @@ test('happy path', async () => {
     CHANGED_FILES: '.changeset/some-happy-path.md',
   };
 
-  const readFile = mock.fn(async path => {
+  const readFile = mock.fn(async _path => {
     return `---\nai: patch\n@ai-toolkit/provider: patch\n---\n## Test changeset`;
   });
 
@@ -75,7 +75,7 @@ test('invalid .changeset file - no frontmatter', async () => {
     CHANGED_FILES: '.changeset/invalid-changeset-file.md',
   };
 
-  const readFile = mock.fn(async path => {
+  const readFile = mock.fn(async _path => {
     return 'frontmatter missing';
   });
   await assert.rejects(
@@ -157,10 +157,7 @@ test('minor update - with "minor" label', async () => {
   });
 
   const message = await verifyChangesets(event, env, readFile);
-  assert.strictEqual(
-    message,
-    'Skipping changeset verification - "minor" label found',
-  );
+  assert.strictEqual(message, 'Skipping changeset verification - "minor" label found');
 });
 
 test('major update - with "major" label', async () => {
@@ -186,8 +183,5 @@ test('major update - with "major" label', async () => {
   });
 
   const message = await verifyChangesets(event, env, readFile);
-  assert.strictEqual(
-    message,
-    'Skipping changeset verification - "major" label found',
-  );
+  assert.strictEqual(message, 'Skipping changeset verification - "major" label found');
 });

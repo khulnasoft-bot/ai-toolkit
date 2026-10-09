@@ -1,9 +1,13 @@
 // @ts-nocheck
-import { createUIMessageStreamResponse, createUIMessageStream, UIMessageStreamWriter } from 'ai';
+import {
+  createUIMessageStream,
+  createUIMessageStreamResponse,
+  type UIMessageStreamWriter,
+} from 'ai';
 
-async function handler() {
+async function _handler() {
   const stream = await createUIMessageStream();
-  const writer: UIMessageStreamWriter = stream.writer;
+  const _writer: UIMessageStreamWriter = stream.writer;
 
   const response = await createUIMessageStreamResponse({
     stream,

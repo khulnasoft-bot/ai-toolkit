@@ -1,4 +1,4 @@
-import { InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 /**
@@ -176,9 +176,7 @@ export const openaiResponsesProviderOptionsSchema = lazySchema(() =>
        * @see https://platform.openai.com/docs/api-reference/responses/create
        * @see https://cookbook.openai.com/examples/using_logprobs
        */
-      logprobs: z
-        .union([z.boolean(), z.number().min(1).max(TOP_LOGPROBS_MAX)])
-        .optional(),
+      logprobs: z.union([z.boolean(), z.number().min(1).max(TOP_LOGPROBS_MAX)]).optional(),
 
       /**
        * The maximum number of total calls to built-in tools that can be processed in a response.

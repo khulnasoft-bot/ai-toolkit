@@ -1,5 +1,5 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const codemodName = process.argv[2];
 if (!codemodName) {
@@ -49,14 +49,8 @@ const paths = {
 // Create files
 fs.writeFileSync(paths.codemod, codemodTemplate);
 fs.writeFileSync(paths.test, testTemplate);
-fs.writeFileSync(
-  path.join(paths.fixtures, `${codemodName}.input.ts`),
-  inputTemplate,
-);
-fs.writeFileSync(
-  path.join(paths.fixtures, `${codemodName}.output.ts`),
-  outputTemplate,
-);
+fs.writeFileSync(path.join(paths.fixtures, `${codemodName}.input.ts`), inputTemplate);
+fs.writeFileSync(path.join(paths.fixtures, `${codemodName}.output.ts`), outputTemplate);
 
 // Update bundle array
 const upgradePath = path.join(process.cwd(), 'src', 'lib', 'upgrade.ts');

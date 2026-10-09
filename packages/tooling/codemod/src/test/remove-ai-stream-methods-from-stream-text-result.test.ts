@@ -4,9 +4,6 @@ import { testTransform } from './test-utils';
 
 describe('remove-ai-stream-methods-from-stream-text-result', () => {
   it('transforms correctly', () => {
-    testTransform(
-      transformer,
-      'remove-ai-stream-methods-from-stream-text-result',
-    );
+    testTransform(transformer, 'remove-ai-stream-methods-from-stream-text-result');
   });
 });

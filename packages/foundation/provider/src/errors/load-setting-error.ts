@@ -2,11 +2,9 @@ import { AITOOLKITError } from './ai-toolkit-error';
 
 const name = 'AI_LoadSettingError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class LoadSettingError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   constructor({ message }: { message: string }) {
     super({ name, message });
   }

@@ -1,7 +1,7 @@
-import { deepgram } from '@ai-toolkit/deepgram';
 import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
-import { saveAudioFile } from '../lib/save-audio';
+import { deepgram } from '@ai-toolkit/deepgram';
 import { run } from '../lib/run';
+import { saveAudioFile } from '../lib/save-audio';
 
 run(async () => {
   const result = await generateSpeech({

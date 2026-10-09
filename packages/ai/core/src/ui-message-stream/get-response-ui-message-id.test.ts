@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
+import type { UIMessage } from '../ui/ui-messages';
 import { getResponseUIMessageId } from './get-response-ui-message-id';
-import { UIMessage } from '../ui/ui-messages';
 
 describe('getResponseUIMessageId', () => {
   const mockGenerateId = () => 'new-id';

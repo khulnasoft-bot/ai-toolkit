@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
 import { parseNumberDef } from './number';
 

@@ -1,7 +1,7 @@
-import { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
+import type { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createOpenAI } from '../openai-provider';
-import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('../version', () => ({
   VERSION: '0.0.0-test',
@@ -139,8 +139,6 @@ describe('doEmbed', () => {
       'openai-organization': 'test-organization',
       'openai-project': 'test-project',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/openai/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/openai/0.0.0-test`);
   });
 });

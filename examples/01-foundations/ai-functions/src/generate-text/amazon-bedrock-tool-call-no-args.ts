@@ -1,8 +1,8 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { generateText, tool } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { z } from 'zod';
-import { run } from '../lib/run';
 import { print } from '../lib/print';
+import { run } from '../lib/run';
 
 run(async () => {
   const result = await generateText({

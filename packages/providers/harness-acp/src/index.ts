@@ -1,5 +1,9 @@
-export { createACP, ACP_PROTOCOL_VERSION } from './acp-harness';
+export {
+  HarnessACPCapabilityUnsupportedError,
+  HarnessACPConfigError,
+} from './acp-error';
 export type { ACPHarness } from './acp-harness';
+export { ACP_PROTOCOL_VERSION, createACP } from './acp-harness';
 export type {
   ACPAuthMode,
   ACPClientApp,
@@ -18,17 +22,13 @@ export type {
   ACPSessionModeMapping,
   HarnessPermissionMode,
 } from './acp-harness-options';
-export { acpSourceSchema, getSourceIdentity } from './acp-source';
 export type {
   ACPInstallCommandSource,
   ACPNpmLockedSource,
   ACPNpmSimpleSource,
   ACPSource,
 } from './acp-source';
-export {
-  HarnessACPConfigError,
-  HarnessACPCapabilityUnsupportedError,
-} from './acp-error';
+export { acpSourceSchema, getSourceIdentity } from './acp-source';
 export { claudeCodeACPHarness } from './profiles/claude-code';
 export { codexACPHarness } from './profiles/codex';
 export { cursorACPHarness } from './profiles/cursor';

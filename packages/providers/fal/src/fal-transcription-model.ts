@@ -1,7 +1,7 @@
 import {
   AITOOLKITError,
-  TranscriptionModelV3,
-  SharedV3Warning,
+  type SharedV3Warning,
+  type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
@@ -14,10 +14,10 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { FalConfig } from './fal-config';
+import type { FalTranscriptionAPITypes } from './fal-api-types';
+import type { FalConfig } from './fal-config';
 import { falErrorDataSchema, falFailedResponseHandler } from './fal-error';
-import { FalTranscriptionModelId } from './fal-transcription-options';
-import { FalTranscriptionAPITypes } from './fal-api-types';
+import type { FalTranscriptionModelId } from './fal-transcription-options';
 
 // https://fal.ai/models/fal-ai/whisper/api?platform=http
 const falProviderOptionsSchema = z.object({
@@ -57,9 +57,7 @@ const falProviderOptionsSchema = z.object({
   numSpeakers: z.number().nullable().nullish(),
 });
 
-export type FalTranscriptionCallOptions = z.infer<
-  typeof falProviderOptionsSchema
->;
+export type FalTranscriptionCallOptions = z.infer<typeof falProviderOptionsSchema>;
 
 interface FalTranscriptionModelConfig extends FalConfig {
   _internal?: {
@@ -79,9 +77,7 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
     private readonly config: FalTranscriptionModelConfig,
   ) {}
 
-  private async getArgs({
-    providerOptions,
-  }: Parameters<TranscriptionModelV3['doGenerate']>[0]) {
+  private async getArgs({ providerOptions }: Parameters<TranscriptionModelV3['doGenerate']>[0]) {
     const warnings: SharedV3Warning[] = [];
 
     // Parse provider options
@@ -127,9 +123,7 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
     const { body, warnings } = await this.getArgs(options);
 
     const base64Audio =
-      typeof options.audio === 'string'
-        ? options.audio
-        : convertUint8ArrayToBase64(options.audio);
+      typeof options.audio === 'string' ? options.audio : convertUint8ArrayToBase64(options.audio);
 
     const audioUrl = `data:${options.mediaType};base64,${base64Audio}`;
 
@@ -144,8 +138,7 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
         audio_url: audioUrl,
       },
       failedResponseHandler: falFailedResponseHandler,
-      successfulResponseHandler:
-        createJsonResponseHandler(falJobResponseSchema),
+      successfulResponseHandler: createJsonResponseHandler(falJobResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -155,9 +148,11 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
     const timeoutMs = 60000; // 60 seconds timeout
     const pollIntervalMs = 1000; // 1 second interval
 
-    let response;
-    let responseHeaders;
-    let rawResponse;
+    let response: Awaited<
+      ReturnType<typeof getFromApi<z.infer<typeof falTranscriptionResponseSchema>>>
+    >['value'] | undefined;
+    let responseHeaders: Record<string, string> | undefined;
+    let rawResponse: unknown | undefined;
 
     while (true) {
       try {
@@ -171,11 +166,7 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
             modelId: this.modelId,
           }),
           headers: combineHeaders(this.config.headers(), options.headers),
-          failedResponseHandler: async ({
-            requestBodyValues,
-            response,
-            url,
-          }) => {
+          failedResponseHandler: async ({ requestBodyValues, response, url }) => {
             const clone = response.clone();
             const body = (await clone.json()) as { detail: string };
 
@@ -194,9 +185,7 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
               errorToMessage: data => data.error.message,
             })({ requestBodyValues, response, url });
           },
-          successfulResponseHandler: createJsonResponseHandler(
-            falTranscriptionResponseSchema,
-          ),
+          successfulResponseHandler: createJsonResponseHandler(falTranscriptionResponseSchema),
           abortSignal: options.abortSignal,
           fetch: this.config.fetch,
         });
@@ -207,10 +196,7 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
         break;
       } catch (error) {
         // If the error message indicates the request is still in progress, ignore it and continue polling
-        if (
-          error instanceof Error &&
-          error.message === 'Request is still in progress'
-        ) {
+        if (error instanceof Error && error.message === 'Request is still in progress') {
           // Continue with the polling loop
         } else {
           // Re-throw any other errors

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Chat } from '@ai-toolkit/vue';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { Chat } from '@ai-toolkit/vue';
 import { computed, ref } from 'vue';
 
 const chat = new Chat({
@@ -25,10 +25,10 @@ const chat = new Chat({
   }),
 });
 
-const messageList = computed(() => chat.messages); // computer property for type inference
+const _messageList = computed(() => chat.messages); // computer property for type inference
 const input = ref('');
 
-const handleSubmit = (e: Event) => {
+const _handleSubmit = (e: Event) => {
   e.preventDefault();
   chat.sendMessage({ text: input.value });
   input.value = '';

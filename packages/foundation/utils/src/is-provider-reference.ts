@@ -6,9 +6,7 @@ import { isBuffer } from './is-buffer';
  * to provider-specific identifiers) as opposed to raw bytes, a URL, or a
  * tagged `{ type: ... }` object.
  */
-export function isProviderReference(
-  data: unknown,
-): data is SharedV4ProviderReference {
+export function isProviderReference(data: unknown): data is SharedV4ProviderReference {
   return (
     typeof data === 'object' &&
     data !== null &&

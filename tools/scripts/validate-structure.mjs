@@ -4,10 +4,10 @@
  * Validates package boundaries and the staged domain migration.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { builtinModules } from 'module';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import { builtinModules } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -80,11 +80,12 @@ function readWorkspaceGlobs() {
 }
 
 function globToRegex(glob) {
+  const doubleStarPlaceholder = '\u0000';
   const escaped = glob
     .replace(/[.+^${}()|[\]\\]/g, '\\$&')
-    .replace(/\*\*/g, '\u0000')
+    .replace(/\*\*/g, doubleStarPlaceholder)
     .replace(/\*/g, '[^/]*')
-    .replace(/\u0000/g, '.*');
+    .replaceAll(doubleStarPlaceholder, '.*');
   return new RegExp(`^${escaped}$`);
 }
 
@@ -231,7 +232,7 @@ for (const pkg of packages) {
     reportError(`Package is missing a name: ${path.relative(ROOT, pkg.manifestPath)}`);
   else if (names.has(pkg.manifest.name))
     reportError(
-      `Duplicate package name \"${pkg.manifest.name}\": ${path.relative(ROOT, names.get(pkg.manifest.name))} and ${path.relative(ROOT, pkg.manifestPath)}`,
+      `Duplicate package name "${pkg.manifest.name}": ${path.relative(ROOT, names.get(pkg.manifest.name))} and ${path.relative(ROOT, pkg.manifestPath)}`,
     );
   else names.set(pkg.manifest.name, pkg.manifestPath);
 
@@ -265,12 +266,12 @@ for (const pkg of packages) {
     for (const dependency of Object.keys(dependencies)) {
       if (NODE_BUILTINS.has(dependency))
         reportError(
-          `Runtime-neutral package depends on Node builtin \"${dependency}\": ${path.relative(ROOT, pkg.manifestPath)}`,
+          `Runtime-neutral package depends on Node builtin "${dependency}": ${path.relative(ROOT, pkg.manifestPath)}`,
         );
     }
     for (const builtin of scanNodeImports(pkg.dir)) {
       reportError(
-        `Runtime-neutral package imports Node builtin \"${builtin}\": ${path.relative(ROOT, pkg.dir)}`,
+        `Runtime-neutral package imports Node builtin "${builtin}": ${path.relative(ROOT, pkg.dir)}`,
       );
     }
   }
@@ -508,7 +509,7 @@ if (fs.existsSync(codeownersPath) && fs.statSync(codeownersPath).isFile()) {
     new RegExp(
       `^${pattern
         .replace(/[.+^${}()|[\]\\]/g, '\\$&')
-        .replace(/\*(\*?)/g, (match, double) => (double ? '.*' : '[^/]*'))
+        .replace(/\*(\*?)/g, (_match, double) => (double ? '.*' : '[^/]*'))
         .replace(/\?/g, '.')}/?$`,
     );
 
@@ -529,11 +530,15 @@ console.log(
 
 if (errors.length) {
   console.log('Errors:');
-  errors.forEach(message => console.log(`  - ${message}`));
+  errors.forEach(message => {
+    console.log(`  - ${message}`);
+  });
 }
 if (warnings.length) {
   console.log('Warnings:');
-  warnings.forEach(message => console.log(`  - ${message}`));
+  warnings.forEach(message => {
+    console.log(`  - ${message}`);
+  });
 }
 if (!errors.length && !warnings.length) console.log('All structure checks passed.');
 else if (!errors.length) console.log('No errors; warnings indicate migration work remaining.');

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { UIMessage, CreateUIMessage, generateText } from 'ai';
+import { type CreateUIMessage, generateText, type UIMessage } from 'ai';
 
 // Basic usage with type annotations
 export function handleMessage(message: UIMessage): void {
@@ -65,5 +65,5 @@ export class MessageHandler<T extends UIMessage> {
 type MessageOrCreator = UIMessage | CreateUIMessage;
 
 export function genericTest() {
-  const [message, setMessage] = generic<UIMessage | CreateUIMessage>(null);
+  const [_message, _setMessage] = generic<UIMessage | CreateUIMessage>(null);
 }

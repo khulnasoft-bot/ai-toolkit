@@ -1,7 +1,7 @@
 import { createTransformer } from './create-transformer';
 
 export function addAwaitFn(functionName: string) {
-  return createTransformer((fileInfo, api, options, context) => {
+  return createTransformer((_fileInfo, _api, _options, context) => {
     const { j, root } = context;
 
     // Find import of the specified function from 'ai-toolkit'
@@ -10,16 +10,11 @@ export function addAwaitFn(functionName: string) {
     root
       .find(j.ImportDeclaration)
       .filter(
-        path =>
-          path.node.source.value === 'ai-toolkit' ||
-          path.node.source.value === 'ai-toolkit',
+        path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
       )
       .forEach(path => {
         path.node.specifiers?.forEach(specifier => {
-          if (
-            specifier.type === 'ImportSpecifier' &&
-            specifier.imported.name === functionName
-          ) {
+          if (specifier.type === 'ImportSpecifier' && specifier.imported.name === functionName) {
             // Add local name to the set (handle aliasing)
             const localName = specifier.local?.name || specifier.imported.name;
             functionImportNames.add(localName);

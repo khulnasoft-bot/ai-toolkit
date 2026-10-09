@@ -1,7 +1,7 @@
-import { createBedrockAnthropicFetch } from './bedrock-anthropic-fetch';
 import { EventStreamCodec } from '@smithy/eventstream-codec';
-import { toUtf8, fromUtf8 } from '@smithy/util-utf8';
-import { describe, it, expect, vi } from 'vitest';
+import { fromUtf8, toUtf8 } from '@smithy/util-utf8';
+import { describe, expect, it, vi } from 'vitest';
+import { createBedrockAnthropicFetch } from './bedrock-anthropic-fetch';
 
 describe('createBedrockAnthropicFetch', () => {
   function createMockResponse(
@@ -64,10 +64,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
@@ -75,7 +72,7 @@ describe('createBedrockAnthropicFetch', () => {
 
     expect(response.headers.get('content-type')).toBe('text/event-stream');
 
-    const reader = response.body!.getReader();
+    const reader = response.body?.getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
@@ -100,15 +97,12 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body!.getReader();
+    const reader = response.body?.getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
@@ -134,21 +128,16 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body!.getReader();
+    const reader = response.body?.getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
-    expect(text).toBe(
-      `data: ${JSON.stringify({ type: 'error', error: errorData })}\n\n`,
-    );
+    expect(text).toBe(`data: ${JSON.stringify({ type: 'error', error: errorData })}\n\n`);
   });
 
   it('should handle multiple events in sequence', async () => {
@@ -196,15 +185,12 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body!.getReader();
+    const reader = response.body?.getReader();
 
     const chunks: string[] = [];
     while (true) {
@@ -248,15 +234,12 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body!.getReader();
+    const reader = response.body?.getReader();
 
     const chunks: string[] = [];
     while (true) {
@@ -326,15 +309,12 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body!.getReader();
+    const reader = response.body?.getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 

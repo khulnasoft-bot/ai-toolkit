@@ -225,12 +225,10 @@ describe('normalizeStreamProviderError', () => {
     expect(normalizeStreamProviderError(error)).toBe(error);
   });
 
-  it.each([
-    'plain string',
-    { type: 'overloaded_error' },
-    { message: 123 },
-    null,
-  ])('preserves non-normalizable values', error => {
-    expect(normalizeStreamProviderError(error)).toBe(error);
-  });
+  it.each(['plain string', { type: 'overloaded_error' }, { message: 123 }, null])(
+    'preserves non-normalizable values',
+    error => {
+      expect(normalizeStreamProviderError(error)).toBe(error);
+    },
+  );
 });

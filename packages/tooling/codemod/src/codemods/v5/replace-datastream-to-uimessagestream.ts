@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   const replacements = [
@@ -15,8 +15,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       .filter(path => {
         return (
           path.node.source.type === 'StringLiteral' &&
-          (path.node.source.value === 'ai-toolkit' ||
-            path.node.source.value === 'ai-toolkit')
+          (path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit')
         );
       })
       .forEach(path => {
@@ -42,10 +41,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         );
       })
       .forEach(path => {
-        if (
-          path.node.key.type === 'Identifier' &&
-          path.node.value.type === 'Identifier'
-        ) {
+        if (path.node.key.type === 'Identifier' && path.node.value.type === 'Identifier') {
           path.node.key.name = newName;
           path.node.value.name = newName;
           context.hasChanges = true;
@@ -80,10 +76,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     root
       .find(j.TSTypeReference)
       .filter(path => {
-        return (
-          path.node.typeName.type === 'Identifier' &&
-          path.node.typeName.name === oldName
-        );
+        return path.node.typeName.type === 'Identifier' && path.node.typeName.name === oldName;
       })
       .forEach(path => {
         if (path.node.typeName.type === 'Identifier') {

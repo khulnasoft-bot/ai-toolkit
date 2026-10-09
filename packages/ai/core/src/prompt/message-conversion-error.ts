@@ -1,13 +1,11 @@
 import { AITOOLKITError } from '@ai-toolkit/provider';
-import { UIMessage } from '../ui/ui-messages';
+import type { UIMessage } from '../ui/ui-messages';
 
 const name = 'AI_MessageConversionError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class MessageConversionError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly originalMessage: Omit<UIMessage, 'id'>;
 
   constructor({

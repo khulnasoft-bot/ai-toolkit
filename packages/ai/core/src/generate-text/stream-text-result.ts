@@ -1,41 +1,33 @@
-import { IdGenerator } from '@ai-toolkit/provider-utils';
 import type { ServerResponse } from 'node:http';
-import {
+import type { IdGenerator } from '@ai-toolkit/provider-utils';
+import type {
   CallWarning,
   FinishReason,
   LanguageModelRequestMetadata,
   ProviderMetadata,
 } from '../types';
-import { Source } from '../types/language-model';
-import { LanguageModelResponseMetadata } from '../types/language-model-response-metadata';
-import { LanguageModelUsage } from '../types/usage';
-import { InferUIMessageChunk } from '../ui-message-stream/ui-message-chunks';
-import { UIMessageStreamOnFinishCallback } from '../ui-message-stream/ui-message-stream-on-finish-callback';
-import { UIMessageStreamResponseInit } from '../ui-message-stream/ui-message-stream-response-init';
-import { InferUIMessageMetadata, UIMessage } from '../ui/ui-messages';
-import { AsyncIterableStream } from '../util/async-iterable-stream';
-import { ErrorHandler } from '../util/error-handler';
-import { ContentPart } from './content-part';
-import { GeneratedFile } from './generated-file';
-import { Output } from './output';
-import {
-  InferCompleteOutput,
-  InferElementOutput,
-  InferPartialOutput,
-} from './output-utils';
-import { ReasoningOutput } from './reasoning-output';
-import { ResponseMessage } from './response-message';
-import { StepResult } from './step-result';
-import { ToolApprovalRequestOutput } from './tool-approval-request-output';
-import { DynamicToolCall, StaticToolCall, TypedToolCall } from './tool-call';
-import { TypedToolError } from './tool-error';
-import { StaticToolOutputDenied } from './tool-output-denied';
-import {
-  DynamicToolResult,
-  StaticToolResult,
-  TypedToolResult,
-} from './tool-result';
-import { ToolSet } from './tool-set';
+import type { Source } from '../types/language-model';
+import type { LanguageModelResponseMetadata } from '../types/language-model-response-metadata';
+import type { LanguageModelUsage } from '../types/usage';
+import type { InferUIMessageMetadata, UIMessage } from '../ui/ui-messages';
+import type { InferUIMessageChunk } from '../ui-message-stream/ui-message-chunks';
+import type { UIMessageStreamOnFinishCallback } from '../ui-message-stream/ui-message-stream-on-finish-callback';
+import type { UIMessageStreamResponseInit } from '../ui-message-stream/ui-message-stream-response-init';
+import type { AsyncIterableStream } from '../util/async-iterable-stream';
+import type { ErrorHandler } from '../util/error-handler';
+import type { ContentPart } from './content-part';
+import type { GeneratedFile } from './generated-file';
+import type { Output } from './output';
+import type { InferCompleteOutput, InferElementOutput, InferPartialOutput } from './output-utils';
+import type { ReasoningOutput } from './reasoning-output';
+import type { ResponseMessage } from './response-message';
+import type { StepResult } from './step-result';
+import type { ToolApprovalRequestOutput } from './tool-approval-request-output';
+import type { DynamicToolCall, StaticToolCall, TypedToolCall } from './tool-call';
+import type { TypedToolError } from './tool-error';
+import type { StaticToolOutputDenied } from './tool-output-denied';
+import type { DynamicToolResult, StaticToolResult, TypedToolResult } from './tool-result';
+import type { ToolSet } from './tool-set';
 
 export type UIMessageStreamOptions<UI_MESSAGE extends UIMessage> = {
   /**
@@ -106,10 +98,7 @@ export type ConsumeStreamOptions = {
 /**
 A result object for accessing different stream types and additional information.
  */
-export interface StreamTextResult<
-  TOOLS extends ToolSet,
-  OUTPUT extends Output,
-> {
+export interface StreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output> {
   /**
 The content that was generated in the last step.
 
@@ -292,9 +281,7 @@ enables provider-specific results that can be fully encapsulated in the provider
    *
    * @deprecated Use `partialOutputStream` instead.
    */
-  readonly experimental_partialOutputStream: AsyncIterableStream<
-    InferPartialOutput<OUTPUT>
-  >;
+  readonly experimental_partialOutputStream: AsyncIterableStream<InferPartialOutput<OUTPUT>>;
 
   /**
    * A stream of partial parsed outputs. It uses the `output` specification.

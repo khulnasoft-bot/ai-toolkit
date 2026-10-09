@@ -1,11 +1,10 @@
-import { createKhulnasoft } from './khulnasoft-provider';
 import { OpenAICompatibleChatLanguageModel } from '@ai-toolkit/openai-compatible';
-import { LanguageModelV3 } from '@ai-toolkit/provider';
+import type { LanguageModelV3 } from '@ai-toolkit/provider';
 import { loadApiKey } from '@ai-toolkit/provider-utils';
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
+import { createKhulnasoft } from './khulnasoft-provider';
 
-const OpenAICompatibleChatLanguageModelMock =
-  OpenAICompatibleChatLanguageModel as unknown as Mock;
+const OpenAICompatibleChatLanguageModelMock = OpenAICompatibleChatLanguageModel as unknown as Mock;
 
 vi.mock('@ai-toolkit/openai-compatible', () => ({
   OpenAICompatibleChatLanguageModel: vi.fn(),
@@ -26,10 +25,10 @@ vi.mock('./khulnasoft-image-model', () => ({
 }));
 
 describe('KhulnasoftProvider', () => {
-  let mockLanguageModel: LanguageModelV3;
+  let _mockLanguageModel: LanguageModelV3;
 
   beforeEach(() => {
-    mockLanguageModel = {
+    _mockLanguageModel = {
       // Add any required methods for LanguageModelV1
     } as LanguageModelV3;
 
@@ -43,8 +42,7 @@ describe('KhulnasoftProvider', () => {
       provider('model-id');
 
       // Use the mocked version
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 
@@ -64,8 +62,7 @@ describe('KhulnasoftProvider', () => {
       const provider = createKhulnasoft(options);
       provider('model-id');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 

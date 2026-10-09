@@ -1,14 +1,14 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
-import { useChat } from '@ai-toolkit/react';
 import {
   DefaultChatTransport,
-  getToolName,
   type DynamicToolUIPart,
-  type ToolUIPart,
+  getToolName,
   isToolUIPart,
+  type ToolUIPart,
 } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import ChatInput from '@/components/chat-input';
 
 export default function Chat() {
   const { error, status, sendMessage, messages, regenerate, stop } = useChat({
@@ -19,15 +19,13 @@ export default function Chat() {
     <div className="flex flex-col py-24 mx-auto w-full max-w-2xl stretch">
       {messages.map(m => (
         <div key={m.id} className="mb-4">
-          <div className="mb-2 font-semibold">
-            {m.role === 'user' ? '👤 User' : '🤖 Assistant'}
-          </div>
+          <div className="mb-2 font-semibold">{m.role === 'user' ? '👤 User' : '🤖 Assistant'}</div>
           <div className="pl-4 space-y-2">
             {m.parts.map((part, index) => {
               // Handle text parts
               if (part.type === 'text') {
                 return (
-                  <div key={index} className="whitespace-pre-wrap">
+                  <div key={`${part.type}-${index}`} className="whitespace-pre-wrap">
                     {part.text}
                   </div>
                 );
@@ -35,7 +33,7 @@ export default function Chat() {
 
               if (part.type === 'step-start') {
                 return index > 0 ? (
-                  <div key={index} className="my-4">
+                  <div key={`${part.type}-${index}`} className="my-4">
                     <hr className="border-gray-300" />
                   </div>
                 ) : null;
@@ -50,19 +48,15 @@ export default function Chat() {
 
                 return (
                   <div
-                    key={index}
+                    key={`${part.type}-${index}`}
                     className="p-4 bg-gray-50 rounded-lg border border-gray-300"
                   >
                     <div className="flex gap-2 items-center mb-2">
                       <span className="text-xl">🔧</span>
                       <div>
-                        <div className="text-sm font-semibold">
-                          {displayName}
-                        </div>
+                        <div className="text-sm font-semibold">{displayName}</div>
                         {toolPart.title && (
-                          <div className="text-xs text-gray-500">
-                            Tool ID: {toolName}
-                          </div>
+                          <div className="text-xs text-gray-500">Tool ID: {toolName}</div>
                         )}
                       </div>
                     </div>
@@ -99,9 +93,7 @@ export default function Chat() {
                     )}
 
                     {toolPart.state === 'output-error' && (
-                      <div className="text-sm text-red-600">
-                        Error: {toolPart.errorText}
-                      </div>
+                      <div className="text-sm text-red-600">Error: {toolPart.errorText}</div>
                     )}
                   </div>
                 );

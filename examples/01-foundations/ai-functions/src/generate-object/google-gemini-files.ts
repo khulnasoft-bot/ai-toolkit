@@ -1,14 +1,12 @@
-import { GoogleAIFileManager } from '@google/generative-ai/server';
-import { google } from '@ai-toolkit/google';
+import path from 'node:path';
 import { generateObject } from '@ai-toolkit/ai';
-import path from 'path';
+import { google } from '@ai-toolkit/google';
+import { GoogleAIFileManager } from '@google/generative-ai/server';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
 run(async () => {
-  const fileManager = new GoogleAIFileManager(
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY!,
-  );
+  const fileManager = new GoogleAIFileManager(process.env.GOOGLE_GENERATIVE_AI_API_KEY!);
 
   const filePath = path.resolve(__dirname, '../../data/ai.pdf');
 

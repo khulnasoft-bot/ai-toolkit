@@ -1,5 +1,5 @@
-import { groq } from '@ai-toolkit/groq';
 import { streamText } from '@ai-toolkit/ai';
+import { groq } from '@ai-toolkit/groq';
 import { run } from '../lib/run';
 
 run(async () => {

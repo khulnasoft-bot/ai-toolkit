@@ -1,12 +1,12 @@
 import {
-  NoSuchModelError,
   type EmbeddingModelV4,
   type ImageModelV4,
   type LanguageModelV4,
+  NoSuchModelError,
   type ProviderV4,
+  type RerankingModelV4,
   type SpeechModelV4,
   type TranscriptionModelV4,
-  type RerankingModelV4,
 } from '@ai-toolkit/provider';
 export class MockProviderV4 implements ProviderV4 {
   readonly specificationVersion = 'v4' as const;

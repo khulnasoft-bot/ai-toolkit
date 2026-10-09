@@ -1,8 +1,8 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import ChatInput from '@/components/chat-input';
 
 export default function Chat() {
   const { status, sendMessage, messages } = useChat({
@@ -16,16 +16,14 @@ export default function Chat() {
           {message.role === 'user' ? 'User: ' : 'AI: '}
           {message.parts.map((part, index) => {
             if (part.type === 'text') {
-              return <div key={index}>{part.text}</div>;
-            } else if (
-              part.type === 'file' &&
-              part.mediaType.startsWith('image/')
-            ) {
+              return <div key={`${message.id}-text-${index}`}>{part.text}</div>;
+            } else if (part.type === 'file' && part.mediaType.startsWith('image/')) {
               return (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={index} src={part.url} alt="Generated image" />
+                <img key={`${message.id}-img-${index}`} src={part.url} alt="Generated" />
               );
             }
+            return null;
           })}
         </div>
       ))}

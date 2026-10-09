@@ -1,8 +1,8 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import ChatInput from '@/components/chat-input';
 
 export default function Chat() {
   const { error, status, sendMessage, messages, regenerate, stop } = useChat({
@@ -24,7 +24,7 @@ export default function Chat() {
               if (part.type === 'text') {
                 return (
                   <pre
-                    key={index}
+                    key={`${message.id}-text-${index}`}
                     className="max-w-full overflow-x-auto break-words whitespace-pre-wrap"
                   >
                     {part.text}
@@ -35,13 +35,14 @@ export default function Chat() {
               if (part.type === 'reasoning') {
                 return (
                   <pre
-                    key={index}
+                    key={`${message.id}-reasoning-${index}`}
                     className="max-w-full mb-4 overflow-x-auto italic text-gray-500 break-words whitespace-pre-wrap"
                   >
                     {part.text}
                   </pre>
                 );
               }
+              return null;
             })}
           </div>
         </div>

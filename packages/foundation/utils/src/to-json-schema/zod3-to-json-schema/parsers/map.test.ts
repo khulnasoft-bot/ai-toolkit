@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseMapDef } from './map';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseMapDef } from './map';
 
 describe('map', () => {
   it('should be possible to use Map', () => {
@@ -31,10 +31,7 @@ describe('map', () => {
 
   it('should be possible to use additionalProperties-pattern (record)', () => {
     expect(
-      parseMapDef(
-        z.map(z.string().min(1), z.number())._def,
-        getRefs({ mapStrategy: 'record' }),
-      ),
+      parseMapDef(z.map(z.string().min(1), z.number())._def, getRefs({ mapStrategy: 'record' })),
     ).toStrictEqual({
       type: 'object',
       additionalProperties: {

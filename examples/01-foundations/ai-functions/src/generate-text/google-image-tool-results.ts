@@ -1,8 +1,8 @@
-import { google } from '@ai-toolkit/google';
+import * as fs from 'node:fs';
+import * as path from 'node:path';
 import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { z } from 'zod';
-import * as fs from 'fs';
-import * as path from 'path';
 import { run } from '../lib/run';
 
 async function fileToBase64(filePath: string): Promise<string> {
@@ -13,7 +13,7 @@ async function fileToBase64(filePath: string): Promise<string> {
 const imageAnalysisTool = tool({
   description: 'Give the image ',
   inputSchema: z.object({}),
-  execute: async ({}) => {
+  execute: async () => {
     try {
       const imagePath = path.join(__dirname, '../../data/comic-cat.png');
       const base64Image = await fileToBase64(imagePath);
@@ -46,9 +46,7 @@ const imageAnalysisTool = tool({
 });
 
 run(async () => {
-  console.log(
-    '🔍 Testing Google model image analysis with tool-returned images...\n',
-  );
+  console.log('🔍 Testing Google model image analysis with tool-returned images...\n');
 
   const result = await generateText({
     model: google('gemini-2.5-flash'),

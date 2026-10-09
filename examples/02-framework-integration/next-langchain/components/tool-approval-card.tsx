@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { Shield, Check, X } from 'lucide-react';
-import { UIMessage } from '@ai-toolkit/ai';
+import type { UIMessage } from '@ai-toolkit/ai';
+import { Check, Shield, X } from 'lucide-react';
+import { useId, useState } from 'react';
 
 /**
  * Tool Approval Card Component
@@ -26,6 +26,7 @@ export function ToolApprovalCard({
 }) {
   const [rejectReason, setRejectReason] = useState('');
   const [showRejectInput, setShowRejectInput] = useState(false);
+  const rejectReasonId = useId();
 
   return (
     <div className="border border-amber-500/30 bg-amber-500/10 rounded-xl p-4 space-y-4 mt-4">
@@ -37,9 +38,7 @@ export function ToolApprovalCard({
       <div className="space-y-2">
         <div className="text-sm text-[var(--foreground-secondary)]">
           Tool:{' '}
-          <code className="bg-[var(--background-tertiary)] px-2 py-0.5 rounded">
-            {toolName}
-          </code>
+          <code className="bg-[var(--background-tertiary)] px-2 py-0.5 rounded">{toolName}</code>
         </div>
 
         <pre className="bg-[var(--background-tertiary)] border border-[var(--border)] rounded-lg p-3 text-sm overflow-x-auto">
@@ -49,10 +48,14 @@ export function ToolApprovalCard({
 
       {showRejectInput && (
         <div className="space-y-2">
-          <label className="text-sm text-[var(--foreground-secondary)]">
+          <label
+            htmlFor={rejectReasonId}
+            className="text-sm text-[var(--foreground-secondary)]"
+          >
             Rejection reason (optional):
           </label>
           <input
+            id={rejectReasonId}
             type="text"
             value={rejectReason}
             onChange={e => setRejectReason(e.target.value)}
@@ -64,6 +67,7 @@ export function ToolApprovalCard({
 
       <div className="flex gap-2">
         <button
+          type="button"
           onClick={() => onApprove(approvalId)}
           className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-500 text-white rounded-lg transition-colors"
         >
@@ -72,6 +76,7 @@ export function ToolApprovalCard({
         </button>
         {showRejectInput ? (
           <button
+            type="button"
             onClick={() => {
               onReject(approvalId, rejectReason || 'User rejected the action');
               setShowRejectInput(false);
@@ -83,6 +88,7 @@ export function ToolApprovalCard({
           </button>
         ) : (
           <button
+            type="button"
             onClick={() => setShowRejectInput(true)}
             className="flex items-center gap-2 px-4 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg transition-colors"
           >
@@ -92,6 +98,7 @@ export function ToolApprovalCard({
         )}
         {showRejectInput && (
           <button
+            type="button"
             onClick={() => setShowRejectInput(false)}
             className="flex items-center gap-2 px-4 py-2 bg-[var(--background-tertiary)] hover:bg-[var(--background-secondary)] border border-[var(--border)] text-[var(--foreground)] rounded-lg transition-colors"
           >

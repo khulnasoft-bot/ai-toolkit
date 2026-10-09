@@ -1,6 +1,6 @@
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { expect, it } from 'vitest';
 import { convertJSONSchemaToOpenAPISchema } from './convert-json-schema-to-openapi-schema';
-import { it, expect } from 'vitest';
 
 it('should remove additionalProperties and $schema', () => {
   const input: JSONSchema7 = {
@@ -24,7 +24,7 @@ it('should remove additionalProperties and $schema', () => {
   expect(convertJSONSchemaToOpenAPISchema(input)).toEqual(expected);
 });
 
-it('should remove additionalProperties object from nested object schemas', function () {
+it('should remove additionalProperties object from nested object schemas', () => {
   const input: JSONSchema7 = {
     type: 'object',
     properties: {
@@ -496,10 +496,7 @@ it('should handle descriptions', () => {
 });
 
 it('should return undefined for empty object schemas at root level', () => {
-  const emptyObjectSchemas = [
-    { type: 'object' },
-    { type: 'object', properties: {} },
-  ] as const;
+  const emptyObjectSchemas = [{ type: 'object' }, { type: 'object', properties: {} }] as const;
 
   emptyObjectSchemas.forEach(schema => {
     expect(convertJSONSchemaToOpenAPISchema(schema)).toBeUndefined();

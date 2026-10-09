@@ -44,15 +44,11 @@ const imageMediaTypeSignatures = [
   },
   {
     mediaType: 'image/avif' as const,
-    bytesPrefix: [
-      0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69, 0x66,
-    ],
+    bytesPrefix: [0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x61, 0x76, 0x69, 0x66],
   },
   {
     mediaType: 'image/heic' as const,
-    bytesPrefix: [
-      0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63,
-    ],
+    bytesPrefix: [0x00, 0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x68, 0x65, 0x69, 0x63],
   },
 ] as const;
 
@@ -203,9 +199,7 @@ function decodePrefix(data: Uint8Array | string, maxBytes: number): Uint8Array {
   // base64: 4 chars -> 3 bytes. Decode whole 4-char groups, then trim the 0-2
   // extra bytes so the result matches the raw-byte path exactly.
   const maxChars = Math.ceil(maxBytes / 3) * 4;
-  const bytes = convertBase64ToUint8Array(
-    data.substring(0, Math.min(data.length, maxChars)),
-  );
+  const bytes = convertBase64ToUint8Array(data.substring(0, Math.min(data.length, maxChars)));
   return bytes.length > maxBytes ? bytes.subarray(0, maxBytes) : bytes;
 }
 
@@ -250,9 +244,7 @@ function detectMediaTypeBySignatures<T extends MediaTypeSignatures>({
   for (const signature of signatures) {
     if (
       bytes.length >= signature.bytesPrefix.length &&
-      signature.bytesPrefix.every(
-        (byte, index) => byte === null || bytes[index] === byte,
-      )
+      signature.bytesPrefix.every((byte, index) => byte === null || bytes[index] === byte)
     ) {
       return signature.mediaType;
     }

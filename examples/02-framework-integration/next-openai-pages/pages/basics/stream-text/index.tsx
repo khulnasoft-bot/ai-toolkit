@@ -9,14 +9,15 @@ export default function Page() {
 
   return (
     <div className="p-2 flex flex-col gap-2">
-      <div
+      <button
+        type="button"
         className="p-2 bg-zinc-100 cursor-pointer"
         onClick={async () => {
           await complete('Why is the sky blue?');
         }}
       >
         Generate
-      </div>
+      </button>
 
       <div data-testid="generation">{completion}</div>
     </div>

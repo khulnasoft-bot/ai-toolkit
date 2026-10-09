@@ -1,6 +1,6 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { run } from '../lib/run';
 
 run(async () => {

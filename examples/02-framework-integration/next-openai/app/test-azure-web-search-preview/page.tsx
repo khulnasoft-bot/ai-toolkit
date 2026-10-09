@@ -1,12 +1,12 @@
 'use client';
 
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { AzureWebSearchPreviewMessage } from '@/app/api/chat-azure-web-search-preview/route';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import SourcesView from '@/components/sources-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { AzureWebSearchPreviewMessage } from '@/app/api/chat-azure-web-search-preview/route';
 import AzureWebSearchPreviewView from '@/components/tool/azure-web-search-preview-view';
 
 export default function TestOpenAIWebSearch() {
@@ -22,9 +22,7 @@ export default function TestOpenAIWebSearch() {
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        Azure OpenAI Web Search Preview
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">Azure OpenAI Web Search Preview</h1>
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
@@ -32,22 +30,22 @@ export default function TestOpenAIWebSearch() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${index}`}>{part.text}</Response>;
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={index} />;
+                return <ReasoningView part={part} key={`${part.type}-${index}`} />;
               }
               case 'tool-web_search_preview': {
                 return (
-                  <AzureWebSearchPreviewView invocation={part} key={index} />
+                  <AzureWebSearchPreviewView invocation={part} key={`${part.type}-${index}`} />
                 );
               }
+              default:
+                return null;
             }
           })}
 
-          <SourcesView
-            sources={message.parts.filter(part => part.type === 'source-url')}
-          />
+          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
         </div>
       ))}
 

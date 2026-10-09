@@ -1,6 +1,6 @@
-import type { GeneratedFile } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import path from 'node:path';
+import type { GeneratedFile } from '@ai-toolkit/ai';
 
 const OUTPUT_DIR = 'output';
 
@@ -16,10 +16,7 @@ export async function presentVideos(videos: GeneratedFile[]) {
     const extension = mediaType.split('/')[1] || 'mp4';
 
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    const filePath = path.join(
-      OUTPUT_DIR,
-      `video-${timestamp}-${index}.${extension}`,
-    );
+    const filePath = path.join(OUTPUT_DIR, `video-${timestamp}-${index}.${extension}`);
 
     const videoData = video.uint8Array;
     await fs.promises.writeFile(filePath, videoData);

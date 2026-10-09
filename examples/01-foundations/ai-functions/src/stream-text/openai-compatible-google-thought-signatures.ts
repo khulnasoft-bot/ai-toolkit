@@ -1,5 +1,5 @@
+import { type ModelMessage, streamText, tool } from '@ai-toolkit/ai';
 import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
-import { streamText, tool, ModelMessage } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -45,8 +45,7 @@ run(async () => {
         },
       }),
     },
-    prompt:
-      'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+    prompt: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     onStepFinish: ({ toolCalls, toolResults }) => {
       if (toolCalls) {
         console.log(`\n  Tool calls: ${toolCalls.length}`);
@@ -55,11 +54,7 @@ run(async () => {
           console.log(
             `    ${call.toolName}: ${
               sig && typeof sig === 'string'
-                ? 'Signature: ' +
-                  sig.substring(0, 50) +
-                  '... (length: ' +
-                  sig.length +
-                  ')'
+                ? `Signature: ${sig.substring(0, 50)}... (length: ${sig.length})`
                 : 'No signature (may be parallel call or non-Gemini 3)'
             }`,
           );
@@ -72,7 +67,7 @@ run(async () => {
           console.log(
             `    ${result.toolName}: ${
               sig && typeof sig === 'string'
-                ? 'Signature preserved: ' + sig.substring(0, 50) + '...'
+                ? `Signature preserved: ${sig.substring(0, 50)}...`
                 : 'No signature'
             }`,
           );
@@ -105,7 +100,7 @@ run(async () => {
           console.log(
             `  tool-call ${part.toolName}: ${
               sig && typeof sig === 'string'
-                ? 'Signature: ' + sig.substring(0, 40) + '...'
+                ? `Signature: ${sig.substring(0, 40)}...`
                 : 'No signature'
             }`,
           );
@@ -120,7 +115,7 @@ run(async () => {
           console.log(
             `  tool-result ${part.toolName}: ${
               sig && typeof sig === 'string'
-                ? 'Signature: ' + sig.substring(0, 40) + '...'
+                ? `Signature: ${sig.substring(0, 40)}...`
                 : 'No signature'
             }`,
           );
@@ -134,8 +129,7 @@ run(async () => {
   const messagesForTurn2: ModelMessage[] = [
     {
       role: 'user',
-      content:
-        'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+      content: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     },
     ...response1.messages,
     {

@@ -1,21 +1,17 @@
-import {
-  LanguageModelV3Prompt,
-  LanguageModelV3ProviderTool,
-} from '@ai-toolkit/provider';
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { convertReadableStreamToArray } from '@ai-toolkit/provider-utils/test';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
 import {
   GoogleGenerativeAILanguageModel,
   getGroundingMetadataSchema,
   getUrlContextMetadataSchema,
 } from './google-generative-ai-language-model';
-
-import {
+import type {
   GoogleGenerativeAIGroundingMetadata,
   GoogleGenerativeAIUrlContextMetadata,
 } from './google-generative-ai-prompt';
 import { createGoogleGenerativeAI } from './google-provider';
-import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
@@ -806,9 +802,7 @@ describe('doGenerate', () => {
       'custom-request-header': 'request-header-value',
       'x-goog-api-key': 'test-api-key',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/google/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/google/0.0.0-test`);
   });
 
   it('should pass response format', async () => {
@@ -1829,8 +1823,7 @@ describe('doGenerate', () => {
             id: 'google.vertex_rag_store',
             name: 'vertex_rag_store',
             args: {
-              ragCorpus:
-                'projects/my-project/locations/us-central1/ragCorpora/my-rag-corpus',
+              ragCorpus: 'projects/my-project/locations/us-central1/ragCorpora/my-rag-corpus',
               topK: 5,
             },
           },
@@ -1843,8 +1836,7 @@ describe('doGenerate', () => {
             retrieval: {
               vertex_rag_store: {
                 rag_resources: {
-                  rag_corpus:
-                    'projects/my-project/locations/us-central1/ragCorpora/my-rag-corpus',
+                  rag_corpus: 'projects/my-project/locations/us-central1/ragCorpora/my-rag-corpus',
                 },
                 similarity_top_k: 5,
               },
@@ -2778,8 +2770,7 @@ describe('doStream', () => {
     const finishEvent = events.find(event => event.type === 'finish');
 
     expect(
-      finishEvent?.type === 'finish' &&
-        finishEvent.providerMetadata?.google.groundingMetadata,
+      finishEvent?.type === 'finish' && finishEvent.providerMetadata?.google.groundingMetadata,
     ).toStrictEqual({
       webSearchQueries: ["What's the weather in Chicago this weekend?"],
       searchEntryPoint: {
@@ -2832,8 +2823,7 @@ describe('doStream', () => {
     const finishEvent = events.find(event => event.type === 'finish');
 
     expect(
-      finishEvent?.type === 'finish' &&
-        finishEvent.providerMetadata?.google.urlContextMetadata,
+      finishEvent?.type === 'finish' && finishEvent.providerMetadata?.google.urlContextMetadata,
     ).toStrictEqual({
       urlMetadata: [
         {
@@ -2964,8 +2954,7 @@ describe('doStream', () => {
     const finishEvent = events.find(event => event.type === 'finish');
 
     expect(
-      finishEvent?.type === 'finish' &&
-        finishEvent.providerMetadata?.google.safetyRatings,
+      finishEvent?.type === 'finish' && finishEvent.providerMetadata?.google.safetyRatings,
     ).toStrictEqual([
       {
         category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
@@ -3000,8 +2989,7 @@ describe('doStream', () => {
     const finishEvent = events.find(event => event.type === 'finish');
 
     expect(
-      finishEvent?.type === 'finish' &&
-        finishEvent.providerMetadata?.google.promptFeedback,
+      finishEvent?.type === 'finish' && finishEvent.providerMetadata?.google.promptFeedback,
     ).toStrictEqual({
       blockReason: 'PROHIBITED_CONTENT',
       safetyRatings: SAFETY_RATINGS,
@@ -3063,9 +3051,7 @@ describe('doStream', () => {
 
     const events = await convertReadableStreamToArray(stream);
 
-    const toolEvents = events.filter(
-      e => e.type === 'tool-call' || e.type === 'tool-result',
-    );
+    const toolEvents = events.filter(e => e.type === 'tool-call' || e.type === 'tool-result');
 
     expect(toolEvents).toMatchInlineSnapshot(`
       [
@@ -4092,8 +4078,7 @@ describe('doStream', () => {
 
       const chunks = await convertReadableStreamToArray(stream);
 
-      expect(chunks.filter(chunk => chunk.type === 'raw'))
-        .toMatchInlineSnapshot(`
+      expect(chunks.filter(chunk => chunk.type === 'raw')).toMatchInlineSnapshot(`
         [
           {
             "rawValue": {
@@ -4358,29 +4343,21 @@ describe('doStream', () => {
 
       const events = await convertReadableStreamToArray(stream);
 
-      const reasoningStartEvent = events.find(
-        event => event.type === 'reasoning-start',
-      );
+      const reasoningStartEvent = events.find(event => event.type === 'reasoning-start');
       expect(reasoningStartEvent?.type === 'reasoning-start').toBe(true);
       if (reasoningStartEvent?.type === 'reasoning-start') {
         expect(reasoningStartEvent.providerMetadata).toHaveProperty('vertex');
-        expect(reasoningStartEvent.providerMetadata).not.toHaveProperty(
-          'google',
-        );
+        expect(reasoningStartEvent.providerMetadata).not.toHaveProperty('google');
         expect(reasoningStartEvent.providerMetadata?.vertex).toMatchObject({
           thoughtSignature: 'stream_sig',
         });
       }
 
-      const reasoningDeltaEvent = events.find(
-        event => event.type === 'reasoning-delta',
-      );
+      const reasoningDeltaEvent = events.find(event => event.type === 'reasoning-delta');
       expect(reasoningDeltaEvent?.type === 'reasoning-delta').toBe(true);
       if (reasoningDeltaEvent?.type === 'reasoning-delta') {
         expect(reasoningDeltaEvent.providerMetadata).toHaveProperty('vertex');
-        expect(reasoningDeltaEvent.providerMetadata).not.toHaveProperty(
-          'google',
-        );
+        expect(reasoningDeltaEvent.providerMetadata).not.toHaveProperty('google');
       }
     });
   });

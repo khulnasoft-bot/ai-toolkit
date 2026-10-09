@@ -7,9 +7,9 @@
  * Run with: pnpm arch:inspect
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -98,7 +98,7 @@ function collectPackages() {
     const rootManifest = path.join(domainDir, 'package.json');
     if (fs.existsSync(rootManifest)) {
       const manifest = readJson(rootManifest);
-      if (manifest && manifest.name) {
+      if (manifest?.name) {
         result.push({
           name: manifest.name,
           dir: path.relative(PACKAGES_DIR, domainDir),
@@ -164,10 +164,13 @@ function main() {
   const byDomain = {};
   const byStability = {};
   for (const pkg of packages) {
-    (byLayer[pkg.layer] = byLayer[pkg.layer] || []).push(pkg.name);
-    (byDomain[pkg.domain] = byDomain[pkg.domain] || []).push(pkg.name);
+    byLayer[pkg.layer] = byLayer[pkg.layer] || [];
+    byLayer[pkg.layer].push(pkg.name);
+    byDomain[pkg.domain] = byDomain[pkg.domain] || [];
+    byDomain[pkg.domain].push(pkg.name);
     const stab = pkg.stability || 'missing';
-    (byStability[stab] = byStability[stab] || []).push(pkg.name);
+    byStability[stab] = byStability[stab] || [];
+    byStability[stab].push(pkg.name);
   }
 
   console.log('\nBy layer:');

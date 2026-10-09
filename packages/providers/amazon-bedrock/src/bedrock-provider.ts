@@ -1,5 +1,5 @@
 import { anthropicTools } from '@ai-toolkit/anthropic/internal';
-import {
+import type {
   EmbeddingModelV3,
   ImageModelV3,
   LanguageModelV3,
@@ -7,7 +7,7 @@ import {
   RerankingModelV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   generateId,
   loadOptionalSetting,
   loadSetting,
@@ -15,18 +15,18 @@ import {
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { BedrockChatLanguageModel } from './bedrock-chat-language-model';
-import { BedrockChatModelId } from './bedrock-chat-options';
+import type { BedrockChatModelId } from './bedrock-chat-options';
 import { BedrockEmbeddingModel } from './bedrock-embedding-model';
-import { BedrockEmbeddingModelId } from './bedrock-embedding-options';
+import type { BedrockEmbeddingModelId } from './bedrock-embedding-options';
 import { BedrockImageModel } from './bedrock-image-model';
-import { BedrockImageModelId } from './bedrock-image-settings';
+import type { BedrockImageModelId } from './bedrock-image-settings';
 import {
-  BedrockCredentials,
+  type BedrockCredentials,
   createApiKeyFetchFunction,
   createSigV4FetchFunction,
 } from './bedrock-sigv4-fetch';
 import { BedrockRerankingModel } from './reranking/bedrock-reranking-model';
-import { BedrockRerankingModelId } from './reranking/bedrock-reranking-options';
+import type { BedrockRerankingModelId } from './reranking/bedrock-reranking-options';
 import { VERSION } from './version';
 
 export interface AmazonBedrockProviderSettings {
@@ -172,8 +172,7 @@ export function createAmazonBedrock(
 
   // FIX 1: Validate API key to ensure proper fallback to SigV4
   // Only use API key if it's a non-empty, non-whitespace string
-  const apiKey =
-    rawApiKey && rawApiKey.trim().length > 0 ? rawApiKey.trim() : undefined;
+  const apiKey = rawApiKey && rawApiKey.trim().length > 0 ? rawApiKey.trim() : undefined;
 
   // Use API key authentication if available, otherwise fall back to SigV4
   const fetchFunction = apiKey
@@ -195,8 +194,7 @@ export function createAmazonBedrock(
             };
           } catch (error) {
             // Error handling for credential provider failures
-            const errorMessage =
-              error instanceof Error ? error.message : String(error);
+            const errorMessage = error instanceof Error ? error.message : String(error);
             throw new Error(
               `AWS credential provider failed: ${errorMessage}. ` +
                 'Please ensure your credential provider returns valid AWS credentials ' +
@@ -228,12 +226,8 @@ export function createAmazonBedrock(
           };
         } catch (error) {
           // Provide helpful error message for missing AWS credentials
-          const errorMessage =
-            error instanceof Error ? error.message : String(error);
-          if (
-            errorMessage.includes('AWS_ACCESS_KEY_ID') ||
-            errorMessage.includes('accessKeyId')
-          ) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          if (errorMessage.includes('AWS_ACCESS_KEY_ID') || errorMessage.includes('accessKeyId')) {
             throw new Error(
               'AWS SigV4 authentication requires AWS credentials. Please provide either:\n' +
                 '1. Set AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY environment variables\n' +
@@ -260,10 +254,7 @@ export function createAmazonBedrock(
 
   const getHeaders = () => {
     const baseHeaders = options.headers ?? {};
-    return withUserAgentSuffix(
-      baseHeaders,
-      `ai-toolkit/amazon-bedrock/${VERSION}`,
-    );
+    return withUserAgentSuffix(baseHeaders, `ai-toolkit/amazon-bedrock/${VERSION}`);
   };
 
   const getBedrockRuntimeBaseUrl = (): string =>
@@ -298,9 +289,7 @@ export function createAmazonBedrock(
 
   const provider = function (modelId: BedrockChatModelId) {
     if (new.target) {
-      throw new Error(
-        'The Amazon Bedrock model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Amazon Bedrock model function cannot be called with the new keyword.');
     }
 
     return createChatModel(modelId);

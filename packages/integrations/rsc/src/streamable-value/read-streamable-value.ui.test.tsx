@@ -1,7 +1,7 @@
 import { delay } from '@ai-toolkit/provider-utils';
+import { expect, it } from 'vitest';
 import { createStreamableValue } from './create-streamable-value';
 import { readStreamableValue } from './read-streamable-value';
-import { it, expect } from 'vitest';
 
 it('should return an async iterable', () => {
   const streamable = createStreamableValue();

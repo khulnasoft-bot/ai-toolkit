@@ -7,7 +7,7 @@ import type { FinishReason } from '../types/language-model';
 
 const name = 'AI_ToolChoiceViolationError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 type EnforcedToolChoice = Extract<
   LanguageModelV4ToolChoice,
@@ -18,8 +18,6 @@ type EnforcedToolChoice = Extract<
  * Thrown when a model response does not satisfy an enforced tool choice.
  */
 export class ToolChoiceViolationError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   /**
    * The tool choice that the model response did not satisfy.
    */

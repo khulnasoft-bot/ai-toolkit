@@ -2,9 +2,9 @@ import {
   convertArrayToReadableStream,
   convertAsyncIterableToArray,
 } from '@ai-toolkit/provider-utils/test';
-import { UIMessageChunk } from './ui-message-chunks';
+import { describe, expect, it } from 'vitest';
 import { readUIMessageStream } from './read-ui-message-stream';
-import { describe, it, expect } from 'vitest';
+import type { UIMessageChunk } from './ui-message-chunks';
 
 function createUIMessageStream(parts: UIMessageChunk[]) {
   return convertArrayToReadableStream(parts);
@@ -25,8 +25,7 @@ describe('readUIMessageStream', () => {
 
     const uiMessages = readUIMessageStream({ stream });
 
-    expect(await convertAsyncIterableToArray(uiMessages))
-      .toMatchInlineSnapshot(`
+    expect(await convertAsyncIterableToArray(uiMessages)).toMatchInlineSnapshot(`
         [
           {
             "id": "msg-123",
@@ -115,8 +114,6 @@ describe('readUIMessageStream', () => {
       terminateOnError: true,
     });
 
-    await expect(convertAsyncIterableToArray(uiMessages)).rejects.toThrow(
-      'Test error message',
-    );
+    await expect(convertAsyncIterableToArray(uiMessages)).rejects.toThrow('Test error message');
   });
 });

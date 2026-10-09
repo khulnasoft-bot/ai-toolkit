@@ -1,28 +1,27 @@
-import {
+import type {
   EmbeddingModelV3,
+  ImageModelV3,
   LanguageModelV3,
   ProviderV3,
-  ImageModelV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   generateId,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
-import { VERSION } from './version';
 import { GoogleGenerativeAIEmbeddingModel } from './google-generative-ai-embedding-model';
-import { GoogleGenerativeAIEmbeddingModelId } from './google-generative-ai-embedding-options';
-import { GoogleGenerativeAILanguageModel } from './google-generative-ai-language-model';
-import { GoogleGenerativeAIModelId } from './google-generative-ai-options';
-import { googleTools } from './google-tools';
-
-import {
-  GoogleGenerativeAIImageSettings,
-  GoogleGenerativeAIImageModelId,
-} from './google-generative-ai-image-settings';
+import type { GoogleGenerativeAIEmbeddingModelId } from './google-generative-ai-embedding-options';
 import { GoogleGenerativeAIImageModel } from './google-generative-ai-image-model';
+import type {
+  GoogleGenerativeAIImageModelId,
+  GoogleGenerativeAIImageSettings,
+} from './google-generative-ai-image-settings';
+import { GoogleGenerativeAILanguageModel } from './google-generative-ai-language-model';
+import type { GoogleGenerativeAIModelId } from './google-generative-ai-options';
+import { googleTools } from './google-tools';
+import { VERSION } from './version';
 
 export interface GoogleGenerativeAIProvider extends ProviderV3 {
   (modelId: GoogleGenerativeAIModelId): LanguageModelV3;
@@ -62,9 +61,7 @@ Creates a model for image generation.
   /**
    * @deprecated Use `embeddingModel` instead.
    */
-  textEmbeddingModel(
-    modelId: GoogleGenerativeAIEmbeddingModelId,
-  ): EmbeddingModelV3;
+  textEmbeddingModel(modelId: GoogleGenerativeAIEmbeddingModelId): EmbeddingModelV3;
 
   tools: typeof googleTools;
 }
@@ -112,8 +109,7 @@ export function createGoogleGenerativeAI(
   options: GoogleGenerativeAIProviderSettings = {},
 ): GoogleGenerativeAIProvider {
   const baseURL =
-    withoutTrailingSlash(options.baseURL) ??
-    'https://generativelanguage.googleapis.com/v1beta';
+    withoutTrailingSlash(options.baseURL) ?? 'https://generativelanguage.googleapis.com/v1beta';
 
   const providerName = options.name ?? 'google.generative-ai';
 
@@ -142,10 +138,8 @@ export function createGoogleGenerativeAI(
           // e.g. https://generativelanguage.googleapis.com/v1beta/files/...
           new RegExp(`^${baseURL}/files/.*$`),
           // YouTube URLs (public or unlisted videos)
-          new RegExp(
-            `^https://(?:www\\.)?youtube\\.com/watch\\?v=[\\w-]+(?:&[\\w=&.-]*)?$`,
-          ),
-          new RegExp(`^https://youtu\\.be/[\\w-]+(?:\\?[\\w=&.-]*)?$`),
+          /^https:\/\/(?:www\.)?youtube\.com\/watch\?v=[\w-]+(?:&[\w=&.-]*)?$/,
+          /^https:\/\/youtu\.be\/[\w-]+(?:\?[\w=&.-]*)?$/,
         ],
       }),
       fetch: options.fetch,

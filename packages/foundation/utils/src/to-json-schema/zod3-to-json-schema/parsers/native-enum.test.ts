@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
 import { parseNativeEnumDef } from './native-enum';
-import { JSONSchema7 } from '@ai-toolkit/provider';
 
 describe('native enum', () => {
   it('should be possible to convert a basic native number enum', () => {
@@ -56,9 +56,7 @@ describe('native enum', () => {
       val3: 2,
     } as const;
 
-    const parsedSchema = parseNativeEnumDef(
-      z.nativeEnum(MyConstAssertionObject)._def,
-    );
+    const parsedSchema = parseNativeEnumDef(z.nativeEnum(MyConstAssertionObject)._def);
 
     expect(parsedSchema).toStrictEqual({
       type: 'number',
@@ -73,9 +71,7 @@ describe('native enum', () => {
       val3: 'c',
     } as const;
 
-    const parsedSchema = parseNativeEnumDef(
-      z.nativeEnum(MyConstAssertionObject)._def,
-    );
+    const parsedSchema = parseNativeEnumDef(z.nativeEnum(MyConstAssertionObject)._def);
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -90,9 +86,7 @@ describe('native enum', () => {
       val3: 'c',
     } as const;
 
-    const parsedSchema = parseNativeEnumDef(
-      z.nativeEnum(MyConstAssertionObject)._def,
-    );
+    const parsedSchema = parseNativeEnumDef(z.nativeEnum(MyConstAssertionObject)._def);
 
     expect(parsedSchema).toStrictEqual({
       type: ['string', 'number'],

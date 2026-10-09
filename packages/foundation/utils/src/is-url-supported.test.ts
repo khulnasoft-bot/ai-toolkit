@@ -1,5 +1,5 @@
-import { isUrlSupported } from './is-url-supported';
 import { describe, expect, it } from 'vitest';
+import { isUrlSupported } from './is-url-supported';
 
 describe('isUrlSupported', () => {
   describe('when the model does not support any URLs', () => {
@@ -43,10 +43,7 @@ describe('isUrlSupported', () => {
           mediaType: 'image/png',
           url: 'https://another.com/img.png',
           supportedUrls: {
-            'image/png': [
-              /https:\/\/images\.example\.com\/.+/,
-              /https:\/\/another\.com\/img\.png/,
-            ],
+            'image/png': [/https:\/\/images\.example\.com\/.+/, /https:\/\/another\.com\/img\.png/],
           },
         }),
       ).toBe(true);

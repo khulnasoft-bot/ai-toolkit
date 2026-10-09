@@ -1,22 +1,21 @@
-import { LanguageModelV3Prompt } from '@ai-toolkit/provider';
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import fs from 'node:fs';
+import { prepareTools } from '@ai-toolkit/anthropic/internal';
+import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { convertReadableStreamToArray } from '@ai-toolkit/provider-utils/test';
-import { BedrockChatLanguageModel } from './bedrock-chat-language-model';
-import { beforeEach, describe, expect, vi, it } from 'vitest';
-import { injectFetchHeaders } from './inject-fetch-headers';
-import {
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { z } from 'zod/v4';
+import type {
   BedrockReasoningContentBlock,
   BedrockRedactedReasoningContentBlock,
 } from './bedrock-api-types';
-import { anthropicTools, prepareTools } from '@ai-toolkit/anthropic/internal';
-import { z } from 'zod/v4';
-import fs from 'node:fs';
+import { BedrockChatLanguageModel } from './bedrock-chat-language-model';
+import { injectFetchHeaders } from './inject-fetch-headers';
 
 const mockPrepareAnthropicTools = vi.mocked(prepareTools);
 
 vi.mock('@ai-toolkit/anthropic/internal', async importOriginal => {
-  const original =
-    await importOriginal<typeof import('@ai-toolkit/anthropic/internal')>();
+  const original = await importOriginal<typeof import('@ai-toolkit/anthropic/internal')>();
   return {
     ...original,
     prepareTools: vi.fn(),
@@ -101,9 +100,7 @@ const server = createTestServer({
 function prepareJsonFixtureResponse(filename: string) {
   server.urls[generateUrl].response = {
     type: 'json-value',
-    body: JSON.parse(
-      fs.readFileSync(`src/__fixtures__/${filename}.json`, 'utf8'),
-    ),
+    body: JSON.parse(fs.readFileSync(`src/__fixtures__/${filename}.json`, 'utf8')),
   };
   return;
 }
@@ -113,7 +110,7 @@ function prepareChunksFixtureResponse(filename: string) {
     .readFileSync(`src/__fixtures__/${filename}.chunks.txt`, 'utf8')
     .split('\n')
     .filter(Boolean)
-    .map(line => line + '\n');
+    .map(line => `${line}\n`);
 
   server.urls[streamUrl].response = {
     type: 'stream-chunks',
@@ -164,7 +161,7 @@ describe('doStream', () => {
   });
 
   vi.mock('./bedrock-event-stream-response-handler', () => ({
-    createBedrockEventStreamResponseHandler: (schema: any) => {
+    createBedrockEventStreamResponseHandler: (_schema: any) => {
       return async ({ response }: { response: Response }) => {
         let chunks: { success: boolean; value: any }[] = [];
         if (mockOptions.success) {
@@ -188,7 +185,9 @@ describe('doStream', () => {
           value: new ReadableStream({
             start(controller) {
               if (mockOptions.success) {
-                chunks.forEach(chunk => controller.enqueue(chunk));
+                chunks.forEach(chunk => {
+                  controller.enqueue(chunk);
+                });
               } else {
                 controller.enqueue({
                   success: false,
@@ -214,35 +213,35 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 1,
             delta: { text: ', ' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 2,
             delta: { text: 'World!' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           metadata: {
             usage: { inputTokens: 4, outputTokens: 34, totalTokens: 38 },
             metrics: { latencyMs: 10 },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -318,34 +317,34 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockStart: {
             contentBlockIndex: 0,
             start: {
               toolUse: { toolUseId: 'tool-use-id', name: 'test-tool' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { toolUse: { input: '{"value":' } },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { toolUse: { input: '"Sparkle Day"}' } },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockStop: { contentBlockIndex: 0 },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'tool_use',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -429,57 +428,57 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockStart: {
             contentBlockIndex: 0,
             start: {
               toolUse: { toolUseId: 'tool-use-id-1', name: 'test-tool-1' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { toolUse: { input: '{"value1":' } },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockStart: {
             contentBlockIndex: 1,
             start: {
               toolUse: { toolUseId: 'tool-use-id-2', name: 'test-tool-2' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 1,
             delta: { toolUse: { input: '{"value2":' } },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 1,
             delta: { toolUse: { input: '"Sparkle Day"}' } },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { toolUse: { input: '"Sparkle Day"}' } },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockStop: { contentBlockIndex: 0 },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockStop: { contentBlockIndex: 1 },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'tool_use',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -599,14 +598,14 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           internalServerException: {
             message: 'Internal Server Error',
             name: 'InternalServerException',
             $fault: 'server',
             $metadata: {},
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -660,14 +659,14 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           modelStreamErrorException: {
             message: 'Model Stream Error',
             name: 'ModelStreamErrorException',
             $fault: 'server',
             $metadata: {},
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -721,14 +720,14 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           throttlingException: {
             message: 'Throttling Error',
             name: 'ThrottlingException',
             $fault: 'server',
             $metadata: {},
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -782,14 +781,14 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           validationException: {
             message: 'Validation Error',
             name: 'ValidationException',
             $fault: 'server',
             $metadata: {},
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -944,24 +943,24 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           metadata: {
             usage: { inputTokens: 4, outputTokens: 34, totalTokens: 38 },
             metrics: { latencyMs: 10 },
             trace: mockTrace,
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1049,23 +1048,23 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           metadata: {
             usage: { inputTokens: 4, outputTokens: 34, totalTokens: 38 },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
             additionalModelResponseFields: { delta: { stop_sequence: 'STOP' } },
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1076,8 +1075,7 @@ describe('doStream', () => {
 
     const chunks = await convertReadableStreamToArray(stream);
 
-    expect(chunks.filter(chunk => chunk.type === 'finish'))
-      .toMatchInlineSnapshot(`
+    expect(chunks.filter(chunk => chunk.type === 'finish')).toMatchInlineSnapshot(`
         [
           {
             "finishReason": {
@@ -1118,18 +1116,18 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Response' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           metadata: {
             usage: { inputTokens: 5, outputTokens: 10, totalTokens: 15 },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
             additionalModelResponseFields: {
@@ -1140,7 +1138,7 @@ describe('doStream', () => {
               otherField: 'value',
             },
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1152,9 +1150,7 @@ describe('doStream', () => {
     const chunks = await convertReadableStreamToArray(stream);
     const finishChunk = chunks.find(chunk => chunk.type === 'finish');
 
-    expect(finishChunk?.providerMetadata?.bedrock?.stopSequence).toBe(
-      'CUSTOM_END',
-    );
+    expect(finishChunk?.providerMetadata?.bedrock?.stopSequence).toBe('CUSTOM_END');
     expect(finishChunk?.finishReason).toEqual({
       unified: 'stop',
       raw: 'stop_sequence',
@@ -1170,17 +1166,17 @@ describe('doStream', () => {
         'x-amzn-trace-id': 'test-trace-id',
       },
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1207,17 +1203,17 @@ describe('doStream', () => {
         'x-amzn-trace-id': 'test-trace-id',
       },
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1252,7 +1248,7 @@ describe('doStream', () => {
     expect(requestHeaders['options-header']).toBe('options-value');
     expect(requestHeaders['model-header']).toBe('model-value');
     expect(requestHeaders['signed-header']).toBe('signed-value');
-    expect(requestHeaders['authorization']).toBe('AWS4-HMAC-SHA256...');
+    expect(requestHeaders.authorization).toBe('AWS4-HMAC-SHA256...');
     expect(requestHeaders['shared-header']).toBe('options-shared');
   });
 
@@ -1279,7 +1275,7 @@ describe('doStream', () => {
     const requestHeaders = server.calls[0].requestHeaders;
     expect(requestHeaders['model-header']).toBe('model-value');
     expect(requestHeaders['signed-header']).toBe('signed-value');
-    expect(requestHeaders['authorization']).toBe('AWS4-HMAC-SHA256...');
+    expect(requestHeaders.authorization).toBe('AWS4-HMAC-SHA256...');
   });
 
   it('should include providerOptions in the request for streaming calls', async () => {
@@ -1287,15 +1283,15 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Dummy' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: { stopReason: 'stop_sequence' },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1319,13 +1315,13 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           metadata: {
             usage: {
               inputTokens: 4,
@@ -1335,12 +1331,12 @@ describe('doStream', () => {
               cacheWriteInputTokens: 3,
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1407,17 +1403,17 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1444,41 +1440,41 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: {
               reasoningContent: { text: 'I am thinking' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: {
               reasoningContent: { text: ' about this problem...' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: {
               reasoningContent: { signature: 'abc123signature' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 1,
             delta: { text: 'Based on my reasoning, the answer is 42.' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1556,25 +1552,25 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: {
               reasoningContent: { data: 'redacted-reasoning-data' },
             },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 1,
             delta: { text: 'Here is my answer.' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1638,17 +1634,17 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1721,17 +1717,17 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           contentBlockDelta: {
             contentBlockIndex: 0,
             delta: { text: 'Hello' },
           },
-        }) + '\n',
-        JSON.stringify({
+        })}\n`,
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1773,11 +1769,11 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -1806,9 +1802,7 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-tool.1');
 
     const { stream } = await model.doStream({
-      prompt: [
-        { role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] },
-      ],
+      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] }],
       responseFormat: {
         type: 'json',
         schema: {
@@ -1875,9 +1869,7 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-tool.2');
 
     const { stream } = await model.doStream({
-      prompt: [
-        { role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] },
-      ],
+      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] }],
       responseFormat: {
         type: 'json',
         schema: {
@@ -1961,9 +1953,7 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-only-text-first.1');
 
     const { stream } = await model.doStream({
-      prompt: [
-        { role: 'user', content: [{ type: 'text', text: 'Return name data' }] },
-      ],
+      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Return name data' }] }],
       responseFormat: {
         type: 'json',
         schema: {
@@ -2052,9 +2042,7 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-tool.3');
 
     const { stream } = await model.doStream({
-      prompt: [
-        { role: 'user', content: [{ type: 'text', text: 'Generate data' }] },
-      ],
+      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate data' }] }],
       responseFormat: {
         type: 'json',
         schema: {
@@ -2413,9 +2401,7 @@ describe('doStream', () => {
 
   it('should stream text, then regular tool calls, with JSON response format available', async () => {
     setupMockEventStreamHandler();
-    prepareChunksFixtureResponse(
-      'bedrock-json-tool-text-then-weather-then-json.1',
-    );
+    prepareChunksFixtureResponse('bedrock-json-tool-text-then-weather-then-json.1');
 
     const { stream } = await model.doStream({
       prompt: [
@@ -2567,11 +2553,11 @@ describe('doStream', () => {
     server.urls[streamUrl].response = {
       type: 'stream-chunks',
       chunks: [
-        JSON.stringify({
+        `${JSON.stringify({
           messageStop: {
             stopReason: 'stop_sequence',
           },
-        }) + '\n',
+        })}\n`,
       ],
     };
 
@@ -2591,9 +2577,7 @@ describe('doStream', () => {
     await convertReadableStreamToArray(result.stream);
 
     const requestBody = await server.calls[0].requestBodyJson;
-    expect(
-      requestBody.additionalModelRequestFields?.reasoningConfig,
-    ).toBeUndefined();
+    expect(requestBody.additionalModelRequestFields?.reasoningConfig).toBeUndefined();
   });
 
   it('should support tool calls with empty input (no arguments)', async () => {
@@ -2663,9 +2647,7 @@ describe('doGenerate', () => {
     reasoningContent?:
       | BedrockReasoningContentBlock
       | BedrockRedactedReasoningContentBlock
-      | Array<
-          BedrockReasoningContentBlock | BedrockRedactedReasoningContentBlock
-        >;
+      | Array<BedrockReasoningContentBlock | BedrockRedactedReasoningContentBlock>;
   }) {
     server.urls[generateUrl].response = {
       type: 'json-value',
@@ -3113,36 +3095,22 @@ describe('doGenerate', () => {
     const requestBody = await server.calls[0].requestBodyJson;
 
     // Tool with empty description should not have description field
-    expect(requestBody.toolConfig.tools[0].toolSpec).not.toHaveProperty(
-      'description',
-    );
-    expect(requestBody.toolConfig.tools[0].toolSpec.name).toBe(
-      'tool-with-empty-desc',
-    );
+    expect(requestBody.toolConfig.tools[0].toolSpec).not.toHaveProperty('description');
+    expect(requestBody.toolConfig.tools[0].toolSpec.name).toBe('tool-with-empty-desc');
 
     // Tool with whitespace-only description should not have description field
-    expect(requestBody.toolConfig.tools[1].toolSpec).not.toHaveProperty(
-      'description',
-    );
-    expect(requestBody.toolConfig.tools[1].toolSpec.name).toBe(
-      'tool-with-whitespace-desc',
-    );
+    expect(requestBody.toolConfig.tools[1].toolSpec).not.toHaveProperty('description');
+    expect(requestBody.toolConfig.tools[1].toolSpec.name).toBe('tool-with-whitespace-desc');
 
     // Tool with valid description should have description field
-    expect(requestBody.toolConfig.tools[2].toolSpec.description).toBe(
-      'Valid description',
-    );
-    expect(requestBody.toolConfig.tools[2].toolSpec.name).toBe(
-      'tool-with-valid-desc',
-    );
+    expect(requestBody.toolConfig.tools[2].toolSpec.description).toBe('Valid description');
+    expect(requestBody.toolConfig.tools[2].toolSpec.name).toBe('tool-with-valid-desc');
   });
 
   it('should handle Anthropic provider-defined tools', async () => {
     mockPrepareAnthropicTools.mockReturnValue(
       Promise.resolve({
-        tools: [
-          { name: 'bash', type: 'bash_20241022', cache_control: undefined },
-        ],
+        tools: [{ name: 'bash', type: 'bash_20241022', cache_control: undefined }],
         toolChoice: { type: 'auto' },
         toolWarnings: [],
         betas: new Set(['computer-use-2024-10-22']),
@@ -3387,7 +3355,7 @@ describe('doGenerate', () => {
     expect(requestHeaders['options-header']).toBe('options-value');
     expect(requestHeaders['model-header']).toBe('model-value');
     expect(requestHeaders['signed-header']).toBe('signed-value');
-    expect(requestHeaders['authorization']).toBe('AWS4-HMAC-SHA256...');
+    expect(requestHeaders.authorization).toBe('AWS4-HMAC-SHA256...');
     expect(requestHeaders['shared-header']).toBe('options-shared');
   });
 
@@ -3414,7 +3382,7 @@ describe('doGenerate', () => {
     const requestHeaders = server.calls[0].requestHeaders;
     expect(requestHeaders['model-header']).toBe('model-value');
     expect(requestHeaders['signed-header']).toBe('signed-value');
-    expect(requestHeaders['authorization']).toBe('AWS4-HMAC-SHA256...');
+    expect(requestHeaders.authorization).toBe('AWS4-HMAC-SHA256...');
   });
 
   it('should include providerOptions in the request for generate calls', async () => {
@@ -3629,9 +3597,7 @@ describe('doGenerate', () => {
         reasoning_effort: 'medium',
       },
     });
-    expect(
-      requestBody.additionalModelRequestFields?.reasoningConfig,
-    ).toBeUndefined();
+    expect(requestBody.additionalModelRequestFields?.reasoningConfig).toBeUndefined();
     expect(requestBody.additionalModelRequestFields?.thinking).toBeUndefined();
   });
 
@@ -3651,9 +3617,7 @@ describe('doGenerate', () => {
     });
 
     const requestBody = await server.calls[0].requestBodyJson;
-    expect(
-      requestBody.additionalModelRequestFields?.reasoningConfig,
-    ).toBeUndefined();
+    expect(requestBody.additionalModelRequestFields?.reasoningConfig).toBeUndefined();
 
     expect(result.warnings).toContainEqual({
       type: 'unsupported',
@@ -4039,9 +4003,7 @@ describe('doGenerate', () => {
     });
 
     it('should set isJsonResponseFromTool in provider metadata', async () => {
-      expect(result.providerMetadata?.bedrock?.isJsonResponseFromTool).toBe(
-        true,
-      );
+      expect(result.providerMetadata?.bedrock?.isJsonResponseFromTool).toBe(true);
     });
   });
 
@@ -4261,9 +4223,7 @@ describe('doGenerate', () => {
     prepareJsonFixtureResponse('bedrock-json-tool.2');
 
     const result = await model.doGenerate({
-      prompt: [
-        { role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] },
-      ],
+      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] }],
       responseFormat: {
         type: 'json',
         schema: {
@@ -4354,9 +4314,7 @@ describe('doGenerate', () => {
     prepareJsonFixtureResponse('bedrock-json-tool.3');
 
     const result = await model.doGenerate({
-      prompt: [
-        { role: 'user', content: [{ type: 'text', text: 'Generate data' }] },
-      ],
+      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate data' }] }],
       responseFormat: {
         type: 'json',
         schema: {

@@ -22,16 +22,14 @@ run(async () => {
         },
         warnings: [],
         finishReason: { raw: undefined, unified: 'tool-calls' },
-        content: [
-          { type: 'text', text: `{ "content": "provider metadata test"` },
-        ],
+        content: [{ type: 'text', text: `{ "content": "provider metadata test"` }],
       }),
     }),
     schema: z.object({ content: z.string() }),
     prompt: 'What are the tourist attractions in San Francisco?',
     experimental_repairText: async ({ text, error }) => {
       if (error instanceof JSONParseError) {
-        return text + '}';
+        return `${text}}`;
       }
       return null;
     },

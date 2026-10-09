@@ -1,5 +1,5 @@
 import { describe, expectTypeOf, it } from 'vitest';
-import {
+import type {
   DataUIPart,
   DynamicToolUIPart,
   FileUIPart,
@@ -10,8 +10,8 @@ import {
   TextUIPart,
   UIMessage,
 } from '../ui/ui-messages';
+import type { InferAgentUIMessage } from './infer-agent-ui-message';
 import { ToolLoopAgent } from './tool-loop-agent';
-import { InferAgentUIMessage } from './infer-agent-ui-message';
 
 describe('InferAgentUIMessage', () => {
   it('should not contain arbitrary static tools when no tools are provided', () => {
@@ -47,8 +47,6 @@ describe('InferAgentUIMessage', () => {
 
     type Message = InferAgentUIMessage<typeof agent, { foo: string }>;
 
-    expectTypeOf<Message>().toMatchTypeOf<
-      UIMessage<{ foo: string }, never, {}>
-    >();
+    expectTypeOf<Message>().toMatchTypeOf<UIMessage<{ foo: string }, never, {}>>();
   });
 });

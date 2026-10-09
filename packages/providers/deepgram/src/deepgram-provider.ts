@@ -1,18 +1,14 @@
 import {
-  TranscriptionModelV3,
-  SpeechModelV3,
-  ProviderV3,
   NoSuchModelError,
+  type ProviderV3,
+  type SpeechModelV3,
+  type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
-import {
-  FetchFunction,
-  loadApiKey,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
-import { DeepgramTranscriptionModel } from './deepgram-transcription-model';
-import { DeepgramTranscriptionModelId } from './deepgram-transcription-options';
+import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { DeepgramSpeechModel } from './deepgram-speech-model';
-import { DeepgramSpeechModelId } from './deepgram-speech-options';
+import type { DeepgramSpeechModelId } from './deepgram-speech-options';
+import { DeepgramTranscriptionModel } from './deepgram-transcription-model';
+import type { DeepgramTranscriptionModelId } from './deepgram-transcription-options';
 import { VERSION } from './version';
 
 export interface DeepgramProvider extends ProviderV3 {
@@ -60,9 +56,7 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create an Deepgram provider instance.
  */
-export function createDeepgram(
-  options: DeepgramProviderSettings = {},
-): DeepgramProvider {
+export function createDeepgram(options: DeepgramProviderSettings = {}): DeepgramProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {
@@ -92,11 +86,9 @@ export function createDeepgram(
       fetch: options.fetch,
     });
 
-  const provider = function (modelId: DeepgramTranscriptionModelId) {
-    return {
-      transcription: createTranscriptionModel(modelId),
-    };
-  };
+  const provider = (modelId: DeepgramTranscriptionModelId) => ({
+    transcription: createTranscriptionModel(modelId),
+  });
 
   provider.specificationVersion = 'v3' as const;
   provider.transcription = createTranscriptionModel;

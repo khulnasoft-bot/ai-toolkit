@@ -1,14 +1,14 @@
+import type { FetchFunction } from '@ai-toolkit/provider-utils';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { describe, expect, it, vi } from 'vitest';
-import { GatewayFetchMetadata } from './gateway-fetch-metadata';
-import type { FetchFunction } from '@ai-toolkit/provider-utils';
 import {
   GatewayAuthenticationError,
+  GatewayError,
   GatewayInternalServerError,
   GatewayRateLimitError,
   GatewayResponseError,
-  GatewayError,
 } from './errors';
+import { GatewayFetchMetadata } from './gateway-fetch-metadata';
 
 function createBasicMetadataFetcher({
   headers,
@@ -566,9 +566,7 @@ describe('GatewayFetchMetadata', () => {
 
       const metadata = createBasicMetadataFetcher();
 
-      await expect(metadata.getCredits()).rejects.toThrow(
-        GatewayAuthenticationError,
-      );
+      await expect(metadata.getCredits()).rejects.toThrow(GatewayAuthenticationError);
     });
 
     it('should handle rate limit errors for credits endpoint', async () => {
@@ -585,9 +583,7 @@ describe('GatewayFetchMetadata', () => {
 
       const metadata = createBasicMetadataFetcher();
 
-      await expect(metadata.getCredits()).rejects.toThrow(
-        GatewayRateLimitError,
-      );
+      await expect(metadata.getCredits()).rejects.toThrow(GatewayRateLimitError);
     });
 
     it('should handle internal server errors for credits endpoint', async () => {
@@ -604,9 +600,7 @@ describe('GatewayFetchMetadata', () => {
 
       const metadata = createBasicMetadataFetcher();
 
-      await expect(metadata.getCredits()).rejects.toThrow(
-        GatewayInternalServerError,
-      );
+      await expect(metadata.getCredits()).rejects.toThrow(GatewayInternalServerError);
     });
 
     it('should handle malformed credits response', async () => {

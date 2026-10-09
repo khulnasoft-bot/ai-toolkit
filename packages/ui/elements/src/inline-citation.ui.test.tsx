@@ -21,9 +21,8 @@ import {
 
 // The index component tracks count/current from the carousel API but also
 // passes unknown props through to its root <div> as DOM attributes.
-const indexAttrs = (
-  attrs: { count: number; current: number } & { className?: string },
-) => attrs as ComponentProps<'div'>;
+const indexAttrs = (attrs: { count: number; current: number } & { className?: string }) =>
+  attrs as ComponentProps<'div'>;
 
 const EXAMPLE_COM_PLUS_TWO_REGEX = /example\.com \+2/;
 const PREVIOUS_REGEX = /previous/i;
@@ -36,9 +35,7 @@ describe('inlineCitation', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(
-      <InlineCitation className="custom">Text</InlineCitation>,
-    );
+    const { container } = render(<InlineCitation className="custom">Text</InlineCitation>);
     expect(container.firstChild).toHaveClass('custom');
   });
 });
@@ -80,11 +77,7 @@ describe('inlineCitationCardTrigger', () => {
     render(
       <InlineCitationCard>
         <InlineCitationCardTrigger
-          sources={[
-            'https://example.com',
-            'https://test.com',
-            'https://demo.com',
-          ]}
+          sources={['https://example.com', 'https://test.com', 'https://demo.com']}
         />
       </InlineCitationCard>,
     );
@@ -160,9 +153,7 @@ describe('inlineCitationQuote', () => {
   });
 
   it('renders as blockquote element', () => {
-    const { container } = render(
-      <InlineCitationQuote>Quote</InlineCitationQuote>,
-    );
+    const { container } = render(<InlineCitationQuote>Quote</InlineCitationQuote>);
     expect(container.querySelector('blockquote')).toBeInTheDocument();
   });
 });
@@ -172,9 +163,7 @@ describe('inlineCitationCarouselIndex', () => {
     const { container } = render(
       <InlineCitationCarousel>
         <InlineCitationCarouselHeader>
-          <InlineCitationCarouselIndex
-            {...indexAttrs({ count: 5, current: 2 })}
-          />
+          <InlineCitationCarouselIndex {...indexAttrs({ count: 5, current: 2 })} />
         </InlineCitationCarouselHeader>
         <InlineCitationCarouselContent>
           <InlineCitationCarouselItem>Item</InlineCitationCarouselItem>
@@ -189,9 +178,7 @@ describe('inlineCitationCarouselIndex', () => {
     render(
       <InlineCitationCarousel>
         <InlineCitationCarouselHeader>
-          <InlineCitationCarouselIndex
-            {...indexAttrs({ count: 5, current: 2 })}
-          >
+          <InlineCitationCarouselIndex {...indexAttrs({ count: 5, current: 2 })}>
             Custom Index
           </InlineCitationCarouselIndex>
         </InlineCitationCarouselHeader>
@@ -232,9 +219,7 @@ describe('inlineCitationCarouselPrev', () => {
         </InlineCitationCarouselContent>
       </InlineCitationCarousel>,
     );
-    expect(
-      screen.getByRole('button', { name: PREVIOUS_REGEX }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: PREVIOUS_REGEX })).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
@@ -302,9 +287,7 @@ describe('inlineCitationCarouselNext', () => {
         </InlineCitationCarouselContent>
       </InlineCitationCarousel>,
     );
-    expect(
-      screen.getByRole('button', { name: NEXT_REGEX }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: NEXT_REGEX })).toBeInTheDocument();
   });
 
   it('applies custom className', () => {

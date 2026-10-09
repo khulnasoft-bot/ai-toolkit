@@ -1,4 +1,4 @@
-import { LanguageModelV3Usage } from '@ai-toolkit/provider';
+import type { LanguageModelV3Usage } from '@ai-toolkit/provider';
 
 export function convertDeepSeekUsage(
   usage:
@@ -36,8 +36,7 @@ export function convertDeepSeekUsage(
   const promptTokens = usage.prompt_tokens ?? 0;
   const completionTokens = usage.completion_tokens ?? 0;
   const cacheReadTokens = usage.prompt_cache_hit_tokens ?? 0;
-  const reasoningTokens =
-    usage.completion_tokens_details?.reasoning_tokens ?? 0;
+  const reasoningTokens = usage.completion_tokens_details?.reasoning_tokens ?? 0;
 
   return {
     inputTokens: {

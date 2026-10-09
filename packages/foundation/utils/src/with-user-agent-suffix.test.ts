@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 import { withUserAgentSuffix } from './with-user-agent-suffix';
 
@@ -9,17 +9,11 @@ describe('withUserAgentSuffix', () => {
       authorization: 'Bearer token123',
     };
 
-    const result = withUserAgentSuffix(
-      headers,
-      'ai-toolkit/0.0.0-test',
-      'provider/test-openai',
-    );
+    const result = withUserAgentSuffix(headers, 'ai-toolkit/0.0.0-test', 'provider/test-openai');
 
-    expect(result['user-agent']).toBe(
-      'ai-toolkit/0.0.0-test provider/test-openai',
-    );
+    expect(result['user-agent']).toBe('ai-toolkit/0.0.0-test provider/test-openai');
     expect(result['content-type']).toBe('application/json');
-    expect(result['authorization']).toBe('Bearer token123');
+    expect(result.authorization).toBe('Bearer token123');
   });
 
   it('should append suffix parts to existing user-agent header', () => {
@@ -28,16 +22,12 @@ describe('withUserAgentSuffix', () => {
       accept: 'application/json',
     };
 
-    const result = withUserAgentSuffix(
-      headers,
-      'ai-toolkit/0.0.0-test',
-      'provider/test-anthropic',
-    );
+    const result = withUserAgentSuffix(headers, 'ai-toolkit/0.0.0-test', 'provider/test-anthropic');
 
     expect(result['user-agent']).toBe(
       'TestApp/0.0.0-test ai-toolkit/0.0.0-test provider/test-anthropic',
     );
-    expect(result['accept']).toBe('application/json');
+    expect(result.accept).toBe('application/json');
   });
 
   it('should automatically remove undefined entries from headers', () => {
@@ -51,12 +41,10 @@ describe('withUserAgentSuffix', () => {
 
     const result = withUserAgentSuffix(headers as any, 'ai-toolkit/0.0.0-test');
 
-    expect(result['user-agent']).toBe(
-      'TestApp/0.0.0-test ai-toolkit/0.0.0-test',
-    );
+    expect(result['user-agent']).toBe('TestApp/0.0.0-test ai-toolkit/0.0.0-test');
     expect(result['content-type']).toBe('application/json');
-    expect(result['accept']).toBe('application/json');
-    expect(result['authorization']).toBeUndefined();
+    expect(result.accept).toBe('application/json');
+    expect(result.authorization).toBeUndefined();
     expect(result['cache-control']).toBeUndefined();
   });
 
@@ -68,7 +56,7 @@ describe('withUserAgentSuffix', () => {
 
     const result = withUserAgentSuffix(headers, 'ai-toolkit/0.0.0-test');
 
-    expect(result['authorization']).toBe('Bearer token123');
+    expect(result.authorization).toBe('Bearer token123');
     expect(result['x-custom']).toBe('value');
     expect(result['user-agent']).toBe('ai-toolkit/0.0.0-test');
   });
@@ -81,7 +69,7 @@ describe('withUserAgentSuffix', () => {
 
     const result = withUserAgentSuffix(headers, 'ai-toolkit/0.0.0-test');
 
-    expect(result['authorization']).toBe('Bearer token123');
+    expect(result.authorization).toBe('Bearer token123');
     expect(result['x-feature']).toBe('alpha');
     expect(result['user-agent']).toBe('ai-toolkit/0.0.0-test');
   });

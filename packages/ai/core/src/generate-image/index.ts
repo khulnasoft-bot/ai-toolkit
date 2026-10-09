@@ -4,6 +4,7 @@ export type { GenerateImageResult } from './generate-image-result';
 // depreacted exports
 
 import { generateImage } from './generate-image';
+
 /**
  * @deprecated Use `generateImage` instead.
  */
@@ -11,6 +12,7 @@ const experimental_generateImage = generateImage;
 export { experimental_generateImage };
 
 import type { GenerateImageResult } from './generate-image-result';
+
 /**
  * @deprecated Use `GenerateImageResult` instead.
  */

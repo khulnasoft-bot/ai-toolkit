@@ -1,7 +1,4 @@
-import type {
-  ChatAddToolApproveResponseFunction,
-  DynamicToolUIPart,
-} from '@ai-toolkit/ai';
+import type { ChatAddToolApproveResponseFunction, DynamicToolUIPart } from '@ai-toolkit/ai';
 
 export default function WeatherWithApprovalView({
   invocation,
@@ -24,6 +21,7 @@ export default function WeatherWithApprovalView({
           </div>
           <div>
             <button
+              type="button"
               className="px-4 py-2 mr-2 text-white bg-blue-500 rounded transition-colors hover:bg-blue-600"
               onClick={() =>
                 addToolApprovalResponse({
@@ -35,6 +33,7 @@ export default function WeatherWithApprovalView({
               Approve
             </button>
             <button
+              type="button"
               className="px-4 py-2 text-white bg-red-500 rounded transition-colors hover:bg-red-600"
               onClick={() =>
                 addToolApprovalResponse({
@@ -65,7 +64,7 @@ export default function WeatherWithApprovalView({
         </div>
       );
 
-    case 'output-available':
+    case 'output-available': {
       const isPreliminary = invocation.preliminary ?? false;
       return (
         <div className="text-gray-500">
@@ -82,11 +81,11 @@ export default function WeatherWithApprovalView({
           </div>
         </div>
       );
+    }
     case 'output-denied':
       return (
         <div className="text-red-500">
-          Tool {invocation.toolName} with input{' '}
-          {JSON.stringify(invocation.input)} execution denied.
+          Tool {invocation.toolName} with input {JSON.stringify(invocation.input)} execution denied.
         </div>
       );
     case 'output-error':

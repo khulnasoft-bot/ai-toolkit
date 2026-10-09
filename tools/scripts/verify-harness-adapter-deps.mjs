@@ -12,9 +12,9 @@
  * Run with: pnpm verify-harness-adapter-deps
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -143,12 +143,16 @@ function printReport(packages) {
 
   if (warnings.length) {
     console.log('\nWarnings:');
-    warnings.forEach(w => console.log(`  - ${w}`));
+    warnings.forEach(w => {
+      console.log(`  - ${w}`);
+    });
   }
 
   if (errors.length) {
     console.log('\nErrors:');
-    errors.forEach(e => console.log(`  - ${e}`));
+    errors.forEach(e => {
+      console.log(`  - ${e}`);
+    });
     console.log('\nFix the dependency structure above.');
     process.exit(1);
   } else {

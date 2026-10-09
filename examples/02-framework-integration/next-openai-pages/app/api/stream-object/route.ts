@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamObject } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 
 export const maxDuration = 30;
@@ -17,8 +17,7 @@ export async function POST(req: Request) {
         }),
       ),
     }),
-    prompt:
-      `Generate 3 notifications for a messages app in this context:` + context,
+    prompt: `Generate 3 notifications for a messages app in this context:${context}`,
   });
 
   return result.toTextStreamResponse();

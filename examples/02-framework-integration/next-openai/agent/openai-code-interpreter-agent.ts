@@ -1,5 +1,5 @@
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import { InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 
 export const openaiCodeInterpreterAgent = new ToolLoopAgent({
   model: openai('gpt-5-nano'),
@@ -8,6 +8,4 @@ export const openaiCodeInterpreterAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAICodeInterpreterMessage = InferAgentUIMessage<
-  typeof openaiCodeInterpreterAgent
->;
+export type OpenAICodeInterpreterMessage = InferAgentUIMessage<typeof openaiCodeInterpreterAgent>;

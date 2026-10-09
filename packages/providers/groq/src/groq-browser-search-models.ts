@@ -1,4 +1,4 @@
-import { GroqChatModelId } from './groq-chat-options';
+import type { GroqChatModelId } from './groq-chat-options';
 
 /**
  * Models that support browser search functionality.
@@ -12,9 +12,7 @@ export const BROWSER_SEARCH_SUPPORTED_MODELS: readonly GroqChatModelId[] = [
 /**
  * Check if a model supports browser search functionality.
  */
-export function isBrowserSearchSupportedModel(
-  modelId: GroqChatModelId,
-): boolean {
+export function isBrowserSearchSupportedModel(modelId: GroqChatModelId): boolean {
   return BROWSER_SEARCH_SUPPORTED_MODELS.includes(modelId);
 }
 

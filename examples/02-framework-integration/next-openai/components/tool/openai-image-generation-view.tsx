@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
-import { UIToolInvocation } from '@ai-toolkit/ai';
+import type { UIToolInvocation } from '@ai-toolkit/ai';
+import type { openai } from '@ai-toolkit/openai';
 
 export default function ImageGenerationView({
   invocation,
@@ -16,7 +16,7 @@ export default function ImageGenerationView({
     case 'output-available':
       return (
         <div className="mb-2 bg-gray-900 rounded-xl border border-gray-600 shadow-lg">
-          <img src={`data:image/png;base64,${invocation.output.result}`} />
+          <img alt="Generated output" src={`data:image/png;base64,${invocation.output.result}`} />
         </div>
       );
   }

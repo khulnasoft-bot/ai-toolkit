@@ -1,4 +1,4 @@
-import { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
+import type { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
 import { tool } from '@ai-toolkit/provider-utils';
 import {
   convertArrayToReadableStream,

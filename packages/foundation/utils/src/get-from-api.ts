@@ -1,12 +1,12 @@
 import { APICallError } from '@ai-toolkit/provider';
 import { extractResponseHeaders } from './extract-response-headers';
-import { FetchFunction } from './fetch-function';
+import type { FetchFunction } from './fetch-function';
+import { getRuntimeEnvironmentUserAgent } from './get-runtime-environment-user-agent';
 import { handleFetchError } from './handle-fetch-error';
 import { isAbortError } from './is-abort-error';
-import { ResponseHandler } from './response-handler';
-import { getRuntimeEnvironmentUserAgent } from './get-runtime-environment-user-agent';
-import { withUserAgentSuffix } from './with-user-agent-suffix';
+import type { ResponseHandler } from './response-handler';
 import { VERSION } from './version';
+import { withUserAgentSuffix } from './with-user-agent-suffix';
 
 // use function to allow for mocking in tests:
 const getOriginalFetch = () => globalThis.fetch;

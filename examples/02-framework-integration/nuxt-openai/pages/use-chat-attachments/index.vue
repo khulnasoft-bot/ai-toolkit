@@ -8,7 +8,7 @@ const files = ref<FileList | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 const input = ref('');
 
-const submit = (e: Event) => {
+const _submit = (e: Event) => {
   e.preventDefault();
 
   chat.sendMessage({
@@ -20,7 +20,7 @@ const submit = (e: Event) => {
   fileInputRef.value!.value = '';
 };
 
-const filesWithUrl = computed(() => {
+const _filesWithUrl = computed(() => {
   if (!files.value) return [];
 
   return Array.from(files.value).map(file => ({

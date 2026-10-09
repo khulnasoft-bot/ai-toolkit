@@ -1,8 +1,5 @@
-import type {
-  LanguageModelV4StreamPart,
-  LanguageModelV4Usage,
-} from '@ai-toolkit/provider';
-import { tool, type ToolSet } from '@ai-toolkit/provider-utils';
+import type { LanguageModelV4StreamPart, LanguageModelV4Usage } from '@ai-toolkit/provider';
+import { type ToolSet, tool } from '@ai-toolkit/provider-utils';
 import {
   convertArrayToReadableStream,
   convertReadableStreamToArray,
@@ -11,11 +8,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod/v4';
 import { NoSuchToolError } from '../error/no-such-tool-error';
 import { MockLanguageModelV4 } from '../test/mock-language-model-v4';
+import { now } from '../util/now';
 import type {
   LanguageModelCallEndEvent,
   LanguageModelCallStartEvent,
 } from './language-model-events';
-import { now } from '../util/now';
 import { streamLanguageModelCall } from './stream-language-model-call';
 import type { ToolCallRepairFunction } from './tool-call-repair-function';
 import type { ToolInputRefinement } from './tool-input-refinement';
@@ -576,10 +573,7 @@ describe('streamLanguageModelCall', () => {
     });
 
     it('should measure time to first output from text deltas', async () => {
-      mockNow
-        .mockReturnValueOnce(1000)
-        .mockReturnValueOnce(1250)
-        .mockReturnValueOnce(1600);
+      mockNow.mockReturnValueOnce(1000).mockReturnValueOnce(1250).mockReturnValueOnce(1600);
 
       const result = await streamLanguageModelCallResult({
         streamParts: [
@@ -751,10 +745,7 @@ describe('streamLanguageModelCall', () => {
     });
 
     it('should measure time to first output from reasoning-file parts', async () => {
-      mockNow
-        .mockReturnValueOnce(1000)
-        .mockReturnValueOnce(1250)
-        .mockReturnValueOnce(1600);
+      mockNow.mockReturnValueOnce(1000).mockReturnValueOnce(1250).mockReturnValueOnce(1600);
 
       const result = await streamLanguageModelCallResult({
         streamParts: [
@@ -860,9 +851,7 @@ describe('streamLanguageModelCall', () => {
             type: 'file',
             data: {
               type: 'data',
-              data: new Uint8Array([
-                72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100,
-              ]),
+              data: new Uint8Array([72, 101, 108, 108, 111, 32, 87, 111, 114, 108, 100]),
             }, // "Hello World" as Uint8Array
             mediaType: 'text/plain',
             providerMetadata: {
@@ -943,10 +932,7 @@ describe('streamLanguageModelCall', () => {
     });
 
     it('should measure time to first output from file parts', async () => {
-      mockNow
-        .mockReturnValueOnce(1000)
-        .mockReturnValueOnce(1250)
-        .mockReturnValueOnce(1600);
+      mockNow.mockReturnValueOnce(1000).mockReturnValueOnce(1250).mockReturnValueOnce(1600);
 
       const result = await streamLanguageModelCallResult({
         streamParts: [
@@ -1163,10 +1149,7 @@ describe('streamLanguageModelCall', () => {
         }),
       };
 
-      mockNow
-        .mockReturnValueOnce(1000)
-        .mockReturnValueOnce(1250)
-        .mockReturnValueOnce(1600);
+      mockNow.mockReturnValueOnce(1000).mockReturnValueOnce(1250).mockReturnValueOnce(1600);
 
       const result = await streamLanguageModelCallResult({
         streamParts: [

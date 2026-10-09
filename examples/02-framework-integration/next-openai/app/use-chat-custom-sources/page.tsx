@@ -1,8 +1,8 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import ChatInput from '@/components/chat-input';
 
 export default function Chat() {
   const { error, status, sendMessage, messages, regenerate, stop } = useChat({
@@ -20,8 +20,9 @@ export default function Chat() {
             .filter(part => part.type !== 'source-url')
             .map((part, index) => {
               if (part.type === 'text') {
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
               }
+              return null;
             })}
           {message.parts
             .filter(part => part.type === 'source-url')

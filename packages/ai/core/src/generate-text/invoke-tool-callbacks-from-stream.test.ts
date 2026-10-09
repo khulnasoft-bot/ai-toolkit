@@ -1,21 +1,19 @@
-import { tool, type ModelMessage } from '@ai-toolkit/provider-utils';
+import { type ModelMessage, tool } from '@ai-toolkit/provider-utils';
 import {
   convertArrayToReadableStream,
   convertReadableStreamToArray,
 } from '@ai-toolkit/provider-utils/test';
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import type { LanguageModelStreamPart } from './stream-language-model-call';
 import { invokeToolCallbacksFromStream } from './invoke-tool-callbacks-from-stream';
+import type { LanguageModelStreamPart } from './stream-language-model-call';
 
 describe('invokeToolCallbacksFromStream', () => {
   it('should invoke tool callbacks in order and pass through the stream', async () => {
     const recordedCalls: unknown[] = [];
     const abortController = new AbortController();
     const runtimeContext = { requestId: 'req-1' };
-    const stepInputMessages: Array<ModelMessage> = [
-      { role: 'user', content: 'test-input' },
-    ];
+    const stepInputMessages: Array<ModelMessage> = [{ role: 'user', content: 'test-input' }];
 
     const tools = {
       'test-tool': tool({

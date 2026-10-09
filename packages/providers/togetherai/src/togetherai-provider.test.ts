@@ -3,20 +3,15 @@ import {
   OpenAICompatibleCompletionLanguageModel,
   OpenAICompatibleEmbeddingModel,
 } from '@ai-toolkit/openai-compatible';
-import {
-  EmbeddingModelV3,
-  LanguageModelV3,
-  RerankingModelV3,
-} from '@ai-toolkit/provider';
+import type { EmbeddingModelV3, LanguageModelV3, RerankingModelV3 } from '@ai-toolkit/provider';
 import { loadApiKey } from '@ai-toolkit/provider-utils';
-import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { TogetherAIRerankingModel } from './reranking/togetherai-reranking-model';
 import { TogetherAIImageModel } from './togetherai-image-model';
 import { createTogetherAI } from './togetherai-provider';
 
 // Add type assertion for the mocked class
-const OpenAICompatibleChatLanguageModelMock =
-  OpenAICompatibleChatLanguageModel as unknown as Mock;
+const OpenAICompatibleChatLanguageModelMock = OpenAICompatibleChatLanguageModel as unknown as Mock;
 
 vi.mock('@ai-toolkit/openai-compatible', () => ({
   OpenAICompatibleChatLanguageModel: vi.fn(),
@@ -42,19 +37,19 @@ vi.mock('./reranking/togetherai-reranking-model', () => ({
 }));
 
 describe('TogetherAIProvider', () => {
-  let mockLanguageModel: LanguageModelV3;
-  let mockEmbeddingModel: EmbeddingModelV3;
-  let mockRerankingModel: RerankingModelV3;
+  let _mockLanguageModel: LanguageModelV3;
+  let _mockEmbeddingModel: EmbeddingModelV3;
+  let _mockRerankingModel: RerankingModelV3;
 
   beforeEach(() => {
     // Mock implementations of models
-    mockLanguageModel = {
+    _mockLanguageModel = {
       // Add any required methods for LanguageModelV3
     } as LanguageModelV3;
-    mockEmbeddingModel = {
+    _mockEmbeddingModel = {
       // Add any required methods for EmbeddingModelV3
     } as EmbeddingModelV3;
-    mockRerankingModel = {
+    _mockRerankingModel = {
       // Add any required methods for RerankingModelV3
     } as RerankingModelV3;
 
@@ -65,11 +60,10 @@ describe('TogetherAIProvider', () => {
   describe('createTogetherAI', () => {
     it('should create a TogetherAIProvider instance with default options', () => {
       const provider = createTogetherAI();
-      const model = provider('model-id');
+      const _model = provider('model-id');
 
       // Use the mocked version
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 
@@ -87,10 +81,9 @@ describe('TogetherAIProvider', () => {
         headers: { 'Custom-Header': 'value' },
       };
       const provider = createTogetherAI(options);
-      const model = provider('model-id');
+      const _model = provider('model-id');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 

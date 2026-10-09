@@ -1,17 +1,15 @@
 'use client';
 
-import { Response } from '@/components/ai-elements/response';
-import type { OpenaiResponsesTextProviderMetadata } from '@ai-toolkit/openai';
+import type { TextUIPart } from '@ai-toolkit/ai';
 import type { AzureResponsesTextProviderMetadata } from '@ai-toolkit/azure';
-import { TextUIPart } from '@ai-toolkit/ai';
+import type { OpenaiResponsesTextProviderMetadata } from '@ai-toolkit/openai';
+import { Response } from '@/components/ai-elements/response';
 
 type ResponsesOutputTextProviderMetadata =
   | OpenaiResponsesTextProviderMetadata
   | AzureResponsesTextProviderMetadata;
 
-function extractProviderAndAnnotations(
-  providerMetadata: ResponsesOutputTextProviderMetadata,
-) {
+function extractProviderAndAnnotations(providerMetadata: ResponsesOutputTextProviderMetadata) {
   if ('openai' in providerMetadata) {
     return {
       provider: 'openai',
@@ -34,9 +32,7 @@ function extractProviderAndAnnotations(
 export function ResponsesText({ part }: { part: TextUIPart }) {
   if (!part.providerMetadata) return <Response>{part.text}</Response>;
 
-  const providerMetadata = part.providerMetadata as
-    | ResponsesOutputTextProviderMetadata
-    | undefined;
+  const providerMetadata = part.providerMetadata as ResponsesOutputTextProviderMetadata | undefined;
 
   if (!providerMetadata) return <Response>{part.text}</Response>;
 

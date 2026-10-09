@@ -1,15 +1,15 @@
 import {
-  FetchFunction,
-  Resolvable,
+  type FetchFunction,
+  getRuntimeEnvironmentUserAgent,
   normalizeHeaders,
+  type Resolvable,
   resolve,
   withUserAgentSuffix,
-  getRuntimeEnvironmentUserAgent,
 } from '@ai-toolkit/provider-utils';
-import { UIMessageChunk } from '../ui-message-stream/ui-message-chunks';
-import { ChatTransport } from './chat-transport';
-import { UIMessage } from './ui-messages';
+import type { UIMessageChunk } from '../ui-message-stream/ui-message-chunks';
 import { VERSION } from '../version';
+import type { ChatTransport } from './chat-transport';
+import type { UIMessage } from './ui-messages';
 
 export type PrepareSendMessagesRequest<UI_MESSAGE extends UIMessage> = (
   options: {
@@ -215,9 +215,7 @@ export abstract class HttpChatTransport<UI_MESSAGE extends UIMessage>
     });
 
     if (!response.ok) {
-      throw new Error(
-        (await response.text()) ?? 'Failed to fetch the chat response.',
-      );
+      throw new Error((await response.text()) ?? 'Failed to fetch the chat response.');
     }
 
     if (!response.body) {
@@ -274,9 +272,7 @@ export abstract class HttpChatTransport<UI_MESSAGE extends UIMessage>
     }
 
     if (!response.ok) {
-      throw new Error(
-        (await response.text()) ?? 'Failed to fetch the chat response.',
-      );
+      throw new Error((await response.text()) ?? 'Failed to fetch the chat response.');
     }
 
     if (!response.body) {

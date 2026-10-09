@@ -1,6 +1,6 @@
 import { NoSuchProviderReferenceError } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { resolveProviderReference } from './resolve-provider-reference';
-import { describe, it, expect } from 'vitest';
 
 describe('resolveProviderReference', () => {
   it('should return the provider-specific identifier when the provider key exists', () => {
@@ -46,9 +46,7 @@ describe('resolveProviderReference', () => {
     } catch (error) {
       expect(NoSuchProviderReferenceError.isInstance(error)).toBe(true);
       expect((error as NoSuchProviderReferenceError).provider).toBe('openai');
-      expect((error as NoSuchProviderReferenceError).reference).toStrictEqual(
-        {},
-      );
+      expect((error as NoSuchProviderReferenceError).reference).toStrictEqual({});
     }
   });
 

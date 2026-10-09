@@ -15,6 +15,7 @@ export default function Chat() {
             if (part.type === 'text') {
               return part.text;
             }
+            return null;
           })}
         </div>
       ))}

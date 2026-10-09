@@ -1,11 +1,7 @@
+import { createUIMessageStream, pipeUIMessageStreamToResponse, streamText } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import {
-  createUIMessageStream,
-  pipeUIMessageStreamToResponse,
-  streamText,
-} from '@ai-toolkit/ai';
 import 'dotenv/config';
-import { createServer } from 'http';
+import { createServer } from 'node:http';
 
 createServer(async (req, res) => {
   switch (req.url) {

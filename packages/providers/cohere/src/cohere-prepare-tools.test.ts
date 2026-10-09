@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { prepareTools } from './cohere-prepare-tools';
-import { describe, it, expect } from 'vitest';
 
 it('should return undefined tools when no tools are provided', () => {
   const result = prepareTools({

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useChat } from 'ai/react';
 
-function ProcessMessages() {
+function _ProcessMessages() {
   const { messages } = useChat();
 
   // Check for tool-invocation type
@@ -16,9 +16,9 @@ function ProcessMessages() {
   });
 
   // Check for tool-invocation with == operator
-  const results = message.parts.filter(part => {
+  const _results = message.parts.filter(part => {
     /* FIXME(@ai-toolkit-upgrade-v5): The generic 'tool-invocation' type has been replaced with typed naming: 'tool-${toolName}'. Update to check for specific tool types. See migration guide: https://studio.khulnasoft.com/docs/migration-guides/migration-guide-5-0#tool-part-type-changes-uimessage */
-    if (part.type == 'tool-invocation') {
+    if (part.type === 'tool-invocation') {
       return true;
     }
   });
@@ -40,7 +40,7 @@ function ProcessMessages() {
   });
 
   // Access toolInvocation.toolName directly
-  const toolNames = message.parts.map(part => {
+  const _toolNames = message.parts.map(part => {
     /* FIXME(@ai-toolkit-upgrade-v5): The generic 'tool-invocation' type has been replaced with typed naming: 'tool-${toolName}'. Update to check for specific tool types. See migration guide: https://studio.khulnasoft.com/docs/migration-guides/migration-guide-5-0#tool-part-type-changes-uimessage */
     if (part.type === 'tool-invocation') {
       /* FIXME(@ai-toolkit-upgrade-v5): The part.toolInvocation.toolName property has been removed. Tool parts now use typed naming: part.type === 'tool-${toolName}'. See migration guide: https://studio.khulnasoft.com/docs/migration-guides/migration-guide-5-0#tool-part-type-changes-uimessage */

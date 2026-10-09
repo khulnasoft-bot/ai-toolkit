@@ -1,11 +1,11 @@
+import { generateText } from '@ai-toolkit/ai';
 import {
-  openai,
   type OpenaiResponsesSourceDocumentProviderMetadata,
   type OpenaiResponsesTextProviderMetadata,
+  openai,
 } from '@ai-toolkit/openai';
-import { generateText } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
 import { downloadOpenaiContainerFile } from '../lib/download-openai-container-file';
+import { run } from '../lib/run';
 
 run(async () => {
   // Basic text generation
@@ -57,9 +57,6 @@ run(async () => {
     }
   }
   for await (const containerFile of containerfileList) {
-    await downloadOpenaiContainerFile(
-      containerFile.containerId,
-      containerFile.fileId,
-    );
+    await downloadOpenaiContainerFile(containerFile.containerId, containerFile.fileId);
   }
 });

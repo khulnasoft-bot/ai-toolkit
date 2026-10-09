@@ -1,8 +1,8 @@
-import {
+import type {
   ImageModelV2,
+  ImageModelV2ProviderMetadata,
   ImageModelV3,
   ImageModelV3ProviderMetadata,
-  ImageModelV2ProviderMetadata,
 } from '@ai-toolkit/provider';
 
 /**

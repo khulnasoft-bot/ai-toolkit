@@ -1,7 +1,7 @@
 // @ts-nocheck
-import { generateText } from 'ai';
+
 import { createCohere } from '@ai-toolkit/cohere';
-import { nanoid } from 'ai';
+import { generateText, nanoid } from 'ai';
 import 'dotenv/config';
 
 async function main() {

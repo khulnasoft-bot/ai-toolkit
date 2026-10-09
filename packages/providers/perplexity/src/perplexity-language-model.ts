@@ -1,4 +1,4 @@
-import {
+import type {
   LanguageModelV3,
   LanguageModelV3CallOptions,
   LanguageModelV3Content,
@@ -9,19 +9,19 @@ import {
   SharedV3Warning,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
-  ParseResult,
   combineHeaders,
   createEventSourceResponseHandler,
   createJsonErrorResponseHandler,
   createJsonResponseHandler,
+  type FetchFunction,
+  type ParseResult,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { convertPerplexityUsage } from './convert-perplexity-usage';
 import { convertToPerplexityMessages } from './convert-to-perplexity-messages';
 import { mapPerplexityFinishReason } from './map-perplexity-finish-reason';
-import { PerplexityLanguageModelId } from './perplexity-language-model-options';
+import type { PerplexityLanguageModelId } from './perplexity-language-model-options';
 
 type PerplexityChatConfig = {
   baseURL: string;
@@ -38,10 +38,7 @@ export class PerplexityLanguageModel implements LanguageModelV3 {
 
   private readonly config: PerplexityChatConfig;
 
-  constructor(
-    modelId: PerplexityLanguageModelId,
-    config: PerplexityChatConfig,
-  ) {
+  constructor(modelId: PerplexityLanguageModelId, config: PerplexityChatConfig) {
     this.modelId = modelId;
     this.config = config;
   }
@@ -109,9 +106,7 @@ export class PerplexityLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const { args: body, warnings } = this.getArgs(options);
 
     const {
@@ -126,9 +121,7 @@ export class PerplexityLanguageModel implements LanguageModelV3 {
         errorSchema: perplexityErrorSchema,
         errorToMessage,
       }),
-      successfulResponseHandler: createJsonResponseHandler(
-        perplexityResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(perplexityResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -186,9 +179,7 @@ export class PerplexityLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = this.getArgs(options);
 
     const body = { ...args, stream: true };
@@ -201,9 +192,7 @@ export class PerplexityLanguageModel implements LanguageModelV3 {
         errorSchema: perplexityErrorSchema,
         errorToMessage,
       }),
-      successfulResponseHandler: createEventSourceResponseHandler(
-        perplexityChunkSchema,
-      ),
+      successfulResponseHandler: createEventSourceResponseHandler(perplexityChunkSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -218,7 +207,7 @@ export class PerplexityLanguageModel implements LanguageModelV3 {
           completion_tokens: number | undefined;
           reasoning_tokens?: number | null | undefined;
         }
-      | undefined = undefined;
+      | undefined;
 
     const providerMetadata: {
       perplexity: {

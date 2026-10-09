@@ -1,9 +1,9 @@
 import {
-  Embedding,
-  EmbeddingModel,
+  cosineSimilarity,
+  type Embedding,
+  type EmbeddingModel,
   embed,
   embedMany,
-  cosineSimilarity,
 } from '@ai-toolkit/ai';
 
 export interface Route<NAME extends string> {
@@ -97,5 +97,4 @@ export class SemanticRouter<ROUTES extends Array<Route<string>>> {
   }
 }
 
-type RouteNames<ROUTES> =
-  ROUTES extends Array<Route<infer NAME>> ? NAME : never;
+type RouteNames<ROUTES> = ROUTES extends Array<Route<infer NAME>> ? NAME : never;

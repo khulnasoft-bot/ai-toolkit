@@ -29,7 +29,7 @@ export function createSandboxManager(): SandboxManager {
   const sandboxes = new Map<string, Sandbox>();
 
   return {
-    createSandbox: config => {
+    createSandbox: _config => {
       const sandbox: Sandbox = {
         execute: async () => ({
           sandboxId: 'sbx_0',

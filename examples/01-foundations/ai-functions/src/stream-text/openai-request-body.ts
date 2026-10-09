@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -9,7 +9,7 @@ run(async () => {
   });
 
   // consume stream
-  for await (const textPart of result.textStream) {
+  for await (const _textPart of result.textStream) {
   }
 
   console.log('REQUEST BODY');

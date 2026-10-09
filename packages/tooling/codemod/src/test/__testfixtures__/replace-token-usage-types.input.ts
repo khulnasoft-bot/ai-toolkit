@@ -1,14 +1,14 @@
 // @ts-nocheck
-import { TokenUsage, CompletionTokenUsage, EmbeddingTokenUsage } from 'ai';
+import type { CompletionTokenUsage, EmbeddingTokenUsage, TokenUsage } from 'ai';
 
-function recordUsage(usage: TokenUsage) {
+function _recordUsage(usage: TokenUsage) {
   console.log(usage);
 }
 
-function processEmbedding(usage: EmbeddingTokenUsage) {
+function _processEmbedding(usage: EmbeddingTokenUsage) {
   console.log(usage);
 }
 
-const handler = (data: CompletionTokenUsage) => {
+const _handler = (data: CompletionTokenUsage) => {
   console.log(data);
 };

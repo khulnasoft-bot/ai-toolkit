@@ -1,5 +1,5 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { generateText, Output } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
@@ -11,9 +11,7 @@ run(async () => {
       schema: z.object({
         recipe: z.object({
           name: z.string(),
-          ingredients: z.array(
-            z.object({ name: z.string(), amount: z.string() }),
-          ),
+          ingredients: z.array(z.object({ name: z.string(), amount: z.string() })),
           steps: z.array(z.string()),
         }),
       }),

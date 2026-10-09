@@ -1,6 +1,6 @@
-import { GeneratedAudioFile } from '@ai-toolkit/ai';
 import fs from 'node:fs';
 import path from 'node:path';
+import type { GeneratedAudioFile } from '@ai-toolkit/ai';
 
 const OUTPUT_DIR = 'output';
 const audioFormatMap = {

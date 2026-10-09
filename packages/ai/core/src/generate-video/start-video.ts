@@ -5,23 +5,17 @@ import type {
   SharedV4Warning,
 } from '@ai-toolkit/provider';
 import {
-  generateId,
-  withUserAgentSuffix,
   type DataContent,
+  generateId,
   type ProviderOptions,
+  withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { resolveVideoModel } from '../model/resolve-model';
-import type {
-  VideoModel,
-  VideoModelProviderMetadata,
-} from '../types/video-model';
+import type { VideoModel, VideoModelProviderMetadata } from '../types/video-model';
 import type { VideoModelResponseMetadata } from '../types/video-model-response-metadata';
 import { prepareRetries } from '../util/prepare-retries';
 import { VERSION } from '../version';
-import {
-  normalizeVideoCallInputs,
-  type GenerateVideoPrompt,
-} from './generate-video';
+import { type GenerateVideoPrompt, normalizeVideoCallInputs } from './generate-video';
 
 /**
  * The result of an `experimental_startVideo` call.
@@ -119,9 +113,7 @@ export async function experimental_startVideo({
     image: DataContent;
     frameType: Experimental_VideoModelV4FrameType;
   }>;
-  inputReferences?: Array<
-    DataContent | { data: DataContent; mediaType?: string }
-  >;
+  inputReferences?: Array<DataContent | { data: DataContent; mediaType?: string }>;
   generateAudio?: boolean;
   providerOptions?: ProviderOptions;
   maxRetries?: number;
@@ -139,9 +131,7 @@ export async function experimental_startVideo({
   }
 
   if (!Number.isInteger(n) || n < 1) {
-    throw new Error(
-      `Invalid n: expected a positive integer, received ${JSON.stringify(n)}.`,
-    );
+    throw new Error(`Invalid n: expected a positive integer, received ${JSON.stringify(n)}.`);
   }
 
   // A start yields one operation covering all n videos: refuse to silently
@@ -158,13 +148,8 @@ export async function experimental_startVideo({
     );
   }
 
-  const {
-    prompt,
-    resolvedImage,
-    normalizedFrameImages,
-    effectiveInputReferences,
-    warnings,
-  } = normalizeVideoCallInputs({ promptArg, frameImages, inputReferences });
+  const { prompt, resolvedImage, normalizedFrameImages, effectiveInputReferences, warnings } =
+    normalizeVideoCallInputs({ promptArg, frameImages, inputReferences });
 
   const { retry } = prepareRetries({
     maxRetries: maxRetriesArg,
@@ -174,8 +159,7 @@ export async function experimental_startVideo({
   // `doStart` is billable: mint one idempotency token per logical start,
   // outside the retry closure; a caller-supplied key wins.
   const callerIdempotencyKey = Object.entries(headers ?? {}).find(
-    ([key, value]) =>
-      key.toLowerCase() === 'idempotency-key' && value !== undefined,
+    ([key, value]) => key.toLowerCase() === 'idempotency-key' && value !== undefined,
   );
 
   const callOptions: Experimental_VideoModelV4CallOptions & {
@@ -195,15 +179,13 @@ export async function experimental_startVideo({
     providerOptions: providerOptions ?? {},
     headers: {
       ...withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`),
-      ...(callerIdempotencyKey
-        ? {}
-        : { 'idempotency-key': `aisdk_vid_${generateId()}` }),
+      ...(callerIdempotencyKey ? {} : { 'idempotency-key': `aisdk_vid_${generateId()}` }),
     },
     abortSignal,
     webhookUrl,
   };
 
-  const startResult = await retry(() => model.doStart!(callOptions));
+  const startResult = await retry(() => model.doStart?.(callOptions));
 
   return {
     operation: startResult.operation,

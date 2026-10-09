@@ -1,3 +1,9 @@
+import {
+  createProviderRegistry,
+  customProvider,
+  defaultSettingsMiddleware,
+  wrapLanguageModel,
+} from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { elevenlabs } from '@ai-toolkit/elevenlabs';
 import { fal } from '@ai-toolkit/fal';
@@ -7,12 +13,6 @@ import { mistral } from '@ai-toolkit/mistral';
 import { openai } from '@ai-toolkit/openai';
 import { replicate } from '@ai-toolkit/replicate';
 import { xai } from '@ai-toolkit/xai';
-import {
-  createProviderRegistry,
-  customProvider,
-  defaultSettingsMiddleware,
-  wrapLanguageModel,
-} from '@ai-toolkit/ai';
 import 'dotenv/config';
 
 // custom provider with alias names:

@@ -1,7 +1,7 @@
-import { lmnt } from '@ai-toolkit/lmnt';
 import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
-import { saveAudioFile } from '../lib/save-audio';
+import { lmnt } from '@ai-toolkit/lmnt';
 import { run } from '../lib/run';
+import { saveAudioFile } from '../lib/save-audio';
 
 run(async () => {
   const result = await generateSpeech({

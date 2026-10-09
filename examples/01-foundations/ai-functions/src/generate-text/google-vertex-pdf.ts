@@ -1,6 +1,6 @@
-import { vertex } from '@ai-toolkit/google-vertex';
-import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { vertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 
 run(async () => {

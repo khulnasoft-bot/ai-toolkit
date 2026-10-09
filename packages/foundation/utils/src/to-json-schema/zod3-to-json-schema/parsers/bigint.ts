@@ -1,13 +1,13 @@
-import { ZodBigIntDef } from 'zod/v3';
+import type { ZodBigIntDef } from 'zod/v3';
 
 export type JsonSchema7BigintType = {
   type: 'integer';
   format: 'int64';
-  minimum?: BigInt;
-  exclusiveMinimum?: BigInt;
-  maximum?: BigInt;
-  exclusiveMaximum?: BigInt;
-  multipleOf?: BigInt;
+  minimum?: bigint;
+  exclusiveMinimum?: bigint;
+  maximum?: bigint;
+  exclusiveMaximum?: bigint;
+  multipleOf?: bigint;
 };
 
 export function parseBigintDef(def: ZodBigIntDef): JsonSchema7BigintType {

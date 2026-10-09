@@ -1,32 +1,32 @@
+import type { Arrayable } from '@ai-toolkit/provider-utils';
 import {
   executeTool,
-  InferToolSetContext,
-  ModelMessage,
-  Experimental_SandboxSession as SandboxSession,
+  type InferToolSetContext,
+  type ModelMessage,
+  type Experimental_SandboxSession as SandboxSession,
 } from '@ai-toolkit/provider-utils';
-import type { Arrayable } from '@ai-toolkit/provider-utils';
-import { getToolTimeoutMs } from '../prompt/request-options';
+import type { Tracer } from '@opentelemetry/api';
 import type { TimeoutConfiguration } from '../prompt/request-options';
+import { getToolTimeoutMs } from '../prompt/request-options';
 import { assembleOperationName } from '../telemetry/assemble-operation-name';
 import { recordErrorOnSpan, recordSpan } from '../telemetry/record-span';
 import { selectTelemetryAttributes } from '../telemetry/select-telemetry-attributes';
-import { TelemetrySettings } from '../telemetry/telemetry-settings';
 import type { TelemetryDispatcher } from '../telemetry/telemetry';
-import { Tracer } from '@opentelemetry/api';
+import type { TelemetrySettings } from '../telemetry/telemetry-settings';
 import { mergeAbortSignals } from '../util/merge-abort-signals';
 import { notify } from '../util/notify';
 import { now } from '../util/now';
-import { TypedToolCall } from './tool-call';
-import {
+import type { TypedToolCall } from './tool-call';
+import type { TypedToolError } from './tool-error';
+import type {
   OnToolExecutionEndCallback,
   OnToolExecutionStartCallback,
   ToolExecutionEndEvent,
   ToolExecutionStartEvent,
 } from './tool-execution-events';
-import { ToolOutput } from './tool-output';
-import { ToolSet } from './tool-set';
-import { TypedToolResult } from './tool-result';
-import { TypedToolError } from './tool-error';
+import type { ToolOutput } from './tool-output';
+import type { TypedToolResult } from './tool-result';
+import type { ToolSet } from './tool-set';
 import { validateToolContext } from './validate-tool-context';
 
 export async function executeToolCall<TOOLS extends ToolSet>({
@@ -68,12 +68,8 @@ export async function executeToolCall<TOOLS extends ToolSet>({
       execute: () => PromiseLike<T>;
     },
   ) => Promise<T>;
-  runInTracingChannelSpan?: NonNullable<
-    TelemetryDispatcher['runInTracingChannelSpan']
-  >;
-}): Promise<
-  { output: ToolOutput<TOOLS>; toolExecutionMs: number } | undefined
-> {
+  runInTracingChannelSpan?: NonNullable<TelemetryDispatcher['runInTracingChannelSpan']>;
+}): Promise<{ output: ToolOutput<TOOLS>; toolExecutionMs: number } | undefined> {
   const { toolName, toolCallId, input } = toolCall;
   const tool = tools?.[toolName];
 
@@ -86,9 +82,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
   // producing a tool-error output.
   const toolContext = await validateToolContext({
     toolName,
-    context:
-      toolsContext?.[toolName as keyof InferToolSetContext<TOOLS>] ??
-      experimental_context,
+    context: toolsContext?.[toolName as keyof InferToolSetContext<TOOLS>] ?? experimental_context,
     contextSchema: tool.contextSchema,
   });
 
@@ -156,9 +150,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         ...(toolCall.providerMetadata != null
           ? { providerMetadata: toolCall.providerMetadata }
           : {}),
-        ...(toolCall.toolMetadata != null
-          ? { toolMetadata: toolCall.toolMetadata }
-          : {}),
+        ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
       } as TypedToolResult<TOOLS>;
     } catch (error) {
       output = {
@@ -171,9 +163,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         ...(toolCall.providerMetadata != null
           ? { providerMetadata: toolCall.providerMetadata }
           : {}),
-        ...(toolCall.toolMetadata != null
-          ? { toolMetadata: toolCall.toolMetadata }
-          : {}),
+        ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
       } as TypedToolError<TOOLS>;
     }
 
@@ -254,7 +244,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
                 },
               }),
             );
-          } catch (ignored) {
+          } catch (_ignored) {
             // JSON stringify might fail if the result is not serializable,
             // in which case we just ignore it. In the future we might want to
             // add an optional serialize method to the tool interface and warn

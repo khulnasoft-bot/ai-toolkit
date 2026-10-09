@@ -1,10 +1,10 @@
 import {
-  SharedV3Warning,
-  LanguageModelV3Prompt,
+  type LanguageModelV3Prompt,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 import { convertToBase64 } from '@ai-toolkit/provider-utils';
-import { XaiChatPrompt } from './xai-chat-prompt';
+import type { XaiChatPrompt } from './xai-chat-prompt';
 
 export function convertToXaiChatMessages(prompt: LanguageModelV3Prompt): {
   messages: XaiChatPrompt;
@@ -35,10 +35,7 @@ export function convertToXaiChatMessages(prompt: LanguageModelV3Prompt): {
               }
               case 'file': {
                 if (part.mediaType.startsWith('image/')) {
-                  const mediaType =
-                    part.mediaType === 'image/*'
-                      ? 'image/jpeg'
-                      : part.mediaType;
+                  const mediaType = part.mediaType === 'image/*' ? 'image/jpeg' : part.mediaType;
 
                   return {
                     type: 'image_url',

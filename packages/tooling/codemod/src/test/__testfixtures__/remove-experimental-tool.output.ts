@@ -1,11 +1,11 @@
 // @ts-nocheck
-import { CoreTool } from 'ai';
+import type { CoreTool } from 'ai';
 
 interface Config {
   tool: CoreTool;
 }
 
-const myTool: CoreTool = {
+const _myTool: CoreTool = {
   description: 'test',
   parameters: {},
 };

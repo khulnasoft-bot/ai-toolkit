@@ -1,5 +1,5 @@
-import { createOpenAI } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
+import { createOpenAI } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 const openai = createOpenAI({

@@ -5,7 +5,7 @@ const methodRenames: Record<string, string> = {
   textEmbedding: 'embedding',
 };
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Find and replace member expression calls like provider.textEmbeddingModel(...)
@@ -21,10 +21,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     })
     .forEach(path => {
       const callee = path.node.callee;
-      if (
-        callee.type === 'MemberExpression' &&
-        callee.property.type === 'Identifier'
-      ) {
+      if (callee.type === 'MemberExpression' && callee.property.type === 'Identifier') {
         const oldName = callee.property.name;
         const newName = methodRenames[oldName];
         if (newName) {

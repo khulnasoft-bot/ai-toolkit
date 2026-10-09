@@ -1,7 +1,7 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 
 export default function TestXai() {
@@ -20,6 +20,7 @@ export default function TestXai() {
             if (part.type === 'text') {
               return part.text;
             }
+            return null;
           })}
         </div>
       ))}

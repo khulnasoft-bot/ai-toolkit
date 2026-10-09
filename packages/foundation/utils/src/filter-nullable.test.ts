@@ -8,8 +8,10 @@ describe('filterNullable', () => {
   });
 
   it('preserves other falsy values', () => {
-    expect(
-      filterNullable<number | boolean | string>(0, false, '', null, undefined),
-    ).toEqual([0, false, '']);
+    expect(filterNullable<number | boolean | string>(0, false, '', null, undefined)).toEqual([
+      0,
+      false,
+      '',
+    ]);
   });
 });

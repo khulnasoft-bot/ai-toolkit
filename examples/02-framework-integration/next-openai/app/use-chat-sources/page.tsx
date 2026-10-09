@@ -1,15 +1,14 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { SourcesChatMessage } from '@/app/api/use-chat-sources/route';
+import { useChat } from '@ai-toolkit/react';
+import type { SourcesChatMessage } from '@/app/api/use-chat-sources/route';
+import ChatInput from '@/components/chat-input';
 
 export default function Chat() {
-  const { error, status, sendMessage, messages, regenerate, stop } =
-    useChat<SourcesChatMessage>({
-      transport: new DefaultChatTransport({ api: '/api/use-chat-sources' }),
-    });
+  const { error, status, sendMessage, messages, regenerate, stop } = useChat<SourcesChatMessage>({
+    transport: new DefaultChatTransport({ api: '/api/use-chat-sources' }),
+  });
 
   console.log(messages);
 
@@ -18,19 +17,16 @@ export default function Chat() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             if (part.type === 'text') {
-              return <div key={index}>{part.text}</div>;
+              return <div key={`text-${part.text}`}>{part.text}</div>;
             }
 
             if (part.type === 'tool-web_search') {
-              if (
-                part.state === 'input-available' ||
-                part.state === 'input-streaming'
-              ) {
+              if (part.state === 'input-available' || part.state === 'input-streaming') {
                 return (
                   <pre
-                    key={index}
+                    key={`${part.type}-${part.toolCallId}`}
                     className="overflow-auto p-2 text-sm bg-gray-100 rounded"
                   >
                     {JSON.stringify(part.input, null, 2)}
@@ -40,7 +36,7 @@ export default function Chat() {
               if (part.state === 'output-available') {
                 return (
                   <pre
-                    key={index}
+                    key={`${part.type}-${part.toolCallId}`}
                     className="overflow-auto p-2 text-sm bg-gray-100 rounded"
                   >
                     {JSON.stringify(part.input, null, 2)}
@@ -52,7 +48,7 @@ export default function Chat() {
 
             if (part.type === 'source-url') {
               return (
-                <span key={index}>
+                <span key={part.url}>
                   [
                   <a
                     href={part.url}
@@ -65,6 +61,8 @@ export default function Chat() {
                 </span>
               );
             }
+
+            return null;
           })}
         </div>
       ))}

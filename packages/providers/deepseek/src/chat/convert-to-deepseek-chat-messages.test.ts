@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertToDeepSeekChatMessages } from './convert-to-deepseek-chat-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('convertToDeepSeekChatMessages', () => {
   describe('user messages', () => {

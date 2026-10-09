@@ -1,5 +1,5 @@
-import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
 import { streamText } from '@ai-toolkit/ai';
+import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -10,9 +10,7 @@ run(async () => {
       Authorization: `Bearer ${process.env.TOGETHER_AI_API_KEY}`,
     },
   });
-  const model = togetherai.chatModel(
-    'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
-  );
+  const model = togetherai.chatModel('meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo');
   const result = streamText({
     model,
     prompt:

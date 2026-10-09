@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { measureMemory, resetPeak, getPeakHeap } from '../src/memory-tracker';
+import { describe, expect, it } from 'vitest';
+import { getPeakHeap, measureMemory, resetPeak } from '../src/memory-tracker';
 
 describe('measureMemory', () => {
   it('measures heap delta for a simple operation', async () => {
@@ -36,7 +36,7 @@ describe('measureMemory', () => {
       const typed = error as Error & { metrics?: Record<string, number> };
       expect(typed.message).toContain('test error');
       expect(typed.metrics).toBeDefined();
-      expect(typeof typed.metrics!.heapDelta).toBe('number');
+      expect(typeof typed.metrics?.heapDelta).toBe('number');
     }
   });
 

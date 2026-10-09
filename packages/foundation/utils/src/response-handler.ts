@@ -1,9 +1,8 @@
 import { APICallError, EmptyResponseBodyError } from '@ai-toolkit/provider';
-import { ZodType } from 'zod/v4';
 import { extractResponseHeaders } from './extract-response-headers';
-import { parseJSON, ParseResult, safeParseJSON } from './parse-json';
+import { type ParseResult, parseJSON, safeParseJSON } from './parse-json';
 import { parseJsonEventStream } from './parse-json-event-stream';
-import { FlexibleSchema } from './schema';
+import type { FlexibleSchema } from './schema';
 
 export type ResponseHandler<RETURN_TYPE> = (options: {
   url: string;
@@ -65,7 +64,7 @@ export const createJsonErrorResponseHandler =
           isRetryable: isRetryable?.(response, parsedError),
         }),
       };
-    } catch (parseError) {
+    } catch (_parseError) {
       return {
         responseHeaders,
         value: new APICallError({
@@ -82,9 +81,7 @@ export const createJsonErrorResponseHandler =
   };
 
 export const createEventSourceResponseHandler =
-  <T>(
-    chunkSchema: FlexibleSchema<T>,
-  ): ResponseHandler<ReadableStream<ParseResult<T>>> =>
+  <T>(chunkSchema: FlexibleSchema<T>): ResponseHandler<ReadableStream<ParseResult<T>>> =>
   async ({ response }: { response: Response }) => {
     const responseHeaders = extractResponseHeaders(response);
 

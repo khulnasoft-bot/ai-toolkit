@@ -1,13 +1,13 @@
-import {
+import type {
   ModelMessage,
   ToolApprovalRequest,
   ToolApprovalResponse,
 } from '@ai-toolkit/provider-utils';
 import { InvalidToolApprovalError } from '../error/invalid-tool-approval-error';
 import { ToolCallNotFoundForApprovalError } from '../error/tool-call-not-found-for-approval-error';
-import { TypedToolCall } from './tool-call';
-import { TypedToolResult } from './tool-result';
-import { ToolSet } from './tool-set';
+import type { TypedToolCall } from './tool-call';
+import type { TypedToolResult } from './tool-result';
+import type { ToolSet } from './tool-set';
 
 export type CollectedToolApprovals<TOOLS extends ToolSet> = {
   approvalRequest: ToolApprovalRequest;
@@ -29,7 +29,7 @@ export function collectToolApprovals<TOOLS extends ToolSet>({
 } {
   const lastMessage = messages.at(-1);
 
-  if (lastMessage?.role != 'tool') {
+  if (lastMessage?.role !== 'tool') {
     return {
       approvedToolApprovals: [],
       deniedToolApprovals: [],
@@ -50,8 +50,7 @@ export function collectToolApprovals<TOOLS extends ToolSet>({
   }
 
   // gather approval responses and prepare lookup
-  const toolApprovalRequestsByApprovalId: Record<string, ToolApprovalRequest> =
-    {};
+  const toolApprovalRequestsByApprovalId: Record<string, ToolApprovalRequest> = {};
   for (const message of messages) {
     if (message.role === 'assistant' && typeof message.content !== 'string') {
       const content = message.content;
@@ -78,8 +77,7 @@ export function collectToolApprovals<TOOLS extends ToolSet>({
     part => part.type === 'tool-approval-response',
   );
   for (const approvalResponse of approvalResponses) {
-    const approvalRequest =
-      toolApprovalRequestsByApprovalId[approvalResponse.approvalId];
+    const approvalRequest = toolApprovalRequestsByApprovalId[approvalResponse.approvalId];
 
     if (approvalRequest == null) {
       throw new InvalidToolApprovalError({

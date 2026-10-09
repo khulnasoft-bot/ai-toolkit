@@ -1,8 +1,8 @@
+import { generateImage } from '@ai-toolkit/ai';
 import {
-  BlackForestLabsImageProviderOptions,
+  type BlackForestLabsImageProviderOptions,
   blackForestLabs,
 } from '@ai-toolkit/black-forest-labs';
-import { generateImage } from '@ai-toolkit/ai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

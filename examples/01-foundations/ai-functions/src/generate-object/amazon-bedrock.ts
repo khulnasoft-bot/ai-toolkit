@@ -1,5 +1,5 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { generateObject } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

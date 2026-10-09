@@ -16,8 +16,8 @@ import {
 import { z } from 'zod/v4';
 import type { ByteDanceConfig } from './bytedance-config';
 import {
-  byteDanceImageModelOptionsSchema,
   type ByteDanceImageModelOptions,
+  byteDanceImageModelOptionsSchema,
 } from './bytedance-image-model-options';
 import type { ByteDanceImageModelId } from './bytedance-image-settings';
 
@@ -59,9 +59,7 @@ export class ByteDanceImageModel implements ImageModelV4 {
     abortSignal,
     files,
     mask,
-  }: ImageModelV4CallOptions): Promise<
-    Awaited<ReturnType<ImageModelV4['doGenerate']>>
-  > {
+  }: ImageModelV4CallOptions): Promise<Awaited<ReturnType<ImageModelV4['doGenerate']>>> {
     const warnings: Array<SharedV4Warning> = [];
 
     if (aspectRatio != null) {
@@ -127,8 +125,7 @@ export class ByteDanceImageModel implements ImageModelV4 {
         body.size = byteDanceOptions.size;
       }
       if (byteDanceOptions.sequentialImageGeneration != null) {
-        body.sequential_image_generation =
-          byteDanceOptions.sequentialImageGeneration;
+        body.sequential_image_generation = byteDanceOptions.sequentialImageGeneration;
       }
       if (byteDanceOptions.maxImages != null) {
         body.sequential_image_generation_options = {
@@ -154,9 +151,7 @@ export class ByteDanceImageModel implements ImageModelV4 {
       headers: combineHeaders(await resolve(this.config.headers), headers),
       body,
       failedResponseHandler: byteDanceFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        byteDanceImageResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(byteDanceImageResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });
@@ -208,6 +203,5 @@ const byteDanceErrorSchema = z.object({
 
 const byteDanceFailedResponseHandler = createJsonErrorResponseHandler({
   errorSchema: byteDanceErrorSchema,
-  errorToMessage: data =>
-    data.error?.message ?? data.message ?? 'Unknown error',
+  errorToMessage: data => data.error?.message ?? data.message ?? 'Unknown error',
 });

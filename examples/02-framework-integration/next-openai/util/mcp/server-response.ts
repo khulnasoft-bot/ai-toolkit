@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events';
-import { type ServerResponse } from 'node:http';
+import type { ServerResponse } from 'node:http';
 
 type WriteheadArgs = {
   statusCode: number;
@@ -14,22 +14,17 @@ export function createServerResponseAdapter(
   signal: AbortSignal,
   fn: (re: ServerResponse) => Promise<void> | void,
 ): Promise<Response> {
-  let writeHeadResolver: (v: WriteheadArgs) => void;
-  const writeHeadPromise = new Promise<WriteheadArgs>(
-    async (resolve, _reject) => {
-      writeHeadResolver = resolve;
-    },
-  );
+  let writeHeadResolver!: (v: WriteheadArgs) => void;
+  const writeHeadPromise = new Promise<WriteheadArgs>(resolve => {
+    writeHeadResolver = resolve;
+  });
 
-  return new Promise(async (resolve, _reject) => {
+  return (async () => {
     let controller: ReadableStreamController<Uint8Array> | undefined;
     let shouldClose = false;
     let wroteHead = false;
 
-    const writeHead = (
-      statusCode: number,
-      headers?: Record<string, string>,
-    ) => {
+    const writeHead = (statusCode: number, headers?: Record<string, string>) => {
       if (typeof headers === 'string') {
         throw new Error('Status message of writeHead not supported');
       }
@@ -43,12 +38,9 @@ export function createServerResponseAdapter(
       return fakeServerResponse;
     };
 
-    let bufferedData: Uint8Array[] = [];
+    const bufferedData: Uint8Array[] = [];
 
-    const write = (
-      chunk: Buffer | string,
-      encoding?: BufferEncoding,
-    ): boolean => {
+    const write = (chunk: Buffer | string, encoding?: BufferEncoding): boolean => {
       if (encoding) {
         throw new Error('Encoding not supported');
       }
@@ -68,7 +60,7 @@ export function createServerResponseAdapter(
 
     const eventEmitter = new EventEmitter();
 
-    const fakeServerResponse = {
+    const fakeServerResponse: any = {
       writeHead,
       write,
       end: (data?: Buffer | string) => {
@@ -104,7 +96,7 @@ export function createServerResponseAdapter(
 
     const head = await writeHeadPromise;
 
-    const response = new Response(
+    return new Response(
       new ReadableStream({
         start(c) {
           controller = c;
@@ -121,7 +113,5 @@ export function createServerResponseAdapter(
         headers: head.headers,
       },
     );
-
-    resolve(response);
-  });
+  })();
 }

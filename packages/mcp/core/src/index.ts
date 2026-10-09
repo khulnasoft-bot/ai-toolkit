@@ -5,44 +5,41 @@ export type {
   JSONRPCRequest,
   JSONRPCResponse,
 } from './tool/json-rpc-message';
-
+/**
+ * @deprecated Use `MCPClientConfig` instead. Will be removed in a future version.
+ */
+/**
+ * @deprecated Use `MCPClient` instead. Will be removed in a future version.
+ */
+export type {
+  MCPClient as experimental_MCPClient,
+  MCPClientConfig as experimental_MCPClientConfig,
+} from './tool/mcp-client';
 // Stable exports
+/**
+ * @deprecated Use `createMCPClient` instead. Will be removed in a future version.
+ */
 export {
   createMCPClient,
-  type MCPClientConfig,
+  createMCPClient as experimental_createMCPClient,
   type MCPClient,
+  type MCPClientConfig,
 } from './tool/mcp-client';
-export { ElicitationRequestSchema, ElicitResultSchema } from './tool/types';
-export type {
-  ElicitationRequest,
-  ElicitResult,
-  ClientCapabilities as MCPClientCapabilities,
-} from './tool/types';
-export { auth, UnauthorizedError } from './tool/oauth';
+export type { MCPTransport } from './tool/mcp-transport';
 export type { OAuthClientProvider } from './tool/oauth';
+export { auth, UnauthorizedError } from './tool/oauth';
 export type {
   OAuthClientInformation,
   OAuthClientMetadata,
   OAuthTokens,
 } from './tool/oauth-types';
-export type { MCPTransport } from './tool/mcp-transport';
-
-/**
- * @deprecated Use `createMCPClient` instead. Will be removed in a future version.
- */
-export { createMCPClient as experimental_createMCPClient } from './tool/mcp-client';
-
-/**
- * @deprecated Use `MCPClientConfig` instead. Will be removed in a future version.
- */
-export type { MCPClientConfig as experimental_MCPClientConfig } from './tool/mcp-client';
-
-/**
- * @deprecated Use `MCPClient` instead. Will be removed in a future version.
- */
-export type { MCPClient as experimental_MCPClient } from './tool/mcp-client';
-
 /**
  * @deprecated Use `MCPClientCapabilities` instead. Will be removed in a future version.
  */
-export type { ClientCapabilities as experimental_MCPClientCapabilities } from './tool/types';
+export type {
+  ClientCapabilities as MCPClientCapabilities,
+  ClientCapabilities as experimental_MCPClientCapabilities,
+  ElicitationRequest,
+  ElicitResult,
+} from './tool/types';
+export { ElicitationRequestSchema, ElicitResultSchema } from './tool/types';

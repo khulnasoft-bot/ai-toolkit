@@ -1,15 +1,15 @@
 import {
-  JSONObject,
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
-  UnsupportedFunctionalityError,
-} from '@ai-toolkit/provider';
-import { asSchema } from '@ai-toolkit/provider-utils';
-import {
   anthropicTools,
   prepareTools as prepareAnthropicTools,
 } from '@ai-toolkit/anthropic/internal';
-import { BedrockTool, BedrockToolConfiguration } from './bedrock-api-types';
+import {
+  type JSONObject,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
+  UnsupportedFunctionalityError,
+} from '@ai-toolkit/provider';
+import { asSchema } from '@ai-toolkit/provider-utils';
+import type { BedrockTool, BedrockToolConfiguration } from './bedrock-api-types';
 
 export async function prepareTools({
   tools,
@@ -39,15 +39,11 @@ export async function prepareTools({
 
   // Filter out unsupported web_search tool and add a warning
   const supportedTools = tools.filter(tool => {
-    if (
-      tool.type === 'provider' &&
-      tool.id === 'anthropic.web_search_20250305'
-    ) {
+    if (tool.type === 'provider' && tool.id === 'anthropic.web_search_20250305') {
       toolWarnings.push({
         type: 'unsupported',
         feature: 'web_search_20250305 tool',
-        details:
-          'The web_search_20250305 tool is not supported on Amazon Bedrock.',
+        details: 'The web_search_20250305 tool is not supported on Amazon Bedrock.',
       });
       return false; // Exclude this tool
     }
@@ -67,7 +63,7 @@ export async function prepareTools({
   const ProviderTools = supportedTools.filter(t => t.type === 'provider');
   const functionTools = supportedTools.filter(t => t.type === 'function');
 
-  let additionalTools: Record<string, unknown> | undefined = undefined;
+  let additionalTools: Record<string, unknown> | undefined;
   const bedrockTools: BedrockTool[] = [];
 
   const usingAnthropicTools = isAnthropicModel && ProviderTools.length > 0;
@@ -77,8 +73,7 @@ export async function prepareTools({
     if (functionTools.length > 0) {
       toolWarnings.push({
         type: 'unsupported',
-        feature:
-          'mixing Anthropic provider-defined tools and standard function tools',
+        feature: 'mixing Anthropic provider-defined tools and standard function tools',
         details:
           'Mixed Anthropic provider-defined tools and standard function tools are not supported in a single call to Bedrock. Only Anthropic tools will be used.',
       });
@@ -95,7 +90,9 @@ export async function prepareTools({
     });
 
     toolWarnings.push(...anthropicToolWarnings);
-    anthropicBetas.forEach(beta => betas.add(beta));
+    anthropicBetas.forEach(beta => {
+      betas.add(beta);
+    });
 
     // For Anthropic tools on Bedrock, only the 'tool_choice' goes into additional fields.
     // The tool definitions themselves are sent in the standard 'toolConfig'.
@@ -118,8 +115,7 @@ export async function prepareTools({
           toolSpec: {
             name: tool.name,
             inputSchema: {
-              json: (await asSchema(fullToolDefinition.inputSchema)
-                .jsonSchema) as JSONObject,
+              json: (await asSchema(fullToolDefinition.inputSchema).jsonSchema) as JSONObject,
             },
           },
         });
@@ -139,9 +135,7 @@ export async function prepareTools({
     bedrockTools.push({
       toolSpec: {
         name: tool.name,
-        ...(tool.description?.trim() !== ''
-          ? { description: tool.description }
-          : {}),
+        ...(tool.description?.trim() !== '' ? { description: tool.description } : {}),
         inputSchema: {
           json: tool.inputSchema as JSONObject,
         },
@@ -150,7 +144,7 @@ export async function prepareTools({
   }
 
   // Handle toolChoice for standard Bedrock tools, but NOT for Anthropic provider-defined tools
-  let bedrockToolChoice: BedrockToolConfiguration['toolChoice'] = undefined;
+  let bedrockToolChoice: BedrockToolConfiguration['toolChoice'];
   if (!usingAnthropicTools && bedrockTools.length > 0 && toolChoice) {
     const type = toolChoice.type;
     switch (type) {
@@ -177,9 +171,7 @@ export async function prepareTools({
   }
 
   const toolConfig: BedrockToolConfiguration =
-    bedrockTools.length > 0
-      ? { tools: bedrockTools, toolChoice: bedrockToolChoice }
-      : {};
+    bedrockTools.length > 0 ? { tools: bedrockTools, toolChoice: bedrockToolChoice } : {};
 
   return {
     toolConfig,

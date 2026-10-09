@@ -1,5 +1,5 @@
-import { mistral } from '@ai-toolkit/mistral';
 import { generateObject } from '@ai-toolkit/ai';
+import { mistral } from '@ai-toolkit/mistral';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

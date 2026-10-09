@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, wrapLanguageModel } from '@ai-toolkit/ai';
-import { yourCacheMiddleware } from './your-cache-middleware';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
+import { yourCacheMiddleware } from './your-cache-middleware';
 
 run(async () => {
   const modelWithCaching = wrapLanguageModel({

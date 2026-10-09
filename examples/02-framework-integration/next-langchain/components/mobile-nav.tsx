@@ -1,9 +1,9 @@
 'use client';
 
+import { ExternalLink, Menu, X, Zap } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { Zap, Menu, X, ExternalLink } from 'lucide-react';
 import { navItems } from '../app/constants';
 
 export function MobileNav() {
@@ -27,6 +27,7 @@ export function MobileNav() {
           </div>
         </div>
         <button
+          type="button"
           onClick={() => setIsOpen(!isOpen)}
           className="p-2 rounded-lg hover:bg-[var(--background-tertiary)] transition-colors"
           aria-label="Toggle menu"
@@ -34,10 +35,7 @@ export function MobileNav() {
           {isOpen ? (
             <X className="w-6 h-6 text-[var(--foreground)]" strokeWidth={2} />
           ) : (
-            <Menu
-              className="w-6 h-6 text-[var(--foreground)]"
-              strokeWidth={2}
-            />
+            <Menu className="w-6 h-6 text-[var(--foreground)]" strokeWidth={2} />
           )}
         </button>
       </div>

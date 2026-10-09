@@ -1,7 +1,7 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport, isStaticToolUIPart } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import { useState } from 'react';
 
 export default function Page() {
@@ -20,10 +20,11 @@ export default function Page() {
             <strong>{`${message.role}: `}</strong>
             {message.parts.map((part, index) => {
               if (part.type === 'text') {
-                return <span key={index}>{part.text}</span>;
+                return <span key={`${part.type}-${index}`}>{part.text}</span>;
               } else if (isStaticToolUIPart(part)) {
-                return <pre key={index}>{JSON.stringify(part, null, 2)}</pre>;
+                return <pre key={`${part.type}-${index}`}>{JSON.stringify(part, null, 2)}</pre>;
               }
+              return null;
             })}
           </div>
         ))}

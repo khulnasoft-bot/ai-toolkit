@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { groqProviderOptions, GroqProviderOptions } from './groq-chat-options';
+import { describe, expect, it } from 'vitest';
+import { type GroqProviderOptions, groqProviderOptions } from './groq-chat-options';
 
 describe('groqProviderOptions', () => {
   describe('reasoningEffort', () => {
@@ -16,13 +16,7 @@ describe('groqProviderOptions', () => {
     });
 
     it('rejects invalid reasoningEffort values', () => {
-      const invalidValues = [
-        'invalid',
-        'high-effort',
-        'minimal',
-        'maximum',
-        '',
-      ];
+      const invalidValues = ['invalid', 'high-effort', 'minimal', 'maximum', ''];
 
       invalidValues.forEach(value => {
         const result = groqProviderOptions.safeParse({

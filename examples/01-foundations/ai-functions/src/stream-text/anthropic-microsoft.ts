@@ -1,5 +1,5 @@
-import { createAnthropic } from '@ai-toolkit/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { createAnthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {

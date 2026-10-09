@@ -1,7 +1,7 @@
+import { Presets, SingleBar } from 'cli-progress';
 import debug from 'debug';
-import { transform, TransformErrors } from './transform';
-import { TransformOptions } from './transform-options';
-import { SingleBar, Presets } from 'cli-progress';
+import { type TransformErrors, transform } from './transform';
+import type { TransformOptions } from './transform-options';
 
 const bundle = [
   'v4/remove-ai-stream-methods-from-stream-text-result',
@@ -99,11 +99,7 @@ const v4Bundle = bundle.filter(codemod => codemod.startsWith('v4/'));
 const v5Bundle = bundle.filter(codemod => codemod.startsWith('v5/'));
 const v6Bundle = bundle.filter(codemod => codemod.startsWith('v6/'));
 
-function runCodemods(
-  codemods: string[],
-  options: TransformOptions,
-  versionLabel: string,
-) {
+function runCodemods(codemods: string[], options: TransformOptions, versionLabel: string) {
   const cwd = process.cwd();
   log(`Starting ${versionLabel} codemods...`);
   const modCount = codemods.length;
@@ -117,7 +113,7 @@ function runCodemods(
   bar.start(modCount, 0, { codemod: 'Starting...' });
   const allErrors: TransformErrors = [];
   let notImplementedAvailable = false;
-  for (const [index, codemod] of codemods.entries()) {
+  for (const [_index, codemod] of codemods.entries()) {
     const { errors, notImplementedErrors } = transform(codemod, cwd, options, {
       logStatus: false,
     });
@@ -130,9 +126,7 @@ function runCodemods(
   bar.stop();
 
   if (allErrors.length > 0) {
-    log(
-      `Some ${versionLabel} codemods did not apply successfully to all files. Details:`,
-    );
+    log(`Some ${versionLabel} codemods did not apply successfully to all files. Details:`);
     allErrors.forEach(({ transform, filename, summary }) => {
       error(`codemod=${transform}, path=${filename}, summary=${summary}`);
     });
@@ -173,7 +167,7 @@ export function upgrade(options: TransformOptions) {
   bar.start(modCount, 0, { codemod: 'Starting...' });
   const allErrors: TransformErrors = [];
   let notImplementedAvailable = false;
-  for (const [index, codemod] of bundle.entries()) {
+  for (const [_index, codemod] of bundle.entries()) {
     const { errors, notImplementedErrors } = transform(codemod, cwd, options, {
       logStatus: false,
     });

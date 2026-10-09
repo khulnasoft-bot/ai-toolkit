@@ -27,9 +27,7 @@ function Card({
         minHeight: 170,
       }}
     >
-      <div
-        style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}
-      >
+      <div style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
         <strong>{item.name}</strong>
         <span style={{ color: 'var(--muted)' }}>
           <Arrow />
@@ -45,9 +43,7 @@ function Card({
       >
         {item.description}
       </p>
-      <div
-        style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginTop: 'auto' }}
-      >
+      <div style={{ display: 'flex', gap: 7, flexWrap: 'wrap', marginTop: 'auto' }}>
         {item.tags.map(tag => (
           <span
             key={tag}
@@ -96,9 +92,8 @@ export default function Home() {
               maxWidth: 590,
             }}
           >
-            A unified TypeScript toolkit for building production AI
-            applications. Explore providers, recipes, tools, and real products
-            built with AI.
+            A unified TypeScript toolkit for building production AI applications. Explore providers,
+            recipes, tools, and real products built with AI.
           </p>
           <div style={{ display: 'flex', gap: 12, marginTop: 34 }}>
             <Link
@@ -137,14 +132,9 @@ export default function Home() {
             <p className="mono" style={{ color: 'var(--muted)', fontSize: 12 }}>
               01 / ECOSYSTEM
             </p>
-            <h2 style={{ fontSize: 28, letterSpacing: '-.04em' }}>
-              Everything you need to ship
-            </h2>
+            <h2 style={{ fontSize: 28, letterSpacing: '-.04em' }}>Everything you need to ship</h2>
           </div>
-          <Link
-            href="/providers"
-            style={{ color: 'var(--muted)', fontSize: 13 }}
-          >
+          <Link href="/providers" style={{ color: 'var(--muted)', fontSize: 13 }}>
             View all <Arrow />
           </Link>
         </div>
@@ -171,18 +161,12 @@ export default function Home() {
           }}
         >
           <div>
-            <p
-              className="mono"
-              style={{ color: 'var(--accent)', fontSize: 12 }}
-            >
+            <p className="mono" style={{ color: 'var(--accent)', fontSize: 12 }}>
               TRY IT LIVE
             </p>
-            <h2 style={{ fontSize: 32, letterSpacing: '-.05em' }}>
-              From prompt to product.
-            </h2>
+            <h2 style={{ fontSize: 32, letterSpacing: '-.05em' }}>From prompt to product.</h2>
             <p style={{ color: 'var(--muted)', lineHeight: 1.6 }}>
-              Compare models, test prompts, and copy production-ready code in
-              the Playground.
+              Compare models, test prompts, and copy production-ready code in the Playground.
             </p>
             <Link
               href="/playground"
@@ -225,10 +209,7 @@ export default function Home() {
             ['Showcase', providers],
           ].map(([title, items]) => (
             <div key={title as string}>
-              <p
-                className="mono"
-                style={{ color: 'var(--muted)', fontSize: 12 }}
-              >
+              <p className="mono" style={{ color: 'var(--muted)', fontSize: 12 }}>
                 {title as string}
               </p>
               {(items as typeof recipes).map(item => (

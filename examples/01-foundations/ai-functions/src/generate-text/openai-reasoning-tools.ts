@@ -1,8 +1,8 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, tool } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const { text, reasoning, toolCalls, usage } = await generateText({
@@ -12,22 +12,20 @@ run(async () => {
       calculator: tool({
         description: 'Calculate mathematical expressions',
         inputSchema: z.object({
-          expression: z
-            .string()
-            .describe('The mathematical expression to calculate'),
+          expression: z.string().describe('The mathematical expression to calculate'),
         }),
         execute: async ({ expression }) => {
           try {
+            // biome-ignore lint/security/noGlobalEval: example calculator intentionally evaluates a math expression
             const result = eval(expression);
             return { expression, result };
-          } catch (error) {
+          } catch (_error) {
             return { expression, error: 'Invalid expression' };
           }
         },
       }),
     },
-    prompt:
-      'What is the weather in San Francisco? Then calculate how many days are in 3 weeks.',
+    prompt: 'What is the weather in San Francisco? Then calculate how many days are in 3 weeks.',
     maxOutputTokens: 1000,
   });
 

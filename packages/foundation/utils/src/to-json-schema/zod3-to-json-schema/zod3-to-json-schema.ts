@@ -1,9 +1,9 @@
-import { ZodSchema } from 'zod/v3';
-import { Options } from './options';
+import type { ZodSchema } from 'zod/v3';
+import type { Options } from './options';
 import { parseDef } from './parse-def';
-import { JsonSchema7Type } from './parse-types';
-import { getRefs } from './refs';
+import type { JsonSchema7Type } from './parse-types';
 import { parseAnyDef } from './parsers/any';
+import { getRefs } from './refs';
 
 const zod3ToJsonSchema = (
   schema: ZodSchema<any>,
@@ -16,7 +16,7 @@ const zod3ToJsonSchema = (
 } => {
   const refs = getRefs(options);
 
-  let definitions =
+  const definitions =
     typeof options === 'object' && options.definitions
       ? Object.entries(options.definitions).reduce(
           (acc: { [key: string]: JsonSchema7Type }, [name, schema]) => ({
@@ -55,9 +55,7 @@ const zod3ToJsonSchema = (
     ) ?? (parseAnyDef() as JsonSchema7Type);
 
   const title =
-    typeof options === 'object' &&
-    options.name !== undefined &&
-    options.nameStrategy === 'title'
+    typeof options === 'object' && options.name !== undefined && options.nameStrategy === 'title'
       ? options.name
       : undefined;
 

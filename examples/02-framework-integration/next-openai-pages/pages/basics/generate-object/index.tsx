@@ -6,7 +6,8 @@ export default function Page() {
 
   return (
     <div className="p-2 flex flex-col gap-2">
-      <div
+      <button
+        type="button"
         className="p-2 bg-zinc-100 cursor-pointer"
         onClick={async () => {
           setIsLoading(true);
@@ -26,15 +27,12 @@ export default function Page() {
         }}
       >
         Generate
-      </div>
+      </button>
 
       {isLoading ? (
         'Loading...'
       ) : (
-        <pre
-          className="text-sm w-full whitespace-pre-wrap"
-          data-testid="generation"
-        >
+        <pre className="text-sm w-full whitespace-pre-wrap" data-testid="generation">
           {generation}
         </pre>
       )}

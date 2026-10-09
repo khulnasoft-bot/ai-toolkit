@@ -46,12 +46,7 @@ export class ProdiaImageModel implements ImageModelV3 {
       const [widthStr, heightStr] = size.split('x');
       width = Number(widthStr);
       height = Number(heightStr);
-      if (
-        !widthStr ||
-        !heightStr ||
-        !Number.isFinite(width) ||
-        !Number.isFinite(height)
-      ) {
+      if (!widthStr || !heightStr || !Number.isFinite(width) || !Number.isFinite(height)) {
         warnings.push({
           type: 'unsupported',
           feature: 'size',
@@ -108,10 +103,7 @@ export class ProdiaImageModel implements ImageModelV3 {
     const { body, warnings } = await this.getArgs(options);
 
     const currentDate = this.config._internal?.currentDate?.() ?? new Date();
-    const combinedHeaders = combineHeaders(
-      await resolve(this.config.headers),
-      options.headers,
-    );
+    const combinedHeaders = combineHeaders(await resolve(this.config.headers), options.headers);
 
     const { value: multipartResult, responseHeaders } = await postToApi({
       url: `${this.config.baseURL}/job`,
@@ -219,9 +211,7 @@ export const prodiaImageProviderOptionsSchema = lazySchema(() =>
   ),
 );
 
-export type ProdiaImageProviderOptions = InferSchema<
-  typeof prodiaImageProviderOptionsSchema
->;
+export type ProdiaImageProviderOptions = InferSchema<typeof prodiaImageProviderOptionsSchema>;
 
 interface ProdiaImageModelConfig {
   provider: string;
@@ -281,9 +271,7 @@ function createMultipartResponseHandler() {
 
     const boundaryMatch = contentType.match(/boundary=([^\s;]+)/);
     if (!boundaryMatch) {
-      throw new Error(
-        `Prodia response missing multipart boundary in content-type: ${contentType}`,
-      );
+      throw new Error(`Prodia response missing multipart boundary in content-type: ${contentType}`);
     }
     const boundary = boundaryMatch[1];
 
@@ -357,10 +345,7 @@ function parseMultipart(data: Uint8Array, boundary: string): MultipartPart[] {
         isEndBoundary = false;
       }
     }
-    if (
-      isEndBoundary &&
-      positions[i] + endBoundaryBytes.length <= data.length
-    ) {
+    if (isEndBoundary && positions[i] + endBoundaryBytes.length <= data.length) {
       continue;
     }
 

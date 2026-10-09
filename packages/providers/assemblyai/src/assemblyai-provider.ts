@@ -1,15 +1,7 @@
-import {
-  TranscriptionModelV3,
-  ProviderV3,
-  NoSuchModelError,
-} from '@ai-toolkit/provider';
-import {
-  FetchFunction,
-  loadApiKey,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import { NoSuchModelError, type ProviderV3, type TranscriptionModelV3 } from '@ai-toolkit/provider';
+import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { AssemblyAITranscriptionModel } from './assemblyai-transcription-model';
-import { AssemblyAITranscriptionModelId } from './assemblyai-transcription-settings';
+import type { AssemblyAITranscriptionModelId } from './assemblyai-transcription-settings';
 import { VERSION } from './version';
 
 export interface AssemblyAIProvider extends ProviderV3 {
@@ -52,9 +44,7 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create an AssemblyAI provider instance.
  */
-export function createAssemblyAI(
-  options: AssemblyAIProviderSettings = {},
-): AssemblyAIProvider {
+export function createAssemblyAI(options: AssemblyAIProviderSettings = {}): AssemblyAIProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {
@@ -76,11 +66,9 @@ export function createAssemblyAI(
       fetch: options.fetch,
     });
 
-  const provider = function (modelId: AssemblyAITranscriptionModelId) {
-    return {
-      transcription: createTranscriptionModel(modelId),
-    };
-  };
+  const provider = (modelId: AssemblyAITranscriptionModelId) => ({
+    transcription: createTranscriptionModel(modelId),
+  });
 
   provider.specificationVersion = 'v3' as const;
   provider.transcription = createTranscriptionModel;

@@ -1,6 +1,6 @@
+import { statSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { build } from 'esbuild';
-import { writeFileSync, statSync } from 'fs';
-import { join } from 'path';
 
 // Bundle size limits in bytes
 const LIMIT = 550 * 1024;
@@ -35,11 +35,7 @@ async function bundleForNode(): Promise<BundleResult> {
 
 async function bundleForBrowser(): Promise<BundleResult> {
   const outfile = join(process.cwd(), 'dist-bundle-check', 'browser.js');
-  const metafile = join(
-    process.cwd(),
-    'dist-bundle-check',
-    'browser-meta.json',
-  );
+  const metafile = join(process.cwd(), 'dist-bundle-check', 'browser-meta.json');
 
   const result = await build({
     entryPoints: [join(process.cwd(), 'src', 'index.ts')],
@@ -80,10 +76,7 @@ async function main() {
   console.log('📦 Checking bundle sizes...\n');
 
   try {
-    const [nodeResult, browserResult] = await Promise.all([
-      bundleForNode(),
-      bundleForBrowser(),
-    ]);
+    const [nodeResult, browserResult] = await Promise.all([bundleForNode(), bundleForBrowser()]);
 
     console.log('Bundle sizes:');
     const nodePass = checkSize(nodeResult, LIMIT);

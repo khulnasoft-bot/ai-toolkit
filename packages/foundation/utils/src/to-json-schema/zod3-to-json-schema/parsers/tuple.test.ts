@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseTupleDef } from './tuple';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseTupleDef } from './tuple';
 
 describe('tuple', () => {
   it('should be possible to describe a simple tuple schema', () => {

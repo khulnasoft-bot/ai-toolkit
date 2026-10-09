@@ -1,27 +1,24 @@
 import {
-  JSONObject,
-  LanguageModelV3Message,
-  LanguageModelV3Prompt,
-  SharedV3ProviderMetadata,
+  type JSONObject,
+  type LanguageModelV3Message,
+  type LanguageModelV3Prompt,
+  type SharedV3ProviderMetadata,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
-import {
-  convertToBase64,
-  parseProviderOptions,
-} from '@ai-toolkit/provider-utils';
+import { convertToBase64, parseProviderOptions } from '@ai-toolkit/provider-utils';
 import {
   BEDROCK_CACHE_POINT,
   BEDROCK_DOCUMENT_MIME_TYPES,
   BEDROCK_IMAGE_MIME_TYPES,
-  BedrockAssistantMessage,
-  BedrockCachePoint,
-  BedrockDocumentFormat,
-  BedrockDocumentMimeType,
-  BedrockImageFormat,
-  BedrockImageMimeType,
-  BedrockMessages,
-  BedrockSystemMessages,
-  BedrockUserMessage,
+  type BedrockAssistantMessage,
+  type BedrockCachePoint,
+  type BedrockDocumentFormat,
+  type BedrockDocumentMimeType,
+  type BedrockImageFormat,
+  type BedrockImageMimeType,
+  type BedrockMessages,
+  type BedrockSystemMessages,
+  type BedrockUserMessage,
 } from './bedrock-api-types';
 import { bedrockReasoningMetadataSchema } from './bedrock-chat-language-model';
 import { bedrockFilePartProviderOptions } from './bedrock-chat-options';
@@ -54,7 +51,7 @@ export async function convertToBedrockChatMessages(
 }> {
   const blocks = groupIntoBlocks(prompt);
 
-  let system: BedrockSystemMessages = [];
+  const system: BedrockSystemMessages = [];
   const messages: BedrockMessages = [];
 
   let documentCounter = 0;
@@ -69,8 +66,7 @@ export async function convertToBedrockChatMessages(
       case 'system': {
         if (messages.length > 0) {
           throw new UnsupportedFunctionalityError({
-            functionality:
-              'Multiple system messages that are separated by user/assistant messages',
+            functionality: 'Multiple system messages that are separated by user/assistant messages',
           });
         }
 
@@ -121,14 +117,11 @@ export async function convertToBedrockChatMessages(
                       if (!part.mediaType) {
                         throw new UnsupportedFunctionalityError({
                           functionality: 'file without mime type',
-                          message:
-                            'File mime type is required in user message part content',
+                          message: 'File mime type is required in user message part content',
                         });
                       }
 
-                      const enableCitations = await shouldEnableCitations(
-                        part.providerOptions,
-                      );
+                      const enableCitations = await shouldEnableCitations(part.providerOptions);
 
                       bedrockContent.push({
                         document: {
@@ -154,7 +147,7 @@ export async function convertToBedrockChatMessages(
                 if (part.type === 'tool-approval-response') {
                   continue;
                 }
-                let toolResultContent;
+                let toolResultContent: any;
 
                 const output = part.output;
                 switch (output.type) {
@@ -163,16 +156,14 @@ export async function convertToBedrockChatMessages(
                       switch (contentPart.type) {
                         case 'text':
                           return { text: contentPart.text };
-                        case 'image-data':
+                        case 'image-data': {
                           if (!contentPart.mediaType.startsWith('image/')) {
                             throw new UnsupportedFunctionalityError({
                               functionality: `media type: ${contentPart.mediaType}`,
                             });
                           }
 
-                          const format = getBedrockImageFormat(
-                            contentPart.mediaType,
-                          );
+                          const format = getBedrockImageFormat(contentPart.mediaType);
 
                           return {
                             image: {
@@ -180,6 +171,7 @@ export async function convertToBedrockChatMessages(
                               source: { bytes: contentPart.data },
                             },
                           };
+                        }
                         default: {
                           throw new UnsupportedFunctionalityError({
                             functionality: `unsupported tool content part type: ${contentPart.type}`,
@@ -194,16 +186,10 @@ export async function convertToBedrockChatMessages(
                     toolResultContent = [{ text: output.value }];
                     break;
                   case 'execution-denied':
-                    toolResultContent = [
-                      { text: output.reason ?? 'Tool execution denied.' },
-                    ];
+                    toolResultContent = [{ text: output.reason ?? 'Tool execution denied.' }];
                     break;
-                  case 'json':
-                  case 'error-json':
                   default:
-                    toolResultContent = [
-                      { text: JSON.stringify(output.value) },
-                    ];
+                    toolResultContent = [{ text: JSON.stringify(output.value) }];
                     break;
                 }
 
@@ -258,12 +244,7 @@ export async function convertToBedrockChatMessages(
                     // trim the last text part if it's the last message in the block
                     // because Bedrock does not allow trailing whitespace
                     // in pre-filled assistant responses
-                    trimIfLast(
-                      isLastBlock,
-                      isLastMessage,
-                      isLastContentPart,
-                      part.text,
-                    ),
+                    trimIfLast(isLastBlock, isLastMessage, isLastContentPart, part.text),
                 });
                 break;
               }
@@ -339,10 +320,8 @@ export async function convertToBedrockChatMessages(
   return { system, messages };
 }
 
-function isBedrockImageFormat(format: string): format is BedrockImageFormat {
-  return Object.values(BEDROCK_IMAGE_MIME_TYPES).includes(
-    format as BedrockImageFormat,
-  );
+function _isBedrockImageFormat(format: string): format is BedrockImageFormat {
+  return Object.values(BEDROCK_IMAGE_MIME_TYPES).includes(format as BedrockImageFormat);
 }
 
 function getBedrockImageFormat(mimeType?: string): BedrockImageFormat {
@@ -365,8 +344,7 @@ function getBedrockImageFormat(mimeType?: string): BedrockImageFormat {
 }
 
 function getBedrockDocumentFormat(mimeType: string): BedrockDocumentFormat {
-  const format =
-    BEDROCK_DOCUMENT_MIME_TYPES[mimeType as BedrockDocumentMimeType];
+  const format = BEDROCK_DOCUMENT_MIME_TYPES[mimeType as BedrockDocumentMimeType];
   if (!format) {
     throw new UnsupportedFunctionalityError({
       functionality: `file mime type: ${mimeType}`,
@@ -402,8 +380,7 @@ function groupIntoBlocks(
   prompt: LanguageModelV3Prompt,
 ): Array<SystemBlock | AssistantBlock | UserBlock> {
   const blocks: Array<SystemBlock | AssistantBlock | UserBlock> = [];
-  let currentBlock: SystemBlock | AssistantBlock | UserBlock | undefined =
-    undefined;
+  let currentBlock: SystemBlock | AssistantBlock | UserBlock | undefined;
 
   for (const message of prompt) {
     const { role } = message;

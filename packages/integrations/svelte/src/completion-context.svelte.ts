@@ -10,9 +10,7 @@ class CompletionStore {
 }
 
 export class KeyedCompletionStore extends KeyedStore<CompletionStore> {
-  constructor(
-    value?: Iterable<readonly [string, CompletionStore]> | null | undefined,
-  ) {
+  constructor(value?: Iterable<readonly [string, CompletionStore]> | null | undefined) {
     super(CompletionStore, value);
   }
 }

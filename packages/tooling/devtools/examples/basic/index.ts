@@ -1,11 +1,6 @@
-import {
-  gateway,
-  stepCountIs,
-  streamText,
-  wrapLanguageModel,
-} from '@ai-toolkit/ai';
-import { tools } from './tools';
+import { gateway, stepCountIs, streamText, wrapLanguageModel } from '@ai-toolkit/ai';
 import { devToolsMiddleware } from '../../src';
+import { tools } from './tools';
 import { print } from './utils';
 import 'dotenv/config';
 

@@ -1,6 +1,6 @@
 import {
   createJsonErrorResponseHandler,
-  InferSchema,
+  type InferSchema,
   lazySchema,
   zodSchema,
 } from '@ai-toolkit/provider-utils';

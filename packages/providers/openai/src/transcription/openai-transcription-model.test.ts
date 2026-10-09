@@ -1,17 +1,15 @@
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createOpenAI } from '../openai-provider';
 import { OpenAITranscriptionModel } from './openai-transcription-model';
-import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('../version', () => ({
   VERSION: '0.0.0-test',
 }));
 
-const audioData = await readFile(
-  path.join(__dirname, 'transcription-test.mp3'),
-);
+const audioData = await readFile(path.join(__dirname, 'transcription-test.mp3'));
 const provider = createOpenAI({ apiKey: 'test-api-key' });
 const model = provider.transcription('whisper-1');
 
@@ -20,9 +18,7 @@ const server = createTestServer({
 });
 
 describe('doGenerate', () => {
-  function prepareJsonResponse({
-    headers,
-  }: { headers?: Record<string, string> } = {}) {
+  function prepareJsonResponse({ headers }: { headers?: Record<string, string> } = {}) {
     server.urls['https://api.openai.com/v1/audio/transcriptions'].response = {
       type: 'json-value',
       headers,
@@ -117,9 +113,7 @@ describe('doGenerate', () => {
       'openai-project': 'test-project',
     });
 
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/openai/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/openai/0.0.0-test`);
   });
 
   it('should extract the transcription text', async () => {

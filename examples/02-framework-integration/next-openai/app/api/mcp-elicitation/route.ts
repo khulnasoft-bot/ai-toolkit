@@ -1,21 +1,20 @@
-import { openai } from '@ai-toolkit/openai';
 import {
-  createUIMessageStreamResponse,
-  streamText,
-  createUIMessageStream,
   convertToModelMessages,
+  createUIMessageStream,
+  createUIMessageStreamResponse,
   stepCountIs,
+  streamText,
 } from '@ai-toolkit/ai';
 import { createMCPClient, ElicitationRequestSchema } from '@ai-toolkit/mcp';
-import { MCPElicitationUIMessage } from './types';
+import { openai } from '@ai-toolkit/openai';
 import { createPendingElicitation } from './elicitation-store';
+import type { MCPElicitationUIMessage } from './types';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: MCPElicitationUIMessage[] } =
-    await req.json();
+  const { messages }: { messages: MCPElicitationUIMessage[] } = await req.json();
 
   const stream = createUIMessageStream({
     originalMessages: messages,
@@ -27,10 +26,7 @@ export async function POST(req: Request) {
   return createUIMessageStreamResponse({ stream });
 }
 
-async function processMessages(
-  messages: MCPElicitationUIMessage[],
-  writer: any,
-) {
+async function processMessages(messages: MCPElicitationUIMessage[], writer: any) {
   // Create MCP client with elicitation capabilities
   const mcpClient = await createMCPClient({
     transport: {
@@ -64,10 +60,9 @@ async function processMessages(
       // Return the response in the format expected by the MCP server
       return {
         action: userResponse.action,
-        content:
-          userResponse.action === 'accept' ? userResponse.content : undefined,
+        content: userResponse.action === 'accept' ? userResponse.content : undefined,
       };
-    } catch (error) {
+    } catch (_error) {
       // Return a declined response on error
       return {
         action: 'decline' as const,

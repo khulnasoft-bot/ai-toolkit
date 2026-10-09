@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertBedrockUsage } from './convert-bedrock-usage';
-import { describe, it, expect } from 'vitest';
 
 describe('convertBedrockUsage', () => {
   it('should convert basic usage without cache tokens', () => {

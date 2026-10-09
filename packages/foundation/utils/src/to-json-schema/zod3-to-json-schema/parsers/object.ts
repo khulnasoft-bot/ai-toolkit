@@ -1,7 +1,7 @@
-import { ZodObjectDef, ZodTypeAny } from 'zod/v3';
+import type { ZodObjectDef, ZodTypeAny } from 'zod/v3';
 import { parseDef } from '../parse-def';
-import { JsonSchema7Type } from '../parse-types';
-import { Refs } from '../refs';
+import type { JsonSchema7Type } from '../parse-types';
+import type { Refs } from '../refs';
 
 export type JsonSchema7ObjectType = {
   type: 'object';
@@ -21,7 +21,7 @@ export function parseObjectDef(def: ZodObjectDef, refs: Refs) {
   const shape = def.shape();
 
   for (const propName in shape) {
-    let propDef = shape[propName];
+    const propDef = shape[propName];
 
     if (propDef === undefined || propDef._def === undefined) {
       continue;

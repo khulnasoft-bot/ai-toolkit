@@ -1,10 +1,10 @@
 'use client';
 
-import { Card } from '@/app/components';
-import { useChat } from '@ai-toolkit/react';
 import { getStaticToolName, isStaticToolUIPart } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import { GeistMono } from 'geist/font/mono';
 import { useState } from 'react';
+import { Card } from '@/app/components';
 
 export default function Page() {
   const [input, setInput] = useState('');
@@ -20,17 +20,18 @@ export default function Page() {
             <div className="flex flex-col gap-2">
               {message.parts.map((part, index) => {
                 if (part.type === 'text') {
-                  return <div key={index}>{part.text}</div>;
+                  return <div key={`${part.type}-${index}`}>{part.text}</div>;
                 } else if (isStaticToolUIPart(part)) {
                   return (
                     <div
-                      key={index}
+                      key={`${getStaticToolName(part)}-${index}`}
                       className={`${GeistMono.className} text-sm text-zinc-500 bg-zinc-100 p-3 rounded-lg`}
                     >
                       {`${getStaticToolName(part)}(${JSON.stringify(part.input, null, 2)})`}
                     </div>
                   );
                 }
+                return null;
               })}
             </div>
           </div>

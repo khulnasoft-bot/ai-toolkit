@@ -1,4 +1,4 @@
-import { LanguageModelV3FinishReason } from '@ai-toolkit/provider';
+import type { LanguageModelV3FinishReason } from '@ai-toolkit/provider';
 
 export function mapGoogleGenerativeAIFinishReason({
   finishReason,
@@ -21,8 +21,6 @@ export function mapGoogleGenerativeAIFinishReason({
       return 'content-filter';
     case 'MALFORMED_FUNCTION_CALL':
       return 'error';
-    case 'FINISH_REASON_UNSPECIFIED':
-    case 'OTHER':
     default:
       return 'other';
   }

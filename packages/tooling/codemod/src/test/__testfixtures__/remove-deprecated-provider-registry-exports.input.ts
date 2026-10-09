@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Provider, experimental_createProviderRegistry } from 'ai';
+import { experimental_createProviderRegistry, type Provider } from 'ai';
 
 function createProvider(): Provider {
   return {
@@ -14,4 +14,4 @@ function createRegistry(): Provider {
   });
 }
 
-const registry: Provider = createRegistry();
+const _registry: Provider = createRegistry();

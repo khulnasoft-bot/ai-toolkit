@@ -1,22 +1,13 @@
 import {
   APICallError,
+  type SharedV4ProviderMetadata,
   type Experimental_VideoModelV4 as VideoModelV4,
   type Experimental_VideoModelV4CallOptions as VideoModelV4CallOptions,
-  type Experimental_VideoModelV4VideoData as VideoModelV4VideoData,
   type Experimental_VideoModelV4OperationWebhook as VideoModelV4OperationWebhook,
-  type SharedV4ProviderMetadata,
+  type Experimental_VideoModelV4VideoData as VideoModelV4VideoData,
 } from '@ai-toolkit/provider';
 import { convertBase64ToUint8Array } from '@ai-toolkit/provider-utils';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  test,
-  vi,
-  vitest,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, test, vi, vitest } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
 import { MockVideoModelV4 } from '../test/mock-video-model-v4';
 import type { Warning } from '../types/warning';
@@ -61,9 +52,7 @@ describe('experimental_generateVideo', () => {
   const originalFetch = global.fetch;
 
   beforeEach(() => {
-    logWarningsSpy = vitest
-      .spyOn(logWarningsModule, 'logWarnings')
-      .mockImplementation(() => {});
+    logWarningsSpy = vitest.spyOn(logWarningsModule, 'logWarnings').mockImplementation(() => {});
 
     global.fetch = vi.fn(async () => {
       return new Response(convertBase64ToUint8Array(mp4Base64), {
@@ -89,9 +78,7 @@ describe('experimental_generateVideo', () => {
         doGenerate: async args => {
           capturedArgs = args;
           return createMockResponse({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
           });
         },
       }),
@@ -138,9 +125,7 @@ describe('experimental_generateVideo', () => {
       model: new MockVideoModelV4({
         doGenerate: async () =>
           createMockResponse({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [
               {
                 type: 'other',
@@ -177,9 +162,7 @@ describe('experimental_generateVideo', () => {
       model: new MockVideoModelV4({
         doGenerate: async () =>
           createMockResponse({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: expectedWarnings,
           }),
       }),
@@ -199,9 +182,7 @@ describe('experimental_generateVideo', () => {
       model: new MockVideoModelV4({
         doGenerate: async () =>
           createMockResponse({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
           }),
       }),
@@ -257,9 +238,7 @@ describe('experimental_generateVideo', () => {
         model: new MockVideoModelV4({
           doGenerate: async () =>
             createMockResponse({
-              videos: [
-                { type: 'binary', data: binaryData, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'binary', data: binaryData, mediaType: 'video/mp4' }],
             }),
         }),
         prompt,
@@ -293,11 +272,9 @@ describe('experimental_generateVideo', () => {
     });
 
     it('should throw DownloadError when fetch fails', async () => {
-      (global.fetch as ReturnType<typeof vi.fn>).mockImplementationOnce(
-        async () => {
-          return new Response(null, { status: 404, statusText: 'Not Found' });
-        },
-      );
+      (global.fetch as ReturnType<typeof vi.fn>).mockImplementationOnce(async () => {
+        return new Response(null, { status: 404, statusText: 'Not Found' });
+      });
 
       await expect(
         experimental_generateVideo({
@@ -315,21 +292,17 @@ describe('experimental_generateVideo', () => {
           }),
           prompt,
         }),
-      ).rejects.toThrow(
-        'Failed to download https://example.com/video.mp4: 404 Not Found',
-      );
+      ).rejects.toThrow('Failed to download https://example.com/video.mp4: 404 Not Found');
     });
 
     it('should detect mediaType via signature when provider and download return application/octet-stream', async () => {
       // Mock fetch to return octet-stream content-type (simulating CDN behavior)
-      (global.fetch as ReturnType<typeof vi.fn>).mockImplementationOnce(
-        async () => {
-          return new Response(convertBase64ToUint8Array(mp4Base64), {
-            status: 200,
-            headers: { 'content-type': 'application/octet-stream' },
-          });
-        },
-      );
+      (global.fetch as ReturnType<typeof vi.fn>).mockImplementationOnce(async () => {
+        return new Response(convertBase64ToUint8Array(mp4Base64), {
+          status: 200,
+          headers: { 'content-type': 'application/octet-stream' },
+        });
+      });
 
       const result = await experimental_generateVideo({
         model: new MockVideoModelV4({
@@ -412,16 +385,12 @@ describe('experimental_generateVideo', () => {
             switch (callCount++) {
               case 0:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   warnings: [warning1],
                 });
               case 1:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   warnings: [warning2],
                 });
               default:
@@ -439,60 +408,57 @@ describe('experimental_generateVideo', () => {
     test.each([
       ['sync method', () => 2],
       ['async method', async () => 2],
-    ])(
-      'should generate with maxVideosPerCall = %s',
-      async (_, maxVideosPerCall) => {
-        let callCount = 0;
-        const maxVideosPerCallMock = vitest.fn(maxVideosPerCall);
+    ])('should generate with maxVideosPerCall = %s', async (_, maxVideosPerCall) => {
+      let callCount = 0;
+      const maxVideosPerCallMock = vitest.fn(maxVideosPerCall);
 
-        const result = await experimental_generateVideo({
-          model: new MockVideoModelV4({
-            maxVideosPerCall: maxVideosPerCallMock,
-            doGenerate: async options => {
-              switch (callCount++) {
-                case 0:
-                  expect(options.n).toBe(2);
-                  return createMockResponse({
-                    videos: [
-                      {
-                        type: 'base64',
-                        data: mp4Base64,
-                        mediaType: 'video/mp4',
-                      },
-                      {
-                        type: 'base64',
-                        data: mp4Base64,
-                        mediaType: 'video/mp4',
-                      },
-                    ],
-                  });
-                case 1:
-                  expect(options.n).toBe(1);
-                  return createMockResponse({
-                    videos: [
-                      {
-                        type: 'base64',
-                        data: webmBase64,
-                        mediaType: 'video/webm',
-                      },
-                    ],
-                  });
-                default:
-                  throw new Error('Unexpected call');
-              }
-            },
-          }),
-          prompt,
-          n: 3,
-        });
+      const result = await experimental_generateVideo({
+        model: new MockVideoModelV4({
+          maxVideosPerCall: maxVideosPerCallMock,
+          doGenerate: async options => {
+            switch (callCount++) {
+              case 0:
+                expect(options.n).toBe(2);
+                return createMockResponse({
+                  videos: [
+                    {
+                      type: 'base64',
+                      data: mp4Base64,
+                      mediaType: 'video/mp4',
+                    },
+                    {
+                      type: 'base64',
+                      data: mp4Base64,
+                      mediaType: 'video/mp4',
+                    },
+                  ],
+                });
+              case 1:
+                expect(options.n).toBe(1);
+                return createMockResponse({
+                  videos: [
+                    {
+                      type: 'base64',
+                      data: webmBase64,
+                      mediaType: 'video/webm',
+                    },
+                  ],
+                });
+              default:
+                throw new Error('Unexpected call');
+            }
+          },
+        }),
+        prompt,
+        n: 3,
+      });
 
-        expect(result.videos.length).toBe(3);
-        expect(maxVideosPerCallMock).toHaveBeenCalledTimes(1);
-        expect(maxVideosPerCallMock).toHaveBeenCalledWith({
-          modelId: 'mock-model-id',
-        });
-      },
-    );
+      expect(result.videos.length).toBe(3);
+      expect(maxVideosPerCallMock).toHaveBeenCalledTimes(1);
+      expect(maxVideosPerCallMock).toHaveBeenCalledWith({
+        modelId: 'mock-model-id',
+      });
+    });
   });
 
   describe('error handling', () => {
@@ -558,9 +524,7 @@ describe('experimental_generateVideo', () => {
       model: new MockVideoModelV4({
         doGenerate: async () =>
           createMockResponse({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             timestamp: testDate,
             modelId: 'test-model',
             headers: testHeaders,
@@ -588,9 +552,7 @@ describe('experimental_generateVideo', () => {
       model: new MockVideoModelV4({
         doGenerate: async () =>
           createMockResponse({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             timestamp: testDate,
             modelId: 'test-model',
             providerMetadata: {
@@ -622,9 +584,7 @@ describe('experimental_generateVideo', () => {
             switch (callCount++) {
               case 0:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   providerMetadata: {
                     testProvider: {
                       videos: [{ seed: 111 }],
@@ -633,9 +593,7 @@ describe('experimental_generateVideo', () => {
                 });
               case 1:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   providerMetadata: {
                     testProvider: {
                       videos: [{ seed: 222 }],
@@ -668,9 +626,7 @@ describe('experimental_generateVideo', () => {
             switch (callCount++) {
               case 0:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   providerMetadata: {
                     gateway: {
                       videos: [{ seed: 111 }],
@@ -680,9 +636,7 @@ describe('experimental_generateVideo', () => {
                 });
               case 1:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   providerMetadata: {
                     gateway: {
                       videos: [{ seed: 222 }],
@@ -711,9 +665,7 @@ describe('experimental_generateVideo', () => {
       const result = await experimental_generateVideo({
         model: new MockVideoModelV4({
           doGenerate: async () => ({
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             providerMetadata: undefined,
             response: {
@@ -739,9 +691,7 @@ describe('experimental_generateVideo', () => {
             switch (callCount++) {
               case 0:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   providerMetadata: {
                     testProvider: {
                       videos: [{ seed: 111, duration: 5 }],
@@ -751,9 +701,7 @@ describe('experimental_generateVideo', () => {
                 });
               case 1:
                 return createMockResponse({
-                  videos: [
-                    { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-                  ],
+                  videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
                   providerMetadata: {
                     testProvider: {
                       videos: [{ seed: 222, duration: 8 }],
@@ -807,9 +755,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -830,9 +776,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -854,9 +798,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -882,9 +824,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -911,9 +851,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -937,9 +875,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -967,9 +903,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -1022,9 +956,7 @@ describe('experimental_generateVideo', () => {
             }
             return {
               status: 'completed' as const,
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
               warnings: [],
               response: {
                 timestamp: new Date(),
@@ -1044,7 +976,7 @@ describe('experimental_generateVideo', () => {
     });
 
     it('should use doStart/doStatus when model only has doStart/doStatus (no doGenerate)', async () => {
-      let doGenerateCalled = false;
+      const doGenerateCalled = false;
 
       const result = await experimental_generateVideo({
         model: new MockVideoModelV4({
@@ -1060,9 +992,7 @@ describe('experimental_generateVideo', () => {
           }),
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1115,9 +1045,7 @@ describe('experimental_generateVideo', () => {
 
             return {
               status: 'completed' as const,
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
               warnings: [],
               response: {
                 timestamp: new Date(),
@@ -1171,9 +1099,7 @@ describe('experimental_generateVideo', () => {
           },
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1212,9 +1138,7 @@ describe('experimental_generateVideo', () => {
           },
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1278,8 +1202,7 @@ describe('experimental_generateVideo', () => {
     });
 
     it('should honor a caller-supplied idempotency key regardless of header casing', async () => {
-      const seenHeaders: Array<Record<string, string | undefined> | undefined> =
-        [];
+      const seenHeaders: Array<Record<string, string | undefined> | undefined> = [];
       const model = new MockVideoModelV4({
         doGenerate: undefined,
         doStart: async options => {
@@ -1318,9 +1241,7 @@ describe('experimental_generateVideo', () => {
       // minted key replaces or duplicates it.
       expect(seenHeaders[0]?.['idempotency-key']).toBe('caller-key-cased');
       expect(
-        Object.values(seenHeaders[0] ?? {}).filter(value =>
-          String(value).startsWith('aisdk_vid_'),
-        ),
+        Object.values(seenHeaders[0] ?? {}).filter(value => String(value).startsWith('aisdk_vid_')),
       ).toHaveLength(0);
     });
 
@@ -1329,9 +1250,7 @@ describe('experimental_generateVideo', () => {
         model: new MockVideoModelV4({
           doGenerate: async () =>
             createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             }),
         }),
         prompt,
@@ -1385,9 +1304,7 @@ describe('experimental_generateVideo', () => {
             }
             return {
               status: 'completed' as const,
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
               warnings: [],
               response: {
                 timestamp: new Date(),
@@ -1424,9 +1341,7 @@ describe('experimental_generateVideo', () => {
           }),
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1486,9 +1401,7 @@ describe('experimental_generateVideo', () => {
           }),
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [{ type: 'other', message: 'status warning' }],
             response: {
               timestamp: new Date(),
@@ -1528,9 +1441,7 @@ describe('experimental_generateVideo', () => {
             if (statusCallCount === 1) {
               return {
                 status: 'pending' as const,
-                warnings: [
-                  { type: 'other' as const, message: 'pending warning' },
-                ],
+                warnings: [{ type: 'other' as const, message: 'pending warning' }],
                 providerMetadata: {
                   testProvider: {
                     requestId: 'req-001',
@@ -1546,9 +1457,7 @@ describe('experimental_generateVideo', () => {
 
             return {
               status: 'completed' as const,
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
               warnings: [{ type: 'other', message: 'completed warning' }],
               providerMetadata: {
                 testProvider: {
@@ -1582,11 +1491,9 @@ describe('experimental_generateVideo', () => {
     it('should use webhook flow when webhook is provided', async () => {
       let webhookUrlCapture: string | undefined;
       let resolveWebhook: (value: VideoModelV4OperationWebhook) => void;
-      const webhookReceived = new Promise<VideoModelV4OperationWebhook>(
-        resolve => {
-          resolveWebhook = resolve;
-        },
-      );
+      const webhookReceived = new Promise<VideoModelV4OperationWebhook>(resolve => {
+        resolveWebhook = resolve;
+      });
 
       const model = new MockVideoModelV4({
         doGenerate: undefined,
@@ -1597,7 +1504,7 @@ describe('experimental_generateVideo', () => {
         doStart: async options => {
           webhookUrlCapture = options.webhookUrl;
           // Simulate async webhook notification
-          setTimeout(() => resolveWebhook!({ headers: {}, body: {} }), 10);
+          setTimeout(() => resolveWebhook?.({ headers: {}, body: {} }), 10);
           return {
             operation: 'op-webhook',
             warnings: [],
@@ -1612,9 +1519,7 @@ describe('experimental_generateVideo', () => {
           expect(options.operation).toBe('op-webhook');
           return {
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1706,9 +1611,7 @@ describe('experimental_generateVideo', () => {
             }),
             doStatus: async () => ({
               status: 'completed' as const,
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
               warnings: [],
               response: {
                 timestamp: new Date(),
@@ -1736,11 +1639,9 @@ describe('experimental_generateVideo', () => {
     it('should use webhook over poll when both are provided', async () => {
       let statusCallCount = 0;
       let resolveWebhook: (value: VideoModelV4OperationWebhook) => void;
-      const webhookReceived = new Promise<VideoModelV4OperationWebhook>(
-        resolve => {
-          resolveWebhook = resolve;
-        },
-      );
+      const webhookReceived = new Promise<VideoModelV4OperationWebhook>(resolve => {
+        resolveWebhook = resolve;
+      });
 
       const model = new MockVideoModelV4({
         doGenerate: undefined,
@@ -1750,7 +1651,7 @@ describe('experimental_generateVideo', () => {
         },
         doStart: async options => {
           expect(options.webhookUrl).toBe('https://example.com/webhook');
-          setTimeout(() => resolveWebhook!({ headers: {}, body: {} }), 10);
+          setTimeout(() => resolveWebhook?.({ headers: {}, body: {} }), 10);
           return {
             operation: 'op-both',
             warnings: [],
@@ -1765,9 +1666,7 @@ describe('experimental_generateVideo', () => {
           statusCallCount++;
           return {
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1880,9 +1779,7 @@ describe('experimental_generateVideo', () => {
           statusCallCount++;
           return {
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1914,8 +1811,7 @@ describe('experimental_generateVideo', () => {
       expect(result.warnings).toContainEqual({
         type: 'unsupported',
         feature: 'webhook',
-        details:
-          'This model does not support webhooks. Falling back to polling.',
+        details: 'This model does not support webhooks. Falling back to polling.',
       });
     });
 
@@ -1926,7 +1822,7 @@ describe('experimental_generateVideo', () => {
         model: new MockVideoModelV4({
           maxVideosPerCall: 1,
           doGenerate: undefined,
-          doStart: async options => {
+          doStart: async _options => {
             startCallCount++;
             return {
               operation: `op-${startCallCount}`,
@@ -1940,9 +1836,7 @@ describe('experimental_generateVideo', () => {
           },
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             response: {
               timestamp: new Date(),
@@ -1978,9 +1872,7 @@ describe('experimental_generateVideo', () => {
           }),
           doStatus: async () => ({
             status: 'completed' as const,
-            videos: [
-              { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-            ],
+            videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             warnings: [],
             providerMetadata: {
               testProvider: {
@@ -2026,9 +1918,7 @@ describe('experimental_generateVideo', () => {
             capturedStatusOptions = options;
             return {
               status: 'completed' as const,
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
               warnings: [],
               response: {
                 timestamp: new Date(),
@@ -2062,9 +1952,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2101,9 +1989,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2136,9 +2022,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2180,9 +2064,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2212,9 +2094,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2252,17 +2132,12 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
         prompt: 'a clip',
-        inputReferences: [
-          'https://example.com/ref-1.png',
-          'https://example.com/ref-2.png',
-        ],
+        inputReferences: ['https://example.com/ref-1.png', 'https://example.com/ref-2.png'],
       });
 
       expect(capturedArgs.inputReferences).toStrictEqual([
@@ -2273,18 +2148,14 @@ describe('experimental_generateVideo', () => {
 
     it('should detect video media type from binary inputReferences without object form', async () => {
       let capturedArgs!: VideoModelV4CallOptions;
-      const mp4Bytes = new Uint8Array([
-        0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70,
-      ]);
+      const mp4Bytes = new Uint8Array([0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70]);
 
       await experimental_generateVideo({
         model: new MockVideoModelV4({
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2309,9 +2180,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2343,9 +2212,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2363,9 +2230,7 @@ describe('experimental_generateVideo', () => {
           doGenerate: async args => {
             capturedArgs = args;
             return createMockResponse({
-              videos: [
-                { type: 'base64', data: mp4Base64, mediaType: 'video/mp4' },
-              ],
+              videos: [{ type: 'base64', data: mp4Base64, mediaType: 'video/mp4' }],
             });
           },
         }),
@@ -2376,10 +2241,7 @@ describe('experimental_generateVideo', () => {
             frameType: 'first_frame',
           },
         ],
-        inputReferences: [
-          'https://example.com/ref-1.png',
-          'https://example.com/ref-2.png',
-        ],
+        inputReferences: ['https://example.com/ref-1.png', 'https://example.com/ref-2.png'],
       });
 
       expect(capturedArgs.frameImages).toStrictEqual([

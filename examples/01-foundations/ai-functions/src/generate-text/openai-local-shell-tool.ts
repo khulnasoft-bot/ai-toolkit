@@ -1,9 +1,9 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, stepCountIs } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 run(async () => {
-  const result = await generateText({
+  const _result = await generateText({
     model: openai.responses('gpt-5-codex'),
     tools: {
       local_shell: openai.tools.localShell({

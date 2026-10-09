@@ -1,11 +1,11 @@
+import { generateText } from '@ai-toolkit/ai';
 import {
-  azure,
   type AzureResponsesSourceDocumentProviderMetadata,
   type AzureResponsesTextProviderMetadata,
+  azure,
 } from '@ai-toolkit/azure';
-import { generateText } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
 import { downloadAzureContainerFile } from '../lib/download-azure-container-file';
+import { run } from '../lib/run';
 
 /**
  * prepare
@@ -64,9 +64,6 @@ run(async () => {
     }
   }
   for await (const containerFile of containerfileList) {
-    await downloadAzureContainerFile(
-      containerFile.containerId,
-      containerFile.fileId,
-    );
+    await downloadAzureContainerFile(containerFile.containerId, containerFile.fileId);
   }
 });

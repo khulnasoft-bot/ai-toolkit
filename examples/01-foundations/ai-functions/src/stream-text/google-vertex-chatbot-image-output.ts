@@ -1,6 +1,6 @@
-import { vertex } from '@ai-toolkit/google-vertex';
-import { ModelMessage, streamText } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
+import { type ModelMessage, streamText } from '@ai-toolkit/ai';
+import { vertex } from '@ai-toolkit/google-vertex';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 
@@ -28,7 +28,7 @@ run(async () => {
     for await (const delta of result.fullStream) {
       switch (delta.type) {
         case 'reasoning-delta': {
-          process.stdout.write('\x1b[34m' + delta.text + '\x1b[0m');
+          process.stdout.write(`\x1b[34m${delta.text}\x1b[0m`);
           break;
         }
         case 'text-delta': {

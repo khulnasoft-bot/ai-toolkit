@@ -21,25 +21,17 @@ export default function Page() {
             <div className="flex flex-col gap-2">
               {message.parts.map((part, index) => {
                 if (part.type === 'text') {
-                  return <div key={index}>{part.text}</div>;
+                  return <div key={`${part.type}-${index}`}>{part.text}</div>;
                 }
-                if (
-                  part.type === 'file' &&
-                  part.mediaType?.startsWith('image/')
-                ) {
+                if (part.type === 'file' && part.mediaType?.startsWith('image/')) {
                   return (
-                    <div key={index}>
-                      <img
-                        className="rounded-md w-60"
-                        src={part.url}
-                        alt={part.filename}
-                      />
-                      <span className="text-sm text-zinc-500">
-                        {part.filename}
-                      </span>
+                    <div key={`${part.type}-${index}`}>
+                      <img className="rounded-md w-60" src={part.url} alt={part.filename} />
+                      <span className="text-sm text-zinc-500">{part.filename}</span>
                     </div>
                   );
                 }
+                return null;
               })}
             </div>
           </div>
@@ -72,9 +64,7 @@ export default function Page() {
                         src={URL.createObjectURL(attachment)}
                         alt={attachment.name}
                       />
-                      <span className="text-sm text-zinc-500">
-                        {attachment.name}
-                      </span>
+                      <span className="text-sm text-zinc-500">{attachment.name}</span>
                     </div>
                   );
                 } else if (type.startsWith('text/')) {
@@ -88,6 +78,7 @@ export default function Page() {
                     </div>
                   );
                 }
+                return null;
               })
             : ''}
         </div>

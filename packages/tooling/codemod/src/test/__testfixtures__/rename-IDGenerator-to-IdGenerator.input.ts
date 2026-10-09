@@ -1,24 +1,23 @@
 // @ts-nocheck
-import { IDGenerator } from 'ai';
-import { type IDGenerator as GeneratorType, someFunction, otherFunction } from 'ai';
+import type { IDGenerator } from 'ai';
 
 // Variable declarations with type annotations
 const generator1: IDGenerator = createGenerator();
 let generator2: IDGenerator;
-var generator3: IDGenerator = null;
+var _generator3: IDGenerator = null;
 
 // Function declarations with IDGenerator parameters
-function processGenerator(gen: IDGenerator): void {
+function _processGenerator(gen: IDGenerator): void {
   console.log(gen);
 }
 
 // Arrow functions with IDGenerator parameters
-const handleGenerator = (gen: IDGenerator): IDGenerator => {
+const _handleGenerator = (gen: IDGenerator): IDGenerator => {
   return gen;
 };
 
 // Function return types
-function createCustomGenerator(): IDGenerator {
+function _createCustomGenerator(): IDGenerator {
   return {} as IDGenerator;
 }
 
@@ -46,7 +45,7 @@ type GeneratorArray = Array<IDGenerator>;
 type GeneratorMap = Map<string, IDGenerator>;
 
 // Object type annotations
-const config: {
+const _config: {
   primary: IDGenerator;
   secondary?: IDGenerator;
 } = {
@@ -55,5 +54,6 @@ const config: {
 };
 
 // Should NOT be transformed - different package
-import { IDGenerator as OtherGenerator } from 'other-package';
-const otherGen: OtherGenerator = null;
+import type { IDGenerator as OtherGenerator } from 'other-package';
+
+const _otherGen: OtherGenerator = null;

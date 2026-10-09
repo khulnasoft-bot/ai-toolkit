@@ -1,7 +1,7 @@
+import { createUIMessageStreamResponse, type UIMessage } from '@ai-toolkit/ai';
 import { toBaseMessages, toUIMessageStream } from '@ai-toolkit/langchain';
+import { MessagesAnnotation, StateGraph } from '@langchain/langgraph';
 import { ChatOpenAI } from '@langchain/openai';
-import { createUIMessageStreamResponse, UIMessage } from '@ai-toolkit/ai';
-import { StateGraph, MessagesAnnotation } from '@langchain/langgraph';
 import { NextResponse } from 'next/server';
 
 /**
@@ -73,8 +73,7 @@ export async function POST(req: Request) {
       stream: toUIMessageStream(stream as unknown as ReadableStream),
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'An unknown error occurred';
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

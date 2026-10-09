@@ -1,19 +1,18 @@
 'use client';
 
-import { XaiWebSearchMessage } from '@/agent/xai-web-search-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { XaiWebSearchMessage } from '@/agent/xai-web-search-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import SourcesView from '@/components/sources-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function ChatXaiWebSearch() {
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<XaiWebSearchMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-xai-web-search',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate } = useChat<XaiWebSearchMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-xai-web-search',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -21,34 +20,33 @@ export default function ChatXaiWebSearch() {
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap mb-4">
-          <div className="font-bold">
-            {message.role === 'user' ? 'User: ' : 'AI: '}
-          </div>
-          {message.parts.map((part, index) => {
+          <div className="font-bold">{message.role === 'user' ? 'User: ' : 'AI: '}</div>
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'tool-web_search': {
                 return (
-                  <div key={index} className="text-sm text-gray-500 italic">
+                  <div key={part.toolCallId} className="text-sm text-gray-500 italic">
                     [Searching web...]
                   </div>
                 );
               }
               case 'tool-x_search': {
                 return (
-                  <div key={index} className="text-sm text-gray-500 italic">
+                  <div key={part.toolCallId} className="text-sm text-gray-500 italic">
                     [Searching X...]
                   </div>
                 );
               }
+              default: {
+                return null;
+              }
             }
           })}
 
-          <SourcesView
-            sources={message.parts.filter(part => part.type === 'source-url')}
-          />
+          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
         </div>
       ))}
 

@@ -1,6 +1,6 @@
 import { InvalidArgumentError } from '@ai-toolkit/provider';
+import type { FlexibleSchema } from './schema';
 import { safeValidateTypes } from './validate-types';
-import { FlexibleSchema } from './schema';
 
 export async function parseProviderOptions<OPTIONS>({
   provider,

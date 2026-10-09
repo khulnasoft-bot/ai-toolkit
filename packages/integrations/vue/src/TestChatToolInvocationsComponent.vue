@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { isStaticToolUIPart } from 'ai-toolkit';
 import { Chat } from './chat.vue';
 
-const chat = new Chat({});
+const _chat = new Chat({});
 </script>
 
 <template>

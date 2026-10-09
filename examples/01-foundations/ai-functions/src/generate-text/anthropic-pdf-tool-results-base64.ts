@@ -1,9 +1,9 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
 import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
-import { z } from 'zod';
-import path from 'path';
-import fs from 'fs/promises';
 import { anthropic } from '@ai-toolkit/anthropic';
+import { z } from 'zod';
+import { run } from '../lib/run';
 
 run(async () => {
   const readPDFDocument = tool({

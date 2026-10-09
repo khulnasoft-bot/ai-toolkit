@@ -8,8 +8,6 @@ describe('claudeCodeHarness', () => {
     expect(claudeCodeHarness.getBootstrapIdentity()).toContain(
       `harness:${claudeCodeHarness.harnessId}`,
     );
-    expect(claudeCodeHarness.clientAppId).toContain(
-      'ai-toolkit/harness-claude-code',
-    );
+    expect(claudeCodeHarness.clientAppId).toContain('ai-toolkit/harness-claude-code');
   });
 });

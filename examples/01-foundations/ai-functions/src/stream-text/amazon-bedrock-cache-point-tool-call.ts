@@ -1,5 +1,5 @@
+import { type ModelMessage, streamText, tool } from '@ai-toolkit/ai';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { streamText, tool, ModelMessage } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -142,20 +142,18 @@ run(async () => {
     },
   });
 
-  let fullResponse = '';
+  let _fullResponse = '';
 
   for await (const delta of result.fullStream) {
     switch (delta.type) {
       case 'text-delta': {
-        fullResponse += delta.text;
+        _fullResponse += delta.text;
         process.stdout.write(delta.text);
         break;
       }
 
       case 'tool-call': {
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
 

@@ -1,20 +1,19 @@
 'use client';
 
-import { DeepSeekToolsAgentMessage } from '@/agent/deepseek-tools-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { DeepSeekToolsAgentMessage } from '@/agent/deepseek-tools-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import WeatherView from '@/components/tool/weather-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function ChatDeepSeekTools() {
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<DeepSeekToolsAgentMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-deepseek-tools',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate } = useChat<DeepSeekToolsAgentMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-deepseek-tools',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -23,16 +22,19 @@ export default function ChatDeepSeekTools() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={index} />;
+                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
               }
               case 'tool-weather': {
-                return <WeatherView invocation={part} key={index} />;
+                return <WeatherView invocation={part} key={part.toolCallId} />;
+              }
+              default: {
+                return null;
               }
             }
           })}

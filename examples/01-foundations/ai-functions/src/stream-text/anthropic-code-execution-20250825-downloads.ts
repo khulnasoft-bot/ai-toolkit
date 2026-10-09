@@ -1,7 +1,7 @@
-import { anthropic } from '@ai-toolkit/anthropic';
+import * as fs from 'node:fs';
 import { streamText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
-import * as fs from 'fs';
 
 run(async () => {
   const result = streamText({
@@ -46,10 +46,7 @@ run(async () => {
   process.stdout.write('\n\n');
 
   const fileIdList = (await result.staticToolResults).flatMap(t => {
-    if (
-      t.toolName === 'code_execution' &&
-      t.output.type === 'bash_code_execution_result'
-    ) {
+    if (t.toolName === 'code_execution' && t.output.type === 'bash_code_execution_result') {
       return t.output.content.map(o => o.file_id);
     }
     return [];
@@ -85,15 +82,10 @@ async function downloadFile(file: string) {
       },
     });
 
-    const [infoResponse, downloadResponse] = await Promise.all([
-      infoPromise,
-      downloadPromise,
-    ]);
+    const [infoResponse, downloadResponse] = await Promise.all([infoPromise, downloadPromise]);
 
     if (!infoResponse.ok) {
-      throw new Error(
-        `HTTP Error: ${infoResponse.status} ${infoResponse.statusText}`,
-      );
+      throw new Error(`HTTP Error: ${infoResponse.status} ${infoResponse.statusText}`);
     }
 
     const {
@@ -109,9 +101,7 @@ async function downloadFile(file: string) {
     } = await infoResponse.json();
 
     if (!downloadResponse.ok) {
-      throw new Error(
-        `HTTP Error: ${downloadResponse.status} ${downloadResponse.statusText}`,
-      );
+      throw new Error(`HTTP Error: ${downloadResponse.status} ${downloadResponse.statusText}`);
     }
 
     // get as binary data

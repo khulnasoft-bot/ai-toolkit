@@ -1,13 +1,11 @@
 import { AITOOLKITError } from '@ai-toolkit/provider';
-import { SingleRequestTextStreamPart } from '../generate-text/run-tools-transformation';
+import type { SingleRequestTextStreamPart } from '../generate-text/run-tools-transformation';
 
 const name = 'AI_InvalidStreamPartError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class InvalidStreamPartError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly chunk: SingleRequestTextStreamPart<any>;
 
   constructor({

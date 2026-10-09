@@ -1,8 +1,8 @@
-import { google } from '@ai-toolkit/google';
 import { streamText } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({

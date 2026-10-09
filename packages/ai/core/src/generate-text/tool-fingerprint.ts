@@ -27,9 +27,7 @@ function tagDescription(description: unknown) {
  * later fetches with {@link detectToolDrift} to catch MCP tool-definition drift
  * ("rug pull"). Baseline storage and the drift response are the app's concern.
  */
-export async function fingerprintTools(
-  tools: ToolSet,
-): Promise<Record<string, string>> {
+export async function fingerprintTools(tools: ToolSet): Promise<Record<string, string>> {
   const entries = await Promise.all(
     Object.keys(tools).map(async name => {
       const tool = tools[name];

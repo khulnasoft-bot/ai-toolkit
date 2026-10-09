@@ -1,5 +1,5 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -11,8 +11,7 @@ run(async () => {
 
   const result = streamText({
     model: anthropic('claude-3-haiku-20240307'),
-    prompt:
-      'Write a short poem about coding. Include reasoning about your creative process.',
+    prompt: 'Write a short poem about coding. Include reasoning about your creative process.',
     includeRawChunks: true,
     onChunk({ chunk }) {
       if (chunk.type === 'text-delta') {
@@ -28,7 +27,7 @@ run(async () => {
     },
   });
 
-  for await (const textPart of result.textStream) {
+  for await (const _textPart of result.textStream) {
   }
 
   console.log();

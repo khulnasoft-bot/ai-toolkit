@@ -1,6 +1,6 @@
-import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
+import fs from 'node:fs';
 import { stepCountIs, streamText } from '@ai-toolkit/ai';
-import fs from 'fs';
+import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
 import { run } from '../lib/run';
 
@@ -17,9 +17,7 @@ run(async () => {
           if (action === 'screenshot') {
             return {
               type: 'image',
-              data: fs
-                .readFileSync('./data/screenshot-editor.png')
-                .toString('base64'),
+              data: fs.readFileSync('./data/screenshot-editor.png').toString('base64'),
             };
           }
 

@@ -1,9 +1,9 @@
 import type { LanguageModelV4FilePart } from '@ai-toolkit/provider';
 import {
-  isBuffer,
-  isProviderReference,
   type DataContent,
   type FilePart,
+  isBuffer,
+  isProviderReference,
   type ProviderReference,
 } from '@ai-toolkit/provider-utils';
 import { InvalidDataContentError } from './invalid-data-content-error';
@@ -14,9 +14,7 @@ type TaggedFileData = Extract<FilePart['data'], { type: string }>;
 function isTaggedFileData(value: unknown): value is TaggedFileData {
   if (typeof value !== 'object' || value === null) return false;
   const type = (value as { type?: unknown }).type;
-  return (
-    type === 'data' || type === 'url' || type === 'reference' || type === 'text'
-  );
+  return type === 'data' || type === 'url' || type === 'reference' || type === 'text';
 }
 
 type ConvertResult = {
@@ -70,16 +68,11 @@ function convertInlineDataToFilePartData(content: DataContent): ConvertResult {
  * Returns the tagged `data` together with the resolved mediaType (extracted
  * from a `data:` URL when applicable).
  */
-export function convertToLanguageModelV4FilePart(
-  content: FilePart['data'],
-): ConvertResult {
+export function convertToLanguageModelV4FilePart(content: FilePart['data']): ConvertResult {
   if (isTaggedFileData(content)) {
     switch (content.type) {
       case 'data':
-        if (
-          typeof content.data === 'string' &&
-          content.data.startsWith('data:')
-        ) {
+        if (typeof content.data === 'string' && content.data.startsWith('data:')) {
           throw new InvalidDataContentError({
             content: content.data,
             message:

@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -28,5 +28,5 @@ run(async () => {
   console.log(result.text);
   console.log();
   console.log('REQUEST');
-  console.log(JSON.stringify(result.request!.body, null, 2));
+  console.log(JSON.stringify(result.request?.body, null, 2));
 });

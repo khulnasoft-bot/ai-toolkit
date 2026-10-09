@@ -1,8 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
-import {
-  ChatAddToolApproveResponseFunction,
-  UIToolInvocation,
-} from '@ai-toolkit/ai';
+import type { ChatAddToolApproveResponseFunction, UIToolInvocation } from '@ai-toolkit/ai';
+import type { openai } from '@ai-toolkit/openai';
 
 export default function ShellView({
   invocation,
@@ -26,13 +23,11 @@ export default function ShellView({
 
           <div className="p-6">
             <div className="mb-4">
-              <div className="mb-2 text-sm font-medium text-black">
-                Commands to execute:
-              </div>
+              <div className="mb-2 text-sm font-medium text-black">Commands to execute:</div>
               <div className="space-y-2">
                 {commands.map((cmd, index) => (
                   <pre
-                    key={index}
+                    key={cmd}
                     className="overflow-x-auto p-4 text-sm text-black whitespace-pre-wrap bg-gray-100 rounded-lg border border-gray-300"
                   >
                     {index + 1}. {cmd}
@@ -43,6 +38,7 @@ export default function ShellView({
 
             <div className="flex gap-2">
               <button
+                type="button"
                 className="px-4 py-2 text-white bg-blue-500 rounded transition-colors hover:bg-blue-600"
                 onClick={() =>
                   addToolApprovalResponse({
@@ -54,6 +50,7 @@ export default function ShellView({
                 Approve
               </button>
               <button
+                type="button"
                 className="px-4 py-2 text-white bg-red-500 rounded transition-colors hover:bg-red-600"
                 onClick={() =>
                   addToolApprovalResponse({
@@ -80,13 +77,11 @@ export default function ShellView({
 
           <div className="p-6">
             <div className="mb-4">
-              <div className="mb-2 text-sm font-medium text-black">
-                Commands:
-              </div>
+              <div className="mb-2 text-sm font-medium text-black">Commands:</div>
               <div className="space-y-2">
                 {commands.map((cmd, index) => (
                   <pre
-                    key={index}
+                    key={cmd}
                     className="overflow-x-auto p-4 text-sm text-black whitespace-pre-wrap bg-gray-100 rounded-lg border border-gray-300"
                   >
                     {index + 1}. {cmd}
@@ -106,7 +101,7 @@ export default function ShellView({
         </div>
       );
 
-    case 'output-available':
+    case 'output-available': {
       const outputs = invocation.output?.output || [];
 
       return (
@@ -124,7 +119,7 @@ export default function ShellView({
                 const outcome = output?.outcome;
 
                 return (
-                  <div key={index} className="space-y-2">
+                  <div key={cmd} className="space-y-2">
                     <div>
                       <div className="mb-2 text-sm font-medium text-black">
                         Command {index + 1}:
@@ -138,9 +133,7 @@ export default function ShellView({
                       <div className="space-y-2">
                         {outcome.type === 'timeout' ? (
                           <div className="p-3 bg-red-50 border border-red-300 rounded-lg">
-                            <div className="text-sm font-medium text-red-600">
-                              ⏱ Timeout
-                            </div>
+                            <div className="text-sm font-medium text-red-600">⏱ Timeout</div>
                           </div>
                         ) : (
                           <div className="p-3 bg-gray-100 border border-gray-300 rounded-lg">
@@ -152,9 +145,7 @@ export default function ShellView({
 
                         {output.stdout && (
                           <div>
-                            <div className="mb-2 text-sm font-medium text-black">
-                              Output:
-                            </div>
+                            <div className="mb-2 text-sm font-medium text-black">Output:</div>
                             <div className="p-3 bg-gray-100 rounded-lg border border-gray-300">
                               <div className="font-mono text-sm text-black whitespace-pre-wrap">
                                 {output.stdout}
@@ -165,9 +156,7 @@ export default function ShellView({
 
                         {output.stderr && (
                           <div>
-                            <div className="mb-2 text-sm font-medium text-black">
-                              Error:
-                            </div>
+                            <div className="mb-2 text-sm font-medium text-black">Error:</div>
                             <div className="p-3 bg-red-50 rounded-lg border border-red-300">
                               <div className="font-mono text-sm text-red-600 whitespace-pre-wrap">
                                 {output.stderr}
@@ -184,6 +173,7 @@ export default function ShellView({
           </div>
         </div>
       );
+    }
 
     case 'output-denied':
       return (
@@ -196,13 +186,11 @@ export default function ShellView({
 
           <div className="p-6">
             <div className="mb-4">
-              <div className="mb-2 text-sm font-medium text-black">
-                Commands:
-              </div>
+              <div className="mb-2 text-sm font-medium text-black">Commands:</div>
               <div className="space-y-2">
                 {commands.map((cmd, index) => (
                   <pre
-                    key={index}
+                    key={cmd}
                     className="overflow-x-auto p-4 text-sm text-black whitespace-pre-wrap bg-gray-100 rounded-lg border border-gray-300"
                   >
                     {index + 1}. {cmd}
@@ -211,9 +199,7 @@ export default function ShellView({
               </div>
             </div>
 
-            <div className="text-sm font-medium text-red-600">
-              Execution was denied by user.
-            </div>
+            <div className="text-sm font-medium text-red-600">Execution was denied by user.</div>
           </div>
         </div>
       );

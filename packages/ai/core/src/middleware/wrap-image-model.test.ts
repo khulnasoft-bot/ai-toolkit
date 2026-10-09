@@ -1,10 +1,7 @@
-import {
-  ImageModelV3CallOptions,
-  ImageModelV3Middleware,
-} from '@ai-toolkit/provider';
+import type { ImageModelV3CallOptions, ImageModelV3Middleware } from '@ai-toolkit/provider';
+import { describe, expect, it, vi } from 'vitest';
 import { wrapImageModel } from '../middleware/wrap-image-model';
 import { MockImageModelV3 } from '../test/mock-image-model-v3';
-import { describe, it, expect, vi } from 'vitest';
 
 describe('wrapImageModel', () => {
   describe('model property', () => {
@@ -186,9 +183,7 @@ describe('wrapImageModel', () => {
       }),
     });
 
-    const wrapGenerate = vi
-      .fn()
-      .mockImplementation(({ doGenerate }) => doGenerate());
+    const wrapGenerate = vi.fn().mockImplementation(({ doGenerate }) => doGenerate());
 
     const wrappedModel = wrapImageModel({
       model: mockModel,
@@ -218,8 +213,8 @@ describe('wrapImageModel', () => {
     });
   });
 
-  it('should support models that use \"this\" context in maxImagesPerCall', async () => {
-    let maxImagesPerCallThis: unknown = undefined;
+  it('should support models that use "this" context in maxImagesPerCall', async () => {
+    let maxImagesPerCallThis: unknown;
 
     class MockImageModelWithThisContext extends MockImageModelV3 {
       readonly value = 42;
@@ -340,25 +335,21 @@ describe('wrapImageModel', () => {
         }),
       });
 
-      const wrapGenerate1 = vi
-        .fn()
-        .mockImplementation(async ({ doGenerate }) => {
-          const result = await doGenerate();
-          return {
-            ...result,
-            wrapped: `wrapGenerate1(${(result as any).wrapped ?? 'result'})`,
-          };
-        });
+      const wrapGenerate1 = vi.fn().mockImplementation(async ({ doGenerate }) => {
+        const result = await doGenerate();
+        return {
+          ...result,
+          wrapped: `wrapGenerate1(${(result as any).wrapped ?? 'result'})`,
+        };
+      });
 
-      const wrapGenerate2 = vi
-        .fn()
-        .mockImplementation(async ({ doGenerate }) => {
-          const result = await doGenerate();
-          return {
-            ...result,
-            wrapped: `wrapGenerate2(${(result as any).wrapped ?? 'result'})`,
-          };
-        });
+      const wrapGenerate2 = vi.fn().mockImplementation(async ({ doGenerate }) => {
+        const result = await doGenerate();
+        return {
+          ...result,
+          wrapped: `wrapGenerate2(${(result as any).wrapped ?? 'result'})`,
+        };
+      });
 
       const wrappedModel = wrapImageModel({
         model: mockModel,
@@ -387,9 +378,7 @@ describe('wrapImageModel', () => {
 
       const result = await wrappedModel.doGenerate(params);
 
-      expect((result as any).wrapped).toBe(
-        'wrapGenerate1(wrapGenerate2(result))',
-      );
+      expect((result as any).wrapped).toBe('wrapGenerate1(wrapGenerate2(result))');
       expect(wrapGenerate1).toHaveBeenCalled();
       expect(wrapGenerate2).toHaveBeenCalled();
     });
@@ -405,10 +394,7 @@ describe('wrapImageModel', () => {
         wrapStream: vi.fn(),
       };
 
-      const middlewares = [
-        middleware1,
-        middleware2,
-      ] as ImageModelV3Middleware[];
+      const middlewares = [middleware1, middleware2] as ImageModelV3Middleware[];
 
       wrapImageModel({
         model: new MockImageModelV3(),

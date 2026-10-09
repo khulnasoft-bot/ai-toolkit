@@ -1,18 +1,18 @@
-import { cohere } from '@ai-toolkit/cohere';
 import {
+  type ModelMessage,
   streamText,
-  ModelMessage,
-  ToolCallPart,
-  ToolResultPart,
+  type ToolCallPart,
+  type ToolResultPart,
   tool,
 } from '@ai-toolkit/ai';
+import { cohere } from '@ai-toolkit/cohere';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
 const messages: ModelMessage[] = [];
 
 run(async () => {
-  let toolResponseAvailable = false;
+  let _toolResponseAvailable = false;
 
   const result = streamText({
     model: cohere('command-r-plus'),
@@ -46,9 +46,7 @@ run(async () => {
       case 'tool-call': {
         toolCalls.push(delta);
 
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
 
@@ -81,5 +79,5 @@ run(async () => {
     messages.push({ role: 'tool', content: toolResponses });
   }
 
-  toolResponseAvailable = toolCalls.length > 0;
+  _toolResponseAvailable = toolCalls.length > 0;
 });

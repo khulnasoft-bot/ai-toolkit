@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
-import { deepinfra } from '@ai-toolkit/deepinfra';
 import { generateImage } from '@ai-toolkit/ai';
+import { deepinfra } from '@ai-toolkit/deepinfra';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 
@@ -17,8 +17,7 @@ run(async () => {
     },
   ]);
 
-  const prompt =
-    'A sunlit indoor lounge area with a pool containing a flamingo';
+  const prompt = 'A sunlit indoor lounge area with a pool containing a flamingo';
   console.log(`PROMPT: ${prompt}`);
 
   const { images } = await generateImage({

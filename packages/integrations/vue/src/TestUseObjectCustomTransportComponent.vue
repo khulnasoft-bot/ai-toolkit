@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { experimental_useObject } from './use-object';
 import { z } from 'zod/v4';
-import { ref, reactive } from 'vue';
+import { experimental_useObject } from './use-object';
 
 const { object, error, submit, isLoading, stop, clear } = experimental_useObject({
   api: '/api/use-object',

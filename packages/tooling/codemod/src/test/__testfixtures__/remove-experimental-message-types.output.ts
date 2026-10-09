@@ -1,15 +1,15 @@
 // @ts-nocheck
-import { CoreMessage, CoreUserMessage, CoreAssistantMessage, CoreToolMessage } from 'ai';
+import type { CoreAssistantMessage, CoreMessage, CoreToolMessage, CoreUserMessage } from 'ai';
 
-function processMessage(message: CoreMessage) {
+function _processMessage(message: CoreMessage) {
   console.log(message);
 }
 
-function handleUser(msg: CoreUserMessage) {
+function _handleUser(msg: CoreUserMessage) {
   console.log(msg);
 }
 
-const assistant: CoreAssistantMessage = {
+const _assistant: CoreAssistantMessage = {
   role: 'assistant',
   content: 'Hello',
 };

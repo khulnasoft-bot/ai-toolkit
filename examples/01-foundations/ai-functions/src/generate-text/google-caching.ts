@@ -1,6 +1,6 @@
-import { google } from '@ai-toolkit/google';
-import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { run } from '../lib/run';
 
 const errorMessage = fs.readFileSync('data/error-message.txt', 'utf8');

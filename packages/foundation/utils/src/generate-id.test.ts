@@ -1,7 +1,6 @@
 import { InvalidArgumentError } from '@ai-toolkit/provider';
-import { expect, it } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { createIdGenerator, generateId } from './generate-id';
-import { describe } from 'vitest';
 
 describe('createIdGenerator', () => {
   it('should generate an ID with the correct length', () => {
@@ -15,9 +14,7 @@ describe('createIdGenerator', () => {
   });
 
   it('should throw an error if the separator is part of the alphabet', () => {
-    expect(() => createIdGenerator({ separator: 'a', prefix: 'b' })).toThrow(
-      InvalidArgumentError,
-    );
+    expect(() => createIdGenerator({ separator: 'a', prefix: 'b' })).toThrow(InvalidArgumentError);
   });
 });
 

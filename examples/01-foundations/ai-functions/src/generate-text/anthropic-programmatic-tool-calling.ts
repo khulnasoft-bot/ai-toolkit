@@ -1,8 +1,5 @@
-import {
-  anthropic,
-  forwardAnthropicContainerIdFromLastStep,
-} from '@ai-toolkit/anthropic';
 import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
+import { anthropic, forwardAnthropicContainerIdFromLastStep } from '@ai-toolkit/anthropic';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

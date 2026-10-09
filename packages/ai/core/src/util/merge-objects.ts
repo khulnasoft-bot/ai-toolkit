@@ -35,15 +35,14 @@ export function mergeObjects<T extends object, U extends object>(
 
   // Iterate through all keys in the source object
   for (const key in overrides) {
-    if (Object.prototype.hasOwnProperty.call(overrides, key)) {
+    if (Object.hasOwn(overrides, key)) {
       const overridesValue = overrides[key];
 
       // Skip if the overrides value is undefined
       if (overridesValue === undefined) continue;
 
       // Get the base value if it exists
-      const baseValue =
-        key in base ? base[key as unknown as keyof T] : undefined;
+      const baseValue = key in base ? base[key as unknown as keyof T] : undefined;
 
       // Check if both values are objects that can be deeply merged
       const isSourceObject =

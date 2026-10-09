@@ -1,7 +1,7 @@
-import { google, GoogleGenerativeAIProviderOptions } from '@ai-toolkit/google';
 import { stepCountIs, streamText } from '@ai-toolkit/ai';
-import { weatherTool } from '../tools/weather-tool';
+import { type GoogleGenerativeAIProviderOptions, google } from '@ai-toolkit/google';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({
@@ -21,7 +21,7 @@ run(async () => {
 
   for await (const part of result.fullStream) {
     if (part.type === 'reasoning-delta') {
-      process.stdout.write('\x1b[34m' + part.text + '\x1b[0m');
+      process.stdout.write(`\x1b[34m${part.text}\x1b[0m`);
     } else if (part.type === 'text-delta') {
       process.stdout.write(part.text);
     }

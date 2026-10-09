@@ -1,21 +1,20 @@
-import { openai } from '@ai-toolkit/openai';
 import {
-  createUIMessageStreamResponse,
-  streamText,
-  createUIMessageStream,
   convertToModelMessages,
+  createUIMessageStream,
+  createUIMessageStreamResponse,
   stepCountIs,
+  streamText,
 } from '@ai-toolkit/ai';
-import { processToolCalls } from './utils';
+import { openai } from '@ai-toolkit/openai';
 import { tools } from './tools';
-import { HumanInTheLoopUIMessage } from './types';
+import type { HumanInTheLoopUIMessage } from './types';
+import { processToolCalls } from './utils';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: HumanInTheLoopUIMessage[] } =
-    await req.json();
+  const { messages }: { messages: HumanInTheLoopUIMessage[] } = await req.json();
 
   const stream = createUIMessageStream({
     originalMessages: messages,
@@ -46,11 +45,9 @@ export async function POST(req: Request) {
         stopWhen: stepCountIs(5),
       });
 
-      writer.merge(
-        result.toUIMessageStream({ originalMessages: processedMessages }),
-      );
+      writer.merge(result.toUIMessageStream({ originalMessages: processedMessages }));
     },
-    onFinish: ({}) => {
+    onFinish: () => {
       // save messages here
       console.log('Finished!');
     },

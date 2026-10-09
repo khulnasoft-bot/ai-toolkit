@@ -16,9 +16,7 @@ export const tools = {
     description: 'Convert temperature between Fahrenheit and Celsius',
     inputSchema: z.object({
       temperature: z.number().describe('The temperature value to convert'),
-      from: z
-        .enum(['fahrenheit', 'celsius'])
-        .describe('The unit to convert from'),
+      from: z.enum(['fahrenheit', 'celsius']).describe('The unit to convert from'),
       to: z.enum(['fahrenheit', 'celsius']).describe('The unit to convert to'),
     }),
     execute: async ({ temperature, from, to }) => {

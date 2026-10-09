@@ -1,4 +1,4 @@
-import { LanguageModelV3FinishReason } from '@ai-toolkit/provider';
+import type { LanguageModelV3FinishReason } from '@ai-toolkit/provider';
 
 export function mapPerplexityFinishReason(
   finishReason: string | null | undefined,

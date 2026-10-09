@@ -14,9 +14,7 @@ describe('getErrorMessage', () => {
 
   describe('string errors', () => {
     it('should return the string as-is', () => {
-      expect(getErrorMessage('something went wrong')).toBe(
-        'something went wrong',
-      );
+      expect(getErrorMessage('something went wrong')).toBe('something went wrong');
     });
 
     it('should return an empty string as-is', () => {
@@ -26,9 +24,7 @@ describe('getErrorMessage', () => {
 
   describe('Error instances', () => {
     it('should include the Error type prefix for a basic Error', () => {
-      expect(getErrorMessage(new Error('API crashed'))).toBe(
-        'Error: API crashed',
-      );
+      expect(getErrorMessage(new Error('API crashed'))).toBe('Error: API crashed');
     });
 
     it('should include the TypeError prefix', () => {
@@ -38,9 +34,7 @@ describe('getErrorMessage', () => {
     });
 
     it('should include the RangeError prefix', () => {
-      expect(getErrorMessage(new RangeError('out of bounds'))).toBe(
-        'RangeError: out of bounds',
-      );
+      expect(getErrorMessage(new RangeError('out of bounds'))).toBe('RangeError: out of bounds');
     });
 
     it('should return just the error name when message is empty', () => {

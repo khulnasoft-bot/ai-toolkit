@@ -1,18 +1,14 @@
 import {
-  TranscriptionModelV3,
-  SpeechModelV3,
-  ProviderV3,
   NoSuchModelError,
+  type ProviderV3,
+  type SpeechModelV3,
+  type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
-import {
-  FetchFunction,
-  loadApiKey,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
-import { ElevenLabsTranscriptionModel } from './elevenlabs-transcription-model';
-import { ElevenLabsTranscriptionModelId } from './elevenlabs-transcription-options';
+import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { ElevenLabsSpeechModel } from './elevenlabs-speech-model';
-import { ElevenLabsSpeechModelId } from './elevenlabs-speech-options';
+import type { ElevenLabsSpeechModelId } from './elevenlabs-speech-options';
+import { ElevenLabsTranscriptionModel } from './elevenlabs-transcription-model';
+import type { ElevenLabsTranscriptionModelId } from './elevenlabs-transcription-options';
 import { VERSION } from './version';
 
 export interface ElevenLabsProvider extends ProviderV3 {
@@ -60,9 +56,7 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create an ElevenLabs provider instance.
  */
-export function createElevenLabs(
-  options: ElevenLabsProviderSettings = {},
-): ElevenLabsProvider {
+export function createElevenLabs(options: ElevenLabsProviderSettings = {}): ElevenLabsProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {
@@ -92,11 +86,9 @@ export function createElevenLabs(
       fetch: options.fetch,
     });
 
-  const provider = function (modelId: ElevenLabsTranscriptionModelId) {
-    return {
-      transcription: createTranscriptionModel(modelId),
-    };
-  };
+  const provider = (modelId: ElevenLabsTranscriptionModelId) => ({
+    transcription: createTranscriptionModel(modelId),
+  });
 
   provider.specificationVersion = 'v3' as const;
   provider.transcription = createTranscriptionModel;

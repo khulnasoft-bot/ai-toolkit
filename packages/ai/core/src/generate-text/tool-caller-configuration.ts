@@ -1,6 +1,6 @@
 import {
-  experimental_getToolCaller,
   type Experimental_ToolCallerTool,
+  experimental_getToolCaller,
   type Tool,
   type ToolSet,
 } from '@ai-toolkit/provider-utils';
@@ -9,16 +9,12 @@ import { InvalidArgumentError } from '../error/invalid-argument-error';
 const DIRECT_TOOL_CALL = 'AI_SDK_DIRECT_TOOL_CALL';
 
 type ToolCallerName<TOOLS extends ToolSet> = {
-  [NAME in keyof TOOLS]: TOOLS[NAME] extends Experimental_ToolCallerTool
-    ? NAME
-    : never;
+  [NAME in keyof TOOLS]: TOOLS[NAME] extends Experimental_ToolCallerTool ? NAME : never;
 }[keyof TOOLS] &
   string;
 
 export type Experimental_ToolCallers<TOOLS extends ToolSet> = {
-  [NAME in keyof TOOLS]?: ReadonlyArray<
-    'AI_SDK_DIRECT_TOOL_CALL' | ToolCallerName<TOOLS>
-  >;
+  [NAME in keyof TOOLS]?: ReadonlyArray<'AI_SDK_DIRECT_TOOL_CALL' | ToolCallerName<TOOLS>>;
 };
 
 export type ResolvedToolCallers = Record<string, ReadonlyArray<string>>;
@@ -37,7 +33,7 @@ export function resolveToolCallerConfiguration<TOOLS extends ToolSet>({
   const resolved: ResolvedToolCallers = {};
 
   for (const [toolName, callers] of Object.entries(toolCallers)) {
-    if (!Object.prototype.hasOwnProperty.call(tools, toolName)) {
+    if (!Object.hasOwn(tools, toolName)) {
       throw new InvalidArgumentError({
         parameter: 'experimental_toolCallers',
         value: toolCallers,
@@ -60,7 +56,7 @@ export function resolveToolCallerConfiguration<TOOLS extends ToolSet>({
 
       if (
         typeof caller !== 'string' ||
-        !Object.prototype.hasOwnProperty.call(tools, caller) ||
+        !Object.hasOwn(tools, caller) ||
         experimental_getToolCaller(tools[caller]) == null
       ) {
         throw new InvalidArgumentError({
@@ -120,9 +116,7 @@ export function prepareToolsForToolCallers({
         availableToProvider = true;
         preparedTool = {
           ...preparedTool,
-          providerOptions: caller.prepareProviderOptions(
-            preparedTool.providerOptions,
-          ),
+          providerOptions: caller.prepareProviderOptions(preparedTool.providerOptions),
         } as Tool;
       } else {
         const localTools = localToolsByCaller.get(callerName) ?? {};
@@ -149,7 +143,7 @@ export function prepareToolsForToolCallers({
     const boundCaller = caller.bind(localToolsByCaller.get(callerName) ?? {});
     executionTools[callerName] = boundCaller;
 
-    if (Object.prototype.hasOwnProperty.call(modelTools, callerName)) {
+    if (Object.hasOwn(modelTools, callerName)) {
       modelTools[callerName] = boundCaller;
     }
   }

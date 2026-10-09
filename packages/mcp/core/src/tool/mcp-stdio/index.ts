@@ -1,4 +1,4 @@
 export {
-  StdioMCPTransport as Experimental_StdioMCPTransport,
   type StdioConfig,
+  StdioMCPTransport as Experimental_StdioMCPTransport,
 } from './mcp-stdio-transport';

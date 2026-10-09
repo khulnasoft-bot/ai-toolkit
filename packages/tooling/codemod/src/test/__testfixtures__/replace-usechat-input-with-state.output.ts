@@ -9,8 +9,8 @@ export function ChatComponent() {
     api: '/api/chat',
   });
 
-  const handleChange = e => setInput(e.target.value);
-  const currentInput = input;
+  const _handleChange = e => setInput(e.target.value);
+  const _currentInput = input;
 }
 
 export function AnotherComponent() {
@@ -35,7 +35,7 @@ export function ComponentWithAlias() {
 }
 
 export function PartialExtraction() {
-  const [input, setInput] = useState('');
+  const [input, _setInput] = useState('');
   const { handleSubmit } = useChat({
     api: '/api/chat',
   });
@@ -44,7 +44,7 @@ export function PartialExtraction() {
 }
 
 export function OnlyHandleInputChange() {
-  const [input, setInput] = useState('');
+  const [_input, setInput] = useState('');
   const { messages } = useChat();
   return e => setInput(e.target.value);
 }
@@ -53,7 +53,7 @@ export function OnlyHandleInputChange() {
 import { useChat as useChatNew } from '@ai-toolkit/react';
 
 export function WithNewImportSyntax() {
-  const [input, setInput] = useState('');
+  const [input, _setInput] = useState('');
   const {} = useChatNew();
   return input;
 }

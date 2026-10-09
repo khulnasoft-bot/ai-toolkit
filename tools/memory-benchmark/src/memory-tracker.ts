@@ -85,7 +85,7 @@ export async function measureMemory<T>(
     const duration = end - start;
 
     if (i >= (warmup ? 1 : 0)) {
-      const idx = i - (warmup ? 1 : 0);
+      const _idx = i - (warmup ? 1 : 0);
       if (duration < bestDuration) {
         bestDuration = duration;
       }

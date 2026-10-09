@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
-import { streamText } from '@ai-toolkit/ai';
 import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
+import { streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { createApplyPatchExecutor } from '../lib/apply-patch-file-editor';
 import { run } from '../lib/run';
 

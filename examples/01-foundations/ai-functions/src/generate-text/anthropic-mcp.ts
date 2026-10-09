@@ -1,7 +1,7 @@
-import { anthropic, AnthropicProviderOptions } from '@ai-toolkit/anthropic';
 import { generateText } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
+import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
 import { print } from '../lib/print';
+import { run } from '../lib/run';
 
 run(async () => {
   const result = await generateText({

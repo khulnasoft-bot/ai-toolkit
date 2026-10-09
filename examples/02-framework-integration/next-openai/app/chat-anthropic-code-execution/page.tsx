@@ -1,11 +1,11 @@
 'use client';
 
-import { AnthropicCodeExecutionMessage } from '@/agent/anthropic-code-execution-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { AnthropicCodeExecutionMessage } from '@/agent/anthropic-code-execution-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import AnthropicCodeExecutionView from '@/components/tool/anthropic-code-execution-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestAnthropicCodeExecution() {
   const { error, status, sendMessage, messages, regenerate } =
@@ -24,15 +24,16 @@ export default function TestAnthropicCodeExecution() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'tool-code_execution': {
-                return (
-                  <AnthropicCodeExecutionView invocation={part} key={index} />
-                );
+                return <AnthropicCodeExecutionView invocation={part} key={part.toolCallId} />;
+              }
+              default: {
+                return null;
               }
             }
           })}

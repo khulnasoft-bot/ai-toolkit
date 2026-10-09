@@ -1,4 +1,4 @@
-import {
+import type {
   LanguageModelV3,
   LanguageModelV3CallOptions,
   LanguageModelV3Content,
@@ -12,22 +12,19 @@ import {
   combineHeaders,
   createEventSourceResponseHandler,
   createJsonResponseHandler,
-  FetchFunction,
+  type FetchFunction,
   generateId,
   injectJsonInstructionIntoMessages,
+  type ParseResult,
   parseProviderOptions,
-  ParseResult,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { convertMistralUsage, MistralUsage } from './convert-mistral-usage';
+import { convertMistralUsage, type MistralUsage } from './convert-mistral-usage';
 import { convertToMistralChatMessages } from './convert-to-mistral-chat-messages';
 import { getResponseMetadata } from './get-response-metadata';
 import { mapMistralFinishReason } from './map-mistral-finish-reason';
-import {
-  MistralChatModelId,
-  mistralLanguageModelOptions,
-} from './mistral-chat-options';
+import { type MistralChatModelId, mistralLanguageModelOptions } from './mistral-chat-options';
 import { mistralFailedResponseHandler } from './mistral-error';
 import { prepareTools } from './mistral-prepare-tools';
 
@@ -172,9 +169,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const { args: body, warnings } = await this.getArgs(options);
 
     const {
@@ -186,9 +181,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
       failedResponseHandler: mistralFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        mistralChatResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(mistralChatResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -197,10 +190,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
     const content: Array<LanguageModelV3Content> = [];
 
     // process content parts in order to preserve sequence
-    if (
-      choice.message.content != null &&
-      Array.isArray(choice.message.content)
-    ) {
+    if (choice.message.content != null && Array.isArray(choice.message.content)) {
       for (const part of choice.message.content) {
         if (part.type === 'thinking') {
           const reasoningText = extractReasoningContent(part.thinking);
@@ -254,9 +244,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs(options);
     const body = { ...args, stream: true };
 
@@ -265,9 +253,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
       failedResponseHandler: mistralFailedResponseHandler,
-      successfulResponseHandler: createEventSourceResponseHandler(
-        mistralChatChunkSchema,
-      ),
+      successfulResponseHandler: createEventSourceResponseHandler(mistralChatChunkSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -276,7 +262,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
       unified: 'other',
       raw: undefined,
     };
-    let usage: MistralUsage | undefined = undefined;
+    let usage: MistralUsage | undefined;
 
     let isFirstChunk = true;
     let activeText = false;
@@ -439,9 +425,7 @@ export class MistralChatLanguageModel implements LanguageModelV3 {
   }
 }
 
-function extractReasoningContent(
-  thinking: Array<{ type: string; text: string }>,
-) {
+function extractReasoningContent(thinking: Array<{ type: string; text: string }>) {
   return thinking
     .filter(chunk => chunk.type === 'text')
     .map(chunk => chunk.text)

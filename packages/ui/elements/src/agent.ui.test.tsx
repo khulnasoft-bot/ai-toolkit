@@ -1,6 +1,6 @@
+import type { Tool } from '@ai-toolkit/ai';
 import { render, screen, waitFor } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import type { Tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 import {
@@ -42,17 +42,13 @@ describe('agentHeader', () => {
   });
 
   it('renders model badge when provided', () => {
-    render(
-      <AgentHeader model="anthropic/claude-sonnet-4-5" name="Test Agent" />,
-    );
+    render(<AgentHeader model="anthropic/claude-sonnet-4-5" name="Test Agent" />);
     expect(screen.getByText('anthropic/claude-sonnet-4-5')).toBeInTheDocument();
   });
 
   it('does not render model badge when not provided', () => {
     render(<AgentHeader name="Test Agent" />);
-    expect(
-      screen.queryByText('anthropic/claude-sonnet-4-5'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('anthropic/claude-sonnet-4-5')).not.toBeInTheDocument();
   });
 
   it('has bot icon', () => {
@@ -68,9 +64,7 @@ describe('agentContent', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(
-      <AgentContent className="custom-class">Content</AgentContent>,
-    );
+    const { container } = render(<AgentContent className="custom-class">Content</AgentContent>);
     expect(container.querySelector('.custom-class')).toBeInTheDocument();
   });
 });
@@ -83,16 +77,12 @@ describe('agentInstructions', () => {
 
   it('renders instructions content', () => {
     render(<AgentInstructions>You are a helpful assistant.</AgentInstructions>);
-    expect(
-      screen.getByText('You are a helpful assistant.'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('You are a helpful assistant.')).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
     const { container } = render(
-      <AgentInstructions className="custom-instructions">
-        Instructions
-      </AgentInstructions>,
+      <AgentInstructions className="custom-instructions">Instructions</AgentInstructions>,
     );
     expect(container.querySelector('.custom-instructions')).toBeInTheDocument();
   });
@@ -116,9 +106,7 @@ describe('agentTool', () => {
         <AgentTool tool={mockTool} value="search" />
       </AgentTools>,
     );
-    expect(
-      screen.getByText('Search the web for information'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Search the web for information')).toBeInTheDocument();
   });
 
   it('shows inputSchema when expanded', async () => {
@@ -157,9 +145,7 @@ describe('agentTool', () => {
       </AgentTools>,
     );
 
-    expect(
-      screen.getByText('Search the web for information'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Search the web for information')).toBeInTheDocument();
     expect(screen.getByText('Read a file')).toBeInTheDocument();
   });
 
@@ -185,9 +171,7 @@ describe('agentOutput', () => {
   });
 
   it('renders schema code', async () => {
-    const { container } = render(
-      <AgentOutput schema="z.object({ name: z.string() })" />,
-    );
+    const { container } = render(<AgentOutput schema="z.object({ name: z.string() })" />);
 
     await waitFor(() => {
       expect(container.querySelector('pre')).toBeInTheDocument();
@@ -196,9 +180,7 @@ describe('agentOutput', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(
-      <AgentOutput className="custom-output" schema="z.string()" />,
-    );
+    const { container } = render(<AgentOutput className="custom-output" schema="z.string()" />);
     expect(container.querySelector('.custom-output')).toBeInTheDocument();
   });
 });
@@ -211,10 +193,7 @@ const agentSchema = `z.object({
 const renderCompleteAgent = () =>
   render(
     <Agent>
-      <AgentHeader
-        model="anthropic/claude-sonnet-4-5"
-        name="Sentiment Analyzer"
-      />
+      <AgentHeader model="anthropic/claude-sonnet-4-5" name="Sentiment Analyzer" />
       <AgentContent>
         <AgentInstructions>Analyze sentiment of text.</AgentInstructions>
         <AgentTools>
@@ -241,9 +220,7 @@ describe('agent integration', () => {
   it('renders agent tools and output schema', () => {
     renderCompleteAgent();
     expect(screen.getByText('Tools')).toBeInTheDocument();
-    expect(
-      screen.getByText('Search the web for information'),
-    ).toBeInTheDocument();
+    expect(screen.getByText('Search the web for information')).toBeInTheDocument();
     expect(screen.getByText('Output Schema')).toBeInTheDocument();
   });
 

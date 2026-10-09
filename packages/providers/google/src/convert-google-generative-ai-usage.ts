@@ -1,4 +1,4 @@
-import { LanguageModelV3Usage } from '@ai-toolkit/provider';
+import type { LanguageModelV3Usage } from '@ai-toolkit/provider';
 
 export type GoogleGenerativeAIUsageMetadata = {
   promptTokenCount?: number | null;

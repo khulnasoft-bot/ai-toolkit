@@ -34,9 +34,7 @@ describe('handleFetchError', () => {
 
       expect(APICallError.isInstance(result)).toBe(true);
       expect((result as APICallError).isRetryable).toBe(true);
-      expect((result as APICallError).message).toBe(
-        'Cannot connect to API: ECONNREFUSED',
-      );
+      expect((result as APICallError).message).toBe('Cannot connect to API: ECONNREFUSED');
     });
 
     it('should mark nested Undici socket errors as retryable', () => {
@@ -111,9 +109,7 @@ describe('handleFetchError', () => {
 
   describe('bun fetch errors', () => {
     it('should handle ConnectionRefused error', () => {
-      const bunError = new Error(
-        'Unable to connect. Is the computer able to access the url?',
-      );
+      const bunError = new Error('Unable to connect. Is the computer able to access the url?');
       (bunError as any).code = 'ConnectionRefused';
 
       const result = handleFetchError({
@@ -127,9 +123,7 @@ describe('handleFetchError', () => {
     });
 
     it('should handle ConnectionClosed error', () => {
-      const bunError = new Error(
-        'The socket connection was closed unexpectedly',
-      );
+      const bunError = new Error('The socket connection was closed unexpectedly');
       (bunError as any).code = 'ConnectionClosed';
 
       const result = handleFetchError({

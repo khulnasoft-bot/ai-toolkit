@@ -13,15 +13,15 @@
  * Run via: node tools/scripts/check-architecture-sync.mjs
  */
 
-import { readFileSync, existsSync, readdirSync, statSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const rootDir = join(__dirname, '../..');
 
-let errors = [];
-let warnings = [];
+const errors = [];
+const warnings = [];
 
 function error(message) {
   errors.push(message);
@@ -66,8 +66,8 @@ function getWorkspacePackages() {
 
 // Check if a glob pattern matches any existing directories
 function checkPattern(pattern) {
-  const basePath = join(rootDir, pattern.replace('*', ''));
-  const globPart = pattern.includes('*') ? pattern.split('*')[1] : '';
+  const _basePath = join(rootDir, pattern.replace('*', ''));
+  const _globPart = pattern.includes('*') ? pattern.split('*')[1] : '';
 
   // For patterns like 'packages/foundation/*', check if the base directory exists
   const baseDir = join(rootDir, pattern.split('*')[0]);
@@ -87,7 +87,7 @@ function checkPattern(pattern) {
       hasPackages: subdirs.length > 0,
       count: subdirs.length,
     };
-  } catch (e) {
+  } catch (_e) {
     return { exists: true, hasPackages: false };
   }
 }
@@ -103,7 +103,7 @@ function validateWorkspace() {
   }
 
   let implementedCount = 0;
-  let futureCount = 0;
+  const futureCount = 0;
 
   for (const pattern of patterns) {
     const result = checkPattern(pattern);
@@ -256,7 +256,7 @@ function main() {
   console.log();
   validateDependencyRules();
 
-  console.log('\n' + '='.repeat(50));
+  console.log(`\n${'='.repeat(50)}`);
   console.log(`Validation complete: ${errors.length} errors, ${warnings.length} warnings`);
 
   if (errors.length > 0) {

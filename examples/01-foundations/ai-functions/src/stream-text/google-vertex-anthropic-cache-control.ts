@@ -1,6 +1,6 @@
-import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
-import { streamText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { streamText } from '@ai-toolkit/ai';
+import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { run } from '../lib/run';
 
 const errorMessage = fs.readFileSync('data/error-message.txt', 'utf8');

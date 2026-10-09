@@ -1,14 +1,12 @@
-import { openai } from '@ai-toolkit/openai';
-import { LanguageModelV3Middleware } from '@ai-toolkit/provider';
 import { generateText, wrapLanguageModel } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import type { LanguageModelV3Middleware } from '@ai-toolkit/provider';
 import { run } from '../lib/run';
 
 const logProviderMetadataMiddleware: LanguageModelV3Middleware = {
   specificationVersion: 'v3',
   transformParams: async ({ params }) => {
-    console.log(
-      'providerOptions: ' + JSON.stringify(params.providerOptions, null, 2),
-    );
+    console.log(`providerOptions: ${JSON.stringify(params.providerOptions, null, 2)}`);
     return params;
   },
 };

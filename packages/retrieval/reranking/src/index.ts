@@ -33,6 +33,6 @@ export function createRerankingEngine(): RerankingEngine {
   return {
     registerReranker: (name, reranker) => rerankers.set(name, reranker),
     getReranker: name => rerankers.get(name),
-    rerank: async (query, results, config) => results,
+    rerank: async (_query, results, _config) => results,
   };
 }

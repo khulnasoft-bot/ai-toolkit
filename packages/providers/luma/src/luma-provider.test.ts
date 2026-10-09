@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createLuma } from './luma-provider';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { LumaImageModel } from './luma-image-model';
+import { createLuma } from './luma-provider';
 
 vi.mock('./luma-image-model', () => ({
   LumaImageModel: vi.fn(),

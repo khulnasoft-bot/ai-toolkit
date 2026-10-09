@@ -3,6 +3,7 @@ export type {
   OpenAICompatibleChatModelId,
   OpenAICompatibleProviderOptions,
 } from './chat/openai-compatible-chat-options';
+export type { MetadataExtractor } from './chat/openai-compatible-metadata-extractor';
 export { OpenAICompatibleCompletionLanguageModel } from './completion/openai-compatible-completion-language-model';
 export type {
   OpenAICompatibleCompletionModelId,
@@ -18,10 +19,9 @@ export type {
   OpenAICompatibleErrorData,
   ProviderErrorStructure,
 } from './openai-compatible-error';
-export type { MetadataExtractor } from './chat/openai-compatible-metadata-extractor';
-export { createOpenAICompatible } from './openai-compatible-provider';
 export type {
   OpenAICompatibleProvider,
   OpenAICompatibleProviderSettings,
 } from './openai-compatible-provider';
+export { createOpenAICompatible } from './openai-compatible-provider';
 export { VERSION } from './version';

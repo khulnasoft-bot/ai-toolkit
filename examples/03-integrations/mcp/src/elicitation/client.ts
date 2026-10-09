@@ -1,8 +1,8 @@
+import { stdin, stdout } from 'node:process';
+import { createInterface } from 'node:readline/promises';
+import { generateText, stepCountIs } from '@ai-toolkit/ai';
 import { createMCPClient, ElicitationRequestSchema } from '@ai-toolkit/mcp';
 import { openai } from '@ai-toolkit/openai';
-import { generateText, stepCountIs } from '@ai-toolkit/ai';
-import { createInterface } from 'node:readline/promises';
-import { stdin, stdout } from 'node:process';
 import 'dotenv/config';
 
 type ElicitationAction = 'accept' | 'decline' | 'cancel';
@@ -25,18 +25,12 @@ async function getInputFromUser(
       console.log('Schema:', JSON.stringify(schema, null, 2));
     }
 
-    const actionInput = (
-      await rl.question('Action (accept/decline/cancel) [accept]: ')
-    )
+    const actionInput = (await rl.question('Action (accept/decline/cancel) [accept]: '))
       .trim()
       .toLowerCase();
 
     const action: ElicitationAction =
-      actionInput === 'decline'
-        ? 'decline'
-        : actionInput === 'cancel'
-          ? 'cancel'
-          : 'accept';
+      actionInput === 'decline' ? 'decline' : actionInput === 'cancel' ? 'cancel' : 'accept';
 
     if (action !== 'accept') {
       return { action };
@@ -59,17 +53,13 @@ async function getInputFromUser(
       };
       const requiredFields = new Set(objectSchema.required ?? []);
 
-      for (const [key, propertySchema] of Object.entries(
-        objectSchema.properties,
-      )) {
+      for (const [key, propertySchema] of Object.entries(objectSchema.properties)) {
         const title =
           propertySchema && typeof propertySchema === 'object'
             ? (propertySchema.title ?? key)
             : key;
 
-        const label = requiredFields.has(key)
-          ? `${title} (required)`
-          : `${title} (optional)`;
+        const label = requiredFields.has(key) ? `${title} (required)` : `${title} (optional)`;
 
         const rawValue = (await rl.question(`${label}: `)).trim();
 
@@ -78,9 +68,7 @@ async function getInputFromUser(
         }
 
         const propertyType =
-          propertySchema && typeof propertySchema === 'object'
-            ? propertySchema.type
-            : undefined;
+          propertySchema && typeof propertySchema === 'object' ? propertySchema.type : undefined;
 
         if (propertyType === 'number' || propertyType === 'integer') {
           const parsed = Number(rawValue);
@@ -90,23 +78,19 @@ async function getInputFromUser(
           }
           data[key] = parsed;
         } else if (propertyType === 'boolean') {
-          data[key] = ['true', '1', 'yes', 'y'].includes(
-            rawValue.toLowerCase(),
-          );
+          data[key] = ['true', '1', 'yes', 'y'].includes(rawValue.toLowerCase());
         } else {
           data[key] = rawValue;
         }
       }
     } else {
-      const rawPayload = await rl.question(
-        'Enter JSON payload for response (empty to decline): ',
-      );
+      const rawPayload = await rl.question('Enter JSON payload for response (empty to decline): ');
       if (rawPayload.trim() === '') {
         return { action: 'decline' };
       }
       try {
         Object.assign(data, JSON.parse(rawPayload));
-      } catch (error) {
+      } catch (_error) {
         console.error('Invalid JSON payload. Cancelling request.');
         return { action: 'cancel' };
       }
@@ -143,7 +127,7 @@ async function main() {
 
   try {
     const tools = await mcpClient.tools();
-    if (!tools['register_user']) {
+    if (!tools.register_user) {
       console.error('register_user tool is not available on the server.');
       return;
     }
@@ -157,8 +141,7 @@ async function main() {
           console.log('TOOL RESULTS:', JSON.stringify(toolResults, null, 2));
         }
       },
-      prompt:
-        'Please help the user register an account using the register_user tool.',
+      prompt: 'Please help the user register an account using the register_user tool.',
     });
 
     console.log('FINAL RESPONSE:', response);

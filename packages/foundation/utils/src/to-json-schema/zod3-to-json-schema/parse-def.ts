@@ -1,10 +1,10 @@
-import { ZodTypeDef } from 'zod/v3';
-import { Refs, Seen } from './refs';
-import { ignoreOverride } from './options';
-import { JsonSchema7Type } from './parse-types';
-import { selectParser } from './select-parser';
+import type { ZodTypeDef } from 'zod/v3';
 import { getRelativePath } from './get-relative-path';
+import { ignoreOverride } from './options';
+import type { JsonSchema7Type } from './parse-types';
 import { parseAnyDef } from './parsers/any';
+import type { Refs, Seen } from './refs';
+import { selectParser } from './select-parser';
 
 export function parseDef(
   def: ZodTypeDef,
@@ -14,12 +14,7 @@ export function parseDef(
   const seenItem = refs.seen.get(def);
 
   if (refs.override) {
-    const overrideResult = refs.override?.(
-      def,
-      refs,
-      seenItem,
-      forceResolution,
-    );
+    const overrideResult = refs.override?.(def, refs, seenItem, forceResolution);
 
     if (overrideResult !== ignoreOverride) {
       return overrideResult;
@@ -95,11 +90,7 @@ const get$ref = (
   }
 };
 
-const addMeta = (
-  def: ZodTypeDef,
-  refs: Refs,
-  jsonSchema: JsonSchema7Type,
-): JsonSchema7Type => {
+const addMeta = (def: ZodTypeDef, _refs: Refs, jsonSchema: JsonSchema7Type): JsonSchema7Type => {
   if (def.description) {
     jsonSchema.description = def.description;
   }

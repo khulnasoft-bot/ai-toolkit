@@ -1,14 +1,13 @@
 'use client';
 
 import { useCompletion } from '@ai-toolkit/react';
-import { useState, FormEvent, KeyboardEvent } from 'react';
-import { Send, Sparkles, AlertCircle, Square } from 'lucide-react';
+import { AlertCircle, Send, Sparkles, Square } from 'lucide-react';
+import { type FormEvent, type KeyboardEvent, useState } from 'react';
 
 export default function CompletionPage() {
-  const { completion, error, isLoading, stop, complete, setCompletion } =
-    useCompletion({
-      api: '/api/completion',
-    });
+  const { completion, error, isLoading, stop, complete, setCompletion } = useCompletion({
+    api: '/api/completion',
+  });
 
   const [input, setInput] = useState('');
 
@@ -42,12 +41,10 @@ export default function CompletionPage() {
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex-shrink-0 p-6 border-b border-[var(--border)] rounded-t-xl">
-        <h1 className="text-2xl font-semibold text-[var(--foreground)] mb-2">
-          Text Completion
-        </h1>
+        <h1 className="text-2xl font-semibold text-[var(--foreground)] mb-2">Text Completion</h1>
         <div className="text-sm text-[var(--foreground-secondary)] leading-relaxed">
-          Simple streaming completion using <code>useCompletion</code> hook with
-          LangChain. Enter a prompt and watch the response stream in real-time.
+          Simple streaming completion using <code>useCompletion</code> hook with LangChain. Enter a
+          prompt and watch the response stream in real-time.
         </div>
       </div>
 
@@ -82,9 +79,10 @@ export default function CompletionPage() {
                 <span>Try an example</span>
               </div>
               <div className="flex flex-wrap justify-center gap-2">
-                {suggestions.map((suggestion, index) => (
+                {suggestions.map(suggestion => (
                   <button
-                    key={index}
+                    type="button"
+                    key={suggestion}
                     onClick={() => handleSuggestion(suggestion)}
                     className="px-4 py-2.5 text-sm bg-[var(--background-tertiary)] border border-[var(--border-hover)] rounded-full text-[var(--foreground)] hover:border-[var(--accent)] hover:bg-[var(--accent-light)] transition-all"
                   >
@@ -107,9 +105,7 @@ export default function CompletionPage() {
                 </div>
                 <div className="text-[var(--foreground)] leading-relaxed whitespace-pre-wrap">
                   {completion || (
-                    <span className="text-[var(--foreground-secondary)] italic">
-                      Generating...
-                    </span>
+                    <span className="text-[var(--foreground-secondary)] italic">Generating...</span>
                   )}
                 </div>
               </div>
@@ -134,14 +130,11 @@ export default function CompletionPage() {
                 </div>
                 <span className="text-sm">AI is generating...</span>
                 <button
+                  type="button"
                   onClick={stop}
                   className="ml-auto flex items-center gap-1.5 px-3 py-1.5 text-xs bg-red-500/10 hover:bg-red-500/20 border border-red-500/30 rounded-lg text-red-400 transition-all"
                 >
-                  <Square
-                    className="w-3 h-3"
-                    strokeWidth={2}
-                    fill="currentColor"
-                  />
+                  <Square className="w-3 h-3" strokeWidth={2} fill="currentColor" />
                   Stop
                 </button>
               </div>

@@ -42,6 +42,5 @@ export function cosineSimilarity(vector1: number[], vector2: number[]): number {
 
   return magnitudeSquared1 === 0 || magnitudeSquared2 === 0
     ? 0
-    : dotProduct /
-        (Math.sqrt(magnitudeSquared1) * Math.sqrt(magnitudeSquared2));
+    : dotProduct / (Math.sqrt(magnitudeSquared1) * Math.sqrt(magnitudeSquared2));
 }

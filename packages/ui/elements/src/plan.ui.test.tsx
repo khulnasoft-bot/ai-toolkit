@@ -118,9 +118,7 @@ describe('plan', () => {
           <PlanHeader>Content</PlanHeader>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-header"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-header"]')).toBeInTheDocument();
     });
   });
 
@@ -170,9 +168,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-title"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-title"]')).toBeInTheDocument();
     });
 
     it('throws error when used outside Plan context', () => {
@@ -207,9 +203,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      const description = container.querySelector(
-        '[data-slot="plan-description"]',
-      );
+      const description = container.querySelector('[data-slot="plan-description"]');
       expect(description).toHaveClass('text-balance');
     });
 
@@ -217,15 +211,11 @@ describe('plan', () => {
       const { container } = render(
         <Plan>
           <PlanHeader>
-            <PlanDescription className="custom-desc">
-              Description
-            </PlanDescription>
+            <PlanDescription className="custom-desc">Description</PlanDescription>
           </PlanHeader>
         </Plan>,
       );
-      const description = container.querySelector(
-        '[data-slot="plan-description"]',
-      );
+      const description = container.querySelector('[data-slot="plan-description"]');
       expect(description).toHaveClass('custom-desc');
     });
 
@@ -259,9 +249,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-description"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-description"]')).toBeInTheDocument();
     });
 
     it('throws error when used outside Plan context', () => {
@@ -286,9 +274,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      expect(
-        screen.getByRole('button', { name: 'Action' }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Action' })).toBeInTheDocument();
     });
 
     it('has correct data-slot attribute', () => {
@@ -299,9 +285,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-action"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-action"]')).toBeInTheDocument();
     });
   });
 
@@ -323,9 +307,7 @@ describe('plan', () => {
           <PlanContent>Content</PlanContent>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-content"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-content"]')).toBeInTheDocument();
     });
 
     it('is collapsible', async () => {
@@ -370,9 +352,7 @@ describe('plan', () => {
           <PlanFooter>Footer</PlanFooter>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-footer"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-footer"]')).toBeInTheDocument();
     });
   });
 
@@ -385,9 +365,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      expect(
-        screen.getByRole('button', { name: 'Toggle plan' }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Toggle plan' })).toBeInTheDocument();
     });
 
     it('renders chevron icon', () => {
@@ -434,9 +412,7 @@ describe('plan', () => {
           </PlanHeader>
         </Plan>,
       );
-      expect(
-        container.querySelector('[data-slot="plan-trigger"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="plan-trigger"]')).toBeInTheDocument();
     });
 
     it('toggles content visibility on click', async () => {
@@ -494,14 +470,10 @@ describe('plan', () => {
       expect(screen.getByText('My Plan')).toBeInTheDocument();
       expect(screen.getByText('Plan description')).toBeInTheDocument();
       expect(screen.getByRole('button', { name: 'Edit' })).toBeInTheDocument();
-      expect(
-        screen.getByRole('button', { name: 'Toggle plan' }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Toggle plan' })).toBeInTheDocument();
       expect(screen.getByText('Step 1')).toBeInTheDocument();
       expect(screen.getByText('Step 2')).toBeInTheDocument();
-      expect(
-        screen.getByRole('button', { name: 'Submit' }),
-      ).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: 'Submit' })).toBeInTheDocument();
     });
 
     it('handles streaming state throughout components', () => {
@@ -517,9 +489,7 @@ describe('plan', () => {
 
       // Both title and description should have shimmer when streaming
       const title = container.querySelector('[data-slot="plan-title"]');
-      const description = container.querySelector(
-        '[data-slot="plan-description"]',
-      );
+      const description = container.querySelector('[data-slot="plan-description"]');
 
       expect(title).toBeInTheDocument();
       expect(description).toBeInTheDocument();

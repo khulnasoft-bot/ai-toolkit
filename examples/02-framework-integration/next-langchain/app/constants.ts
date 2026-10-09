@@ -1,14 +1,14 @@
 import {
-  MessageCircle,
-  Cpu,
-  Wrench,
+  Activity,
   Cloud,
+  Cpu,
+  Image,
+  type LucideIcon,
+  MessageCircle,
   Shield,
   Sparkles,
-  Activity,
-  Image,
   Wand2,
-  LucideIcon,
+  Wrench,
 } from 'lucide-react';
 
 export interface NavItem {

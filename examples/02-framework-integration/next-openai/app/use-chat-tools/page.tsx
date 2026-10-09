@@ -1,40 +1,31 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
+import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls } from '@ai-toolkit/ai';
 import { useChat } from '@ai-toolkit/react';
-import {
-  DefaultChatTransport,
-  lastAssistantMessageIsCompleteWithToolCalls,
-} from '@ai-toolkit/ai';
-import { UseChatToolsMessage } from '../api/use-chat-tools/route';
+import ChatInput from '@/components/chat-input';
+import type { UseChatToolsMessage } from '../api/use-chat-tools/route';
 
 export default function Chat() {
-  const { messages, sendMessage, addToolOutput, status } =
-    useChat<UseChatToolsMessage>({
-      transport: new DefaultChatTransport({ api: '/api/use-chat-tools' }),
-      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
+  const { messages, sendMessage, addToolOutput, status } = useChat<UseChatToolsMessage>({
+    transport: new DefaultChatTransport({ api: '/api/use-chat-tools' }),
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
 
-      // run client-side tools that are automatically executed:
-      async onToolCall({ toolCall }) {
-        // artificial 2 second delay
-        await new Promise(resolve => setTimeout(resolve, 2000));
+    // run client-side tools that are automatically executed:
+    async onToolCall({ toolCall }) {
+      // artificial 2 second delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
-        if (toolCall.toolName === 'getLocation') {
-          const cities = [
-            'New York',
-            'Los Angeles',
-            'Chicago',
-            'San Francisco',
-          ];
+      if (toolCall.toolName === 'getLocation') {
+        const cities = ['New York', 'Los Angeles', 'Chicago', 'San Francisco'];
 
-          addToolOutput({
-            tool: 'getLocation',
-            toolCallId: toolCall.toolCallId,
-            output: cities[Math.floor(Math.random() * cities.length)],
-          });
-        }
-      },
-    });
+        addToolOutput({
+          tool: 'getLocation',
+          toolCallId: toolCall.toolCallId,
+          output: cities[Math.floor(Math.random() * cities.length)],
+        });
+      }
+    },
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -44,11 +35,11 @@ export default function Chat() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':
-                return <div key={index}>{part.text}</div>;
+                return <div key={`text-${part.text}`}>{part.text}</div>;
 
               case 'step-start':
                 return index > 0 ? (
-                  <div key={index} className="text-gray-500">
+                  <div key={part.type} className="text-gray-500">
                     <hr className="my-2 border-gray-300" />
                   </div>
                 ) : null;
@@ -57,10 +48,11 @@ export default function Chat() {
                 switch (part.state) {
                   case 'input-available':
                     return (
-                      <div key={index} className="text-gray-500">
+                      <div key={part.toolCallId} className="text-gray-500">
                         {part.input.message}
                         <div className="flex gap-2">
                           <button
+                            type="button"
                             className="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
                             onClick={async () => {
                               addToolOutput({
@@ -73,6 +65,7 @@ export default function Chat() {
                             Yes
                           </button>
                           <button
+                            type="button"
                             className="px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700"
                             onClick={async () => {
                               addToolOutput({
@@ -89,7 +82,7 @@ export default function Chat() {
                     );
                   case 'output-available':
                     return (
-                      <div key={index} className="text-gray-500">
+                      <div key={part.toolCallId} className="text-gray-500">
                         Location access allowed: {part.output}
                       </div>
                     );
@@ -101,13 +94,13 @@ export default function Chat() {
                 switch (part.state) {
                   case 'input-available':
                     return (
-                      <div key={index} className="text-gray-500">
+                      <div key={part.toolCallId} className="text-gray-500">
                         Getting location...
                       </div>
                     );
                   case 'output-available':
                     return (
-                      <div key={index} className="text-gray-500">
+                      <div key={part.toolCallId} className="text-gray-500">
                         Location: {part.output}
                       </div>
                     );
@@ -119,20 +112,16 @@ export default function Chat() {
                 switch (part.state) {
                   // example of pre-rendering streaming tool calls:
                   case 'input-streaming':
-                    return (
-                      <pre key={index}>
-                        {JSON.stringify(part.input, null, 2)}
-                      </pre>
-                    );
+                    return <pre key={part.toolCallId}>{JSON.stringify(part.input, null, 2)}</pre>;
                   case 'input-available':
                     return (
-                      <div key={index} className="text-gray-500">
+                      <div key={part.toolCallId} className="text-gray-500">
                         Getting weather information for {part.input.city}...
                       </div>
                     );
                   case 'output-available':
                     return (
-                      <div key={index} className="text-gray-500">
+                      <div key={part.toolCallId} className="text-gray-500">
                         {part.output.state === 'loading'
                           ? 'Fetching weather information...'
                           : `Weather in ${part.input.city}: ${part.output.weather}`}
@@ -140,13 +129,15 @@ export default function Chat() {
                     );
                   case 'output-error':
                     return (
-                      <div key={index} className="text-red-500">
+                      <div key={part.toolCallId} className="text-red-500">
                         Error: {part.errorText}
                       </div>
                     );
                 }
               }
             }
+
+            return null;
           })}
           <br />
         </div>

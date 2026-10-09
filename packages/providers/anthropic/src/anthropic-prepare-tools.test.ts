@@ -1,12 +1,12 @@
-import { describe, it, expect } from 'vitest';
-import { prepareTools } from './anthropic-prepare-tools';
-import { CacheControlValidator } from './get-cache-control';
-import { webFetch_20250910OutputSchema } from './tool/web-fetch-20250910';
-import { webSearch_20250305OutputSchema } from './tool/web-search_20250305';
+import { describe, expect, it } from 'vitest';
 import {
   anthropicMessagesChunkSchema,
   anthropicMessagesResponseSchema,
 } from './anthropic-messages-api';
+import { prepareTools } from './anthropic-prepare-tools';
+import { CacheControlValidator } from './get-cache-control';
+import { webFetch_20250910OutputSchema } from './tool/web-fetch-20250910';
+import { webSearch_20250305OutputSchema } from './tool/web-search_20250305';
 
 describe('prepareTools', () => {
   it('should return undefined tools and tool_choice when tools are null', async () => {
@@ -775,9 +775,7 @@ describe('prepareTools', () => {
       });
 
       expect(result.tools?.[0]).toHaveProperty('defer_loading', true);
-      expect(result.tools?.[0]).toHaveProperty('allowed_callers', [
-        'code_execution_20250825',
-      ]);
+      expect(result.tools?.[0]).toHaveProperty('allowed_callers', ['code_execution_20250825']);
       expect(result.betas).toContain('advanced-tool-use-2025-11-20');
     });
   });
@@ -1011,7 +1009,7 @@ describe('webFetch_20250910OutputSchema', () => {
 
     const schema = webFetch_20250910OutputSchema();
 
-    const result = await schema.validate!(problematicResponse);
+    const result = await schema.validate?.(problematicResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1033,7 +1031,7 @@ describe('webFetch_20250910OutputSchema', () => {
     };
 
     const schema = webFetch_20250910OutputSchema();
-    const result = await schema.validate!(validResponse);
+    const result = await schema.validate?.(validResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1046,15 +1044,14 @@ describe('webSearch_20250305OutputSchema', () => {
         url: 'https://test.com',
         title: null,
         pageAge: 'April 30, 2025',
-        encryptedContent:
-          'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
+        encryptedContent: 'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
         type: 'web_search_result',
       },
     ];
 
     const schema = webSearch_20250305OutputSchema();
 
-    const result = await schema.validate!(problematicResponse);
+    const result = await schema.validate?.(problematicResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1065,14 +1062,13 @@ describe('webSearch_20250305OutputSchema', () => {
         url: 'https://test.com',
         title: 'Test title',
         pageAge: 'April 30, 2025',
-        encryptedContent:
-          'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
+        encryptedContent: 'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
         type: 'web_search_result',
       },
     ];
 
     const schema = webSearch_20250305OutputSchema();
-    const result = await schema.validate!(validResponse);
+    const result = await schema.validate?.(validResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1112,7 +1108,7 @@ describe('anthropicMessagesResponseSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesResponseSchema();
-    const result = await schema.validate!(pdfResponse);
+    const result = await schema.validate?.(pdfResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1150,7 +1146,7 @@ describe('anthropicMessagesResponseSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesResponseSchema();
-    const result = await schema.validate!(textResponse);
+    const result = await schema.validate?.(textResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1182,7 +1178,7 @@ describe('anthropicMessagesChunkSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesChunkSchema();
-    const result = await schema.validate!(pdfChunk);
+    const result = await schema.validate?.(pdfChunk);
 
     expect(result.success).toBe(true);
   });
@@ -1212,7 +1208,7 @@ describe('anthropicMessagesChunkSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesChunkSchema();
-    const result = await schema.validate!(pdfChunk);
+    const result = await schema.validate?.(pdfChunk);
 
     expect(result.success).toBe(true);
   });

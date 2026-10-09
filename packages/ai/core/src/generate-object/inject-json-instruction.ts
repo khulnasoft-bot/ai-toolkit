@@ -1,4 +1,4 @@
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
 
 const DEFAULT_SCHEMA_PREFIX = 'JSON schema:';
 const DEFAULT_SCHEMA_SUFFIX =
@@ -9,9 +9,7 @@ export function injectJsonInstruction({
   prompt,
   schema,
   schemaPrefix = schema != null ? DEFAULT_SCHEMA_PREFIX : undefined,
-  schemaSuffix = schema != null
-    ? DEFAULT_SCHEMA_SUFFIX
-    : DEFAULT_GENERIC_SUFFIX,
+  schemaSuffix = schema != null ? DEFAULT_SCHEMA_SUFFIX : DEFAULT_GENERIC_SUFFIX,
 }: {
   prompt?: string;
   schema?: JSONSchema7;

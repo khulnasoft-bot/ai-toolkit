@@ -1,4 +1,4 @@
-import { tool, type ModelMessage } from '@ai-toolkit/provider-utils';
+import { type ModelMessage, tool } from '@ai-toolkit/provider-utils';
 import { describe, expect, it, vi } from 'vitest';
 import { z } from 'zod/v4';
 import { TypeValidationError } from '../error';
@@ -84,9 +84,7 @@ describe('resolveToolApproval', () => {
     });
 
     it('resolves a Promise returned by the generic function', async () => {
-      const genericToolApproval = vi.fn(() =>
-        Promise.resolve('user-approval' as const),
-      );
+      const genericToolApproval = vi.fn(() => Promise.resolve('user-approval' as const));
 
       const result = await resolveToolApproval({
         tools: {

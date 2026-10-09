@@ -1,17 +1,17 @@
-import { openai } from '@ai-toolkit/openai';
+import {
+  convertToModelMessages,
+  type InferUITools,
+  streamText,
+  type ToolSet,
+  type UIDataTypes,
+  type UIMessage,
+  validateUIMessages,
+} from '@ai-toolkit/ai';
 import type {
   OpenAIResponsesProviderOptions,
   OpenaiResponsesSourceDocumentProviderMetadata,
 } from '@ai-toolkit/openai';
-import {
-  convertToModelMessages,
-  InferUITools,
-  streamText,
-  ToolSet,
-  UIDataTypes,
-  UIMessage,
-  validateUIMessages,
-} from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 
 const tools = {
   code_interpreter: openai.tools.codeInterpreter(),

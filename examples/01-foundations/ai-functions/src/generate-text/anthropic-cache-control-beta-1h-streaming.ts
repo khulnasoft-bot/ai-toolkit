@@ -1,6 +1,6 @@
-import { anthropic } from '@ai-toolkit/anthropic';
-import { streamText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { streamText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 const errorMessage = fs.readFileSync('data/error-message.txt', 'utf8');
@@ -43,10 +43,7 @@ run(async () => {
 
   const providerMetadata = await result.providerMetadata;
 
-  console.log(
-    'Streaming usage information:',
-    providerMetadata?.anthropic?.usage,
-  );
+  console.log('Streaming usage information:', providerMetadata?.anthropic?.usage);
 
   // e.g.
   // Streaming usage information: {
@@ -93,10 +90,7 @@ run(async () => {
 
   const cachedProviderMetadata = await cachedResult.providerMetadata;
 
-  console.log(
-    'Streaming usage information:',
-    cachedProviderMetadata?.anthropic?.usage,
-  );
+  console.log('Streaming usage information:', cachedProviderMetadata?.anthropic?.usage);
 
   // e.g.
   // Streaming usage information: {

@@ -1,8 +1,8 @@
 'use client';
 
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import { DefaultChatTransport, type UIMessage } from '@ai-toolkit/ai';
 import { Chat } from '@ai-toolkit/react';
-import { DefaultChatTransport, UIMessage } from '@ai-toolkit/ai';
+import { createContext, type ReactNode, useContext, useState } from 'react';
 
 interface ChatContextValue {
   // replace with your custom message type

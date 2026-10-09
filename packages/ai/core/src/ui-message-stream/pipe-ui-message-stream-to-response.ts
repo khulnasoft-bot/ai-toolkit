@@ -2,9 +2,9 @@ import type { ServerResponse } from 'node:http';
 import { prepareHeaders } from '../util/prepare-headers';
 import { writeToServerResponse } from '../util/write-to-server-response';
 import { JsonToSseTransformStream } from './json-to-sse-transform-stream';
+import type { UIMessageChunk } from './ui-message-chunks';
 import { UI_MESSAGE_STREAM_HEADERS } from './ui-message-stream-headers';
-import { UIMessageChunk } from './ui-message-chunks';
-import { UIMessageStreamResponseInit } from './ui-message-stream-response-init';
+import type { UIMessageStreamResponseInit } from './ui-message-stream-response-init';
 
 export function pipeUIMessageStreamToResponse({
   response,
@@ -32,9 +32,7 @@ export function pipeUIMessageStreamToResponse({
     response,
     status,
     statusText,
-    headers: Object.fromEntries(
-      prepareHeaders(headers, UI_MESSAGE_STREAM_HEADERS).entries(),
-    ),
+    headers: Object.fromEntries(prepareHeaders(headers, UI_MESSAGE_STREAM_HEADERS).entries()),
     stream: sseStream.pipeThrough(new TextEncoderStream()),
   });
 }

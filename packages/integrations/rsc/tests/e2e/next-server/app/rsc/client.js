@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { readStreamableValue } from '@ai-toolkit/rsc';
+import { useState } from 'react';
 
 export function Client({ actions }) {
   const [log, setLog] = useState('');
@@ -31,10 +31,10 @@ export function Client({ actions }) {
 
       {/* Test suites */}
       <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 5 }}>
-        <button id="test-streamable-value" onClick={testStreamableValue}>
+        <button type="button" id="test-streamable-value" onClick={testStreamableValue}>
           Test Streamable Value
         </button>
-        <button id="test-streamable-ui" onClick={testStreamableUI}>
+        <button type="button" id="test-streamable-ui" onClick={testStreamableUI}>
           Test Streamable UI
         </button>
       </div>

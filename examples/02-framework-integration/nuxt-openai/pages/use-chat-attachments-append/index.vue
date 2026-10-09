@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Chat } from '@ai-toolkit/vue';
 import { convertFileListToFileUIParts } from '@ai-toolkit/ai';
+import { Chat } from '@ai-toolkit/vue';
 import { computed, ref } from 'vue';
 
 const chat = new Chat({});
@@ -9,7 +9,7 @@ const input = ref('');
 const files = ref<FileList | null>(null);
 const fileInputRef = ref<HTMLInputElement | null>(null);
 
-const submit = async (e: Event) => {
+const _submit = async (e: Event) => {
   e.preventDefault();
 
   const fileParts = await convertFileListToFileUIParts(files.value ?? undefined);
@@ -24,7 +24,7 @@ const submit = async (e: Event) => {
   files.value = null;
 };
 
-const filesWithUrl = computed(() => {
+const _filesWithUrl = computed(() => {
   if (!files.value) return [];
 
   return Array.from(files.value).map(file => ({

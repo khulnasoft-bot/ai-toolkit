@@ -1,13 +1,13 @@
-import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
 import {
   convertToModelMessages,
-  InferUITools,
+  type InferUITools,
   streamText,
-  ToolSet,
-  UIDataTypes,
-  UIMessage,
+  type ToolSet,
+  type UIDataTypes,
+  type UIMessage,
   validateUIMessages,
 } from '@ai-toolkit/ai';
+import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
 
 export const maxDuration = 30;
 
@@ -17,11 +17,7 @@ const tools = {
   }),
 } satisfies ToolSet;
 
-export type OpenAIFileSearchMessage = UIMessage<
-  never,
-  UIDataTypes,
-  InferUITools<typeof tools>
->;
+export type OpenAIFileSearchMessage = UIMessage<never, UIDataTypes, InferUITools<typeof tools>>;
 
 export async function POST(req: Request) {
   const { messages } = await req.json();

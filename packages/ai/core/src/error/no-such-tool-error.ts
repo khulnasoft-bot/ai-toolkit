@@ -2,11 +2,9 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_NoSuchToolError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class NoSuchToolError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly toolName: string;
   readonly availableTools: string[] | undefined;
 

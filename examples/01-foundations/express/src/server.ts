@@ -1,12 +1,12 @@
-import { openai } from '@ai-toolkit/openai';
 import {
   createUIMessageStream,
   pipeAgentUIStreamToResponse,
   pipeUIMessageStreamToResponse,
   streamText,
 } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import 'dotenv/config';
-import express, { Request, Response } from 'express';
+import express, { type Request, type Response } from 'express';
 import { openaiWebSearchAgent } from './openai-web-search-agent.js';
 
 const app = express();
@@ -24,7 +24,7 @@ app.get('/', (_req: Request, res: Response) => {
   );
 });
 
-app.post('/', async (req: Request, res: Response) => {
+app.post('/', async (_req: Request, res: Response) => {
   const result = streamText({
     model: openai('gpt-4o'),
     prompt,
@@ -41,7 +41,7 @@ app.post('/chat', async (request: Request, response: Response) => {
   });
 });
 
-app.post('/custom-data-parts', async (req: Request, res: Response) => {
+app.post('/custom-data-parts', async (_req: Request, res: Response) => {
   pipeUIMessageStreamToResponse({
     response: res,
     stream: createUIMessageStream({

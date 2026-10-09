@@ -1,10 +1,10 @@
-import { signal } from '@angular/core';
 import {
+  type CompletionRequestOptions,
   callCompletionApi,
   generateId,
-  type CompletionRequestOptions,
   type UseCompletionOptions,
 } from '@ai-toolkit/ai';
+import { signal } from '@angular/core';
 
 export type CompletionOptions = Readonly<UseCompletionOptions>;
 
@@ -83,10 +83,7 @@ export class Completion {
     }
   };
 
-  #triggerRequest = async (
-    prompt: string,
-    options?: CompletionRequestOptions,
-  ) => {
+  #triggerRequest = async (prompt: string, options?: CompletionRequestOptions) => {
     return callCompletionApi({
       api: this.api,
       prompt,

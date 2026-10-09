@@ -1,25 +1,25 @@
 import {
-  EmbeddingModelV3,
-  SharedV3Warning,
+  type EmbeddingModelV3,
+  type SharedV3Warning,
   TooManyEmbeddingValuesForCallError,
 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonErrorResponseHandler,
   createJsonResponseHandler,
-  FetchFunction,
+  type FetchFunction,
   parseProviderOptions,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import {
-  OpenAICompatibleEmbeddingModelId,
+  defaultOpenAICompatibleErrorStructure,
+  type ProviderErrorStructure,
+} from '../openai-compatible-error';
+import {
+  type OpenAICompatibleEmbeddingModelId,
   openaiCompatibleEmbeddingProviderOptions,
 } from './openai-compatible-embedding-options';
-import {
-  defaultOpenAICompatibleErrorStructure,
-  ProviderErrorStructure,
-} from '../openai-compatible-error';
 
 type OpenAICompatibleEmbeddingConfig = {
   /**
@@ -57,10 +57,7 @@ export class OpenAICompatibleEmbeddingModel implements EmbeddingModelV3 {
     return this.config.supportsParallelCalls ?? true;
   }
 
-  constructor(
-    modelId: OpenAICompatibleEmbeddingModelId,
-    config: OpenAICompatibleEmbeddingConfig,
-  ) {
+  constructor(modelId: OpenAICompatibleEmbeddingModelId, config: OpenAICompatibleEmbeddingConfig) {
     this.modelId = modelId;
     this.config = config;
   }
@@ -136,9 +133,7 @@ export class OpenAICompatibleEmbeddingModel implements EmbeddingModelV3 {
       failedResponseHandler: createJsonErrorResponseHandler(
         this.config.errorStructure ?? defaultOpenAICompatibleErrorStructure,
       ),
-      successfulResponseHandler: createJsonResponseHandler(
-        openaiTextEmbeddingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(openaiTextEmbeddingResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });
@@ -146,9 +141,7 @@ export class OpenAICompatibleEmbeddingModel implements EmbeddingModelV3 {
     return {
       warnings,
       embeddings: response.data.map(item => item.embedding),
-      usage: response.usage
-        ? { tokens: response.usage.prompt_tokens }
-        : undefined,
+      usage: response.usage ? { tokens: response.usage.prompt_tokens } : undefined,
       providerMetadata: response.providerMetadata,
       response: { headers: responseHeaders, body: rawValue },
     };
@@ -160,7 +153,5 @@ export class OpenAICompatibleEmbeddingModel implements EmbeddingModelV3 {
 const openaiTextEmbeddingResponseSchema = z.object({
   data: z.array(z.object({ embedding: z.array(z.number()) })),
   usage: z.object({ prompt_tokens: z.number() }).nullish(),
-  providerMetadata: z
-    .record(z.string(), z.record(z.string(), z.any()))
-    .optional(),
+  providerMetadata: z.record(z.string(), z.record(z.string(), z.any())).optional(),
 });

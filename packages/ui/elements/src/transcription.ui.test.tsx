@@ -1,6 +1,6 @@
+import type { Experimental_TranscriptionResult as TranscriptionResult } from '@ai-toolkit/ai';
 import { render, screen } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
-import type { Experimental_TranscriptionResult as TranscriptionResult } from '@ai-toolkit/ai';
 
 import { Transcription, TranscriptionSegment } from './transcription';
 
@@ -84,9 +84,7 @@ describe('transcription', () => {
         </Transcription>,
       );
 
-      const transcription = container.querySelector(
-        '[data-slot="transcription"]',
-      );
+      const transcription = container.querySelector('[data-slot="transcription"]');
       expect(transcription).toHaveClass('custom-transcription');
     });
 
@@ -103,16 +101,8 @@ describe('transcription', () => {
         </Transcription>,
       );
 
-      const transcription = container.querySelector(
-        '[data-slot="transcription"]',
-      );
-      expect(transcription).toHaveClass(
-        'flex',
-        'flex-wrap',
-        'gap-1',
-        'text-sm',
-        'leading-relaxed',
-      );
+      const transcription = container.querySelector('[data-slot="transcription"]');
+      expect(transcription).toHaveClass('flex', 'flex-wrap', 'gap-1', 'text-sm', 'leading-relaxed');
     });
 
     it('has correct data-slot attribute', () => {
@@ -128,9 +118,7 @@ describe('transcription', () => {
         </Transcription>,
       );
 
-      expect(
-        container.querySelector('[data-slot="transcription"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="transcription"]')).toBeInTheDocument();
     });
 
     it('filters out empty segments', () => {
@@ -238,11 +226,7 @@ describe('transcription', () => {
 
       // Simulate parent updating currentTime
       rerender(
-        <Transcription
-          currentTime={2.5}
-          onSeek={onSeek}
-          segments={mockSegments}
-        >
+        <Transcription currentTime={2.5} onSeek={onSeek} segments={mockSegments}>
           {(segment, index) => (
             <TranscriptionSegment
               index={index}
@@ -254,10 +238,7 @@ describe('transcription', () => {
       );
 
       // Third segment should now be active
-      expect(thirdSegment.closest('button')).toHaveAttribute(
-        'data-active',
-        'true',
-      );
+      expect(thirdSegment.closest('button')).toHaveAttribute('data-active', 'true');
     });
 
     it('renders all segments with render function', () => {
@@ -326,9 +307,7 @@ describe('transcription', () => {
         </Transcription>,
       );
 
-      expect(
-        container.querySelector('[data-slot="transcription-segment"]'),
-      ).toBeInTheDocument();
+      expect(container.querySelector('[data-slot="transcription-segment"]')).toBeInTheDocument();
     });
 
     it('has data-index attribute', () => {
@@ -344,9 +323,7 @@ describe('transcription', () => {
         </Transcription>,
       );
 
-      const segments = container.querySelectorAll(
-        '[data-slot="transcription-segment"]',
-      );
+      const segments = container.querySelectorAll('[data-slot="transcription-segment"]');
       expect(segments[0]).toHaveAttribute('data-index', '0');
       expect(segments[1]).toHaveAttribute('data-index', '1');
       expect(segments[2]).toHaveAttribute('data-index', '2');
@@ -748,9 +725,7 @@ describe('transcription', () => {
         </Transcription>,
       );
 
-      const transcription = container.querySelector(
-        '[data-slot="transcription"]',
-      );
+      const transcription = container.querySelector('[data-slot="transcription"]');
       expect(transcription).toBeInTheDocument();
       expect(transcription?.children.length).toBe(0);
     });

@@ -1,7 +1,7 @@
-import { azure } from '@ai-toolkit/azure';
 import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
-import { saveAudioFile } from '../lib/save-audio';
+import { azure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
+import { saveAudioFile } from '../lib/save-audio';
 
 run(async () => {
   const result = await generateSpeech({

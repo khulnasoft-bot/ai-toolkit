@@ -1,11 +1,7 @@
-import { SpeechModelV3, ProviderV3 } from '@ai-toolkit/provider';
-import {
-  FetchFunction,
-  loadApiKey,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import type { ProviderV3, SpeechModelV3 } from '@ai-toolkit/provider';
+import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { LMNTSpeechModel } from './lmnt-speech-model';
-import { LMNTSpeechModelId } from './lmnt-speech-options';
+import type { LMNTSpeechModelId } from './lmnt-speech-options';
 import { VERSION } from './version';
 
 export interface LMNTProvider extends Pick<ProviderV3, 'speechModel'> {
@@ -65,11 +61,9 @@ export function createLMNT(options: LMNTProviderSettings = {}): LMNTProvider {
       fetch: options.fetch,
     });
 
-  const provider = function (modelId: LMNTSpeechModelId) {
-    return {
-      speech: createSpeechModel(modelId),
-    };
-  };
+  const provider = (modelId: LMNTSpeechModelId) => ({
+    speech: createSpeechModel(modelId),
+  });
 
   provider.speech = createSpeechModel;
   provider.speechModel = createSpeechModel;

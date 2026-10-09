@@ -1,5 +1,5 @@
-import { xai } from '@ai-toolkit/xai';
 import { generateText } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -8,8 +8,7 @@ run(async () => {
     tools: {
       web_search: xai.tools.webSearch(),
     },
-    prompt:
-      'What are the latest developments in AI from the past week? Search and summarize.',
+    prompt: 'What are the latest developments in AI from the past week? Search and summarize.',
   });
 
   console.log('Text:', result.text);

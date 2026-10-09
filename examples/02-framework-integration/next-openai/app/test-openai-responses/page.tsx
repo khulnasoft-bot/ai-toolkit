@@ -1,7 +1,7 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 
 export default function TestOpenAIResponses() {
@@ -11,28 +11,25 @@ export default function TestOpenAIResponses() {
 
   return (
     <div className="flex flex-col w-full max-w-md py-24 mx-auto stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        OpenAI Responses Block-Based Streaming Test
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">OpenAI Responses Block-Based Streaming Test</h1>
 
       {messages.map(m => (
         <div key={m.id} className="whitespace-pre-wrap mb-4">
-          <div className="font-semibold mb-1">
-            {m.role === 'user' ? 'User:' : 'AI:'}
-          </div>
+          <div className="font-semibold mb-1">{m.role === 'user' ? 'User:' : 'AI:'}</div>
           {m.parts.map((part, index) => {
             if (part.type === 'text') {
-              return <div key={index}>{part.text}</div>;
+              return <div key={`${part.type}-${index}`}>{part.text}</div>;
             } else if (part.type === 'reasoning') {
               return (
                 <div
-                  key={index}
+                  key={`${part.type}-${index}`}
                   className="mt-2 p-2 bg-blue-50 border-l-2 border-blue-300 text-blue-800 text-sm"
                 >
                   <strong>Reasoning:</strong> {part.text}
                 </div>
               );
             }
+            return null;
           })}
         </div>
       ))}

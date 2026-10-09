@@ -1,6 +1,6 @@
 import type { JSONSchema7 } from 'json-schema';
-import type { SharedV4ProviderOptions } from '../../shared';
 import type { JSONObject } from '../../json-value';
+import type { SharedV4ProviderOptions } from '../../shared';
 
 /**
  * A tool has a name, a description, and a set of parameters.

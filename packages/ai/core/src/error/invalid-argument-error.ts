@@ -2,11 +2,9 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_InvalidArgumentError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class InvalidArgumentError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly parameter: string;
   readonly value: unknown;
 

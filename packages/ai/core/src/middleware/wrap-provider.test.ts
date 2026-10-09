@@ -1,10 +1,10 @@
+import { describe, expect, it, vi } from 'vitest';
+import { MockImageModelV3 } from '../test/mock-image-model-v3';
 import { MockLanguageModelV2 } from '../test/mock-language-model-v2';
 import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
-import { MockImageModelV3 } from '../test/mock-image-model-v3';
 import { MockProviderV2 } from '../test/mock-provider-v2';
 import { MockProviderV3 } from '../test/mock-provider-v3';
 import { wrapProvider } from './wrap-provider';
-import { describe, it, expect, vi } from 'vitest';
 
 describe('wrapProvider', () => {
   it('should wrap all language models in the provider', () => {
@@ -20,9 +20,7 @@ describe('wrapProvider', () => {
       },
     });
 
-    const overrideModelId = vi
-      .fn()
-      .mockImplementation(({ model }) => `override-${model.modelId}`);
+    const overrideModelId = vi.fn().mockImplementation(({ model }) => `override-${model.modelId}`);
 
     const wrappedProvider = wrapProvider({
       provider,
@@ -32,15 +30,9 @@ describe('wrapProvider', () => {
       },
     });
 
-    expect(wrappedProvider.languageModel('model-1').modelId).toBe(
-      'override-model-1',
-    );
-    expect(wrappedProvider.languageModel('model-2').modelId).toBe(
-      'override-model-2',
-    );
-    expect(wrappedProvider.languageModel('model-3').modelId).toBe(
-      'override-model-3',
-    );
+    expect(wrappedProvider.languageModel('model-1').modelId).toBe('override-model-1');
+    expect(wrappedProvider.languageModel('model-2').modelId).toBe('override-model-2');
+    expect(wrappedProvider.languageModel('model-3').modelId).toBe('override-model-3');
 
     expect(overrideModelId).toHaveBeenCalledTimes(3);
     expect(overrideModelId).toHaveBeenCalledWith({ model: model1 });
@@ -89,9 +81,7 @@ describe('wrapProvider', () => {
       },
     });
 
-    const overrideModelId = vi
-      .fn()
-      .mockImplementation(({ model }) => `override-${model.modelId}`);
+    const overrideModelId = vi.fn().mockImplementation(({ model }) => `override-${model.modelId}`);
 
     const wrappedProvider = wrapProvider({
       provider,
@@ -102,15 +92,9 @@ describe('wrapProvider', () => {
       },
     });
 
-    expect(wrappedProvider.imageModel('model-1').modelId).toBe(
-      'override-model-1',
-    );
-    expect(wrappedProvider.imageModel('model-2').modelId).toBe(
-      'override-model-2',
-    );
-    expect(wrappedProvider.imageModel('model-3').modelId).toBe(
-      'override-model-3',
-    );
+    expect(wrappedProvider.imageModel('model-1').modelId).toBe('override-model-1');
+    expect(wrappedProvider.imageModel('model-2').modelId).toBe('override-model-2');
+    expect(wrappedProvider.imageModel('model-3').modelId).toBe('override-model-3');
 
     expect(overrideModelId).toHaveBeenCalledTimes(3);
     expect(overrideModelId).toHaveBeenCalledWith({ model: model1 });

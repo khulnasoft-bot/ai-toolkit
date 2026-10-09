@@ -1,8 +1,5 @@
-import type {
-  LanguageModelV3Content,
-  LanguageModelV3StreamPart,
-} from '@ai-toolkit/provider';
-import { LanguageModelMiddleware } from '../types/language-model-middleware';
+import type { LanguageModelV3Content, LanguageModelV3StreamPart } from '@ai-toolkit/provider';
+import type { LanguageModelMiddleware } from '../types/language-model-middleware';
 import { getPotentialStartIndex } from '../util/get-potential-start-index';
 
 /**
@@ -23,7 +20,7 @@ export function extractReasoningMiddleware({
   startWithReasoning?: boolean;
 }): LanguageModelMiddleware {
   const openingTag = `<${tagName}>`;
-  const closingTag = `<\/${tagName}>`;
+  const closingTag = `</${tagName}>`;
 
   return {
     specificationVersion: 'v3',
@@ -54,9 +51,7 @@ export function extractReasoningMiddleware({
           const match = matches[i];
 
           const beforeMatch = textWithoutReasoning.slice(0, match.index);
-          const afterMatch = textWithoutReasoning.slice(
-            match.index! + match[0].length,
-          );
+          const afterMatch = textWithoutReasoning.slice(match.index! + match[0].length);
 
           textWithoutReasoning =
             beforeMatch +
@@ -98,10 +93,7 @@ export function extractReasoningMiddleware({
 
       return {
         stream: stream.pipeThrough(
-          new TransformStream<
-            LanguageModelV3StreamPart,
-            LanguageModelV3StreamPart
-          >({
+          new TransformStream<LanguageModelV3StreamPart, LanguageModelV3StreamPart>({
             transform: (chunk, controller) => {
               // do not send `text-start` before `reasoning-start`
               // https://github.com/khulnasoft/ai-toolkit/issues/7774
@@ -148,8 +140,7 @@ export function extractReasoningMiddleware({
 
                   if (
                     activeExtraction.isReasoning &&
-                    (activeExtraction.afterSwitch ||
-                      activeExtraction.isFirstReasoning)
+                    (activeExtraction.afterSwitch || activeExtraction.isFirstReasoning)
                   ) {
                     controller.enqueue({
                       type: 'reasoning-start',
@@ -184,15 +175,10 @@ export function extractReasoningMiddleware({
                 }
               }
 
-              do {
-                const nextTag = activeExtraction.isReasoning
-                  ? closingTag
-                  : openingTag;
+              for (;;) {
+                const nextTag = activeExtraction.isReasoning ? closingTag : openingTag;
 
-                const startIndex = getPotentialStartIndex(
-                  activeExtraction.buffer,
-                  nextTag,
-                );
+                const startIndex = getPotentialStartIndex(activeExtraction.buffer, nextTag);
 
                 // no opening or closing tag found, publish the buffer
                 if (startIndex == null) {
@@ -223,11 +209,10 @@ export function extractReasoningMiddleware({
                   activeExtraction.isReasoning = !activeExtraction.isReasoning;
                   activeExtraction.afterSwitch = true;
                 } else {
-                  activeExtraction.buffer =
-                    activeExtraction.buffer.slice(startIndex);
+                  activeExtraction.buffer = activeExtraction.buffer.slice(startIndex);
                   break;
                 }
-              } while (true);
+              }
             },
           }),
         ),

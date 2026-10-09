@@ -1,14 +1,8 @@
+import type { ModelMessage, UIMessage } from '@ai-toolkit/ai';
 import {
   convertArrayToReadableStream,
   convertReadableStreamToArray,
 } from '@ai-toolkit/provider-utils/test';
-import {
-  toUIMessageStream,
-  toBaseMessages,
-  convertModelMessages,
-} from './adapter';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import type { ModelMessage, UIMessage } from '@ai-toolkit/ai';
 import {
   AIMessage,
   AIMessageChunk,
@@ -16,19 +10,19 @@ import {
   SystemMessage,
   ToolMessage,
 } from '@langchain/core/messages';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   LANGGRAPH_RESPONSE_1,
   LANGGRAPH_RESPONSE_2,
   REACT_AGENT_TOOL_CALLING,
 } from './__fixtures__/langgraph';
+import { convertModelMessages, toBaseMessages, toUIMessageStream } from './adapter';
 
 describe('toUIMessageStream', () => {
   it('should emit start event on stream initialization', async () => {
     const inputStream = convertArrayToReadableStream([['values', {}]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result[0]).toEqual({ type: 'start' });
   });
@@ -44,9 +38,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -72,9 +64,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -99,9 +89,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -129,9 +117,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -162,9 +148,7 @@ describe('toUIMessageStream', () => {
     });
     const inputStream = convertArrayToReadableStream([chunk]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -199,9 +183,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should only have start, no text events
     expect(result).toMatchInlineSnapshot(`
@@ -230,9 +212,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -273,9 +253,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -315,9 +293,7 @@ describe('toUIMessageStream', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -371,9 +347,7 @@ describe('toUIMessageStream', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -441,14 +415,11 @@ describe('toUIMessageStream', () => {
       ['values', valuesData],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should only have one tool call event, not two
     const toolCallEvents = result.filter(
-      (e: { type: string }) =>
-        e.type === 'tool-input-start' || e.type === 'tool-input-available',
+      (e: { type: string }) => e.type === 'tool-input-start' || e.type === 'tool-input-available',
     );
     expect(toolCallEvents).toHaveLength(1);
     expect(toolCallEvents[0]).toEqual({
@@ -498,14 +469,11 @@ describe('toUIMessageStream', () => {
       ['values', valuesData],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should have tool-input-start followed by tool-input-available from values
     const toolCallEvents = result.filter(
-      (e: { type: string }) =>
-        e.type === 'tool-input-start' || e.type === 'tool-input-available',
+      (e: { type: string }) => e.type === 'tool-input-start' || e.type === 'tool-input-available',
     );
     expect(toolCallEvents).toHaveLength(2);
     expect(toolCallEvents[0]).toEqual({
@@ -528,9 +496,7 @@ describe('toUIMessageStream', () => {
     const chunk = new AIMessageChunk({ id: 'msg-reason', content: '' });
     // Simulate contentBlocks with reasoning (as the customer does with Object.defineProperty)
     Object.defineProperty(chunk, 'contentBlocks', {
-      get: () => [
-        { type: 'reasoning', reasoning: 'Let me think about this...' },
-      ],
+      get: () => [{ type: 'reasoning', reasoning: 'Let me think about this...' }],
     });
 
     const inputStream = convertArrayToReadableStream([
@@ -538,9 +504,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -585,9 +549,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -631,9 +593,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -684,9 +644,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -730,9 +688,7 @@ describe('toUIMessageStream', () => {
     // Reasoning before tool call
     const reasoningChunk = new AIMessageChunk({ id: 'msg-1', content: '' });
     Object.defineProperty(reasoningChunk, 'contentBlocks', {
-      get: () => [
-        { type: 'reasoning', reasoning: 'I need to search for this...' },
-      ],
+      get: () => [{ type: 'reasoning', reasoning: 'I need to search for this...' }],
     });
 
     // Tool call chunk
@@ -756,9 +712,7 @@ describe('toUIMessageStream', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -811,14 +765,9 @@ describe('toUIMessageStream', () => {
       id: 'test-1',
     });
 
-    const inputStream = convertArrayToReadableStream([
-      reasoningChunk,
-      textChunk,
-    ]);
+    const inputStream = convertArrayToReadableStream([reasoningChunk, textChunk]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -873,9 +822,7 @@ describe('convertModelMessages', () => {
   });
 
   it('should convert user messages with text content', () => {
-    const modelMessages: ModelMessage[] = [
-      { role: 'user', content: 'Hello, world!' },
-    ];
+    const modelMessages: ModelMessage[] = [{ role: 'user', content: 'Hello, world!' }];
 
     const result = convertModelMessages(modelMessages);
 
@@ -1329,9 +1276,7 @@ describe('toUIMessageStream', () => {
           kwargs: {
             id: 'ai-1',
             content: '',
-            tool_calls: [
-              { id: historicalToolCallId, name: 'maths', args: { input: 123 } },
-            ],
+            tool_calls: [{ id: historicalToolCallId, name: 'maths', args: { input: 123 } }],
           },
         },
         // Historical: tool result - this indicates the tool call is complete
@@ -1355,9 +1300,7 @@ describe('toUIMessageStream', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // The historical tool call should NOT be emitted since it has a ToolMessage response
     const toolInputStartEvents = result.filter(
@@ -1390,9 +1333,7 @@ describe('toUIMessageStream', () => {
           kwargs: {
             id: 'ai-1',
             content: '',
-            tool_calls: [
-              { id: newToolCallId, name: 'maths', args: { input: 456 } },
-            ],
+            tool_calls: [{ id: newToolCallId, name: 'maths', args: { input: 456 } }],
           },
         },
         // No ToolMessage for this tool call - it's new and pending
@@ -1401,9 +1342,7 @@ describe('toUIMessageStream', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // The new tool call SHOULD be emitted since it has no ToolMessage response
     const toolInputStartEvents = result.filter(
@@ -1483,9 +1422,7 @@ describe('toUIMessageStream', () => {
           kwargs: {
             id: 'ai-3',
             content: '',
-            tool_calls: [
-              { id: currentToolCallId, name: 'maths', args: { input: 999 } },
-            ],
+            tool_calls: [{ id: currentToolCallId, name: 'maths', args: { input: 999 } }],
           },
         },
         // No ToolMessage for currentToolCallId - it's the current pending tool call
@@ -1494,9 +1431,7 @@ describe('toUIMessageStream', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Only the CURRENT tool call should be emitted
     const toolInputStartEvents = result.filter(
@@ -1538,9 +1473,7 @@ describe('toUIMessageStream', () => {
           id: 'ai-1',
           type: '@ai-toolkit/ai',
           content: '',
-          tool_calls: [
-            { id: historicalToolCallId, name: 'search', args: { q: 'test' } },
-          ],
+          tool_calls: [{ id: historicalToolCallId, name: 'search', args: { q: 'test' } }],
         },
         {
           id: 'tool-1',
@@ -1553,18 +1486,14 @@ describe('toUIMessageStream', () => {
           id: 'ai-2',
           type: '@ai-toolkit/ai',
           content: '',
-          tool_calls: [
-            { id: currentToolCallId, name: 'search', args: { q: 'new' } },
-          ],
+          tool_calls: [{ id: currentToolCallId, name: 'search', args: { q: 'new' } }],
         },
       ],
     };
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     const toolInputStartEvents = result.filter(
       (e: { type: string }) => e.type === 'tool-input-start',
@@ -1620,9 +1549,7 @@ describe('toUIMessageStream', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     const toolInputStartEvents = result.filter(
       (e: { type: string }) => e.type === 'tool-input-start',
@@ -1673,9 +1600,7 @@ describe('toUIMessageStream with streamEvents', () => {
       },
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -1730,9 +1655,7 @@ describe('toUIMessageStream with streamEvents', () => {
       },
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -1765,9 +1688,7 @@ describe('toUIMessageStream with streamEvents', () => {
           chunk: {
             id: 'reasoning-msg-1',
             content: '',
-            contentBlocks: [
-              { type: 'reasoning', reasoning: 'Let me think...' },
-            ],
+            contentBlocks: [{ type: 'reasoning', reasoning: 'Let me think...' }],
           },
         },
       },
@@ -1782,9 +1703,7 @@ describe('toUIMessageStream with streamEvents', () => {
       },
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -1841,9 +1760,7 @@ describe('toUIMessageStream with streamEvents', () => {
       },
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     expect(result).toMatchInlineSnapshot(`
       [
@@ -1885,14 +1802,10 @@ describe('toUIMessageStream LangGraph finish events', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should have finish event at the end
-    const finishEvents = result.filter(
-      (e: { type: string }) => e.type === 'finish',
-    );
+    const finishEvents = result.filter((e: { type: string }) => e.type === 'finish');
     expect(finishEvents).toHaveLength(1);
     expect(result[result.length - 1]).toEqual({ type: 'finish' });
   });
@@ -1905,32 +1818,20 @@ describe('toUIMessageStream LangGraph finish events', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should have both start-step and finish-step
-    const startStepEvents = result.filter(
-      (e: { type: string }) => e.type === 'start-step',
-    );
-    const finishStepEvents = result.filter(
-      (e: { type: string }) => e.type === 'finish-step',
-    );
-    const finishEvents = result.filter(
-      (e: { type: string }) => e.type === 'finish',
-    );
+    const startStepEvents = result.filter((e: { type: string }) => e.type === 'start-step');
+    const finishStepEvents = result.filter((e: { type: string }) => e.type === 'finish-step');
+    const finishEvents = result.filter((e: { type: string }) => e.type === 'finish');
 
     expect(startStepEvents).toHaveLength(1);
     expect(finishStepEvents).toHaveLength(1);
     expect(finishEvents).toHaveLength(1);
 
     // finish-step should come before finish
-    const finishStepIndex = result.findIndex(
-      (e: { type: string }) => e.type === 'finish-step',
-    );
-    const finishIndex = result.findIndex(
-      (e: { type: string }) => e.type === 'finish',
-    );
+    const finishStepIndex = result.findIndex((e: { type: string }) => e.type === 'finish-step');
+    const finishIndex = result.findIndex((e: { type: string }) => e.type === 'finish');
     expect(finishStepIndex).toBeLessThan(finishIndex);
   });
 
@@ -1944,18 +1845,12 @@ describe('toUIMessageStream LangGraph finish events', () => {
       ['values', {}],
     ]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should have 2 start-step events (one for each step)
     // Should have 2 finish-step events (one when changing to step 1, one at stream end)
-    const startStepEvents = result.filter(
-      (e: { type: string }) => e.type === 'start-step',
-    );
-    const finishStepEvents = result.filter(
-      (e: { type: string }) => e.type === 'finish-step',
-    );
+    const startStepEvents = result.filter((e: { type: string }) => e.type === 'start-step');
+    const finishStepEvents = result.filter((e: { type: string }) => e.type === 'finish-step');
 
     expect(startStepEvents).toHaveLength(2);
     expect(finishStepEvents).toHaveLength(2);
@@ -1974,20 +1869,14 @@ describe('toUIMessageStream LangGraph finish events', () => {
 
     const inputStream = convertArrayToReadableStream([['values', valuesData]]);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Should NOT have finish-step (no step was started)
-    const finishStepEvents = result.filter(
-      (e: { type: string }) => e.type === 'finish-step',
-    );
+    const finishStepEvents = result.filter((e: { type: string }) => e.type === 'finish-step');
     expect(finishStepEvents).toHaveLength(0);
 
     // But should still have finish
-    const finishEvents = result.filter(
-      (e: { type: string }) => e.type === 'finish',
-    );
+    const finishEvents = result.filter((e: { type: string }) => e.type === 'finish');
     expect(finishEvents).toHaveLength(1);
   });
 });
@@ -2005,9 +1894,7 @@ describe('toUIMessageStream with LangGraph HITL fixture', () => {
   it('should correctly transform first request (before approval)', async () => {
     const inputStream = convertArrayToReadableStream(LANGGRAPH_RESPONSE_1);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Use file snapshot to avoid stack overflow with large results
     await expect(JSON.stringify(result, null, 2)).toMatchFileSnapshot(
@@ -2018,9 +1905,7 @@ describe('toUIMessageStream with LangGraph HITL fixture', () => {
   it('should correctly transform second request (after approval)', async () => {
     const inputStream = convertArrayToReadableStream(LANGGRAPH_RESPONSE_2);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Use file snapshot to avoid stack overflow with large results
     await expect(JSON.stringify(result, null, 2)).toMatchFileSnapshot(
@@ -2031,9 +1916,7 @@ describe('toUIMessageStream with LangGraph HITL fixture', () => {
   it('should correctly transform reasoning and tool calls', async () => {
     const inputStream = convertArrayToReadableStream(REACT_AGENT_TOOL_CALLING);
 
-    const result = await convertReadableStreamToArray(
-      toUIMessageStream(inputStream),
-    );
+    const result = await convertReadableStreamToArray(toUIMessageStream(inputStream));
 
     // Use file snapshot to avoid stack overflow with large results
     await expect(JSON.stringify(result, null, 2)).toMatchFileSnapshot(

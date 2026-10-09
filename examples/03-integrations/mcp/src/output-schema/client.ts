@@ -76,10 +76,7 @@ async function main() {
 
   console.log('--- Example 2: list-users (with nested outputSchema) ---');
   const usersTool = tools['list-users'];
-  const usersResult = await usersTool.execute(
-    {},
-    { messages: [], toolCallId: 'users-1' },
-  );
+  const usersResult = await usersTool.execute({}, { messages: [], toolCallId: 'users-1' });
 
   const users = usersResult as {
     users: Array<{ id: number; name: string; email: string }>;
@@ -93,7 +90,7 @@ async function main() {
   console.log();
 
   console.log('--- Example 3: echo (without outputSchema) ---');
-  const echoTool = tools['echo'];
+  const echoTool = tools.echo;
   const echoResult = await echoTool.execute(
     { message: 'Hello, MCP!' },
     { messages: [], toolCallId: 'echo-1' },

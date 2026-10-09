@@ -1,7 +1,7 @@
-import { InferToolInput, InferToolOutput } from '@ai-toolkit/provider-utils';
-import { ProviderMetadata } from '../types';
-import { ValueOf } from '../../src/util/value-of';
-import { ToolSet } from './tool-set';
+import type { InferToolInput, InferToolOutput } from '@ai-toolkit/provider-utils';
+import type { ValueOf } from '../../src/util/value-of';
+import type { ProviderMetadata } from '../types';
+import type { ToolSet } from './tool-set';
 
 export type StaticToolResult<TOOLS extends ToolSet> = ValueOf<{
   [NAME in keyof TOOLS]: {
@@ -33,6 +33,4 @@ export type DynamicToolResult = {
   title?: string;
 };
 
-export type TypedToolResult<TOOLS extends ToolSet> =
-  | StaticToolResult<TOOLS>
-  | DynamicToolResult;
+export type TypedToolResult<TOOLS extends ToolSet> = StaticToolResult<TOOLS> | DynamicToolResult;

@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
 import { zod3ToJsonSchema } from './zod3-to-json-schema';
 
@@ -90,7 +90,7 @@ describe('paths', () => {
     };
 
     // cast to z.ZodSchema<Category>
-    // @ts-ignore
+    // @ts-expect-error
     const categorySchema: z.ZodSchema<Category> = z.lazy(() =>
       z.object({
         name: z.string(),
@@ -128,7 +128,7 @@ describe('paths', () => {
     };
 
     // cast to z.ZodSchema<Category>
-    // @ts-ignore
+    // @ts-expect-error
     const categorySchema: z.ZodSchema<Category> = z.lazy(() =>
       z.object({
         name: z.string(),
@@ -300,7 +300,9 @@ describe('paths', () => {
   it('When opting out of ref building and using recursive schemas, should warn and default to any', () => {
     const was = console.warn;
     let warning = '';
-    console.warn = (x: any) => (warning = x);
+    console.warn = (x: any) => {
+      warning = x;
+    };
 
     type Category = {
       name: string;
@@ -308,7 +310,7 @@ describe('paths', () => {
     };
 
     // cast to z.ZodSchema<Category>
-    // @ts-ignore
+    // @ts-expect-error
     const categorySchema: z.ZodSchema<Category> = z.lazy(() =>
       z.object({
         name: z.string(),

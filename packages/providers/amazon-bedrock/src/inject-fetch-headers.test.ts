@@ -1,5 +1,5 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { injectFetchHeaders } from './inject-fetch-headers';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 // Mock the version module
 vi.mock('./version', () => ({

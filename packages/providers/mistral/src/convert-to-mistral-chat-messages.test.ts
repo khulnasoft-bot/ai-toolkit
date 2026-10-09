@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertToMistralChatMessages } from './convert-to-mistral-chat-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('user messages', () => {
   it('should convert messages with image parts', async () => {

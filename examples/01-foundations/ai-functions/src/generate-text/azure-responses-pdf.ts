@@ -1,6 +1,6 @@
-import { azure } from '@ai-toolkit/azure';
-import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { azure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
 
 run(async () => {

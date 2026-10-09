@@ -1,7 +1,7 @@
-import { generateId, UIMessage } from '@ai-toolkit/ai';
-import { existsSync, mkdirSync } from 'fs';
-import { readFile, writeFile } from 'fs/promises';
-import path from 'path';
+import { existsSync, mkdirSync } from 'node:fs';
+import { readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
+import { generateId, type UIMessage } from '@ai-toolkit/ai';
 
 // example implementation for demo purposes
 // in a real app, you would save the chat to a database
@@ -54,13 +54,7 @@ function getChatFile(id: string): string {
   return chatFile;
 }
 
-export async function appendStreamId({
-  chatId,
-  streamId,
-}: {
-  chatId: string;
-  streamId: string;
-}) {
+export async function appendStreamId({ chatId, streamId }: { chatId: string; streamId: string }) {
   const file = getStreamsFile(chatId);
   const streams = await loadStreams(chatId);
   streams.push(streamId);

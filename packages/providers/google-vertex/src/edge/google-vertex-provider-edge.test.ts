@@ -1,8 +1,8 @@
 import { resolve } from '@ai-toolkit/provider-utils';
-import { createVertex as createVertexEdge } from './google-vertex-provider-edge';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { createVertex as createVertexOriginal } from '../google-vertex-provider';
 import * as edgeAuth from './google-vertex-auth-edge';
-import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
+import { createVertex as createVertexEdge } from './google-vertex-provider-edge';
 
 // Mock the imported modules
 vi.mock('./google-vertex-auth-edge', () => ({

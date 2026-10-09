@@ -12,10 +12,7 @@ export type ReasoningConfig = {
 
 export interface Reasoner {
   reason(prompt: string, config?: ReasoningConfig): Promise<ChainOfThought[]>;
-  stream(
-    prompt: string,
-    config?: ReasoningConfig,
-  ): AsyncIterable<ChainOfThought>;
+  stream(prompt: string, config?: ReasoningConfig): AsyncIterable<ChainOfThought>;
 }
 
 export interface ReasoningEngine {

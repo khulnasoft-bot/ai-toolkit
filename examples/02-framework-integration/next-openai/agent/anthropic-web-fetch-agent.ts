@@ -1,5 +1,5 @@
-import { anthropic, AnthropicProviderOptions } from '@ai-toolkit/anthropic';
-import { ToolLoopAgent, InferAgentUIMessage } from '@ai-toolkit/ai';
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
+import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
 
 export const anthropicWebFetchAgent = new ToolLoopAgent({
   model: anthropic('claude-sonnet-4-5'),
@@ -13,6 +13,4 @@ export const anthropicWebFetchAgent = new ToolLoopAgent({
   },
 });
 
-export type AnthropicWebFetchMessage = InferAgentUIMessage<
-  typeof anthropicWebFetchAgent
->;
+export type AnthropicWebFetchMessage = InferAgentUIMessage<typeof anthropicWebFetchAgent>;

@@ -1,8 +1,8 @@
 import { tool } from '@ai-toolkit/provider-utils';
+import { describe, expect, it } from 'vitest';
 import z from 'zod/v4';
 import { DefaultGeneratedFile } from './generated-file';
 import { toResponseMessages } from './to-response-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('toResponseMessages', () => {
   it('should return an assistant message with text when no tool calls or results', async () => {
@@ -694,9 +694,7 @@ describe('toResponseMessages', () => {
             input: {
               query: 'San Francisco major news events June 22 2025',
             },
-            output: [
-              { url: 'https://patch.com/california/san-francisco/calendar' },
-            ],
+            output: [{ url: 'https://patch.com/california/san-francisco/calendar' }],
             providerExecuted: true,
           },
           {

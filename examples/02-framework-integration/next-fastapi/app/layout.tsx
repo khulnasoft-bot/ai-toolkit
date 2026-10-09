@@ -1,19 +1,14 @@
 import './globals.css';
-import { LogoNext, LogoPython } from './icons';
-import Link from 'next/link';
 import { GeistSans } from 'geist/font/sans';
-
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { LogoNext, LogoPython } from './icons';
 
 export const metadata: Metadata = {
   title: 'AI TOOLKIT and FastAPI Examples',
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={GeistSans.className}>

@@ -1,9 +1,5 @@
+import { extractReasoningMiddleware, streamText, wrapLanguageModel } from '@ai-toolkit/ai';
 import { fireworks } from '@ai-toolkit/fireworks';
-import {
-  extractReasoningMiddleware,
-  streamText,
-  wrapLanguageModel,
-} from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {

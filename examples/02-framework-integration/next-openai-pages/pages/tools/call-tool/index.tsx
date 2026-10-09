@@ -1,5 +1,5 @@
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport, isStaticToolUIPart } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import { useState } from 'react';
 
 export default function Page() {
@@ -15,12 +15,13 @@ export default function Page() {
           <div key={message.id} className="flex flex-row gap-2">
             <strong>{`${message.role}: `}</strong>
 
-            {message.parts.map((part, index) => {
+            {message.parts.map(part => {
               if (part.type === 'text') {
-                return <div key={index}>{part.text}</div>;
+                return <div key={`text-${part.text}`}>{part.text}</div>;
               } else if (isStaticToolUIPart(part)) {
-                return <div key={index}>{JSON.stringify(part.input)}</div>;
+                return <div key={part.toolCallId}>{JSON.stringify(part.input)}</div>;
               }
+              return null;
             })}
           </div>
         ))}

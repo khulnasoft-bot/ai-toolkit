@@ -1,5 +1,5 @@
-import { fal } from '@ai-toolkit/fal';
 import { generateImage } from '@ai-toolkit/ai';
+import { fal } from '@ai-toolkit/fal';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

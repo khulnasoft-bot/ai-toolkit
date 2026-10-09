@@ -1,15 +1,12 @@
-import {
-  createTestServer,
-  TestResponseController,
-} from '@ai-toolkit/test-server/with-vitest';
+import { createTestServer, TestResponseController } from '@ai-toolkit/test-server/with-vitest';
 import '@testing-library/jest-dom/vitest';
+import type { UIMessageChunk } from '@ai-toolkit/ai';
 import userEvent from '@testing-library/user-event';
 import { findByText, screen } from '@testing-library/vue';
-import { UIMessageChunk } from '@ai-toolkit/ai';
+import { describe, expect, it } from 'vitest';
+import { setupTestComponent } from './setup-test-component';
 import TestCompletionComponent from './TestCompletionComponent.vue';
 import TestCompletionTextStreamComponent from './TestCompletionTextStreamComponent.vue';
-import { setupTestComponent } from './setup-test-component';
-import { describe, it, expect } from 'vitest';
 
 function formatChunk(part: UIMessageChunk) {
   return `data: ${JSON.stringify(part)}\n\n`;
@@ -55,9 +52,7 @@ describe('stream data stream', () => {
       expect(screen.getByTestId('loading')).toHaveTextContent('true');
 
       controller.write(formatChunk({ type: 'text-start', id: '0' }));
-      controller.write(
-        formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-      );
+      controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
       controller.write(formatChunk({ type: 'text-end', id: '0' }));
       controller.close();
 

@@ -1,6 +1,6 @@
-import { JSONValue } from '../../json-value/json-value';
-import { SharedV3ProviderOptions } from '../../shared/v3/shared-v3-provider-options';
-import { LanguageModelV3DataContent } from './language-model-v3-data-content';
+import type { JSONValue } from '../../json-value/json-value';
+import type { SharedV3ProviderOptions } from '../../shared/v3/shared-v3-provider-options';
+import type { LanguageModelV3DataContent } from './language-model-v3-data-content';
 
 /**
 A prompt is a list of messages.
@@ -38,10 +38,7 @@ export type LanguageModelV3Message =
       }
     | {
         role: 'tool';
-        content: Array<
-          | LanguageModelV3ToolResultPart
-          | LanguageModelV3ToolApprovalResponsePart
-        >;
+        content: Array<LanguageModelV3ToolResultPart | LanguageModelV3ToolApprovalResponsePart>;
       }
   ) & {
     /**

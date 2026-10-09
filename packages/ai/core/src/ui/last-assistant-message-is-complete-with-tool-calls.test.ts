@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { lastAssistantMessageIsCompleteWithToolCalls } from './last-assistant-message-is-complete-with-tool-calls';
-import { describe, it, expect } from 'vitest';
 
 describe('lastAssistantMessageIsCompleteWithToolCalls', () => {
   it('should return false if the last step of a multi-step sequence only has text', () => {

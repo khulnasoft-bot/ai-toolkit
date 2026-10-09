@@ -1,28 +1,28 @@
 import {
   OpenAICompatibleImageModel,
-  ProviderErrorStructure,
+  type ProviderErrorStructure,
 } from '@ai-toolkit/openai-compatible';
 import {
-  ImageModelV3,
-  LanguageModelV3,
+  type ImageModelV3,
+  type LanguageModelV3,
   NoSuchModelError,
-  ProviderV3,
+  type ProviderV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   generateId,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
-import { XaiChatLanguageModel } from './xai-chat-language-model';
-import { XaiChatModelId } from './xai-chat-options';
-import { XaiErrorData, xaiErrorDataSchema } from './xai-error';
-import { XaiImageModelId } from './xai-image-settings';
 import { XaiResponsesLanguageModel } from './responses/xai-responses-language-model';
-import { XaiResponsesModelId } from './responses/xai-responses-options';
+import type { XaiResponsesModelId } from './responses/xai-responses-options';
 import { xaiTools } from './tool';
 import { VERSION } from './version';
+import { XaiChatLanguageModel } from './xai-chat-language-model';
+import type { XaiChatModelId } from './xai-chat-options';
+import { type XaiErrorData, xaiErrorDataSchema } from './xai-error';
+import type { XaiImageModelId } from './xai-image-settings';
 
 const xaiErrorStructure: ProviderErrorStructure<XaiErrorData> = {
   errorSchema: xaiErrorDataSchema,
@@ -95,9 +95,7 @@ or to provide a custom fetch implementation for e.g. testing.
 }
 
 export function createXai(options: XaiProviderSettings = {}): XaiProvider {
-  const baseURL = withoutTrailingSlash(
-    options.baseURL ?? 'https://api.x.ai/v1',
-  );
+  const baseURL = withoutTrailingSlash(options.baseURL ?? 'https://api.x.ai/v1');
   const getHeaders = () =>
     withUserAgentSuffix(
       {
@@ -141,8 +139,7 @@ export function createXai(options: XaiProviderSettings = {}): XaiProvider {
     });
   };
 
-  const provider = (modelId: XaiChatModelId) =>
-    createChatLanguageModel(modelId);
+  const provider = (modelId: XaiChatModelId) => createChatLanguageModel(modelId);
 
   provider.specificationVersion = 'v3' as const;
   provider.languageModel = createChatLanguageModel;

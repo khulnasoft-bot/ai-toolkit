@@ -1,6 +1,6 @@
-import { DeepPartial } from '@ai-toolkit/ai';
-import * as v from 'valibot';
+import type { DeepPartial } from '@ai-toolkit/ai';
 import { valibotSchema } from '@ai-toolkit/valibot';
+import * as v from 'valibot';
 
 // define a schema for the notifications
 export const notificationSchema = valibotSchema(

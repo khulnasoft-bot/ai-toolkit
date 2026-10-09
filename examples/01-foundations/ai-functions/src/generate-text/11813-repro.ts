@@ -1,7 +1,6 @@
-import { generateText, streamText, tool } from '@ai-toolkit/ai';
+import { generateText, stepCountIs, streamText, tool } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
-import { stepCountIs } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -11,23 +10,18 @@ run(async () => {
   }
 
   console.log('Step 1: Creating conversation via OpenAI API...');
-  const createConvResponse = await fetch(
-    'https://api.openai.com/v1/conversations',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
+  const createConvResponse = await fetch('https://api.openai.com/v1/conversations', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
     },
-  );
+    body: JSON.stringify({}),
+  });
 
   if (!createConvResponse.ok) {
     const errorText = await createConvResponse.text();
-    throw new Error(
-      `Failed to create conversation: ${createConvResponse.status} - ${errorText}`,
-    );
+    throw new Error(`Failed to create conversation: ${createConvResponse.status} - ${errorText}`);
   }
 
   const convData = await createConvResponse.json();
@@ -35,7 +29,7 @@ run(async () => {
   console.log(`Created conversation: ${conversationId}\n`);
 
   console.log('Step 2: Adding initial message to conversation...');
-  const initial = await generateText({
+  const _initial = await generateText({
     model: openai.responses('gpt-4o'),
     prompt: 'Hi, my name is Alice.',
     providerOptions: {

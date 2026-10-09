@@ -17,13 +17,7 @@ export type LanguageModelV3FinishReason = {
    * - `error`: model stopped because of an error
    * - `other`: model stopped for other reasons
    */
-  unified:
-    | 'stop'
-    | 'length'
-    | 'content-filter'
-    | 'tool-calls'
-    | 'error'
-    | 'other';
+  unified: 'stop' | 'length' | 'content-filter' | 'tool-calls' | 'error' | 'other';
 
   /**
    * Raw finish reason from the provider.

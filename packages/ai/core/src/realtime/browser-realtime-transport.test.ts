@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { BrowserRealtimeTransport } from './browser-realtime-transport';
 
 class MockWebSocket {
@@ -157,14 +157,8 @@ describe('BrowserRealtimeTransport', () => {
     resolveFirst?.();
     await flush();
 
-    expect(ws.send).toHaveBeenNthCalledWith(
-      1,
-      JSON.stringify({ type: 'first' }),
-    );
-    expect(ws.send).toHaveBeenNthCalledWith(
-      2,
-      JSON.stringify({ type: 'second' }),
-    );
+    expect(ws.send).toHaveBeenNthCalledWith(1, JSON.stringify({ type: 'first' }));
+    expect(ws.send).toHaveBeenNthCalledWith(2, JSON.stringify({ type: 'second' }));
   });
 
   it('sends serialized strings and binary data without JSON encoding', async () => {

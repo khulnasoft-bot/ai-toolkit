@@ -11,11 +11,7 @@ async function main() {
     Anthropic: ['@anthropic-ai/sdk'],
     LangChain: ['@langchain/core'],
     'AWS Bedrock': ['@aws-sdk/client-bedrock-runtime'],
-    Google: [
-      '@google/generative-ai',
-      '@google/genai',
-      '@google-cloud/vertexai',
-    ],
+    Google: ['@google/generative-ai', '@google/genai', '@google-cloud/vertexai'],
     Transformers: ['@xenova/transformers'],
     Mistral: ['@mistralai/mistralai'],
     LlamaIndex: ['llamaindex'],
@@ -106,20 +102,13 @@ async function main() {
     }
 
     // Calculate totals
-    const totalPast = Object.values(groupStats).reduce(
-      (sum, v) => sum + v['past week'],
-      0,
-    );
-    const totalPrev = Object.values(groupStats).reduce(
-      (sum, v) => sum + v.previous,
-      0,
-    );
+    const totalPast = Object.values(groupStats).reduce((sum, v) => sum + v['past week'], 0);
+    const totalPrev = Object.values(groupStats).reduce((sum, v) => sum + v.previous, 0);
 
     // Compose row objects
     for (const [group, stat] of Object.entries(groupStats)) {
       const diff = stat['past week'] - stat.previous;
-      const pastWeekPct =
-        totalPast > 0 ? (stat['past week'] / totalPast) * 100 : 0;
+      const pastWeekPct = totalPast > 0 ? (stat['past week'] / totalPast) * 100 : 0;
       const prevPct = totalPrev > 0 ? (stat.previous / totalPrev) * 100 : 0;
       const diffPct = pastWeekPct - prevPct;
       rows.push({
@@ -161,9 +150,7 @@ function fetchWithRetry(
               );
               setTimeout(() => attemptFetch(n - 1), backoff);
             } else {
-              reject(
-                new Error(`Failed to fetch ${url} after multiple attempts.`),
-              );
+              reject(new Error(`Failed to fetch ${url} after multiple attempts.`));
             }
           } else {
             resolve(response);
@@ -176,9 +163,7 @@ function fetchWithRetry(
             );
             setTimeout(() => attemptFetch(n - 1), backoff);
           } else {
-            reject(
-              new Error(`Failed to fetch ${url} after multiple attempts.`),
-            );
+            reject(new Error(`Failed to fetch ${url} after multiple attempts.`));
           }
         });
     };

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { convertToModelMessages } from 'other-module';
 
-async function processMessages(uiMessages: any[]) {
+async function _processMessages(uiMessages: any[]) {
   const modelMessages = convertToModelMessages(uiMessages);
   return modelMessages;
 }

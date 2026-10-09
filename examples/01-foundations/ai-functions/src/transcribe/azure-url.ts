@@ -1,5 +1,5 @@
-import { createAzure } from '@ai-toolkit/azure';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
+import { createAzure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
 
 run(async () => {

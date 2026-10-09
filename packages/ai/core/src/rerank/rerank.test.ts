@@ -1,9 +1,9 @@
-import { RerankingModelV3CallOptions } from '@ai-toolkit/provider';
+import type { RerankingModelV3CallOptions } from '@ai-toolkit/provider';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { MockRerankingModelV3 } from '../test/mock-reranking-model-v3';
-import { rerank } from './rerank';
-import { RerankResult } from './rerank-result';
 import { MockTracer } from '../test/mock-tracer';
+import { rerank } from './rerank';
+import type { RerankResult } from './rerank-result';
 
 describe('rerank', () => {
   describe('rerank with string documents', () => {
@@ -350,7 +350,7 @@ describe('rerank', () => {
     let tracer: MockTracer;
 
     const model = new MockRerankingModelV3({
-      doRerank: async options => {
+      doRerank: async _options => {
         return {
           ranking: [
             { index: 2, relevanceScore: 0.9 },

@@ -87,9 +87,7 @@ export const bedrockFilePartProviderOptions = z.object({
     .optional(),
 });
 
-export type BedrockFilePartProviderOptions = z.infer<
-  typeof bedrockFilePartProviderOptions
->;
+export type BedrockFilePartProviderOptions = z.infer<typeof bedrockFilePartProviderOptions>;
 
 export const bedrockProviderOptions = z.object({
   /**

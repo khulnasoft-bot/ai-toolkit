@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import debug from 'debug';
 import { Command } from 'commander';
+import debug from 'debug';
 import { transform } from '../lib/transform';
+import type { TransformOptions } from '../lib/transform-options';
 import { upgrade, upgradeV4, upgradeV5, upgradeV6 } from '../lib/upgrade';
-import { TransformOptions } from '../lib/transform-options';
 
-const log = debug('codemod');
+const _log = debug('codemod');
 const error = debug('codemod:error');
 debug.enable('codemod:*');
 
@@ -17,10 +17,7 @@ const addTransformOptions = (command: Command): Command => {
     .option('-d, --dry', 'Dry run (no changes are made to files)')
     .option('-p, --print', 'Print transformed files to stdout')
     .option('--verbose', 'Show more information about the transform process')
-    .option(
-      '-j, --jscodeshift <options>',
-      'Pass options directly to jscodeshift',
-    );
+    .option('-j, --jscodeshift <options>', 'Pass options directly to jscodeshift');
 };
 
 addTransformOptions(
@@ -39,9 +36,7 @@ addTransformOptions(
 });
 
 addTransformOptions(
-  program
-    .command('upgrade')
-    .description('Upgrade ai package dependencies and apply all codemods'),
+  program.command('upgrade').description('Upgrade ai package dependencies and apply all codemods'),
 ).action((options: TransformOptions) => {
   try {
     upgrade(options);

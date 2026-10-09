@@ -1,11 +1,11 @@
+export { ByteDanceImageModel } from './bytedance-image-model';
+export type { ByteDanceImageModelOptions } from './bytedance-image-model-options';
+export type { ByteDanceImageModelId } from './bytedance-image-settings';
 export type {
   ByteDanceProvider,
   ByteDanceProviderSettings,
 } from './bytedance-provider';
 export { byteDance, createByteDance } from './bytedance-provider';
-export { ByteDanceImageModel } from './bytedance-image-model';
-export type { ByteDanceImageModelOptions } from './bytedance-image-model-options';
-export type { ByteDanceImageModelId } from './bytedance-image-settings';
 export type {
   ByteDanceVideoModelOptions,
   /** @deprecated Use `ByteDanceVideoModelOptions` instead. */

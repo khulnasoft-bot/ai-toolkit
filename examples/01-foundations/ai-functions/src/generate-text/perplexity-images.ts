@@ -1,12 +1,11 @@
-import { perplexity } from '@ai-toolkit/perplexity';
 import { generateText } from '@ai-toolkit/ai';
+import { perplexity } from '@ai-toolkit/perplexity';
 import { run } from '../lib/run';
 
 run(async () => {
   const result = await generateText({
     model: perplexity('sonar-pro'),
-    prompt:
-      'Tell me about the earliest cave drawings known and include images.',
+    prompt: 'Tell me about the earliest cave drawings known and include images.',
     providerOptions: {
       perplexity: {
         return_images: true,

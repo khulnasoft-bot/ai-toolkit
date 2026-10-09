@@ -9,7 +9,7 @@ const mockRenames: Record<string, string> = {
   MockTranscriptionModelV2: 'MockTranscriptionModelV3',
 };
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Replace import specifiers from 'ai-toolkit/test' package
@@ -53,14 +53,9 @@ export default createTransformer((fileInfo, api, options, context) => {
       return (
         Object.keys(mockRenames).includes(path.node.name) &&
         parent.node.type !== 'ImportSpecifier' &&
-        !(
-          parent.node.type === 'MemberExpression' &&
-          parent.node.property === path.node
-        ) &&
+        !(parent.node.type === 'MemberExpression' && parent.node.property === path.node) &&
         !(parent.node.type === 'Property' && parent.node.key === path.node) &&
-        !(
-          parent.node.type === 'ObjectProperty' && parent.node.key === path.node
-        )
+        !(parent.node.type === 'ObjectProperty' && parent.node.key === path.node)
       );
     })
     .forEach(path => {

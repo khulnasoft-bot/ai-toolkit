@@ -1,6 +1,6 @@
-import { convertToPerplexityMessages } from './convert-to-perplexity-messages';
 import { UnsupportedFunctionalityError } from '@ai-toolkit/provider';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { convertToPerplexityMessages } from './convert-to-perplexity-messages';
 
 describe('convertToPerplexityMessages', () => {
   describe('system messages', () => {

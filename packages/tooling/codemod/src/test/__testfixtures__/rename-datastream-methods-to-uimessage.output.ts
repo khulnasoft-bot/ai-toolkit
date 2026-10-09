@@ -1,6 +1,7 @@
 // @ts-nocheck
-import { streamText } from 'ai';
+
 import { openai } from '@ai-toolkit/openai';
+import { streamText } from 'ai';
 
 export async function POST(req: Request) {
   const { messages } = await req.json();
@@ -11,7 +12,7 @@ export async function POST(req: Request) {
   });
 
   // Test toDataStream method call
-  const stream = result.toUIMessageStream({ data: 'test' });
+  const _stream = result.toUIMessageStream({ data: 'test' });
 
   // Test mergeIntoDataStream method call
   const dataStreamWriter = { write: () => {} };
@@ -21,6 +22,6 @@ export async function POST(req: Request) {
   return result.toUIMessageStream().pipeThrough(transform);
 
   // Test standalone reference (though less common)
-  const method = result.toUIMessageStream;
-  const mergeMethod = result.mergeIntoUIMessageStream;
+  const _method = result.toUIMessageStream;
+  const _mergeMethod = result.mergeIntoUIMessageStream;
 }

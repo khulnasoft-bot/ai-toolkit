@@ -1,7 +1,7 @@
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { DownloadError } from '@ai-toolkit/provider-utils';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it } from 'vitest';
 import { download } from './download';
-import { describe, it, expect } from 'vitest';
 
 const server = createTestServer({
   'http://example.com/file': {},
@@ -24,8 +24,8 @@ describe('download', () => {
     });
 
     expect(result).not.toBeNull();
-    expect(result!.data).toEqual(expectedBytes);
-    expect(result!.mediaType).toBe('application/octet-stream');
+    expect(result?.data).toEqual(expectedBytes);
+    expect(result?.mediaType).toBe('application/octet-stream');
 
     // UA header assertion
     expect(server.calls[0].requestUserAgent).toContain('ai-toolkit/');

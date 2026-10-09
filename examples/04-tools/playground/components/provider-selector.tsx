@@ -1,9 +1,9 @@
 'use client';
 
+import { ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { aiProviders, type AIProvider } from '@/lib/providers';
-import { ChevronDown } from 'lucide-react';
+import { aiProviders } from '@/lib/providers';
 
 interface ProviderSelectorProps {
   selectedProvider: string;

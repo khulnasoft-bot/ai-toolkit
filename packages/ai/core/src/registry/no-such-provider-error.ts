@@ -2,11 +2,9 @@ import { AITOOLKITError, NoSuchModelError } from '@ai-toolkit/provider';
 
 const name = 'AI_NoSuchProviderError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class NoSuchProviderError extends NoSuchModelError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly providerId: string;
   readonly availableProviders: string[];
 

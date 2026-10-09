@@ -1,4 +1,4 @@
-import { Span, SpanContext, Tracer } from '@opentelemetry/api';
+import type { Span, SpanContext, Tracer } from '@opentelemetry/api';
 
 /**
  * Tracer implementation that does nothing (null object).
@@ -9,7 +9,7 @@ export const noopTracer: Tracer = {
   },
 
   startActiveSpan<F extends (span: Span) => unknown>(
-    name: unknown,
+    _name: unknown,
     arg1: unknown,
     arg2?: unknown,
     arg3?: F,

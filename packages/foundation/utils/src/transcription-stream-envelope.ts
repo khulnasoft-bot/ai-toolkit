@@ -1,6 +1,6 @@
 import type {
-  Experimental_TranscriptionModelV4StreamPart as TranscriptionModelV4StreamPart,
   JSONObject,
+  Experimental_TranscriptionModelV4StreamPart as TranscriptionModelV4StreamPart,
 } from '@ai-toolkit/provider';
 import { isRecord } from './is-record';
 import { secureJsonParse } from './secure-json-parse';
@@ -44,12 +44,10 @@ import { secureJsonParse } from './secure-json-parse';
  */
 
 /** Type of the first client TEXT frame. */
-export const TRANSCRIPTION_STREAM_START_FRAME_TYPE =
-  'transcription-stream.start';
+export const TRANSCRIPTION_STREAM_START_FRAME_TYPE = 'transcription-stream.start';
 
 /** Type of the client TEXT frame that signals the end of the audio input. */
-export const TRANSCRIPTION_STREAM_AUDIO_DONE_FRAME_TYPE =
-  'transcription-stream.audio-done';
+export const TRANSCRIPTION_STREAM_AUDIO_DONE_FRAME_TYPE = 'transcription-stream.audio-done';
 
 /**
  * The client's session start frame. Optional keys are omitted when undefined.
@@ -94,9 +92,7 @@ export type TranscriptionStreamClientFrame =
  * rejects prototype-pollution payloads (parsed with `secureJsonParse`). Never
  * throws.
  */
-export function parseTranscriptionStreamClientFrame(
-  text: string,
-): TranscriptionStreamClientFrame {
+export function parseTranscriptionStreamClientFrame(text: string): TranscriptionStreamClientFrame {
   let value: unknown;
   try {
     value = secureJsonParse(text);
@@ -116,10 +112,7 @@ export function parseTranscriptionStreamClientFrame(
 
   switch (frame.type) {
     case TRANSCRIPTION_STREAM_START_FRAME_TYPE: {
-      const inputAudioFormat = frame.inputAudioFormat as
-        | Record<string, unknown>
-        | null
-        | undefined;
+      const inputAudioFormat = frame.inputAudioFormat as Record<string, unknown> | null | undefined;
       if (
         inputAudioFormat == null ||
         typeof inputAudioFormat !== 'object' ||
@@ -128,14 +121,10 @@ export function parseTranscriptionStreamClientFrame(
       ) {
         return {
           type: 'invalid',
-          message:
-            'start frame must have an inputAudioFormat object with a string type',
+          message: 'start frame must have an inputAudioFormat object with a string type',
         };
       }
-      if (
-        inputAudioFormat.rate !== undefined &&
-        typeof inputAudioFormat.rate !== 'number'
-      ) {
+      if (inputAudioFormat.rate !== undefined && typeof inputAudioFormat.rate !== 'number') {
         return {
           type: 'invalid',
           message: 'inputAudioFormat.rate must be a number when present',
@@ -152,10 +141,7 @@ export function parseTranscriptionStreamClientFrame(
           message: 'providerOptions must be an object when present',
         };
       }
-      if (
-        frame.includeRawChunks !== undefined &&
-        typeof frame.includeRawChunks !== 'boolean'
-      ) {
+      if (frame.includeRawChunks !== undefined && typeof frame.includeRawChunks !== 'boolean') {
         return {
           type: 'invalid',
           message: 'includeRawChunks must be a boolean when present',
@@ -201,10 +187,7 @@ export function serializeTranscriptionStreamPart(
 
 // `instanceof` misses cross-realm Errors; the brand check does not.
 function isError(value: unknown): value is Error {
-  return (
-    value instanceof Error ||
-    Object.prototype.toString.call(value) === '[object Error]'
-  );
+  return value instanceof Error || Object.prototype.toString.call(value) === '[object Error]';
 }
 
 /**
@@ -234,9 +217,7 @@ export function parseTranscriptionStreamPart(
 
   switch (part.type) {
     case 'stream-start':
-      return Array.isArray(part.warnings) && part.warnings.every(isWarning)
-        ? part
-        : undefined;
+      return Array.isArray(part.warnings) && part.warnings.every(isWarning) ? part : undefined;
 
     case 'transcript-delta':
       return isString(part.delta) &&
@@ -276,12 +257,7 @@ export function parseTranscriptionStreamPart(
         : undefined;
 
     case 'response-metadata': {
-      if (
-        !(
-          isOptional(part.modelId, isString) &&
-          isOptional(part.headers, isRecord)
-        )
-      ) {
+      if (!(isOptional(part.modelId, isString) && isOptional(part.headers, isRecord))) {
         return undefined;
       }
       // Envelope rule 4: timestamps ride as ISO 8601 strings.
@@ -293,9 +269,7 @@ export function parseTranscriptionStreamPart(
         return undefined;
       }
       const revived = new Date(timestamp);
-      return Number.isNaN(revived.getTime())
-        ? undefined
-        : { ...part, timestamp: revived };
+      return Number.isNaN(revived.getTime()) ? undefined : { ...part, timestamp: revived };
     }
 
     case 'raw':
@@ -317,10 +291,7 @@ function isNumber(value: unknown): value is number {
   return typeof value === 'number';
 }
 
-function isOptional(
-  value: unknown,
-  check: (value: unknown) => boolean,
-): boolean {
+function isOptional(value: unknown, check: (value: unknown) => boolean): boolean {
   return value === undefined || check(value);
 }
 

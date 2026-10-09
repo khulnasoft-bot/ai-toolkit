@@ -55,10 +55,7 @@ const PromptInputAttachment = ({
 const PromptInputAttachments = ({
   children,
 }: {
-  children: (
-    attachment: AttachmentData,
-    onRemove: () => void,
-  ) => React.ReactNode;
+  children: (attachment: AttachmentData, onRemove: () => void) => React.ReactNode;
 }) => {
   const attachments = usePromptInputAttachments();
   if (!attachments.files.length) {
@@ -135,10 +132,7 @@ const setupPromptInputTests = () => {
   // oxlint-disable-next-line eslint-plugin-react(no-this-in-sfc)
   window.FileReader = vi.fn(function FileReader(this: FileReader) {
     // oxlint-disable-next-line eslint-plugin-react(no-this-in-sfc), eslint-plugin-jest(prefer-spy-on)
-    this.readAsDataURL = vi.fn(function readAsDataURL(
-      this: FileReader,
-      _blob: Blob,
-    ) {
+    this.readAsDataURL = vi.fn(function readAsDataURL(this: FileReader, _blob: Blob) {
       // Simulate async file reading
       setTimeout(() => {
         Object.defineProperty(this, 'result', {
@@ -382,11 +376,7 @@ describe('promptInput', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <input
-            data-testid="add-file-btn"
-            onClick={() => attachments.add([file])}
-            type="button"
-          />
+          <input data-testid="add-file-btn" onClick={() => attachments.add([file])} type="button" />
           <PromptInputAttachments>
             {attachment => <div key={attachment.id}>{attachment.filename}</div>}
           </PromptInputAttachments>
@@ -447,11 +437,7 @@ describe('promptInput', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <input
-            data-testid="add-file-btn"
-            onClick={() => attachments.add([file])}
-            type="button"
-          />
+          <input data-testid="add-file-btn" onClick={() => attachments.add([file])} type="button" />
           <PromptInputAttachments>
             {attachment => <div key={attachment.id}>{attachment.filename}</div>}
           </PromptInputAttachments>
@@ -510,11 +496,7 @@ describe('promptInput', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <input
-            data-testid="add-file-btn"
-            onClick={() => attachments.add([file])}
-            type="button"
-          />
+          <input data-testid="add-file-btn" onClick={() => attachments.add([file])} type="button" />
           <PromptInputAttachments>
             {attachment => <div key={attachment.id}>{attachment.filename}</div>}
           </PromptInputAttachments>
@@ -576,11 +558,7 @@ describe('promptInput', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <input
-            data-testid="add-file-btn"
-            onClick={() => attachments.add([file])}
-            type="button"
-          />
+          <input data-testid="add-file-btn" onClick={() => attachments.add([file])} type="button" />
           <PromptInputAttachments>
             {attachment => <div key={attachment.id}>{attachment.filename}</div>}
           </PromptInputAttachments>
@@ -652,9 +630,7 @@ describe('promptInputTextarea', () => {
         </PromptInputBody>
       </PromptInput>,
     );
-    expect(
-      screen.getByPlaceholderText('What would you like to know?'),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('What would you like to know?')).toBeInTheDocument();
   });
 
   it('submits on Enter key', async () => {
@@ -671,9 +647,7 @@ describe('promptInputTextarea', () => {
       </PromptInput>,
     );
 
-    const textarea = screen.getByPlaceholderText(
-      'What would you like to know?',
-    );
+    const textarea = screen.getByPlaceholderText('What would you like to know?');
     await user.type(textarea, 'Test');
     await user.keyboard('{Enter}');
 
@@ -697,9 +671,7 @@ describe('promptInputTextarea', () => {
       </PromptInput>,
     );
 
-    const textarea = screen.getByPlaceholderText(
-      'What would you like to know?',
-    );
+    const textarea = screen.getByPlaceholderText('What would you like to know?');
     await user.type(textarea, 'Line 1');
     await user.keyboard('{Shift>}{Enter}{/Shift}');
     await user.type(textarea, 'Line 2');
@@ -756,9 +728,7 @@ describe('promptInputTextarea', () => {
         </PromptInputBody>
       </PromptInput>,
     );
-    expect(
-      screen.getByPlaceholderText('Custom placeholder'),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('Custom placeholder')).toBeInTheDocument();
   });
 });
 
@@ -811,9 +781,7 @@ describe('promptInputButton', () => {
 
     await vi.waitFor(() => {
       // Check tooltip content element (not the hidden screen reader span)
-      const tooltipContent = document.querySelector(
-        '[data-slot="tooltip-content"]',
-      );
+      const tooltipContent = document.querySelector('[data-slot="tooltip-content"]');
       expect(tooltipContent).toBeTruthy();
       expect(tooltipContent?.textContent).toContain('Search the web');
     });
@@ -827,9 +795,7 @@ describe('promptInputButton', () => {
     render(
       <PromptInput onSubmit={onSubmit}>
         <PromptInputBody>
-          <PromptInputButton
-            tooltip={{ content: 'Open Search', shortcut: '⌘K', side: 'bottom' }}
-          >
+          <PromptInputButton tooltip={{ content: 'Open Search', shortcut: '⌘K', side: 'bottom' }}>
             Search
           </PromptInputButton>
         </PromptInputBody>
@@ -841,9 +807,7 @@ describe('promptInputButton', () => {
 
     await vi.waitFor(() => {
       // Check tooltip content element (not the hidden screen reader span)
-      const tooltipContent = document.querySelector(
-        '[data-slot="tooltip-content"]',
-      );
+      const tooltipContent = document.querySelector('[data-slot="tooltip-content"]');
       expect(tooltipContent).toBeTruthy();
       expect(tooltipContent?.textContent).toContain('Open Search');
       expect(tooltipContent?.textContent).toContain('⌘K');
@@ -954,19 +918,14 @@ describe('promptInputProvider', () => {
   it('provides context to children', async () => {
     setupPromptInputTests();
     const _onSubmit = vi.fn();
-    const { PromptInputProvider, usePromptInputController } = await import(
-      './prompt-input'
-    );
+    const { PromptInputProvider, usePromptInputController } = await import('./prompt-input');
 
     const TestComponent = () => {
       const controller = usePromptInputController();
       return (
         <div>
           <span data-testid="input-value">{controller.textInput.value}</span>
-          <button
-            onClick={() => controller.textInput.setInput('test')}
-            type="button"
-          >
+          <button onClick={() => controller.textInput.setInput('test')} type="button">
             Set Input
           </button>
         </div>
@@ -1003,9 +962,7 @@ describe('promptInputProvider', () => {
 
   it('provides initial input value', async () => {
     setupPromptInputTests();
-    const { PromptInputProvider, usePromptInputController } = await import(
-      './prompt-input'
-    );
+    const { PromptInputProvider, usePromptInputController } = await import('./prompt-input');
     const onSubmit = vi.fn();
 
     const TestComponent = () => {
@@ -1029,9 +986,7 @@ describe('promptInputProvider', () => {
 
   it('manages attachments globally', async () => {
     setupPromptInputTests();
-    const { PromptInputProvider, useProviderAttachments } = await import(
-      './prompt-input'
-    );
+    const { PromptInputProvider, useProviderAttachments } = await import('./prompt-input');
 
     const file = new File(['test'], 'test.txt', { type: 'text/plain' });
 
@@ -1124,11 +1079,7 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-file"
-            onClick={() => attachments.add([largeFile])}
-            type="button"
-          >
+          <button data-testid="add-file" onClick={() => attachments.add([largeFile])} type="button">
             Add File
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1166,11 +1117,7 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-file"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-file" onClick={() => attachments.add([textFile])} type="button">
             Add File
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1207,11 +1154,7 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-file"
-            onClick={() => attachments.add([imageFile])}
-            type="button"
-          >
+          <button data-testid="add-file" onClick={() => attachments.add([imageFile])} type="button">
             Add File
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1246,11 +1189,7 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <button
@@ -1350,18 +1289,10 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-png"
-            onClick={() => attachments.add([pngFile])}
-            type="button"
-          >
+          <button data-testid="add-png" onClick={() => attachments.add([pngFile])} type="button">
             Add PNG
           </button>
-          <button
-            data-testid="add-jpeg"
-            onClick={() => attachments.add([jpegFile])}
-            type="button"
-          >
+          <button data-testid="add-jpeg" onClick={() => attachments.add([jpegFile])} type="button">
             Add JPEG
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1404,18 +1335,10 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-pdf"
-            onClick={() => attachments.add([pdfFile])}
-            type="button"
-          >
+          <button data-testid="add-pdf" onClick={() => attachments.add([pdfFile])} type="button">
             Add PDF
           </button>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1424,11 +1347,7 @@ describe('file validation', () => {
     };
 
     render(
-      <PromptInput
-        accept="application/pdf"
-        onError={onError}
-        onSubmit={onSubmit}
-      >
+      <PromptInput accept="application/pdf" onError={onError} onSubmit={onSubmit}>
         <PromptInputBody>
           <AttachmentConsumer />
           <PromptInputTextarea />
@@ -1484,11 +1403,7 @@ describe('file validation', () => {
           >
             Add Audio
           </button>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1497,11 +1412,7 @@ describe('file validation', () => {
     };
 
     render(
-      <PromptInput
-        accept="image/*, video/*"
-        onError={onError}
-        onSubmit={onSubmit}
-      >
+      <PromptInput accept="image/*, video/*" onError={onError} onSubmit={onSubmit}>
         <PromptInputBody>
           <AttachmentConsumer />
           <PromptInputTextarea />
@@ -1545,32 +1456,16 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-png"
-            onClick={() => attachments.add([pngFile])}
-            type="button"
-          >
+          <button data-testid="add-png" onClick={() => attachments.add([pngFile])} type="button">
             Add PNG
           </button>
-          <button
-            data-testid="add-jpeg"
-            onClick={() => attachments.add([jpegFile])}
-            type="button"
-          >
+          <button data-testid="add-jpeg" onClick={() => attachments.add([jpegFile])} type="button">
             Add JPEG
           </button>
-          <button
-            data-testid="add-pdf"
-            onClick={() => attachments.add([pdfFile])}
-            type="button"
-          >
+          <button data-testid="add-pdf" onClick={() => attachments.add([pdfFile])} type="button">
             Add PDF
           </button>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1579,11 +1474,7 @@ describe('file validation', () => {
     };
 
     render(
-      <PromptInput
-        accept="image/png, application/pdf"
-        onError={onError}
-        onSubmit={onSubmit}
-      >
+      <PromptInput accept="image/png, application/pdf" onError={onError} onSubmit={onSubmit}>
         <PromptInputBody>
           <AttachmentConsumer />
           <PromptInputTextarea />
@@ -1628,32 +1519,16 @@ describe('file validation', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-png"
-            onClick={() => attachments.add([pngFile])}
-            type="button"
-          >
+          <button data-testid="add-png" onClick={() => attachments.add([pngFile])} type="button">
             Add PNG
           </button>
-          <button
-            data-testid="add-jpeg"
-            onClick={() => attachments.add([jpegFile])}
-            type="button"
-          >
+          <button data-testid="add-jpeg" onClick={() => attachments.add([jpegFile])} type="button">
             Add JPEG
           </button>
-          <button
-            data-testid="add-pdf"
-            onClick={() => attachments.add([pdfFile])}
-            type="button"
-          >
+          <button data-testid="add-pdf" onClick={() => attachments.add([pdfFile])} type="button">
             Add PDF
           </button>
-          <button
-            data-testid="add-docx"
-            onClick={() => attachments.add([docxFile])}
-            type="button"
-          >
+          <button data-testid="add-docx" onClick={() => attachments.add([docxFile])} type="button">
             Add DOCX
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1662,11 +1537,7 @@ describe('file validation', () => {
     };
 
     render(
-      <PromptInput
-        accept="image/*, application/pdf"
-        onError={onError}
-        onSubmit={onSubmit}
-      >
+      <PromptInput accept="image/*, application/pdf" onError={onError} onSubmit={onSubmit}>
         <PromptInputBody>
           <AttachmentConsumer />
           <PromptInputTextarea />
@@ -1712,11 +1583,7 @@ describe('file validation', () => {
           >
             Add Image
           </button>
-          <button
-            data-testid="add-pdf"
-            onClick={() => attachments.add([pdfFile])}
-            type="button"
-          >
+          <button data-testid="add-pdf" onClick={() => attachments.add([pdfFile])} type="button">
             Add PDF
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1759,11 +1626,7 @@ describe('file validation', () => {
           >
             Add Image
           </button>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1806,11 +1669,7 @@ describe('file validation', () => {
           >
             Add Image
           </button>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1854,11 +1713,7 @@ describe('file validation', () => {
           >
             Add Image
           </button>
-          <button
-            data-testid="add-text"
-            onClick={() => attachments.add([textFile])}
-            type="button"
-          >
+          <button data-testid="add-text" onClick={() => attachments.add([textFile])} type="button">
             Add Text
           </button>
           <div data-testid="count">{attachments.files.length}</div>
@@ -1987,9 +1842,7 @@ describe('paste functionality', () => {
       </PromptInput>,
     );
 
-    const textarea = screen.getByPlaceholderText(
-      'What would you like to know?',
-    );
+    const textarea = screen.getByPlaceholderText('What would you like to know?');
     textarea.focus();
 
     const file = new File(['image'], 'test.png', { type: 'image/png' });
@@ -2032,9 +1885,7 @@ describe('paste functionality', () => {
       </PromptInput>,
     );
 
-    const textarea = screen.getByPlaceholderText(
-      'What would you like to know?',
-    );
+    const textarea = screen.getByPlaceholderText('What would you like to know?');
     textarea.focus();
 
     const pasteEvent = new Event('paste', {
@@ -2108,20 +1959,12 @@ describe('promptInputAttachment', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            data-testid="add-file"
-            onClick={() => attachments.add([file])}
-            type="button"
-          >
+          <button data-testid="add-file" onClick={() => attachments.add([file])} type="button">
             Add
           </button>
           <PromptInputAttachments>
             {(attachment, onRemove) => (
-              <PromptInputAttachment
-                data={attachment}
-                key={attachment.id}
-                onRemove={onRemove}
-              />
+              <PromptInputAttachment data={attachment} key={attachment.id} onRemove={onRemove} />
             )}
           </PromptInputAttachments>
         </>
@@ -2160,10 +2003,7 @@ describe('promptInputAttachment', () => {
       const attachments = usePromptInputAttachments();
       return (
         <>
-          <button
-            onClick={() => attachments.add([file1, file2, file3])}
-            type="button"
-          >
+          <button onClick={() => attachments.add([file1, file2, file3])} type="button">
             Add Files
           </button>
           <PromptInputAttachments>
@@ -2334,11 +2174,7 @@ describe('promptInputReferencedSource', () => {
           </button>
           <PromptInputReferencedSources>
             {(source, onRemove) => (
-              <PromptInputReferencedSource
-                data={source}
-                key={source.id}
-                onRemove={onRemove}
-              />
+              <PromptInputReferencedSource data={source} key={source.id} onRemove={onRemove} />
             )}
           </PromptInputReferencedSources>
         </>
@@ -2654,11 +2490,7 @@ describe('promptInputReferencedSources', () => {
       const refs = usePromptInputReferencedSources();
       return (
         <>
-          <button
-            data-testid="add-file"
-            onClick={() => attachments.add([file])}
-            type="button"
-          >
+          <button data-testid="add-file" onClick={() => attachments.add([file])} type="button">
             Add File
           </button>
           <button
@@ -2783,8 +2615,7 @@ describe('promptInputActionAddScreenshot', () => {
     setupPromptInputTests();
     const onSubmit = vi.fn();
     const user = userEvent.setup();
-    const { getDisplayMedia, pause, play, stopTrack, toBlob } =
-      setupScreenshotCaptureMock();
+    const { getDisplayMedia, pause, play, stopTrack, toBlob } = setupScreenshotCaptureMock();
 
     render(
       <PromptInput onSubmit={onSubmit}>
@@ -2822,9 +2653,7 @@ describe('promptInputActionAddScreenshot', () => {
     const user = userEvent.setup();
     const consoleError = vi.spyOn(console, 'error').mockImplementation(vi.fn());
     const { getDisplayMedia } = setupScreenshotCaptureMock();
-    getDisplayMedia.mockRejectedValue(
-      new DOMException('Permission denied', 'NotAllowedError'),
-    );
+    getDisplayMedia.mockRejectedValue(new DOMException('Permission denied', 'NotAllowedError'));
 
     render(
       <PromptInput onSubmit={onSubmit}>
@@ -2880,9 +2709,7 @@ describe('promptInputHeader', () => {
     const { container } = render(
       <PromptInput onSubmit={onSubmit}>
         <PromptInputBody>
-          <PromptInputHeader className="custom-header">
-            Header
-          </PromptInputHeader>
+          <PromptInputHeader className="custom-header">Header</PromptInputHeader>
           <PromptInputTextarea />
         </PromptInputBody>
       </PromptInput>,
@@ -2919,9 +2746,7 @@ describe('promptInputFooter', () => {
       <PromptInput onSubmit={onSubmit}>
         <PromptInputBody>
           <PromptInputTextarea />
-          <PromptInputFooter className="custom-footer">
-            Footer
-          </PromptInputFooter>
+          <PromptInputFooter className="custom-footer">Footer</PromptInputFooter>
         </PromptInputBody>
       </PromptInput>,
     );
@@ -2933,11 +2758,8 @@ describe('promptInputFooter', () => {
 describe('promptInputHoverCard', () => {
   it('renders hover card', async () => {
     setupPromptInputTests();
-    const {
-      PromptInputHoverCard,
-      PromptInputHoverCardTrigger,
-      PromptInputHoverCardContent,
-    } = await import('./prompt-input');
+    const { PromptInputHoverCard, PromptInputHoverCardTrigger, PromptInputHoverCardContent } =
+      await import('./prompt-input');
     const onSubmit = vi.fn();
 
     render(
@@ -2947,9 +2769,7 @@ describe('promptInputHoverCard', () => {
             <PromptInputHoverCardTrigger>
               <span>Hover me</span>
             </PromptInputHoverCardTrigger>
-            <PromptInputHoverCardContent>
-              Tooltip content
-            </PromptInputHoverCardContent>
+            <PromptInputHoverCardContent>Tooltip content</PromptInputHoverCardContent>
           </PromptInputHoverCard>
         </PromptInputBody>
       </PromptInput>,
@@ -3016,9 +2836,7 @@ describe('promptInputCommand', () => {
           <PromptInputCommand>
             <PromptInputCommandInput />
             <PromptInputCommandList>
-              <PromptInputCommandEmpty>
-                No results found
-              </PromptInputCommandEmpty>
+              <PromptInputCommandEmpty>No results found</PromptInputCommandEmpty>
             </PromptInputCommandList>
           </PromptInputCommand>
         </PromptInputBody>
@@ -3067,9 +2885,7 @@ describe('promptInputCommand', () => {
 describe('promptInputTab components', () => {
   it('renders tab list', async () => {
     setupPromptInputTests();
-    const { PromptInputTabsList, PromptInputTab } = await import(
-      './prompt-input'
-    );
+    const { PromptInputTabsList, PromptInputTab } = await import('./prompt-input');
     const onSubmit = vi.fn();
 
     render(
@@ -3089,12 +2905,8 @@ describe('promptInputTab components', () => {
 
   it('renders tab with label and body', async () => {
     setupPromptInputTests();
-    const {
-      PromptInputTab,
-      PromptInputTabLabel,
-      PromptInputTabBody,
-      PromptInputTabItem,
-    } = await import('./prompt-input');
+    const { PromptInputTab, PromptInputTabLabel, PromptInputTabBody, PromptInputTabItem } =
+      await import('./prompt-input');
     const onSubmit = vi.fn();
 
     render(
@@ -3130,12 +2942,8 @@ describe('promptInputSelect components', () => {
               <PromptInputSelectValue placeholder="Choose model" />
             </PromptInputSelectTrigger>
             <PromptInputSelectContent>
-              <PromptInputSelectItem value="model-1">
-                Model 1
-              </PromptInputSelectItem>
-              <PromptInputSelectItem value="model-2">
-                Model 2
-              </PromptInputSelectItem>
+              <PromptInputSelectItem value="model-1">Model 1</PromptInputSelectItem>
+              <PromptInputSelectItem value="model-2">Model 2</PromptInputSelectItem>
             </PromptInputSelectContent>
           </PromptInputSelect>
         </PromptInputBody>
@@ -3152,9 +2960,7 @@ describe('promptInputSelect components', () => {
 
     // Mock hasPointerCapture and releasePointerCapture for select
     vi.spyOn(Element.prototype, 'hasPointerCapture').mockReturnValue(false);
-    vi.spyOn(Element.prototype, 'releasePointerCapture').mockImplementation(
-      () => {},
-    );
+    vi.spyOn(Element.prototype, 'releasePointerCapture').mockImplementation(() => {});
 
     render(
       <PromptInput onSubmit={onSubmit}>
@@ -3164,9 +2970,7 @@ describe('promptInputSelect components', () => {
               <PromptInputSelectValue placeholder="Select" />
             </PromptInputSelectTrigger>
             <PromptInputSelectContent>
-              <PromptInputSelectItem value="model-1">
-                Model 1
-              </PromptInputSelectItem>
+              <PromptInputSelectItem value="model-1">Model 1</PromptInputSelectItem>
             </PromptInputSelectContent>
           </PromptInputSelect>
         </PromptInputBody>
@@ -3224,9 +3028,7 @@ describe('promptInputActionMenu subcomponents', () => {
           <PromptInputActionMenu>
             <PromptInputActionMenuTrigger />
             <PromptInputActionMenuContent>
-              <PromptInputActionMenuItem onSelect={onAction}>
-                Click me
-              </PromptInputActionMenuItem>
+              <PromptInputActionMenuItem onSelect={onAction}>Click me</PromptInputActionMenuItem>
             </PromptInputActionMenuContent>
           </PromptInputActionMenu>
         </PromptInputBody>
@@ -3249,9 +3051,7 @@ describe('promptInputActionMenu subcomponents', () => {
 describe('integration tests', () => {
   it('renders complete prompt input with all components', async () => {
     setupPromptInputTests();
-    const { PromptInputHeader, PromptInputFooter } = await import(
-      './prompt-input'
-    );
+    const { PromptInputHeader, PromptInputFooter } = await import('./prompt-input');
     const onSubmit = vi.fn();
 
     render(
@@ -3263,9 +3063,7 @@ describe('integration tests', () => {
                 <PromptInputSelectValue placeholder="Model" />
               </PromptInputSelectTrigger>
               <PromptInputSelectContent>
-                <PromptInputSelectItem value="gpt-4">
-                  GPT-4
-                </PromptInputSelectItem>
+                <PromptInputSelectItem value="gpt-4">GPT-4</PromptInputSelectItem>
               </PromptInputSelectContent>
             </PromptInputSelect>
           </PromptInputHeader>
@@ -3285,12 +3083,8 @@ describe('integration tests', () => {
       </PromptInput>,
     );
 
-    expect(
-      screen.getByPlaceholderText('What would you like to know?'),
-    ).toBeInTheDocument();
+    expect(screen.getByPlaceholderText('What would you like to know?')).toBeInTheDocument();
     expect(screen.getByText('Model')).toBeInTheDocument();
-    expect(
-      screen.getByRole('button', { name: SUBMIT_REGEX }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: SUBMIT_REGEX })).toBeInTheDocument();
   });
 });

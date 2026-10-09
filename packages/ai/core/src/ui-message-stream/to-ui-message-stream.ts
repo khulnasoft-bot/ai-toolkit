@@ -1,14 +1,11 @@
 import type { ToolSet } from '@ai-toolkit/provider-utils';
-import type {
-  TextStreamPart,
-  UIMessageStreamOptions,
-} from '../generate-text/stream-text-result';
+import type { TextStreamPart, UIMessageStreamOptions } from '../generate-text/stream-text-result';
 import type { UIMessage } from '../ui/ui-messages';
 import { getResponseUIMessageId } from './get-response-ui-message-id';
 import { handleUIMessageStreamFinish } from './handle-ui-message-stream-finish';
+import { toUIMessageChunk } from './to-ui-message-chunk';
 import type { InferUIMessageChunk } from './ui-message-chunks';
 import type { UIMessageStreamOutcome } from './ui-message-stream-outcome';
-import { toUIMessageChunk } from './to-ui-message-chunk';
 
 /**
  * Converts a stream of `TextStreamPart<TOOLS>` chunks (as emitted by
@@ -35,9 +32,7 @@ export function toUIMessageStream<
 }: {
   stream: ReadableStream<TextStreamPart<TOOLS>>;
   tools?: TOOLS;
-} & UIMessageStreamOptions<UI_MESSAGE>): ReadableStream<
-  InferUIMessageChunk<UI_MESSAGE>
-> {
+} & UIMessageStreamOptions<UI_MESSAGE>): ReadableStream<InferUIMessageChunk<UI_MESSAGE>> {
   let outcome: UIMessageStreamOutcome = { status: 'unknown' };
   let hasFatalFailure = false;
 
@@ -136,11 +131,7 @@ export function toUIMessageStream<
 
           // start and finish events already include metadata in the converted
           // chunk; for other part types emit a separate message-metadata chunk
-          if (
-            messageMetadataValue != null &&
-            part.type !== 'start' &&
-            part.type !== 'finish'
-          ) {
+          if (messageMetadataValue != null && part.type !== 'start' && part.type !== 'finish') {
             controller.enqueue({
               type: 'message-metadata',
               messageMetadata: messageMetadataValue,

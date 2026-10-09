@@ -1,6 +1,6 @@
+import { lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { GatewayError } from './gateway-error';
-import { lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 
 const name = 'GatewayModelNotFoundError';
 const marker = `vercel.ai.gateway.error.${name}`;
@@ -18,8 +18,6 @@ export const modelNotFoundParamSchema = lazySchema(() =>
  * Model not found or not available
  */
 export class GatewayModelNotFoundError extends GatewayError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly name = name;
   readonly type = 'model_not_found';
   readonly modelId?: string;

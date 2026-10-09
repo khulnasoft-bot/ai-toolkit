@@ -1,16 +1,16 @@
-import {
+import type {
   EmbeddingModelV3,
   ImageModelV3,
   LanguageModelV3,
   ProviderV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import {
-  OpenAICompatibleChatConfig,
+  type OpenAICompatibleChatConfig,
   OpenAICompatibleChatLanguageModel,
 } from './chat/openai-compatible-chat-language-model';
 import { OpenAICompatibleCompletionLanguageModel } from './completion/openai-compatible-completion-language-model';
@@ -129,8 +129,7 @@ export function createOpenAICompatible<
     ...options.headers,
   };
 
-  const getHeaders = () =>
-    withUserAgentSuffix(headers, `ai-toolkit/openai-compatible/${VERSION}`);
+  const getHeaders = () => withUserAgentSuffix(headers, `ai-toolkit/openai-compatible/${VERSION}`);
 
   const getCommonModelConfig = (modelType: string): CommonModelConfig => ({
     provider: `${providerName}.${modelType}`,
@@ -145,8 +144,7 @@ export function createOpenAICompatible<
     fetch: options.fetch,
   });
 
-  const createLanguageModel = (modelId: CHAT_MODEL_IDS) =>
-    createChatModel(modelId);
+  const createLanguageModel = (modelId: CHAT_MODEL_IDS) => createChatModel(modelId);
 
   const createChatModel = (modelId: CHAT_MODEL_IDS) =>
     new OpenAICompatibleChatLanguageModel(modelId, {

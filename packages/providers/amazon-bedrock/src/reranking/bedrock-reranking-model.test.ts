@@ -1,9 +1,9 @@
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import fs from 'node:fs';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { injectFetchHeaders } from '../inject-fetch-headers';
 import { BedrockRerankingModel } from './bedrock-reranking-model';
-import { BedrockRerankingOptions } from './bedrock-reranking-options';
+import type { BedrockRerankingOptions } from './bedrock-reranking-options';
 
 const fakeFetchWithAuth = injectFetchHeaders({ 'x-amz-auth': 'test-auth' });
 
@@ -23,14 +23,10 @@ describe('doRerank', () => {
   });
 
   function prepareJsonFixtureResponse(filename: string) {
-    server.urls[
-      'https://bedrock-agent-runtime.us-east-1.amazonaws.com/rerank'
-    ].response = {
+    server.urls['https://bedrock-agent-runtime.us-east-1.amazonaws.com/rerank'].response = {
       type: 'binary',
       headers: { 'content-type': 'application/json' },
-      body: Buffer.from(
-        fs.readFileSync(`src/reranking/__fixtures__/${filename}.json`, 'utf8'),
-      ),
+      body: Buffer.from(fs.readFileSync(`src/reranking/__fixtures__/${filename}.json`, 'utf8')),
     };
   }
 
@@ -43,10 +39,7 @@ describe('doRerank', () => {
       result = await model.doRerank({
         documents: {
           type: 'object',
-          values: [
-            { example: 'sunny day at the beach' },
-            { example: 'rainy day in the city' },
-          ],
+          values: [{ example: 'sunny day at the beach' }, { example: 'rainy day in the city' }],
         },
         query: 'rainy day',
         topN: 2,

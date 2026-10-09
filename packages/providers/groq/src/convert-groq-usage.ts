@@ -1,4 +1,4 @@
-import { LanguageModelV3Usage } from '@ai-toolkit/provider';
+import type { LanguageModelV3Usage } from '@ai-toolkit/provider';
 
 export function convertGroqUsage(
   usage:
@@ -40,12 +40,9 @@ export function convertGroqUsage(
 
   const promptTokens = usage.prompt_tokens ?? 0;
   const completionTokens = usage.completion_tokens ?? 0;
-  const reasoningTokens =
-    usage.completion_tokens_details?.reasoning_tokens ?? undefined;
+  const reasoningTokens = usage.completion_tokens_details?.reasoning_tokens ?? undefined;
   const textTokens =
-    reasoningTokens != null
-      ? completionTokens - reasoningTokens
-      : completionTokens;
+    reasoningTokens != null ? completionTokens - reasoningTokens : completionTokens;
 
   return {
     inputTokens: {

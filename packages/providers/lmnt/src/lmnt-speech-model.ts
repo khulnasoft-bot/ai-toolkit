@@ -1,4 +1,4 @@
-import { SpeechModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { SharedV3Warning, SpeechModelV3 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createBinaryResponseHandler,
@@ -6,10 +6,10 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { LMNTConfig } from './lmnt-config';
+import type { LMNTSpeechAPITypes } from './lmnt-api-types';
+import type { LMNTConfig } from './lmnt-config';
 import { lmntFailedResponseHandler } from './lmnt-error';
-import { LMNTSpeechModelId } from './lmnt-speech-options';
-import { LMNTSpeechAPITypes } from './lmnt-api-types';
+import type { LMNTSpeechModelId } from './lmnt-speech-options';
 
 // https://docs.lmnt.com/api-reference/speech/synthesize-speech-bytes
 const lmntSpeechCallOptionsSchema = z.object({
@@ -26,10 +26,7 @@ const lmntSpeechCallOptionsSchema = z.object({
    * The audio format of the output.
    * @default 'mp3'
    */
-  format: z
-    .enum(['aac', 'mp3', 'mulaw', 'raw', 'wav'])
-    .nullish()
-    .default('mp3'),
+  format: z.enum(['aac', 'mp3', 'mulaw', 'raw', 'wav']).nullish().default('mp3'),
 
   /**
    * The sample rate of the output audio in Hz.
@@ -146,10 +143,7 @@ export class LMNTSpeechModel implements SpeechModelV3 {
       };
 
       for (const key in speechModelOptions) {
-        const value =
-          speechModelOptions[
-            key as keyof Omit<LMNTSpeechAPITypes, 'voice' | 'text'>
-          ];
+        const value = speechModelOptions[key as keyof Omit<LMNTSpeechAPITypes, 'voice' | 'text'>];
         if (value !== undefined) {
           requestBody[key] = value;
         }

@@ -26,8 +26,7 @@ export function createMultimodalRuntime(): MultimodalRuntime {
   const processors = new Map<string, MultimodalProcessor>();
 
   return {
-    registerProcessor: processor =>
-      processors.set(processor.constructor.name, processor),
+    registerProcessor: processor => processors.set(processor.constructor.name, processor),
     getProcessor: mediatype => processors.get(mediatype),
     listProcessors: () => [...processors.values()],
   };

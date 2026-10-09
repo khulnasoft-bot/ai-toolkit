@@ -1,6 +1,6 @@
-import type { VideoModelV3CallOptions } from './video-model-v3-call-options';
 import type { SharedV3ProviderMetadata } from '../../shared/v3/shared-v3-provider-metadata';
 import type { SharedV3Warning } from '../../shared/v3/shared-v3-warning';
+import type { VideoModelV3CallOptions } from './video-model-v3-call-options';
 
 type GetMaxVideosPerCallFunction = (options: {
   modelId: string;

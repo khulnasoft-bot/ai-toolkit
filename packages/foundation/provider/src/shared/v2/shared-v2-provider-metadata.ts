@@ -1,4 +1,4 @@
-import { JSONValue } from '../../json-value/json-value';
+import type { JSONValue } from '../../json-value/json-value';
 
 /**
  * Additional provider-specific metadata.
@@ -21,7 +21,4 @@ import { JSONValue } from '../../json-value/json-value';
  * }
  * ```
  */
-export type SharedV2ProviderMetadata = Record<
-  string,
-  Record<string, JSONValue>
->;
+export type SharedV2ProviderMetadata = Record<string, Record<string, JSONValue>>;

@@ -3,8 +3,8 @@ import {
   convertAsyncIterableToArray,
   convertReadableStreamToArray,
 } from '@ai-toolkit/provider-utils/test';
+import { describe, expect, it } from 'vitest';
 import { createAsyncIterableStream } from './async-iterable-stream';
-import { describe, it, expect } from 'vitest';
 
 describe('createAsyncIterableStream()', () => {
   it('should read all chunks from a non-empty stream using async iteration', async () => {

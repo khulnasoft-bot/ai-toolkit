@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { UIMessage } from 'ai-toolkit';
-import { Chat } from './chat.vue';
+import type { UIMessage } from 'ai-toolkit';
 import { ref } from 'vue';
+import { Chat } from './chat.vue';
 
 const messages = ref<UIMessage[]>([
   {
@@ -16,7 +16,7 @@ const messages = ref<UIMessage[]>([
   },
 ]);
 
-const chat = new Chat({
+const _chat = new Chat({
   messages: messages.value,
 });
 </script>

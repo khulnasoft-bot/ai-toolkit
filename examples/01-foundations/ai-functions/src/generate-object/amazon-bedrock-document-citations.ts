@@ -1,7 +1,7 @@
-import { bedrock, BedrockProviderOptions } from '@ai-toolkit/amazon-bedrock';
+import fs from 'node:fs';
 import { generateObject } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { z } from 'zod';
-import fs from 'fs';
 import { run } from '../lib/run';
 
 run(async () => {

@@ -1,5 +1,5 @@
-import { assemblyai } from '@ai-toolkit/assemblyai';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
+import { assemblyai } from '@ai-toolkit/assemblyai';
 import { run } from '../lib/run';
 
 run(async () => {

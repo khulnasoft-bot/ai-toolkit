@@ -1,13 +1,13 @@
 import {
   convertToModelMessages,
-  Tool,
-  ToolExecutionOptions,
-  ToolSet,
-  UIMessageStreamWriter,
   getStaticToolName,
   isStaticToolUIPart,
+  type Tool,
+  type ToolExecutionOptions,
+  type ToolSet,
+  type UIMessageStreamWriter,
 } from '@ai-toolkit/ai';
-import { HumanInTheLoopUIMessage } from './types';
+import type { HumanInTheLoopUIMessage } from './types';
 
 // Approval string to be shared across frontend and backend
 export const APPROVAL = {
@@ -35,9 +35,7 @@ function isValidToolName<K extends PropertyKey, T extends object>(
 export async function processToolCalls<
   Tools extends ToolSet,
   ExecutableTools extends {
-    [Tool in keyof Tools as Tools[Tool] extends { execute: Function }
-      ? never
-      : Tool]: Tools[Tool];
+    [Tool in keyof Tools as Tools[Tool] extends { execute: Function } ? never : Tool]: Tools[Tool];
   },
 >(
   {
@@ -67,17 +65,13 @@ export async function processToolCalls<
       const toolName = getStaticToolName(part);
 
       // Only continue if we have an execute function for the tool (meaning it requires confirmation) and it's in a 'result' state
-      if (!(toolName in executeFunctions) || part.state !== 'output-available')
-        return part;
+      if (!(toolName in executeFunctions) || part.state !== 'output-available') return part;
 
-      let result;
+      let result: unknown;
 
       if (part.output === APPROVAL.YES) {
         // Get the tool and check if the tool has an execute function.
-        if (
-          !isValidToolName(toolName, executeFunctions) ||
-          part.state !== 'output-available'
-        ) {
+        if (!isValidToolName(toolName, executeFunctions) || part.state !== 'output-available') {
           return part;
         }
 

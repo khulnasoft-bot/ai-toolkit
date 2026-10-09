@@ -1,7 +1,7 @@
-import { generateImage } from '@ai-toolkit/ai';
 import fs from 'node:fs';
-import { myImageModels } from './setup-registry';
+import { generateImage } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
+import { myImageModels } from './setup-registry';
 
 run(async () => {
   const { image } = await generateImage({

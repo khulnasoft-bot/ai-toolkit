@@ -1,8 +1,8 @@
 'use client';
 
 import { useChat } from '@ai-toolkit/react';
-import ChatInput from '@/component/chat-input';
 import type { WeatherAgentUIMessage } from '@/agent/weather-agent';
+import ChatInput from '@/component/chat-input';
 import WeatherView from '@/component/weather-view';
 
 export default function Chat() {
@@ -16,11 +16,11 @@ export default function Chat() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
 
               case 'step-start':
                 return index > 0 ? (
-                  <div key={index} className="text-gray-500">
+                  <div key={`${part.type}-${index}`} className="text-gray-500">
                     <hr className="my-2 border-gray-300" />
                   </div>
                 ) : null;
@@ -28,6 +28,9 @@ export default function Chat() {
               case 'tool-weather': {
                 return <WeatherView invocation={part} />;
               }
+
+              default:
+                return null;
             }
           })}
           <br />

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { UIMessage } from '@ai-toolkit/ai';
-import { Chat } from '@ai-toolkit/vue';
 import { createIdGenerator } from '@ai-toolkit/ai';
+import { Chat } from '@ai-toolkit/vue';
 import { computed, ref } from 'vue';
 
 const messages = ref<UIMessage[]>([
@@ -22,10 +22,10 @@ const chat = new Chat({
   messages: messages.value,
 });
 
-const messageList = computed(() => chat.messages); // computed property for type inference
+const _messageList = computed(() => chat.messages); // computed property for type inference
 const input = ref('');
 
-const handleSubmit = (e: Event) => {
+const _handleSubmit = (e: Event) => {
   e.preventDefault();
   chat.sendMessage({ text: input.value });
   input.value = '';

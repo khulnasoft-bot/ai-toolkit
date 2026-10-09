@@ -26,8 +26,7 @@ export class MockVideoModelV4 implements Experimental_VideoModelV4 {
     this.provider = options.provider ?? 'mock-provider';
     this.modelId = options.modelId ?? 'mock-model-id';
     this.maxVideosPerCall = options.maxVideosPerCall ?? 1;
-    this.doGenerate =
-      'doGenerate' in options ? options.doGenerate : notImplemented;
+    this.doGenerate = 'doGenerate' in options ? options.doGenerate : notImplemented;
     this.handleWebhookOption = options.handleWebhookOption;
     this.doStart = options.doStart;
     this.doStatus = options.doStatus;

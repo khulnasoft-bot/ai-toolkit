@@ -1,5 +1,5 @@
-import { luma, LumaImageProviderOptions } from '@ai-toolkit/luma';
 import { generateImage } from '@ai-toolkit/ai';
+import { type LumaImageProviderOptions, luma } from '@ai-toolkit/luma';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

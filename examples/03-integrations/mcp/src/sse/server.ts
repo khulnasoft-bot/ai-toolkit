@@ -31,9 +31,7 @@ mcpServer.tool(
 // Tool with zero arguments:
 mcpServer.tool('list-products', 'List all products', async () => {
   return {
-    content: [
-      { type: 'text', text: 'Products: Product 1, Product 2, Product 3' },
-    ],
+    content: [{ type: 'text', text: 'Products: Product 1, Product 2, Product 3' }],
   };
 });
 
@@ -41,7 +39,7 @@ let transport: SSEServerTransport;
 
 const app = express();
 
-app.get('/sse', async (req, res) => {
+app.get('/sse', async (_req, res) => {
   transport = new SSEServerTransport('/messages', res);
   await mcpServer.connect(transport);
 });

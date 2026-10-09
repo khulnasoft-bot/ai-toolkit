@@ -1,5 +1,5 @@
-import { weatherWithApprovalAgent } from '@/agent/weather-with-approval-agent';
 import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
+import { weatherWithApprovalAgent } from '@/agent/weather-with-approval-agent';
 
 export async function POST(request: Request) {
   const body = await request.json();

@@ -1,19 +1,18 @@
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
+import { ServerError } from '../error/oauth-error';
 import {
-  extractResourceMetadataUrl,
-  type OAuthClientProvider,
-  type AuthResult,
-  discoverOAuthProtectedResourceMetadata,
+  auth,
   buildDiscoveryUrls,
   discoverAuthorizationServerMetadata,
-  startAuthorization,
+  discoverOAuthProtectedResourceMetadata,
   exchangeAuthorization,
+  extractResourceMetadataUrl,
+  type OAuthClientProvider,
   refreshAuthorization,
   registerClient,
-  auth,
+  startAuthorization,
 } from './oauth';
-import { AuthorizationServerMetadata } from './oauth-types';
-import { ServerError } from '../error/oauth-error';
+import type { AuthorizationServerMetadata } from './oauth-types';
 import { LATEST_PROTOCOL_VERSION } from './types';
 
 // Mock the pkce-challenge module
@@ -33,8 +32,7 @@ beforeEach(() => {
 
 describe('extractResourceMetadataUrl', () => {
   it('returns resource metadata url when present', async () => {
-    const resourceUrl =
-      'https://resource.example.com/.well-known/oauth-protected-resource';
+    const resourceUrl = 'https://resource.example.com/.well-known/oauth-protected-resource';
     const mockResponse = {
       headers: {
         get: vi.fn(name =>
@@ -45,14 +43,11 @@ describe('extractResourceMetadataUrl', () => {
       },
     } as unknown as Response;
 
-    expect(extractResourceMetadataUrl(mockResponse)).toEqual(
-      new URL(resourceUrl),
-    );
+    expect(extractResourceMetadataUrl(mockResponse)).toEqual(new URL(resourceUrl));
   });
 
   it('returns undefined if not bearer', async () => {
-    const resourceUrl =
-      'https://resource.example.com/.well-known/oauth-protected-resource';
+    const resourceUrl = 'https://resource.example.com/.well-known/oauth-protected-resource';
     const mockResponse = {
       headers: {
         get: vi.fn(name =>
@@ -69,9 +64,7 @@ describe('extractResourceMetadataUrl', () => {
   it('returns undefined if resource_metadata not present', async () => {
     const mockResponse = {
       headers: {
-        get: vi.fn(name =>
-          name === 'WWW-Authenticate' ? `Basic realm="mcp"` : null,
-        ),
+        get: vi.fn(name => (name === 'WWW-Authenticate' ? `Basic realm="mcp"` : null)),
       },
     } as unknown as Response;
 
@@ -107,9 +100,7 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
       json: async () => validMetadata,
     });
 
-    const metadata = await discoverOAuthProtectedResourceMetadata(
-      'https://resource.example.com',
-    );
+    const metadata = await discoverOAuthProtectedResourceMetadata('https://resource.example.com');
     expect(metadata).toEqual(validMetadata);
     const calls = mockFetch.mock.calls;
     expect(calls.length).toBe(1);
@@ -142,18 +133,14 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
     });
 
     // Should succeed with the second call
-    const metadata = await discoverOAuthProtectedResourceMetadata(
-      'https://resource.example.com',
-    );
+    const metadata = await discoverOAuthProtectedResourceMetadata('https://resource.example.com');
     expect(metadata).toEqual(validMetadata);
 
     // Verify both calls were made
     expect(mockFetch).toHaveBeenCalledTimes(2);
 
     // Verify first call had MCP header
-    expect(mockFetch.mock.calls[0][1]?.headers).toHaveProperty(
-      'MCP-Protocol-Version',
-    );
+    expect(mockFetch.mock.calls[0][1]?.headers).toHaveProperty('MCP-Protocol-Version');
   });
 
   it('throws an error when all fetch attempts fail', async () => {
@@ -190,9 +177,7 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
 
     await expect(
       discoverOAuthProtectedResourceMetadata('https://resource.example.com'),
-    ).rejects.toThrow(
-      'Resource server does not implement OAuth 2.0 Protected Resource Metadata.',
-    );
+    ).rejects.toThrow('Resource server does not implement OAuth 2.0 Protected Resource Metadata.');
   });
 
   it('throws on non-404 errors', async () => {
@@ -317,12 +302,8 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
     });
 
     await expect(
-      discoverOAuthProtectedResourceMetadata(
-        'https://resource.example.com/path/name',
-      ),
-    ).rejects.toThrow(
-      'Resource server does not implement OAuth 2.0 Protected Resource Metadata.',
-    );
+      discoverOAuthProtectedResourceMetadata('https://resource.example.com/path/name'),
+    ).rejects.toThrow('Resource server does not implement OAuth 2.0 Protected Resource Metadata.');
 
     const calls = mockFetch.mock.calls;
     expect(calls.length).toBe(2);
@@ -336,9 +317,7 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
     });
 
     await expect(
-      discoverOAuthProtectedResourceMetadata(
-        'https://resource.example.com/path/name',
-      ),
+      discoverOAuthProtectedResourceMetadata('https://resource.example.com/path/name'),
     ).rejects.toThrow();
 
     const calls = mockFetch.mock.calls;
@@ -354,9 +333,7 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
 
     await expect(
       discoverOAuthProtectedResourceMetadata('https://resource.example.com/'),
-    ).rejects.toThrow(
-      'Resource server does not implement OAuth 2.0 Protected Resource Metadata.',
-    );
+    ).rejects.toThrow('Resource server does not implement OAuth 2.0 Protected Resource Metadata.');
 
     const calls = mockFetch.mock.calls;
     expect(calls.length).toBe(1); // Should not attempt fallback
@@ -376,9 +353,7 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
 
     await expect(
       discoverOAuthProtectedResourceMetadata('https://resource.example.com'),
-    ).rejects.toThrow(
-      'Resource server does not implement OAuth 2.0 Protected Resource Metadata.',
-    );
+    ).rejects.toThrow('Resource server does not implement OAuth 2.0 Protected Resource Metadata.');
 
     const calls = mockFetch.mock.calls;
     expect(calls.length).toBe(1); // Should not attempt fallback
@@ -391,9 +366,7 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
 
   it('falls back when path-aware discovery encounters CORS error', async () => {
     // First call (path-aware) fails with TypeError (CORS)
-    mockFetch.mockImplementationOnce(() =>
-      Promise.reject(new TypeError('CORS error')),
-    );
+    mockFetch.mockImplementationOnce(() => Promise.reject(new TypeError('CORS error')));
 
     // Retry path-aware without headers (simulating CORS retry)
     mockFetch.mockResolvedValueOnce({
@@ -434,15 +407,10 @@ describe('discoverOAuthProtectedResourceMetadata', () => {
     });
 
     await expect(
-      discoverOAuthProtectedResourceMetadata(
-        'https://resource.example.com/path',
-        {
-          resourceMetadataUrl: 'https://custom.example.com/metadata',
-        },
-      ),
-    ).rejects.toThrow(
-      'Resource server does not implement OAuth 2.0 Protected Resource Metadata.',
-    );
+      discoverOAuthProtectedResourceMetadata('https://resource.example.com/path', {
+        resourceMetadataUrl: 'https://custom.example.com/metadata',
+      }),
+    ).rejects.toThrow('Resource server does not implement OAuth 2.0 Protected Resource Metadata.');
 
     const calls = mockFetch.mock.calls;
     expect(calls.length).toBe(1); // Should not attempt fallback when explicit URL is provided
@@ -525,9 +493,7 @@ describe('buildDiscoveryUrls', () => {
   });
 
   it('handles URL object input', () => {
-    const urls = buildDiscoveryUrls(
-      new URL('https://auth.example.com/tenant1'),
-    );
+    const urls = buildDiscoveryUrls(new URL('https://auth.example.com/tenant1'));
 
     expect(urls).toHaveLength(4);
     expect(urls[0].url.toString()).toBe(
@@ -571,9 +537,7 @@ describe('discoverAuthorizationServerMetadata', () => {
       json: async () => validOAuthMetadata,
     });
 
-    const metadata = await discoverAuthorizationServerMetadata(
-      'https://auth.example.com/tenant1',
-    );
+    const metadata = await discoverAuthorizationServerMetadata('https://auth.example.com/tenant1');
 
     expect(metadata).toEqual(validOAuthMetadata);
 
@@ -607,9 +571,7 @@ describe('discoverAuthorizationServerMetadata', () => {
       json: async () => invalidOpenIdMetadata,
     });
 
-    await expect(
-      discoverAuthorizationServerMetadata('https://auth.example.com'),
-    ).rejects.toThrow(
+    await expect(discoverAuthorizationServerMetadata('https://auth.example.com')).rejects.toThrow(
       'does not support S256 code challenge method required by MCP specification',
     );
   });
@@ -626,9 +588,7 @@ describe('discoverAuthorizationServerMetadata', () => {
       json: async () => validOpenIdMetadata,
     });
 
-    const metadata = await discoverAuthorizationServerMetadata(
-      'https://mcp.example.com',
-    );
+    const metadata = await discoverAuthorizationServerMetadata('https://mcp.example.com');
 
     expect(metadata).toEqual(validOpenIdMetadata);
   });
@@ -639,16 +599,14 @@ describe('discoverAuthorizationServerMetadata', () => {
       status: 500,
     });
 
-    await expect(
-      discoverAuthorizationServerMetadata('https://mcp.example.com'),
-    ).rejects.toThrow('HTTP 500');
+    await expect(discoverAuthorizationServerMetadata('https://mcp.example.com')).rejects.toThrow(
+      'HTTP 500',
+    );
   });
 
   it('handles CORS errors with retry', async () => {
     // First call fails with CORS
-    mockFetch.mockImplementationOnce(() =>
-      Promise.reject(new TypeError('CORS error')),
-    );
+    mockFetch.mockImplementationOnce(() => Promise.reject(new TypeError('CORS error')));
 
     // Retry without headers succeeds
     mockFetch.mockResolvedValueOnce({
@@ -657,9 +615,7 @@ describe('discoverAuthorizationServerMetadata', () => {
       json: async () => validOAuthMetadata,
     });
 
-    const metadata = await discoverAuthorizationServerMetadata(
-      'https://auth.example.com',
-    );
+    const metadata = await discoverAuthorizationServerMetadata('https://auth.example.com');
 
     expect(metadata).toEqual(validOAuthMetadata);
     const calls = mockFetch.mock.calls;
@@ -679,12 +635,9 @@ describe('discoverAuthorizationServerMetadata', () => {
       json: async () => validOAuthMetadata,
     });
 
-    const metadata = await discoverAuthorizationServerMetadata(
-      'https://auth.example.com',
-      {
-        fetchFn: customFetch,
-      },
-    );
+    const metadata = await discoverAuthorizationServerMetadata('https://auth.example.com', {
+      fetchFn: customFetch,
+    });
 
     expect(metadata).toEqual(validOAuthMetadata);
     expect(customFetch).toHaveBeenCalledTimes(1);
@@ -698,12 +651,9 @@ describe('discoverAuthorizationServerMetadata', () => {
       json: async () => validOAuthMetadata,
     });
 
-    const metadata = await discoverAuthorizationServerMetadata(
-      'https://auth.example.com',
-      {
-        protocolVersion: '2025-01-01',
-      },
-    );
+    const metadata = await discoverAuthorizationServerMetadata('https://auth.example.com', {
+      protocolVersion: '2025-01-01',
+    });
 
     expect(metadata).toEqual(validOAuthMetadata);
     const calls = mockFetch.mock.calls;
@@ -715,13 +665,9 @@ describe('discoverAuthorizationServerMetadata', () => {
 
   it('returns undefined when all URLs fail with CORS errors', async () => {
     // All fetch attempts fail with CORS errors (TypeError)
-    mockFetch.mockImplementation(() =>
-      Promise.reject(new TypeError('CORS error')),
-    );
+    mockFetch.mockImplementation(() => Promise.reject(new TypeError('CORS error')));
 
-    const metadata = await discoverAuthorizationServerMetadata(
-      'https://auth.example.com/tenant1',
-    );
+    const metadata = await discoverAuthorizationServerMetadata('https://auth.example.com/tenant1');
 
     expect(metadata).toBeUndefined();
 
@@ -757,16 +703,10 @@ describe('startAuthorization', () => {
       },
     );
 
-    expect(authorizationUrl.toString()).toMatch(
-      /^https:\/\/auth\.example\.com\/authorize\?/,
-    );
+    expect(authorizationUrl.toString()).toMatch(/^https:\/\/auth\.example\.com\/authorize\?/);
     expect(authorizationUrl.searchParams.get('response_type')).toBe('code');
-    expect(authorizationUrl.searchParams.get('code_challenge')).toBe(
-      'test_challenge',
-    );
-    expect(authorizationUrl.searchParams.get('code_challenge_method')).toBe(
-      'S256',
-    );
+    expect(authorizationUrl.searchParams.get('code_challenge')).toBe('test_challenge');
+    expect(authorizationUrl.searchParams.get('code_challenge_method')).toBe('S256');
     expect(authorizationUrl.searchParams.get('redirect_uri')).toBe(
       'http://localhost:3000/callback',
     );
@@ -777,84 +717,62 @@ describe('startAuthorization', () => {
   });
 
   it('includes scope parameter when provided', async () => {
-    const { authorizationUrl } = await startAuthorization(
-      'https://auth.example.com',
-      {
-        clientInformation: validClientInfo,
-        redirectUrl: 'http://localhost:3000/callback',
-        scope: 'read write profile',
-      },
-    );
+    const { authorizationUrl } = await startAuthorization('https://auth.example.com', {
+      clientInformation: validClientInfo,
+      redirectUrl: 'http://localhost:3000/callback',
+      scope: 'read write profile',
+    });
 
-    expect(authorizationUrl.searchParams.get('scope')).toBe(
-      'read write profile',
-    );
+    expect(authorizationUrl.searchParams.get('scope')).toBe('read write profile');
   });
 
   it('excludes scope parameter when not provided', async () => {
-    const { authorizationUrl } = await startAuthorization(
-      'https://auth.example.com',
-      {
-        clientInformation: validClientInfo,
-        redirectUrl: 'http://localhost:3000/callback',
-      },
-    );
+    const { authorizationUrl } = await startAuthorization('https://auth.example.com', {
+      clientInformation: validClientInfo,
+      redirectUrl: 'http://localhost:3000/callback',
+    });
 
     expect(authorizationUrl.searchParams.has('scope')).toBe(false);
   });
 
   it('includes state parameter when provided', async () => {
-    const { authorizationUrl } = await startAuthorization(
-      'https://auth.example.com',
-      {
-        clientInformation: validClientInfo,
-        redirectUrl: 'http://localhost:3000/callback',
-        state: 'foobar',
-      },
-    );
+    const { authorizationUrl } = await startAuthorization('https://auth.example.com', {
+      clientInformation: validClientInfo,
+      redirectUrl: 'http://localhost:3000/callback',
+      state: 'foobar',
+    });
 
     expect(authorizationUrl.searchParams.get('state')).toBe('foobar');
   });
 
   it('excludes state parameter when not provided', async () => {
-    const { authorizationUrl } = await startAuthorization(
-      'https://auth.example.com',
-      {
-        clientInformation: validClientInfo,
-        redirectUrl: 'http://localhost:3000/callback',
-      },
-    );
+    const { authorizationUrl } = await startAuthorization('https://auth.example.com', {
+      clientInformation: validClientInfo,
+      redirectUrl: 'http://localhost:3000/callback',
+    });
 
     expect(authorizationUrl.searchParams.has('state')).toBe(false);
   });
 
   // OpenID Connect requires that the user is prompted for consent if the scope includes 'offline_access'
   it("includes consent prompt parameter if scope includes 'offline_access'", async () => {
-    const { authorizationUrl } = await startAuthorization(
-      'https://auth.example.com',
-      {
-        clientInformation: validClientInfo,
-        redirectUrl: 'http://localhost:3000/callback',
-        scope: 'read write profile offline_access',
-      },
-    );
+    const { authorizationUrl } = await startAuthorization('https://auth.example.com', {
+      clientInformation: validClientInfo,
+      redirectUrl: 'http://localhost:3000/callback',
+      scope: 'read write profile offline_access',
+    });
 
     expect(authorizationUrl.searchParams.get('prompt')).toBe('consent');
   });
 
   it('uses metadata authorization_endpoint when provided', async () => {
-    const { authorizationUrl } = await startAuthorization(
-      'https://auth.example.com',
-      {
-        metadata: validMetadata,
-        clientInformation: validClientInfo,
-        redirectUrl: 'http://localhost:3000/callback',
-      },
-    );
+    const { authorizationUrl } = await startAuthorization('https://auth.example.com', {
+      metadata: validMetadata,
+      clientInformation: validClientInfo,
+      redirectUrl: 'http://localhost:3000/callback',
+    });
 
-    expect(authorizationUrl.toString()).toMatch(
-      /^https:\/\/auth\.example\.com\/auth\?/,
-    );
+    expect(authorizationUrl.toString()).toMatch(/^https:\/\/auth\.example\.com\/auth\?/);
   });
 
   it('validates response type support', async () => {
@@ -974,15 +892,9 @@ describe('exchangeAuthorization', () => {
       ) => {
         headers.set(
           'Authorization',
-          'Basic ' +
-            btoa(
-              validClientInfo.client_id + ':' + validClientInfo.client_secret,
-            ),
+          `Basic ${btoa(`${validClientInfo.client_id}:${validClientInfo.client_secret}`)}`,
         );
-        params.set(
-          'example_url',
-          typeof url === 'string' ? url : url.toString(),
-        );
+        params.set('example_url', typeof url === 'string' ? url : url.toString());
         params.set('example_metadata', metadata.authorization_endpoint);
         params.set('example_param', 'example_value');
       },
@@ -999,12 +911,8 @@ describe('exchangeAuthorization', () => {
     );
 
     const headers = mockFetch.mock.calls[0][1].headers as Headers;
-    expect(headers.get('Content-Type')).toBe(
-      'application/x-www-form-urlencoded',
-    );
-    expect(headers.get('Authorization')).toBe(
-      'Basic Y2xpZW50MTIzOnNlY3JldDEyMw==',
-    );
+    expect(headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');
+    expect(headers.get('Authorization')).toBe('Basic Y2xpZW50MTIzOnNlY3JldDEyMw==');
     const body = mockFetch.mock.calls[0][1].body as URLSearchParams;
     expect(body.get('grant_type')).toBe('authorization_code');
     expect(body.get('code')).toBe('code123');
@@ -1012,9 +920,7 @@ describe('exchangeAuthorization', () => {
     expect(body.get('client_id')).toBeNull();
     expect(body.get('redirect_uri')).toBe('http://localhost:3000/callback');
     expect(body.get('example_url')).toBe('https://auth.example.com');
-    expect(body.get('example_metadata')).toBe(
-      'https://auth.example.com/authorize',
-    );
+    expect(body.get('example_metadata')).toBe('https://auth.example.com/authorize');
     expect(body.get('example_param')).toBe('example_value');
     expect(body.get('client_secret')).toBeNull();
   });
@@ -1180,15 +1086,9 @@ describe('refreshAuthorization', () => {
       ) => {
         headers.set(
           'Authorization',
-          'Basic ' +
-            btoa(
-              validClientInfo.client_id + ':' + validClientInfo.client_secret,
-            ),
+          `Basic ${btoa(`${validClientInfo.client_id}:${validClientInfo.client_secret}`)}`,
         );
-        params.set(
-          'example_url',
-          typeof url === 'string' ? url : url.toString(),
-        );
+        params.set('example_url', typeof url === 'string' ? url : url.toString());
         params.set('example_metadata', metadata?.authorization_endpoint ?? '?');
         params.set('example_param', 'example_value');
       },
@@ -1205,20 +1105,14 @@ describe('refreshAuthorization', () => {
     );
 
     const headers = mockFetch.mock.calls[0][1].headers as Headers;
-    expect(headers.get('Content-Type')).toBe(
-      'application/x-www-form-urlencoded',
-    );
-    expect(headers.get('Authorization')).toBe(
-      'Basic Y2xpZW50MTIzOnNlY3JldDEyMw==',
-    );
+    expect(headers.get('Content-Type')).toBe('application/x-www-form-urlencoded');
+    expect(headers.get('Authorization')).toBe('Basic Y2xpZW50MTIzOnNlY3JldDEyMw==');
     const body = mockFetch.mock.calls[0][1].body as URLSearchParams;
     expect(body.get('grant_type')).toBe('refresh_token');
     expect(body.get('refresh_token')).toBe('refresh123');
     expect(body.get('client_id')).toBeNull();
     expect(body.get('example_url')).toBe('https://auth.example.com');
-    expect(body.get('example_metadata')).toBe(
-      'https://auth.example.com/authorize',
-    );
+    expect(body.get('example_metadata')).toBe('https://auth.example.com/authorize');
     expect(body.get('example_param')).toBe('example_value');
     expect(body.get('client_secret')).toBeNull();
   });
@@ -1401,19 +1295,13 @@ describe('auth function', () => {
 
       const urlString = url.toString();
 
-      if (
-        callCount === 1 &&
-        urlString.includes('/.well-known/oauth-protected-resource')
-      ) {
+      if (callCount === 1 && urlString.includes('/.well-known/oauth-protected-resource')) {
         // First call - protected resource metadata fails with 404
         return Promise.resolve({
           ok: false,
           status: 404,
         });
-      } else if (
-        callCount === 2 &&
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (callCount === 2 && urlString.includes('/.well-known/oauth-authorization-server')) {
         // Second call - auth server metadata succeeds
         return Promise.resolve({
           ok: true,
@@ -1486,9 +1374,7 @@ describe('auth function', () => {
             authorization_servers: ['https://auth.example.com'],
           }),
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1527,12 +1413,9 @@ describe('auth function', () => {
       }),
     );
 
-    const redirectCall = (mockProvider.redirectToAuthorization as Mock).mock
-      .calls[0];
+    const redirectCall = (mockProvider.redirectToAuthorization as Mock).mock.calls[0];
     const authUrl: URL = redirectCall[0];
-    expect(authUrl.searchParams.get('resource')).toBe(
-      'https://api.example.com/mcp-server',
-    );
+    expect(authUrl.searchParams.get('resource')).toBe('https://api.example.com/mcp-server');
   });
 
   it('includes resource in token exchange when authorization code is provided', async () => {
@@ -1549,9 +1432,7 @@ describe('auth function', () => {
             authorization_servers: ['https://auth.example.com'],
           }),
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1596,12 +1477,10 @@ describe('auth function', () => {
     expect(result).toBe('AUTHORIZED');
 
     // Find the token exchange call
-    const tokenCall = mockFetch.mock.calls.find(call =>
-      call[0].toString().includes('/token'),
-    );
+    const tokenCall = mockFetch.mock.calls.find(call => call[0].toString().includes('/token'));
     expect(tokenCall).toBeDefined();
 
-    const body = tokenCall![1].body as URLSearchParams;
+    const body = tokenCall?.[1].body as URLSearchParams;
     expect(body.get('resource')).toBe('https://api.example.com/mcp-server');
     expect(body.get('code')).toBe('auth-code-123');
   });
@@ -1620,9 +1499,7 @@ describe('auth function', () => {
             authorization_servers: ['https://auth.example.com'],
           }),
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1668,12 +1545,10 @@ describe('auth function', () => {
     expect(result).toBe('AUTHORIZED');
 
     // Find the token refresh call
-    const tokenCall = mockFetch.mock.calls.find(call =>
-      call[0].toString().includes('/token'),
-    );
+    const tokenCall = mockFetch.mock.calls.find(call => call[0].toString().includes('/token'));
     expect(tokenCall).toBeDefined();
 
-    const body = tokenCall![1].body as URLSearchParams;
+    const body = tokenCall?.[1].body as URLSearchParams;
     expect(body.get('resource')).toBe('https://api.example.com/mcp-server');
     expect(body.get('grant_type')).toBe('refresh_token');
     expect(body.get('refresh_token')).toBe('refresh123');
@@ -1700,9 +1575,7 @@ describe('auth function', () => {
             authorization_servers: ['https://auth.example.com'],
           }),
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1725,12 +1598,8 @@ describe('auth function', () => {
       client_secret: 'test-secret',
     });
     (providerWithCustomValidation.tokens as Mock).mockResolvedValue(undefined);
-    (providerWithCustomValidation.saveCodeVerifier as Mock).mockResolvedValue(
-      undefined,
-    );
-    (
-      providerWithCustomValidation.redirectToAuthorization as Mock
-    ).mockResolvedValue(undefined);
+    (providerWithCustomValidation.saveCodeVerifier as Mock).mockResolvedValue(undefined);
+    (providerWithCustomValidation.redirectToAuthorization as Mock).mockResolvedValue(undefined);
 
     // Call auth - should succeed despite resource mismatch because custom validation overrides default
     const result = await auth(providerWithCustomValidation, {
@@ -1761,9 +1630,7 @@ describe('auth function', () => {
             authorization_servers: ['https://auth.example.com'],
           }),
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1803,13 +1670,10 @@ describe('auth function', () => {
       }),
     );
 
-    const redirectCall = (mockProvider.redirectToAuthorization as Mock).mock
-      .calls[0];
+    const redirectCall = (mockProvider.redirectToAuthorization as Mock).mock.calls[0];
     const authUrl: URL = redirectCall[0];
     // Should use the PRM's resource value, not the full requested URL
-    expect(authUrl.searchParams.get('resource')).toBe(
-      'https://api.example.com/',
-    );
+    expect(authUrl.searchParams.get('resource')).toBe('https://api.example.com/');
   });
 
   it('excludes resource parameter when Protected Resource Metadata is not present', async () => {
@@ -1824,9 +1688,7 @@ describe('auth function', () => {
           ok: false,
           status: 404,
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1866,8 +1728,7 @@ describe('auth function', () => {
       }),
     );
 
-    const redirectCall = (mockProvider.redirectToAuthorization as Mock).mock
-      .calls[0];
+    const redirectCall = (mockProvider.redirectToAuthorization as Mock).mock.calls[0];
     const authUrl: URL = redirectCall[0];
     // Resource parameter should not be present when PRM is not available
     expect(authUrl.searchParams.has('resource')).toBe(false);
@@ -1883,9 +1744,7 @@ describe('auth function', () => {
           ok: false,
           status: 404,
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1930,12 +1789,10 @@ describe('auth function', () => {
     expect(result).toBe('AUTHORIZED');
 
     // Find the token exchange call
-    const tokenCall = mockFetch.mock.calls.find(call =>
-      call[0].toString().includes('/token'),
-    );
+    const tokenCall = mockFetch.mock.calls.find(call => call[0].toString().includes('/token'));
     expect(tokenCall).toBeDefined();
 
-    const body = tokenCall![1].body as URLSearchParams;
+    const body = tokenCall?.[1].body as URLSearchParams;
     // Resource parameter should not be present when PRM is not available
     expect(body.has('resource')).toBe(false);
     expect(body.get('code')).toBe('auth-code-123');
@@ -1951,9 +1808,7 @@ describe('auth function', () => {
           ok: false,
           status: 404,
         });
-      } else if (
-        urlString.includes('/.well-known/oauth-authorization-server')
-      ) {
+      } else if (urlString.includes('/.well-known/oauth-authorization-server')) {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -1999,12 +1854,10 @@ describe('auth function', () => {
     expect(result).toBe('AUTHORIZED');
 
     // Find the token refresh call
-    const tokenCall = mockFetch.mock.calls.find(call =>
-      call[0].toString().includes('/token'),
-    );
+    const tokenCall = mockFetch.mock.calls.find(call => call[0].toString().includes('/token'));
     expect(tokenCall).toBeDefined();
 
-    const body = tokenCall![1].body as URLSearchParams;
+    const body = tokenCall?.[1].body as URLSearchParams;
     // Resource parameter should not be present when PRM is not available
     expect(body.has('resource')).toBe(false);
     expect(body.get('grant_type')).toBe('refresh_token');
@@ -2016,10 +1869,7 @@ describe('auth function', () => {
     mockFetch.mockImplementation(url => {
       const urlString = url.toString();
 
-      if (
-        urlString ===
-        'https://my.resource.com/.well-known/oauth-protected-resource/path/name'
-      ) {
+      if (urlString === 'https://my.resource.com/.well-known/oauth-protected-resource/path/name') {
         return Promise.resolve({
           ok: true,
           status: 200,
@@ -2029,8 +1879,7 @@ describe('auth function', () => {
           }),
         });
       } else if (
-        urlString ===
-        'https://auth.example.com/.well-known/oauth-authorization-server/path/name'
+        urlString === 'https://auth.example.com/.well-known/oauth-authorization-server/path/name'
       ) {
         // Path-aware discovery on AS with path from serverUrl
         return Promise.resolve({

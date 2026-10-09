@@ -21,7 +21,9 @@ export function createStitchableStream<T>(): {
     isClosed = true;
     waitForNewStream.resolve();
 
-    innerStreamReaders.forEach(reader => reader.cancel());
+    innerStreamReaders.forEach(reader => {
+      void reader.cancel();
+    });
     innerStreamReaders = [];
     controller?.close();
   };

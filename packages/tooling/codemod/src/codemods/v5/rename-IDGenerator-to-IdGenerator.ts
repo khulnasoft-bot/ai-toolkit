@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Track local names of imported IDGenerator
@@ -10,9 +10,7 @@ export default createTransformer((fileInfo, api, options, context) => {
   root
     .find(j.ImportDeclaration)
     .filter(
-      path =>
-        path.node.source.value === 'ai-toolkit' ||
-        path.node.source.value === 'ai-toolkit',
+      path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
     )
     .forEach(path => {
       path.node.specifiers?.forEach(specifier => {

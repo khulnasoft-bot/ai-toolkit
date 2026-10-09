@@ -1,11 +1,8 @@
-import {
-  createTestServer,
-  TestResponseController,
-} from '@ai-toolkit/test-server/with-vitest';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { createTestServer, TestResponseController } from '@ai-toolkit/test-server/with-vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { MCPClientError } from '../error/mcp-client-error';
 import { HttpMCPTransport } from './mcp-http-transport';
 import { LATEST_PROTOCOL_VERSION } from './types';
-import { MCPClientError } from '../error/mcp-client-error';
 
 describe('HttpMCPTransport', () => {
   const server = createTestServer({
@@ -164,9 +161,7 @@ describe('HttpMCPTransport', () => {
     await transport.close();
 
     expect(server.calls[2].requestMethod).toBe('DELETE');
-    expect(server.calls[2].requestHeaders['mcp-session-id']).toBe(
-      'xyz-session',
-    );
+    expect(server.calls[2].requestHeaders['mcp-session-id']).toBe('xyz-session');
   });
 
   it('should report HTTP errors from POST', async () => {
@@ -183,10 +178,7 @@ describe('HttpMCPTransport', () => {
 
     await new Promise<void>(resolve => {
       const check = () => {
-        if (
-          server.calls.length > 0 &&
-          server.calls[0].requestMethod === 'GET'
-        ) {
+        if (server.calls.length > 0 && server.calls[0].requestMethod === 'GET') {
           resolve();
         } else {
           setTimeout(check, 0);
@@ -234,9 +226,7 @@ describe('HttpMCPTransport', () => {
 
     await transport.start();
 
-    controller.write(
-      `event: message\ndata: ${JSON.stringify({ foo: 'bar' })}\n\n`,
-    );
+    controller.write(`event: message\ndata: ${JSON.stringify({ foo: 'bar' })}\n\n`);
 
     const error = await errorPromise;
     expect(error).toBeInstanceOf(MCPClientError);
@@ -271,7 +261,7 @@ describe('HttpMCPTransport', () => {
   });
 
   it('should send custom headers with all requests', async () => {
-    const controller = new TestResponseController();
+    const _controller = new TestResponseController();
 
     const customHeaders = {
       authorization: 'Bearer test-token',

@@ -1,4 +1,4 @@
-import { http, HttpResponse, JsonBodyType } from 'msw';
+import { HttpResponse, http, type JsonBodyType } from 'msw';
 import { setupServer } from 'msw/node';
 import { convertArrayToReadableStream } from './convert-array-to-readable-stream';
 
@@ -59,14 +59,12 @@ class TestServerCall {
   constructor(private request: Request) {}
 
   get requestBodyJson() {
-    return this.request!.text().then(JSON.parse);
+    return this.request?.text().then(JSON.parse);
   }
 
   get requestBodyMultipart() {
-    return this.request!.headers.get('content-type')?.startsWith(
-      'multipart/form-data',
-    )
-      ? this.request!.formData().then(formData => {
+    return this.request?.headers.get('content-type')?.startsWith('multipart/form-data')
+      ? this.request?.formData().then(formData => {
           const entries: Record<string, any> = {};
           formData.forEach((value, key) => {
             entries[key] = value;
@@ -77,11 +75,11 @@ class TestServerCall {
   }
 
   get requestCredentials() {
-    return this.request!.credentials;
+    return this.request?.credentials;
   }
 
   get requestHeaders() {
-    const requestHeaders = this.request!.headers;
+    const requestHeaders = this.request?.headers;
 
     const headersObject: Record<string, string> = {};
     requestHeaders.forEach((value, key) => {
@@ -93,19 +91,19 @@ class TestServerCall {
   }
 
   get requestUserAgent(): string | undefined {
-    return this.request!.headers.get('user-agent') ?? undefined;
+    return this.request?.headers.get('user-agent') ?? undefined;
   }
 
   get requestUrlSearchParams() {
-    return new URL(this.request!.url).searchParams;
+    return new URL(this.request?.url).searchParams;
   }
 
   get requestUrl() {
-    return this.request!.url;
+    return this.request?.url;
   }
 
   get requestMethod() {
-    return this.request!.method;
+    return this.request?.method;
   }
 }
 
@@ -156,9 +154,7 @@ export function createTestServer<
 
           case 'stream-chunks':
             return new HttpResponse(
-              convertArrayToReadableStream(response.chunks).pipeThrough(
-                new TextEncoderStream(),
-              ),
+              convertArrayToReadableStream(response.chunks).pipeThrough(new TextEncoderStream()),
               {
                 status: 200,
                 headers: {
@@ -173,9 +169,7 @@ export function createTestServer<
           case 'controlled-stream': {
             if (request.signal) {
               request.signal.addEventListener('abort', () => {
-                response.controller.error(
-                  new DOMException('Aborted', 'AbortError'),
-                );
+                response.controller.error(new DOMException('Aborted', 'AbortError'));
               });
             }
 

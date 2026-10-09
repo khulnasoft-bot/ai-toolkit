@@ -1,8 +1,8 @@
-import {
-  openaiMCPApprovalAgent,
-  OpenAIMCPApprovalAgentUIMessage,
-} from '@/agent/openai-mcp-approval-agent';
 import { createAgentUIStreamResponse } from '@ai-toolkit/ai';
+import {
+  type OpenAIMCPApprovalAgentUIMessage,
+  openaiMCPApprovalAgent,
+} from '@/agent/openai-mcp-approval-agent';
 
 export const maxDuration = 60;
 

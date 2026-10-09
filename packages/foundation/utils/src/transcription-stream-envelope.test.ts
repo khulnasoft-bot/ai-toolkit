@@ -10,12 +10,8 @@ import {
 
 describe('frame type constants', () => {
   it('should use the transcription-stream namespace', () => {
-    expect(TRANSCRIPTION_STREAM_START_FRAME_TYPE).toBe(
-      'transcription-stream.start',
-    );
-    expect(TRANSCRIPTION_STREAM_AUDIO_DONE_FRAME_TYPE).toBe(
-      'transcription-stream.audio-done',
-    );
+    expect(TRANSCRIPTION_STREAM_START_FRAME_TYPE).toBe('transcription-stream.start');
+    expect(TRANSCRIPTION_STREAM_AUDIO_DONE_FRAME_TYPE).toBe('transcription-stream.audio-done');
   });
 });
 
@@ -120,9 +116,7 @@ describe('parseTranscriptionStreamClientFrame', () => {
   );
 
   it('should classify a missing frame type as invalid', () => {
-    expect(
-      parseTranscriptionStreamClientFrame(JSON.stringify({ foo: 'bar' })),
-    ).toEqual({
+    expect(parseTranscriptionStreamClientFrame(JSON.stringify({ foo: 'bar' }))).toEqual({
       type: 'invalid',
       message: 'frame type must be a string',
     });
@@ -130,9 +124,8 @@ describe('parseTranscriptionStreamClientFrame', () => {
 
   it('should classify a start frame without inputAudioFormat as invalid', () => {
     expect(
-      parseTranscriptionStreamClientFrame(
-        JSON.stringify({ type: 'transcription-stream.start' }),
-      ).type,
+      parseTranscriptionStreamClientFrame(JSON.stringify({ type: 'transcription-stream.start' }))
+        .type,
     ).toBe('invalid');
   });
 
@@ -214,9 +207,7 @@ describe('serializeTranscriptionStreamPart', () => {
         type: 'error',
         error: new Error('rate limited'),
       }),
-    ).toBe(
-      '{"type":"error","error":{"name":"Error","message":"rate limited"}}',
-    );
+    ).toBe('{"type":"error","error":{"name":"Error","message":"rate limited"}}');
   });
 
   it('should round-trip an error part with an Error payload', () => {
@@ -245,9 +236,7 @@ describe('serializeTranscriptionStreamPart', () => {
         type: 'error',
         error: crossRealmError,
       }),
-    ).toBe(
-      '{"type":"error","error":{"name":"Error","message":"remote failure"}}',
-    );
+    ).toBe('{"type":"error","error":{"name":"Error","message":"remote failure"}}');
   });
 
   it.each<[string, unknown]>([
@@ -260,17 +249,14 @@ describe('serializeTranscriptionStreamPart', () => {
         return cyclic;
       })(),
     ],
-  ])(
-    'should return undefined for parts carrying %s (envelope rule 4)',
-    (_name, rawValue) => {
-      expect(
-        serializeTranscriptionStreamPart({
-          type: 'raw',
-          rawValue,
-        }),
-      ).toBeUndefined();
-    },
-  );
+  ])('should return undefined for parts carrying %s (envelope rule 4)', (_name, rawValue) => {
+    expect(
+      serializeTranscriptionStreamPart({
+        type: 'raw',
+        rawValue,
+      }),
+    ).toBeUndefined();
+  });
 });
 
 describe('parseTranscriptionStreamPart', () => {
@@ -288,11 +274,9 @@ describe('parseTranscriptionStreamPart', () => {
       language: 'en',
     },
   ])('should round-trip a $type part', part => {
-    expect(
-      parseTranscriptionStreamPart(
-        serializeTranscriptionStreamPart(part) ?? '',
-      ),
-    ).toEqual(part);
+    expect(parseTranscriptionStreamPart(serializeTranscriptionStreamPart(part) ?? '')).toEqual(
+      part,
+    );
   });
 
   it('should revive response-metadata timestamps to Date', () => {
@@ -309,9 +293,7 @@ describe('parseTranscriptionStreamPart', () => {
       timestamp: new Date('2026-01-01T00:00:00.000Z'),
       modelId: 'openai/gpt-realtime-whisper',
     });
-    expect(part?.type === 'response-metadata' && part.timestamp).toBeInstanceOf(
-      Date,
-    );
+    expect(part?.type === 'response-metadata' && part.timestamp).toBeInstanceOf(Date);
   });
 
   it('should keep a missing response-metadata timestamp undefined', () => {
@@ -347,9 +329,7 @@ describe('parseTranscriptionStreamPart', () => {
 
   it('should return undefined for unknown part types (forward compat)', () => {
     expect(
-      parseTranscriptionStreamPart(
-        JSON.stringify({ type: 'some-future-part' }),
-      ),
+      parseTranscriptionStreamPart(JSON.stringify({ type: 'some-future-part' })),
     ).toBeUndefined();
   });
 
@@ -359,47 +339,26 @@ describe('parseTranscriptionStreamPart', () => {
   // TypeError mid-stream.
   it.each<[string, Record<string, unknown>]>([
     ['stream-start without warnings', { type: 'stream-start' }],
-    [
-      'stream-start with non-array warnings',
-      { type: 'stream-start', warnings: 'none' },
-    ],
+    ['stream-start with non-array warnings', { type: 'stream-start', warnings: 'none' }],
     ['transcript-delta without delta', { type: 'transcript-delta', id: 's1' }],
-    [
-      'transcript-delta with non-string delta',
-      { type: 'transcript-delta', delta: 42 },
-    ],
+    ['transcript-delta with non-string delta', { type: 'transcript-delta', delta: 42 }],
     ['transcript-partial without text', { type: 'transcript-partial' }],
-    [
-      'transcript-partial with non-string text',
-      { type: 'transcript-partial', text: 42 },
-    ],
+    ['transcript-partial with non-string text', { type: 'transcript-partial', text: 42 }],
     ['transcript-final without text', { type: 'transcript-final' }],
     ['finish without text', { type: 'finish', segments: [] }],
     ['finish without segments', { type: 'finish', text: 'Hello' }],
-    [
-      'finish with non-array segments',
-      { type: 'finish', text: 'Hello', segments: {} },
-    ],
-    [
-      'response-metadata with a non-string timestamp',
-      { type: 'response-metadata', timestamp: {} },
-    ],
+    ['finish with non-array segments', { type: 'finish', text: 'Hello', segments: {} }],
+    ['response-metadata with a non-string timestamp', { type: 'response-metadata', timestamp: {} }],
     [
       'response-metadata with an unparsable timestamp',
       { type: 'response-metadata', timestamp: 'not-a-date' },
     ],
-    [
-      'stream-start with null warning elements',
-      { type: 'stream-start', warnings: [null] },
-    ],
+    ['stream-start with null warning elements', { type: 'stream-start', warnings: [null] }],
     [
       'stream-start with non-object warning elements',
       { type: 'stream-start', warnings: ['unsupported'] },
     ],
-    [
-      'finish with null segment elements',
-      { type: 'finish', text: 'Hello', segments: [null] },
-    ],
+    ['finish with null segment elements', { type: 'finish', text: 'Hello', segments: [null] }],
     ['raw without rawValue', { type: 'raw' }],
     ['error without error', { type: 'error' }],
     [
@@ -410,26 +369,17 @@ describe('parseTranscriptionStreamPart', () => {
       'stream-start with non-string warning types',
       { type: 'stream-start', warnings: [{ type: 42 }] },
     ],
-    [
-      'transcript-delta with a numeric id',
-      { type: 'transcript-delta', delta: 'Hel', id: 42 },
-    ],
+    ['transcript-delta with a numeric id', { type: 'transcript-delta', delta: 'Hel', id: 42 }],
     [
       'transcript-partial with a non-numeric startSecond',
       { type: 'transcript-partial', text: 'Hel', startSecond: 'zero' },
     ],
-    [
-      'transcript-final with a numeric id',
-      { type: 'transcript-final', text: 'Hello', id: 7 },
-    ],
+    ['transcript-final with a numeric id', { type: 'transcript-final', text: 'Hello', id: 7 }],
     [
       'transcript-final with a non-numeric endSecond',
       { type: 'transcript-final', text: 'Hello', endSecond: 'one' },
     ],
-    [
-      'finish with incomplete segment elements',
-      { type: 'finish', text: 'Hello', segments: [{}] },
-    ],
+    ['finish with incomplete segment elements', { type: 'finish', text: 'Hello', segments: [{}] }],
     [
       'finish with mistyped segment timings',
       {
@@ -446,10 +396,7 @@ describe('parseTranscriptionStreamPart', () => {
       'finish with a non-numeric durationInSeconds',
       { type: 'finish', text: 'Hello', segments: [], durationInSeconds: '7' },
     ],
-    [
-      'response-metadata with a non-string modelId',
-      { type: 'response-metadata', modelId: 42 },
-    ],
+    ['response-metadata with a non-string modelId', { type: 'response-metadata', modelId: 42 }],
   ])('should return undefined for %s', (_name, part) => {
     expect(parseTranscriptionStreamPart(JSON.stringify(part))).toBeUndefined();
   });

@@ -6,8 +6,8 @@ export function ChatComponent() {
     api: '/api/chat',
   });
 
-  const handleChange = handleInputChange;
-  const currentInput = input;
+  const _handleChange = handleInputChange;
+  const _currentInput = input;
 }
 
 export function AnotherComponent() {

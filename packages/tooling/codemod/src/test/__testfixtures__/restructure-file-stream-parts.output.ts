@@ -32,7 +32,7 @@ for await (const delta of result.fullStream) {
 }
 
 // Test object literal that should be restructured
-const fileStreamPart = {
+const _fileStreamPart = {
   type: 'file',
 
   file: {

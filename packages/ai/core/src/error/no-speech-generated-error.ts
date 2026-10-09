@@ -1,5 +1,5 @@
 import { AITOOLKITError } from '@ai-toolkit/provider';
-import { SpeechModelResponseMetadata } from '../types/speech-model-response-metadata';
+import type { SpeechModelResponseMetadata } from '../types/speech-model-response-metadata';
 
 /**
 Error that is thrown when no speech audio was generated.

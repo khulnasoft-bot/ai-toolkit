@@ -1,13 +1,13 @@
 import {
+  type CompletionRequestOptions,
   callCompletionApi,
   generateId,
-  type CompletionRequestOptions,
   type UseCompletionOptions,
 } from '@ai-toolkit/ai';
 import {
-  KeyedCompletionStore,
   getCompletionContext,
   hasCompletionContext,
+  KeyedCompletionStore,
 } from './completion-context.svelte.js';
 
 export type CompletionOptions = Readonly<UseCompletionOptions>;
@@ -45,9 +45,7 @@ export class Completion {
   }
 
   constructor(options: CompletionOptions = {}) {
-    this.#keyedStore = hasCompletionContext()
-      ? getCompletionContext()
-      : new KeyedCompletionStore();
+    this.#keyedStore = hasCompletionContext() ? getCompletionContext() : new KeyedCompletionStore();
     this.#options = options;
     this.completion = options.initialCompletion ?? '';
     this.input = options.initialInput ?? '';
@@ -81,10 +79,7 @@ export class Completion {
     }
   };
 
-  #triggerRequest = async (
-    prompt: string,
-    options?: CompletionRequestOptions,
-  ) => {
+  #triggerRequest = async (prompt: string, options?: CompletionRequestOptions) => {
     return callCompletionApi({
       api: this.#api,
       prompt,

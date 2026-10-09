@@ -7,6 +7,4 @@ import type { ToolSet } from '@ai-toolkit/provider-utils';
  * string keys of the configured tool set. The list can be partial; tools not
  * listed in `toolOrder` are sent after the listed tools, sorted alphabetically.
  */
-export type ToolOrder<TOOLS extends ToolSet> =
-  | ReadonlyArray<keyof TOOLS & string>
-  | undefined;
+export type ToolOrder<TOOLS extends ToolSet> = ReadonlyArray<keyof TOOLS & string> | undefined;

@@ -1,7 +1,7 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { generateText } from '@ai-toolkit/ai';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -36,14 +36,12 @@ run(async () => {
     {
       name: 'XLSX (Excel)',
       file: 'aitoolkit.xlsx',
-      mediaType:
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+      mediaType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     },
     {
       name: 'DOCX (Word)',
       file: 'sdk.docx',
-      mediaType:
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      mediaType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     },
   ];
 

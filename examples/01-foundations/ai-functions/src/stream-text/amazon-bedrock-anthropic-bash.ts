@@ -1,10 +1,5 @@
+import { stepCountIs, streamText, type ToolCallPart, type ToolResultPart } from '@ai-toolkit/ai';
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
-import {
-  stepCountIs,
-  streamText,
-  ToolCallPart,
-  ToolResultPart,
-} from '@ai-toolkit/ai';
 import 'dotenv/config';
 import { run } from '../lib/run';
 
@@ -31,14 +26,14 @@ run(async () => {
     stopWhen: stepCountIs(2),
   });
 
-  let fullResponse = '';
+  let _fullResponse = '';
   const toolCalls: ToolCallPart[] = [];
   const toolResponses: ToolResultPart[] = [];
 
   for await (const delta of result.fullStream) {
     switch (delta.type) {
       case 'text-delta': {
-        fullResponse += delta.text;
+        _fullResponse += delta.text;
         process.stdout.write(delta.text);
         break;
       }
@@ -46,9 +41,7 @@ run(async () => {
       case 'tool-call': {
         toolCalls.push(delta);
 
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
 

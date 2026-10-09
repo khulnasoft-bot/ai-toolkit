@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { waitForWebSocketBufferDrain, type WebSocketLike } from './websocket';
+import { type WebSocketLike, waitForWebSocketBufferDrain } from './websocket';
 
 function socketWithBuffer(initial: number): WebSocketLike & {
   bufferedAmount: number;
@@ -18,9 +18,7 @@ function socketWithBuffer(initial: number): WebSocketLike & {
 
 describe('waitForWebSocketBufferDrain', () => {
   it('should resolve immediately when the buffer is below the high-water mark', async () => {
-    await expect(
-      waitForWebSocketBufferDrain(socketWithBuffer(0)),
-    ).resolves.toBeUndefined();
+    await expect(waitForWebSocketBufferDrain(socketWithBuffer(0))).resolves.toBeUndefined();
   });
 
   it('should resolve immediately when bufferedAmount is not exposed', async () => {

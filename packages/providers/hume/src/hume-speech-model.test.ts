@@ -1,7 +1,7 @@
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
-import { HumeSpeechModel } from './hume-speech-model';
+import { describe, expect, it, vi } from 'vitest';
 import { createHume } from './hume-provider';
-import { describe, it, expect, vi } from 'vitest';
+import { HumeSpeechModel } from './hume-speech-model';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
@@ -80,9 +80,7 @@ describe('doGenerate', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/hume/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/hume/0.0.0-test`);
   });
 
   it('should pass options', async () => {

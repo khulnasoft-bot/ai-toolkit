@@ -1,17 +1,17 @@
-import { LanguageModelV3ToolCall } from '@ai-toolkit/provider';
+import type { LanguageModelV3ToolCall } from '@ai-toolkit/provider';
 import {
   asSchema,
-  ModelMessage,
+  type ModelMessage,
+  type SystemModelMessage,
   safeParseJSON,
   safeValidateTypes,
-  SystemModelMessage,
 } from '@ai-toolkit/provider-utils';
 import { InvalidToolInputError } from '../error/invalid-tool-input-error';
 import { NoSuchToolError } from '../error/no-such-tool-error';
 import { ToolCallRepairError } from '../error/tool-call-repair-error';
-import { DynamicToolCall, TypedToolCall } from './tool-call';
-import { ToolCallRepairFunction } from './tool-call-repair-function';
-import { ToolSet } from './tool-set';
+import type { DynamicToolCall, TypedToolCall } from './tool-call';
+import type { ToolCallRepairFunction } from './tool-call-repair-function';
+import type { ToolSet } from './tool-set';
 
 export async function parseToolCall<TOOLS extends ToolSet>({
   toolCall,
@@ -41,10 +41,7 @@ export async function parseToolCall<TOOLS extends ToolSet>({
     } catch (error) {
       if (
         repairToolCall == null ||
-        !(
-          NoSuchToolError.isInstance(error) ||
-          InvalidToolInputError.isInstance(error)
-        )
+        !(NoSuchToolError.isInstance(error) || InvalidToolInputError.isInstance(error))
       ) {
         throw error;
       }

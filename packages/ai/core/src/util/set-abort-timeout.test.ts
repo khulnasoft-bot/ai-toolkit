@@ -35,9 +35,7 @@ describe('setAbortTimeout', () => {
     vi.advanceTimersByTime(100);
 
     expect(abortController.signal.reason).toBeInstanceOf(DOMException);
-    expect((abortController.signal.reason as DOMException).name).toBe(
-      'TimeoutError',
-    );
+    expect((abortController.signal.reason as DOMException).name).toBe('TimeoutError');
   });
 
   it('should include the label and duration in the abort reason message', () => {

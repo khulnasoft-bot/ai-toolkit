@@ -3,11 +3,9 @@ import type { VideoModelResponseMetadata } from '../types/video-model-response-m
 
 const name = 'AI_NoVideoGeneratedError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class NoVideoGeneratedError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly responses: Array<VideoModelResponseMetadata>;
 
   constructor({
@@ -31,14 +29,12 @@ export class NoVideoGeneratedError extends AITOOLKITError {
   /**
    * @deprecated use `isInstance` instead
    */
-  static isNoVideoGeneratedError(
-    error: unknown,
-  ): error is NoVideoGeneratedError {
-    return error instanceof Error &&
+  static isNoVideoGeneratedError(error: unknown): error is NoVideoGeneratedError {
+    return !!(
+      error instanceof Error &&
       error.name === name &&
       typeof (error as NoVideoGeneratedError).responses !== 'undefined'
-      ? true
-      : false;
+    );
   }
 
   /**

@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Message, CreateMessage, generateText } from 'ai';
+import { type CreateMessage, generateText, type Message } from 'ai';
 
 // Basic usage with type annotations
 export function handleMessage(message: Message): void {
@@ -65,5 +65,5 @@ export class MessageHandler<T extends Message> {
 type MessageOrCreator = Message | CreateMessage;
 
 export function genericTest() {
-  const [message, setMessage] = generic<Message | CreateMessage>(null);
+  const [_message, _setMessage] = generic<Message | CreateMessage>(null);
 }

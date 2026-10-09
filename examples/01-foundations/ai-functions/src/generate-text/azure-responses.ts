@@ -1,5 +1,5 @@
-import { createAzure } from '@ai-toolkit/azure';
 import { generateText } from '@ai-toolkit/ai';
+import { createAzure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
 
 // Initialize Azure OpenAI provider

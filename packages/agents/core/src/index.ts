@@ -38,15 +38,15 @@ export function createAgentRegistry(): AgentRegistry {
 }
 
 export function createAgent(config: AgentConfig): Agent {
-  let status: AgentStatus = 'idle';
+  let _status: AgentStatus = 'idle';
   let stepCount = 0;
 
   return {
-    execute: async input => {
-      status = 'running';
+    execute: async _input => {
+      _status = 'running';
       stepCount = 0;
       // Agent execution logic
-      status = 'completed';
+      _status = 'completed';
       return {
         agentId: config.name,
         status: 'completed',
@@ -58,7 +58,7 @@ export function createAgent(config: AgentConfig): Agent {
       // Streaming execution
     },
     stop: () => {
-      status = 'idle';
+      _status = 'idle';
     },
   };
 }

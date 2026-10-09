@@ -89,7 +89,7 @@ let transport: SSEServerTransport;
 
 const app = express();
 
-app.get('/sse', async (req, res) => {
+app.get('/sse', async (_req, res) => {
   transport = new SSEServerTransport('/messages', res);
   await mcpServer.connect(transport);
 });

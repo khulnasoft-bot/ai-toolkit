@@ -1,6 +1,6 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { streamText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { streamText } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -24,8 +24,5 @@ run(async () => {
 
   console.log();
   console.log('Token usage:', await result.usage);
-  console.log(
-    'Cache token usage:',
-    (await result.providerMetadata)?.bedrock?.usage,
-  );
+  console.log('Cache token usage:', (await result.providerMetadata)?.bedrock?.usage);
 });

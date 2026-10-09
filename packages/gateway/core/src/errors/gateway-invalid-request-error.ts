@@ -8,8 +8,6 @@ const symbol = Symbol.for(marker);
  * Invalid request - missing headers, malformed data, etc.
  */
 export class GatewayInvalidRequestError extends GatewayError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly name = name;
   readonly type = 'invalid_request_error';
 

@@ -1,11 +1,11 @@
-import { openai } from '@ai-toolkit/openai';
 import {
   convertToModelMessages,
   createUIMessageStream,
   createUIMessageStreamResponse,
   streamText,
-  UIMessage,
+  type UIMessage,
 } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();

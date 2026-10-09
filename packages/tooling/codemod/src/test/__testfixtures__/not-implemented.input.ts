@@ -1,19 +1,14 @@
 // @ts-nocheck
-import {
-  streamText,
-  convertToModelMessages,
-  appendClientMessage,
-  appendResponseMessages,
-  StreamData,
-} from 'ai';
+
 import { openai } from '@ai-toolkit/openai';
+import { appendClientMessage, appendResponseMessages, StreamData, streamText } from 'ai';
 
 const updatedMessages = appendClientMessage({
   messages,
   message: lastUserMessage,
 });
 
-const result = streamText({
+const _result = streamText({
   model: openai('gpt-4o'),
   messages: updatedMessages,
   experimental_generateMessageId: () => generateId(), // ID generation on streamText
@@ -53,7 +48,7 @@ streamData.append('custom-data');
 streamData.close();
 
 messages.map(message =>
-  message.experimental_attachments?.map((attachment, index) =>
+  message.experimental_attachments?.map((attachment, _index) =>
     attachment.contentType?.includes('image/')
       ? 'image'
       : attachment.contentType?.includes('text/')

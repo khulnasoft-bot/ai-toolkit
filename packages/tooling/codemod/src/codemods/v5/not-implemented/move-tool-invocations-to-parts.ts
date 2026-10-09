@@ -1,9 +1,6 @@
-import { createTransformer } from '../../lib/create-transformer';
-import {
-  AI_TOOLKIT_CODEMOD_ERROR_PREFIX,
-  insertCommentOnce,
-} from '../../lib/add-comment';
 import type { ASTPath } from 'jscodeshift';
+import { AI_TOOLKIT_CODEMOD_ERROR_PREFIX, insertCommentOnce } from '../../lib/add-comment';
+import { createTransformer } from '../../lib/create-transformer';
 
 function isStatementOrVarDecl(node: { type: string }) {
   return (
@@ -16,12 +13,10 @@ export default createTransformer((fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   function processMatch(path: ASTPath<any>, message: string) {
-    context.messages.push(
-      `Tool invocations migration needed in ${fileInfo.path}: ${message}`,
-    );
+    context.messages.push(`Tool invocations migration needed in ${fileInfo.path}: ${message}`);
 
     let statementPath = path;
-    while (statementPath && statementPath.parent) {
+    while (statementPath?.parent) {
       if (isStatementOrVarDecl(statementPath.parent.node)) {
         statementPath = statementPath.parent;
         break;
@@ -30,9 +25,7 @@ export default createTransformer((fileInfo, _api, _options, context) => {
     }
 
     const targetNode =
-      statementPath && isStatementOrVarDecl(statementPath.node)
-        ? statementPath.node
-        : path.node;
+      statementPath && isStatementOrVarDecl(statementPath.node) ? statementPath.node : path.node;
 
     const hasChanges = insertCommentOnce(
       targetNode,

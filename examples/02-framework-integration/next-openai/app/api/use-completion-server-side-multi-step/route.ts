@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { stepCountIs, streamText, tool } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 
 // Allow streaming responses up to 60 seconds

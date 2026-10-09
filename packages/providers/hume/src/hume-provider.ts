@@ -1,9 +1,5 @@
-import { SpeechModelV3, ProviderV3 } from '@ai-toolkit/provider';
-import {
-  FetchFunction,
-  loadApiKey,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import type { ProviderV3, SpeechModelV3 } from '@ai-toolkit/provider';
+import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { HumeSpeechModel } from './hume-speech-model';
 import { VERSION } from './version';
 
@@ -61,11 +57,9 @@ export function createHume(options: HumeProviderSettings = {}): HumeProvider {
       fetch: options.fetch,
     });
 
-  const provider = function () {
-    return {
-      speech: createSpeechModel(),
-    };
-  };
+  const provider = () => ({
+    speech: createSpeechModel(),
+  });
 
   provider.speech = createSpeechModel;
   provider.speechModel = createSpeechModel;

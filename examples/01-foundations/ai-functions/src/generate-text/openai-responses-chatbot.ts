@@ -1,8 +1,8 @@
-import { openai } from '@ai-toolkit/openai';
-import { ModelMessage, generateText } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
-import { weatherTool } from '../tools/weather-tool';
+import { generateText, type ModelMessage } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 const terminal = readline.createInterface({
   input: process.stdin,
@@ -34,15 +34,11 @@ run(async () => {
     }
 
     for (const { toolName, input } of toolCalls) {
-      process.stdout.write(
-        `\nTool call: '${toolName}' ${JSON.stringify(input)}`,
-      );
+      process.stdout.write(`\nTool call: '${toolName}' ${JSON.stringify(input)}`);
     }
 
     for (const { toolName, output } of toolResults) {
-      process.stdout.write(
-        `\nTool response: '${toolName}' ${JSON.stringify(output)}`,
-      );
+      process.stdout.write(`\nTool response: '${toolName}' ${JSON.stringify(output)}`);
     }
 
     process.stdout.write('\n\n');

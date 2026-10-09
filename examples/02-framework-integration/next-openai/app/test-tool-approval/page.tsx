@@ -1,20 +1,19 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import {
   DefaultChatTransport,
   lastAssistantMessageIsCompleteWithApprovalResponses,
 } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { WeatherWithApprovalAgentUIMessage } from '@/agent/weather-with-approval-agent';
 import ChatInput from '@/components/chat-input';
-import { WeatherWithApprovalAgentUIMessage } from '@/agent/weather-with-approval-agent';
 import WeatherWithApprovalView from '@/components/tool/weather-with-approval-view';
 
 export default function TestToolApproval() {
   const { status, sendMessage, messages, addToolApprovalResponse } =
     useChat<WeatherWithApprovalAgentUIMessage>({
       transport: new DefaultChatTransport({ api: '/api/chat-tool-approval' }),
-      sendAutomaticallyWhen:
-        lastAssistantMessageIsCompleteWithApprovalResponses,
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
     });
 
   console.log(structuredClone(messages));
@@ -29,15 +28,17 @@ export default function TestToolApproval() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
               case 'tool-weather':
                 return (
                   <WeatherWithApprovalView
-                    key={index}
+                    key={`${part.type}-${index}`}
                     invocation={part}
                     addToolApprovalResponse={addToolApprovalResponse}
                   />
                 );
+              default:
+                return null;
             }
           })}
         </div>

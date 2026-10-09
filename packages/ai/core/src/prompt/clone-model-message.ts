@@ -4,9 +4,7 @@ import type { ModelMessage } from '@ai-toolkit/provider-utils';
  * Clone model messages while preserving URL instances. Node's structuredClone
  * currently rejects URL objects, which are valid file/image prompt payloads.
  */
-export function cloneModelMessages<T extends ModelMessage>(
-  messages: Array<T>,
-): Array<T> {
+export function cloneModelMessages<T extends ModelMessage>(messages: Array<T>): Array<T> {
   return messages.map(message => cloneValue(message)) as Array<T>;
 }
 

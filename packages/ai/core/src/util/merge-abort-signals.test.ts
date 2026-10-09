@@ -8,7 +8,7 @@ describe('mergeAbortSignals', () => {
 
     const merged = mergeAbortSignals(controller1.signal, controller2.signal);
 
-    expect(merged!.aborted).toBe(false);
+    expect(merged?.aborted).toBe(false);
   });
 
   it('should abort when the first signal aborts', () => {
@@ -19,7 +19,7 @@ describe('mergeAbortSignals', () => {
 
     controller1.abort();
 
-    expect(merged!.aborted).toBe(true);
+    expect(merged?.aborted).toBe(true);
   });
 
   it('should abort when the second signal aborts', () => {
@@ -30,7 +30,7 @@ describe('mergeAbortSignals', () => {
 
     controller2.abort();
 
-    expect(merged!.aborted).toBe(true);
+    expect(merged?.aborted).toBe(true);
   });
 
   it('should preserve the abort reason from the triggering signal', () => {
@@ -42,7 +42,7 @@ describe('mergeAbortSignals', () => {
 
     controller1.abort(reason);
 
-    expect(merged!.reason).toBe(reason);
+    expect(merged?.reason).toBe(reason);
   });
 
   it('should preserve string abort reason', () => {
@@ -52,7 +52,7 @@ describe('mergeAbortSignals', () => {
 
     controller1.abort('string reason');
 
-    expect(merged!.reason).toBe('string reason');
+    expect(merged?.reason).toBe('string reason');
   });
 
   it('should handle already-aborted signals', () => {
@@ -62,8 +62,8 @@ describe('mergeAbortSignals', () => {
 
     const merged = mergeAbortSignals(controller1.signal);
 
-    expect(merged!.aborted).toBe(true);
-    expect(merged!.reason).toBe(reason);
+    expect(merged?.aborted).toBe(true);
+    expect(merged?.reason).toBe(reason);
   });
 
   it('should use the first already-aborted signal reason when multiple are aborted', () => {
@@ -77,8 +77,8 @@ describe('mergeAbortSignals', () => {
 
     const merged = mergeAbortSignals(controller1.signal, controller2.signal);
 
-    expect(merged!.aborted).toBe(true);
-    expect(merged!.reason).toBe(reason1);
+    expect(merged?.aborted).toBe(true);
+    expect(merged?.reason).toBe(reason1);
   });
 
   it('should return undefined when no signals provided', () => {
@@ -100,12 +100,12 @@ describe('mergeAbortSignals', () => {
     const merged = mergeAbortSignals(null, controller.signal, undefined);
 
     expect(merged).not.toBeUndefined();
-    expect(merged!.aborted).toBe(false);
+    expect(merged?.aborted).toBe(false);
 
     controller.abort(reason);
 
-    expect(merged!.aborted).toBe(true);
-    expect(merged!.reason).toBe(reason);
+    expect(merged?.aborted).toBe(true);
+    expect(merged?.reason).toBe(reason);
   });
 
   it('should return the signal directly when only one valid signal provided', () => {
@@ -128,7 +128,7 @@ describe('mergeAbortSignals', () => {
     controller1.abort(reason1);
     controller2.abort(reason2);
 
-    expect(merged!.reason).toBe(reason1);
+    expect(merged?.reason).toBe(reason1);
   });
 
   it('should return the original signal when only one signal provided', () => {
@@ -145,11 +145,11 @@ describe('mergeAbortSignals', () => {
 
     const merged = mergeAbortSignals(...controllers.map(c => c.signal));
 
-    expect(merged!.aborted).toBe(false);
+    expect(merged?.aborted).toBe(false);
 
     controllers[5].abort(reason);
 
-    expect(merged!.aborted).toBe(true);
-    expect(merged!.reason).toBe(reason);
+    expect(merged?.aborted).toBe(true);
+    expect(merged?.reason).toBe(reason);
   });
 });

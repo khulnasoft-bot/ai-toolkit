@@ -1,7 +1,7 @@
-import { Tool } from '@ai-toolkit/provider-utils';
-import { ProviderMetadata } from '../types';
-import { ValueOf } from '../util/value-of';
-import { ToolSet } from './tool-set';
+import type { Tool } from '@ai-toolkit/provider-utils';
+import type { ProviderMetadata } from '../types';
+import type { ValueOf } from '../util/value-of';
+import type { ToolSet } from './tool-set';
 
 type BaseToolCall = {
   type: 'tool-call';
@@ -43,6 +43,4 @@ export type DynamicToolCall = BaseToolCall & {
   error?: unknown;
 };
 
-export type TypedToolCall<TOOLS extends ToolSet> =
-  | StaticToolCall<TOOLS>
-  | DynamicToolCall;
+export type TypedToolCall<TOOLS extends ToolSet> = StaticToolCall<TOOLS> | DynamicToolCall;

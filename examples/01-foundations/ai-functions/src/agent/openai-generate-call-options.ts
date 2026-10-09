@@ -1,5 +1,5 @@
-import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
-import { LanguageModel, ToolLoopAgent } from '@ai-toolkit/ai';
+import { type LanguageModel, ToolLoopAgent } from '@ai-toolkit/ai';
+import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { run } from '../lib/run';

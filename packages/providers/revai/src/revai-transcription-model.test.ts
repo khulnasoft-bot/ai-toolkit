@@ -1,9 +1,9 @@
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
-import { RevaiTranscriptionModel } from './revai-transcription-model';
-import { createRevai } from './revai-provider';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { describe, it, expect, vi } from 'vitest';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { createRevai } from './revai-provider';
+import { RevaiTranscriptionModel } from './revai-transcription-model';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
@@ -20,9 +20,7 @@ const server = createTestServer({
 });
 
 describe('doGenerate', () => {
-  function prepareJsonResponse({
-    headers,
-  }: { headers?: Record<string, string> } = {}) {
+  function prepareJsonResponse({ headers }: { headers?: Record<string, string> } = {}) {
     server.urls['https://api.rev.ai/speechtotext/v1/jobs'].response = {
       type: 'json-value',
       headers,
@@ -45,9 +43,7 @@ describe('doGenerate', () => {
         transcriber: 'machine',
       },
     };
-    server.urls[
-      'https://api.rev.ai/speechtotext/v1/jobs/test-id/transcript'
-    ].response = {
+    server.urls['https://api.rev.ai/speechtotext/v1/jobs/test-id/transcript'].response = {
       type: 'json-value',
       headers,
       body: {
@@ -204,9 +200,7 @@ describe('doGenerate', () => {
       'custom-request-header': 'request-header-value',
     });
 
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/revai/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/revai/0.0.0-test`);
   });
 
   it('should extract the transcription text', async () => {
@@ -217,9 +211,7 @@ describe('doGenerate', () => {
       mediaType: 'audio/wav',
     });
 
-    expect(result.text).toBe(
-      'Hello World. monologues are a block of <inaudible> text.',
-    );
+    expect(result.text).toBe('Hello World. monologues are a block of <inaudible> text.');
   });
 
   it('should include response data with timestamp, modelId and headers', async () => {

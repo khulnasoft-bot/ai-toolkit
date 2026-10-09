@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
+import { openai } from '@ai-toolkit/openai';
 import { getMCPToken } from '../lib/mcp-oauth';
+import { run } from '../lib/run';
 
 run(async () => {
   const serverUrl = 'https://mcp.vercel.com/';

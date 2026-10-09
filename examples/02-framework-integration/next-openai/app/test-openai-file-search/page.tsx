@@ -1,10 +1,10 @@
 'use client';
 
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 import FileSearchView from '@/components/tool/openai-file-search-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { OpenAIFileSearchMessage } from '../api/chat-openai-file-search/route';
+import type { OpenAIFileSearchMessage } from '../api/chat-openai-file-search/route';
 
 export default function TestOpenAIFileSearch() {
   const { status, sendMessage, messages } = useChat<OpenAIFileSearchMessage>({
@@ -23,9 +23,11 @@ export default function TestOpenAIFileSearch() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
               case 'tool-file_search':
-                return <FileSearchView key={index} invocation={part} />;
+                return <FileSearchView key={`${part.type}-${index}`} invocation={part} />;
+              default:
+                return null;
             }
           })}
         </div>

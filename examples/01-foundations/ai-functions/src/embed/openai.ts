@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { embed } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 run(async () => {

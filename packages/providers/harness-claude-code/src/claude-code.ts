@@ -1,5 +1,5 @@
-import { createACP } from '@ai-toolkit/harness-acp';
 import type { ACPCredentialRequestTransformation } from '@ai-toolkit/harness-acp';
+import { createACP } from '@ai-toolkit/harness-acp';
 import { VERSION } from './version';
 
 /**

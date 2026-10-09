@@ -1,17 +1,17 @@
-import { khulnasoft } from '@ai-toolkit/khulnasoft';
 import {
+  type ModelMessage,
   streamText,
-  ToolCallPart,
-  ToolResultPart,
-  ModelMessage,
+  type ToolCallPart,
+  type ToolResultPart,
 } from '@ai-toolkit/ai';
-import { weatherTool } from '../tools/weather-tool';
+import { khulnasoft } from '@ai-toolkit/khulnasoft';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
-const messages: ModelMessage[] = [];
+const _messages: ModelMessage[] = [];
 
 run(async () => {
-  let toolResponseAvailable = false;
+  const _toolResponseAvailable = false;
 
   const result = streamText({
     model: khulnasoft('v0-1.0-md'),
@@ -19,13 +19,12 @@ run(async () => {
       weather: weatherTool,
     },
     toolChoice: 'required',
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
+    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
   });
 
-  let fullResponse = '';
-  const toolCalls: ToolCallPart[] = [];
-  const toolResponses: ToolResultPart[] = [];
+  const _fullResponse = '';
+  const _toolCalls: ToolCallPart[] = [];
+  const _toolResponses: ToolResultPart[] = [];
 
   for await (const chunk of result.fullStream) {
     switch (chunk.type) {
@@ -35,16 +34,12 @@ run(async () => {
       }
 
       case 'tool-call': {
-        console.log(
-          `TOOL CALL ${chunk.toolName} ${JSON.stringify(chunk.input)}`,
-        );
+        console.log(`TOOL CALL ${chunk.toolName} ${JSON.stringify(chunk.input)}`);
         break;
       }
 
       case 'tool-result': {
-        console.log(
-          `TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`,
-        );
+        console.log(`TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`);
         break;
       }
 

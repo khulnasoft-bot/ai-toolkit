@@ -1,29 +1,21 @@
+import { asSchema, type DeepPartial, isDeepEqualData, parsePartialJson } from '@ai-toolkit/ai';
 import {
-  FetchFunction,
-  FlexibleSchema,
-  InferSchema,
+  type FetchFunction,
+  type FlexibleSchema,
+  type InferSchema,
   isAbortError,
-  Resolvable,
-  resolve,
   normalizeHeaders,
+  type Resolvable,
+  resolve,
   safeValidateTypes,
 } from '@ai-toolkit/provider-utils';
-import {
-  asSchema,
-  DeepPartial,
-  isDeepEqualData,
-  parsePartialJson,
-} from '@ai-toolkit/ai';
 import { useCallback, useId, useRef, useState } from 'react';
 import useSWR from 'swr';
 
 // use function to allow for mocking in tests:
 const getOriginalFetch = () => fetch;
 
-export type Experimental_UseObjectOptions<
-  SCHEMA extends FlexibleSchema,
-  RESULT,
-> = {
+export type Experimental_UseObjectOptions<SCHEMA extends FlexibleSchema, RESULT> = {
   /**
    * The API endpoint. It should stream JSON that matches the schema as chunked text.
    */
@@ -120,11 +112,7 @@ export type Experimental_UseObjectHelpers<RESULT, INPUT> = {
   clear: () => void;
 };
 
-function useObject<
-  SCHEMA extends FlexibleSchema,
-  RESULT = InferSchema<SCHEMA>,
-  INPUT = any,
->({
+function useObject<SCHEMA extends FlexibleSchema, RESULT = InferSchema<SCHEMA>, INPUT = any>({
   api,
   id,
   schema, // required, in the future we will use it for validation
@@ -134,22 +122,15 @@ function useObject<
   onFinish,
   headers,
   credentials,
-}: Experimental_UseObjectOptions<
-  SCHEMA,
-  RESULT
->): Experimental_UseObjectHelpers<RESULT, INPUT> {
+}: Experimental_UseObjectOptions<SCHEMA, RESULT>): Experimental_UseObjectHelpers<RESULT, INPUT> {
   // Generate an unique id if not provided.
   const hookId = useId();
   const completionId = id ?? hookId;
 
   // Store the completion state in SWR, using the completionId as the key to share states.
-  const { data, mutate } = useSWR<DeepPartial<RESULT>>(
-    [api, completionId],
-    null,
-    {
-      fallbackData: initialValue,
-    },
-  );
+  const { data, mutate } = useSWR<DeepPartial<RESULT>>([api, completionId], null, {
+    fallbackData: initialValue,
+  });
 
   const [error, setError] = useState<undefined | Error>(undefined);
   const [isLoading, setIsLoading] = useState(false);
@@ -160,7 +141,7 @@ function useObject<
   const stop = useCallback(() => {
     try {
       abortControllerRef.current?.abort();
-    } catch (ignored) {
+    } catch (_ignored) {
     } finally {
       setIsLoading(false);
       abortControllerRef.current = null;
@@ -192,9 +173,7 @@ function useObject<
       });
 
       if (!response.ok) {
-        throw new Error(
-          (await response.text()) ?? 'Failed to fetch the response.',
-        );
+        throw new Error((await response.text()) ?? 'Failed to fetch the response.');
       }
 
       if (response.body == null) {
@@ -202,7 +181,7 @@ function useObject<
       }
 
       let accumulatedText = '';
-      let latestObject: DeepPartial<RESULT> | undefined = undefined;
+      let latestObject: DeepPartial<RESULT> | undefined;
 
       await response.body.pipeThrough(new TextDecoderStream()).pipeTo(
         new WritableStream<string>({

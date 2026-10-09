@@ -1,9 +1,6 @@
-import { createTransformer } from '../../lib/create-transformer';
-import {
-  AI_TOOLKIT_CODEMOD_ERROR_PREFIX,
-  insertCommentOnce,
-} from '../../lib/add-comment';
 import type { ASTPath, Identifier, MemberExpression } from 'jscodeshift';
+import { AI_TOOLKIT_CODEMOD_ERROR_PREFIX, insertCommentOnce } from '../../lib/add-comment';
+import { createTransformer } from '../../lib/create-transformer';
 
 const patterns: {
   keyword: string;
@@ -88,7 +85,7 @@ function getMemberExpressionChain(node: MemberExpression): string[] | null {
   return chain;
 }
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   const importMap = new Map<string, Map<string, string>>();
@@ -111,10 +108,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     });
   });
 
-  function isKeywordImportedFromPackage(
-    keyword: string,
-    packageName: string,
-  ): string | null {
+  function isKeywordImportedFromPackage(keyword: string, packageName: string): string | null {
     const packageImports = importMap.get(packageName);
     if (!packageImports) return null;
 
@@ -172,7 +166,7 @@ export default createTransformer((fileInfo, api, options, context) => {
   function processMatch(path: any, message: string) {
     context.messages.push(`Not Implemented ${fileInfo.path}: ${message}`);
     let statementPath = path;
-    while (statementPath && statementPath.parent) {
+    while (statementPath?.parent) {
       if (isStatementOrVarDecl(statementPath.parent.node)) {
         statementPath = statementPath.parent;
         break;
@@ -180,14 +174,8 @@ export default createTransformer((fileInfo, api, options, context) => {
       statementPath = statementPath.parent;
     }
     const targetNode =
-      statementPath && isStatementOrVarDecl(statementPath.node)
-        ? statementPath.node
-        : path.node;
-    insertCommentOnce(
-      targetNode,
-      j,
-      `${AI_TOOLKIT_CODEMOD_ERROR_PREFIX}${message}`,
-    );
+      statementPath && isStatementOrVarDecl(statementPath.node) ? statementPath.node : path.node;
+    insertCommentOnce(targetNode, j, `${AI_TOOLKIT_CODEMOD_ERROR_PREFIX}${message}`);
     context.hasChanges = true;
   }
 

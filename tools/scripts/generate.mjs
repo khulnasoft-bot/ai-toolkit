@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
-const TEMPLATES_DIR = path.join(ROOT, 'tools', 'templates');
+const _TEMPLATES_DIR = path.join(ROOT, 'tools', 'templates');
 
 const args = process.argv.slice(2);
 const type = args[0];
@@ -38,7 +38,7 @@ const generators = {
   async provider() {
     // Canonical provider scaffolding lives in tools/create-ai-provider.
     // This branch forwards so `pnpm generate provider` keeps working.
-    const { spawn } = await import('child_process');
+    const { spawn } = await import('node:child_process');
     const createScript = path.join(ROOT, 'tools', 'create-ai-provider', 'src', 'index.js');
     const child = spawn(process.execPath, [createScript, name, '--no-install'], {
       stdio: 'inherit',
@@ -57,7 +57,7 @@ const generators = {
 
     fs.writeFileSync(
       path.join(targetDir, 'package.json'),
-      JSON.stringify(
+      `${JSON.stringify(
         {
           name: `@ai-toolkit/${name}`,
           version: '0.0.1',
@@ -74,7 +74,7 @@ const generators = {
         },
         null,
         2,
-      ) + '\n',
+      )}\n`,
     );
 
     fs.writeFileSync(
@@ -101,7 +101,7 @@ const generators = {
 
     fs.writeFileSync(
       path.join(targetDir, 'example.json'),
-      JSON.stringify(
+      `${JSON.stringify(
         {
           name,
           title: name,
@@ -114,7 +114,7 @@ const generators = {
         },
         null,
         2,
-      ) + '\n',
+      )}\n`,
     );
 
     fs.writeFileSync(

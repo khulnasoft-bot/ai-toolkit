@@ -1,11 +1,9 @@
+import { describe, expect, it } from 'vitest';
 import { convertToGoogleGenerativeAIMessages } from './convert-to-google-generative-ai-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('system messages', () => {
   it('should store system message in system instruction', async () => {
-    const result = convertToGoogleGenerativeAIMessages([
-      { role: 'system', content: 'Test' },
-    ]);
+    const result = convertToGoogleGenerativeAIMessages([{ role: 'system', content: 'Test' }]);
 
     expect(result).toEqual({
       systemInstruction: { parts: [{ text: 'Test' }] },
@@ -19,9 +17,7 @@ describe('system messages', () => {
         { role: 'user', content: [{ type: 'text', text: 'Test' }] },
         { role: 'system', content: 'Test' },
       ]),
-    ).toThrow(
-      'system messages are only supported at the beginning of the conversation',
-    );
+    ).toThrow('system messages are only supported at the beginning of the conversation');
   });
 });
 

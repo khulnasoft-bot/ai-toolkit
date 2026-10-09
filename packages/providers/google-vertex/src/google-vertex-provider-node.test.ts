@@ -1,8 +1,8 @@
 import { resolve } from '@ai-toolkit/provider-utils';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { generateAuthToken } from './google-vertex-auth-google-auth-library';
 import { createVertex as createVertexOriginal } from './google-vertex-provider';
 import { createVertex as createVertexNode } from './google-vertex-provider-node';
-import { generateAuthToken } from './google-vertex-auth-google-auth-library';
-import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 
 // Mock the imported modules
 vi.mock('./google-vertex-auth-google-auth-library', () => ({

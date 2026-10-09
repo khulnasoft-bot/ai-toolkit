@@ -1,4 +1,4 @@
-import { useState, type Ref } from 'react';
+import { type Ref, useState } from 'react';
 
 export default function ChatInput({
   status,
@@ -17,6 +17,7 @@ export default function ChatInput({
     <>
       {(status === 'streaming' || status === 'submitted') && (
         <button
+          type="button"
           className="fixed bottom-10 p-2 mb-10 w-full max-w-md rounded border border-gray-300 shadow-xl"
           onClick={stop}
         >

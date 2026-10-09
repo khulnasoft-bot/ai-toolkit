@@ -1,8 +1,8 @@
 import { generateText, tool } from '@ai-toolkit/ai';
-import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { z } from 'zod';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = await generateText({
@@ -15,8 +15,7 @@ run(async () => {
     },
     temperature: 0,
     topK: 1,
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
+    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   for (const toolCall of result.toolCalls) {

@@ -1,4 +1,4 @@
-import { ASTPath } from 'jscodeshift';
+import type { ASTPath } from 'jscodeshift';
 import { createTransformer } from '../lib/create-transformer';
 
 /*
@@ -6,7 +6,7 @@ import { createTransformer } from '../lib/create-transformer';
 for `{steps}` destructured from `generateText()`.
 */
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Collect names of variables that are assigned `steps` from `generateText`
@@ -21,10 +21,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       const init = path.node.init;
 
-      if (
-        init?.type !== 'AwaitExpression' ||
-        init.argument?.type !== 'CallExpression'
-      ) {
+      if (init?.type !== 'AwaitExpression' || init.argument?.type !== 'CallExpression') {
         return false;
       }
 
@@ -68,10 +65,7 @@ export default createTransformer((fileInfo, api, options, context) => {
 
       if (callee.type !== 'MemberExpression') return false;
 
-      return (
-        callee.object.type === 'Identifier' &&
-        stepsIdentifiers.has(callee.object.name)
-      );
+      return callee.object.type === 'Identifier' && stepsIdentifiers.has(callee.object.name);
     })
     .forEach(path => {
       const arg = path.node.arguments[0];
@@ -88,7 +82,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     });
 
   // Step 2b: Look for `for...of` loops on `steps`
-  const forOfPaths = root
+  const _forOfPaths = root
     .find(j.ForOfStatement)
     .filter(path => {
       const right = path.node.right;

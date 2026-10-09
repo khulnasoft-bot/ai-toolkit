@@ -1,21 +1,22 @@
-import { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
+  type FetchFunction,
   type InferSchema,
   lazySchema,
   parseProviderOptions,
   postJsonToApi,
+  type Resolvable,
   resolve,
   zodSchema,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { googleFailedResponseHandler } from './google-error';
-import {
+import type {
   GoogleGenerativeAIImageModelId,
   GoogleGenerativeAIImageSettings,
 } from './google-generative-ai-image-settings';
-import { FetchFunction, Resolvable } from '@ai-toolkit/provider-utils';
 
 interface GoogleGenerativeAIImageModelConfig {
   provider: string;
@@ -82,8 +83,7 @@ export class GoogleGenerativeAIImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'size',
-        details:
-          'This model does not support the `size` option. Use `aspectRatio` instead.',
+        details: 'This model does not support the `size` option. Use `aspectRatio` instead.',
       });
     }
 
@@ -91,8 +91,7 @@ export class GoogleGenerativeAIImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'seed',
-        details:
-          'This model does not support the `seed` option through this provider.',
+        details: 'This model does not support the `seed` option through this provider.',
       });
     }
 
@@ -128,20 +127,16 @@ export class GoogleGenerativeAIImageModel implements ImageModelV3 {
       headers: combineHeaders(await resolve(this.config.headers), headers),
       body,
       failedResponseHandler: googleFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        googleImageResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(googleImageResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });
     return {
-      images: response.predictions.map(
-        (p: { bytesBase64Encoded: string }) => p.bytesBase64Encoded,
-      ),
+      images: response.predictions.map((p: { bytesBase64Encoded: string }) => p.bytesBase64Encoded),
       warnings: warnings ?? [],
       providerMetadata: {
         google: {
-          images: response.predictions.map(prediction => ({
+          images: response.predictions.map(_prediction => ({
             // Add any prediction-specific metadata here
           })),
         },
@@ -159,9 +154,7 @@ export class GoogleGenerativeAIImageModel implements ImageModelV3 {
 const googleImageResponseSchema = lazySchema(() =>
   zodSchema(
     z.object({
-      predictions: z
-        .array(z.object({ bytesBase64Encoded: z.string() }))
-        .default([]),
+      predictions: z.array(z.object({ bytesBase64Encoded: z.string() })).default([]),
     }),
   ),
 );
@@ -171,9 +164,7 @@ const googleImageResponseSchema = lazySchema(() =>
 const googleImageProviderOptionsSchema = lazySchema(() =>
   zodSchema(
     z.object({
-      personGeneration: z
-        .enum(['dont_allow', 'allow_adult', 'allow_all'])
-        .nullish(),
+      personGeneration: z.enum(['dont_allow', 'allow_adult', 'allow_all']).nullish(),
       aspectRatio: z.enum(['1:1', '3:4', '4:3', '9:16', '16:9']).nullish(),
     }),
   ),

@@ -1,5 +1,5 @@
-import { xai } from '@ai-toolkit/xai';
 import { generateText } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
 import { run } from '../lib/run';
 
 run(async () => {

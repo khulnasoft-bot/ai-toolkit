@@ -1,5 +1,5 @@
-import { ElicitationResponse } from '../types';
 import { resolvePendingElicitation } from '../elicitation-store';
+import type { ElicitationResponse } from '../types';
 
 export async function POST(req: Request) {
   try {
@@ -10,10 +10,7 @@ export async function POST(req: Request) {
     console.log('[respond] ID:', response.id);
     console.log('[respond] Action:', response.action);
     if (response.action === 'accept') {
-      console.log(
-        '[respond] Content:',
-        JSON.stringify(response.content, null, 2),
-      );
+      console.log('[respond] Content:', JSON.stringify(response.content, null, 2));
     }
     console.log('[respond] ========================================');
 
@@ -22,9 +19,7 @@ export async function POST(req: Request) {
 
     if (!resolved) {
       console.warn('[respond] ========================================');
-      console.warn(
-        '[respond] ELICITATION NOT FOUND (already resolved or expired)',
-      );
+      console.warn('[respond] ELICITATION NOT FOUND (already resolved or expired)');
       console.warn('[respond] ID:', response.id);
       console.warn('[respond] ========================================');
       return Response.json(

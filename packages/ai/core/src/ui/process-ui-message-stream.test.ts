@@ -1,14 +1,14 @@
 import { convertArrayToReadableStream } from '@ai-toolkit/provider-utils/test';
-import { UIMessageChunk } from '../ui-message-stream/ui-message-chunks';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { UIMessageStreamError } from '../error/ui-message-stream-error';
+import type { UIMessageChunk } from '../ui-message-stream/ui-message-chunks';
 import { consumeStream } from '../util/consume-stream';
 import {
   createStreamingUIMessageState,
   processUIMessageStream,
-  StreamingUIMessageState,
+  type StreamingUIMessageState,
 } from './process-ui-message-stream';
-import { InferUIMessageData, UIMessage } from './ui-messages';
-import { beforeEach, describe, it, expect, vi } from 'vitest';
-import { UIMessageStreamError } from '../error/ui-message-stream-error';
+import type { InferUIMessageData, UIMessage } from './ui-messages';
 
 function createUIMessageStream(parts: UIMessageChunk[]) {
   return convertArrayToReadableStream(parts);
@@ -32,7 +32,7 @@ describe('processUIMessageStream', () => {
     await job({
       state: state!,
       write: () => {
-        writeCalls.push({ message: structuredClone(state!.message) });
+        writeCalls.push({ message: structuredClone(state?.message) });
       },
     });
   };
@@ -154,7 +154,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -181,9 +181,7 @@ describe('processUIMessageStream', () => {
     beforeEach(async () => {
       errors = [];
 
-      const stream = createUIMessageStream([
-        { type: 'error', errorText: 'test error' },
-      ]);
+      const stream = createUIMessageStream([{ type: 'error', errorText: 'test error' }]);
 
       state = createStreamingUIMessageState({
         messageId: 'msg-123',
@@ -206,7 +204,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -416,9 +414,7 @@ describe('processUIMessageStream', () => {
       }
 
       expect(UIMessageStreamError.isInstance(caughtError)).toBe(true);
-      expect((caughtError as UIMessageStreamError).chunkType).toBe(
-        'text-delta',
-      );
+      expect((caughtError as UIMessageStreamError).chunkType).toBe('text-delta');
       expect((caughtError as UIMessageStreamError).chunkId).toBe('missing-id');
     });
 
@@ -457,12 +453,8 @@ describe('processUIMessageStream', () => {
       }
 
       expect(UIMessageStreamError.isInstance(caughtError)).toBe(true);
-      expect((caughtError as UIMessageStreamError).chunkType).toBe(
-        'tool-input-delta',
-      );
-      expect((caughtError as UIMessageStreamError).chunkId).toBe(
-        'missing-tool-id',
-      );
+      expect((caughtError as UIMessageStreamError).chunkType).toBe('tool-input-delta');
+      expect((caughtError as UIMessageStreamError).chunkId).toBe('missing-tool-id');
     });
   });
 
@@ -692,7 +684,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -1026,7 +1018,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -1451,7 +1443,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -2061,7 +2053,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -2339,7 +2331,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -2603,7 +2595,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": {
@@ -2757,7 +2749,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": {
@@ -2909,7 +2901,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": {
@@ -3129,7 +3121,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -3275,7 +3267,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -3856,7 +3848,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -3981,7 +3973,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -4143,7 +4135,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should call the onFinish function with the correct arguments', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -4426,7 +4418,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -4531,7 +4523,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -4614,7 +4606,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should not have the transient part in the final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -4726,7 +4718,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -4843,7 +4835,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message).toMatchInlineSnapshot(`
+      expect(state?.message).toMatchInlineSnapshot(`
         {
           "id": "msg-123",
           "metadata": undefined,
@@ -5143,7 +5135,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -5471,7 +5463,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -5867,7 +5859,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -6132,7 +6124,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -6222,13 +6214,12 @@ describe('processUIMessageStream', () => {
       // Find the first update after tool-input-start (when state is input-streaming)
       const inputStreamingUpdate = writeCalls.find(call =>
         call.message.parts.some(
-          (p: any) =>
-            p.toolCallId === 'tool-call-id' && p.state === 'input-streaming',
+          (p: any) => p.toolCallId === 'tool-call-id' && p.state === 'input-streaming',
         ),
       );
 
       expect(inputStreamingUpdate).toBeDefined();
-      const toolPart = inputStreamingUpdate!.message.parts.find(
+      const toolPart = inputStreamingUpdate?.message.parts.find(
         (p: any) => p.toolCallId === 'tool-call-id',
       ) as any;
 
@@ -6239,7 +6230,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should retain providerMetadata in final input-available state', async () => {
-      const toolPart = state!.message.parts.find(
+      const toolPart = state?.message.parts.find(
         (p: any) => p.toolCallId === 'tool-call-id',
       ) as any;
 
@@ -6411,7 +6402,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -6625,7 +6616,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -6703,9 +6694,7 @@ describe('processUIMessageStream', () => {
       });
 
       it('should include title in tool invocation parts', () => {
-        const toolPart = state!.message.parts.find(
-          part => part.type === 'tool-weatherTool',
-        );
+        const toolPart = state?.message.parts.find(part => part.type === 'tool-weatherTool');
 
         expect(toolPart).toBeDefined();
         expect((toolPart as any).title).toBe('Weather Information');
@@ -6714,44 +6703,32 @@ describe('processUIMessageStream', () => {
       it('should preserve title through all states', () => {
         const inputStreamingWrite = writeCalls.find(call =>
           call.message.parts.some(
-            part =>
-              part.type === 'tool-weatherTool' &&
-              (part as any).state === 'input-streaming',
+            part => part.type === 'tool-weatherTool' && (part as any).state === 'input-streaming',
           ),
         );
         expect(
-          (
-            inputStreamingWrite!.message.parts.find(
-              part => part.type === 'tool-weatherTool',
-            ) as any
-          ).title,
+          (inputStreamingWrite?.message.parts.find(part => part.type === 'tool-weatherTool') as any)
+            .title,
         ).toBe('Weather Information');
 
         const inputAvailableWrite = writeCalls.find(call =>
           call.message.parts.some(
-            part =>
-              part.type === 'tool-weatherTool' &&
-              (part as any).state === 'input-available',
+            part => part.type === 'tool-weatherTool' && (part as any).state === 'input-available',
           ),
         );
         expect(
-          (
-            inputAvailableWrite!.message.parts.find(
-              part => part.type === 'tool-weatherTool',
-            ) as any
-          ).title,
+          (inputAvailableWrite?.message.parts.find(part => part.type === 'tool-weatherTool') as any)
+            .title,
         ).toBe('Weather Information');
 
         const outputAvailableWrite = writeCalls.find(call =>
           call.message.parts.some(
-            part =>
-              part.type === 'tool-weatherTool' &&
-              (part as any).state === 'output-available',
+            part => part.type === 'tool-weatherTool' && (part as any).state === 'output-available',
           ),
         );
         expect(
           (
-            outputAvailableWrite!.message.parts.find(
+            outputAvailableWrite?.message.parts.find(
               part => part.type === 'tool-weatherTool',
             ) as any
           ).title,
@@ -6811,9 +6788,7 @@ describe('processUIMessageStream', () => {
       });
 
       it('should include title in dynamic tool invocation', () => {
-        const toolPart = state!.message.parts.find(
-          part => part.type === 'dynamic-tool',
-        );
+        const toolPart = state?.message.parts.find(part => part.type === 'dynamic-tool');
 
         expect(toolPart).toBeDefined();
         expect((toolPart as any).title).toBe('Calculator');
@@ -6821,7 +6796,7 @@ describe('processUIMessageStream', () => {
       });
 
       it('should maintain title through dynamic tool states', () => {
-        const finalToolPart = state!.message.parts.find(
+        const finalToolPart = state?.message.parts.find(
           part => part.type === 'dynamic-tool',
         ) as any;
 
@@ -6876,9 +6851,7 @@ describe('processUIMessageStream', () => {
       });
 
       it('should preserve title even in error state', () => {
-        const toolPart = state!.message.parts.find(
-          part => part.type === 'tool-errorTool',
-        );
+        const toolPart = state?.message.parts.find(part => part.type === 'tool-errorTool');
 
         expect(toolPart).toBeDefined();
         expect((toolPart as any).title).toBe('Error Tool');
@@ -6997,7 +6970,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -7134,7 +7107,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -7361,7 +7334,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -7602,7 +7575,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -7907,7 +7880,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -8122,7 +8095,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",
@@ -8338,7 +8311,7 @@ describe('processUIMessageStream', () => {
     });
 
     it('should have the correct final message state', async () => {
-      expect(state!.message.parts).toMatchInlineSnapshot(`
+      expect(state?.message.parts).toMatchInlineSnapshot(`
         [
           {
             "type": "step-start",

@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseDefaultDef } from './default';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseDefaultDef } from './default';
 
 describe('default', () => {
   it('should be possible to use default on objects', () => {
@@ -27,10 +27,7 @@ describe('default', () => {
   });
 
   it('should be possible to use default on primitives', () => {
-    const parsedSchema = parseDefaultDef(
-      z.string().default('default')._def,
-      getRefs(),
-    );
+    const parsedSchema = parseDefaultDef(z.string().default('default')._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',

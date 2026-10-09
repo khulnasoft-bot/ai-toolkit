@@ -7,11 +7,7 @@ import { StreamProviderError } from '../error/stream-provider-error';
  * Error instances or malformed/unknown values.
  */
 export function normalizeStreamProviderError(error: unknown): unknown {
-  if (
-    isError(error) ||
-    AITOOLKITError.isInstance(error) ||
-    StreamProviderError.isInstance(error)
-  ) {
+  if (isError(error) || AITOOLKITError.isInstance(error) || StreamProviderError.isInstance(error)) {
     return error;
   }
 
@@ -23,9 +19,7 @@ export function normalizeStreamProviderError(error: unknown): unknown {
   const providerStreamError = isProviderStreamError(error);
   const details = providerStreamError
     ? outer
-    : (asRecord(asRecord(outer.response)?.error) ??
-      asRecord(outer.error) ??
-      outer);
+    : (asRecord(asRecord(outer.response)?.error) ?? asRecord(outer.error) ?? outer);
 
   if (typeof details.message !== 'string') {
     return error;
@@ -56,9 +50,7 @@ export function normalizeStreamProviderError(error: unknown): unknown {
     code,
     statusCode,
     isRetryable:
-      explicitRetryability ??
-      messageMetadata?.isRetryable ??
-      isRetryableStatusCode(statusCode),
+      explicitRetryability ?? messageMetadata?.isRetryable ?? isRetryableStatusCode(statusCode),
     data: providerStreamError ? error.data : error,
   });
 }
@@ -83,10 +75,7 @@ function inferExactMessageMetadata(
 function isRetryableStatusCode(statusCode: number | undefined): boolean {
   return (
     statusCode != null &&
-    (statusCode === 408 ||
-      statusCode === 409 ||
-      statusCode === 429 ||
-      statusCode >= 500)
+    (statusCode === 408 || statusCode === 409 || statusCode === 429 || statusCode >= 500)
   );
 }
 
@@ -98,10 +87,7 @@ function asRecord(value: unknown): Record<string, unknown> | undefined {
 
 // `instanceof` misses Error instances created in another JavaScript realm.
 function isError(value: unknown): value is Error {
-  return (
-    value instanceof Error ||
-    Object.prototype.toString.call(value) === '[object Error]'
-  );
+  return value instanceof Error || Object.prototype.toString.call(value) === '[object Error]';
 }
 
 function getString(value: unknown): string | undefined {
@@ -109,9 +95,7 @@ function getString(value: unknown): string | undefined {
 }
 
 function getStringOrNumber(value: unknown): string | number | undefined {
-  return typeof value === 'string' || typeof value === 'number'
-    ? value
-    : undefined;
+  return typeof value === 'string' || typeof value === 'number' ? value : undefined;
 }
 
 function getBoolean(value: unknown): boolean | undefined {
@@ -119,8 +103,7 @@ function getBoolean(value: unknown): boolean | undefined {
 }
 
 function getHttpStatusCode(value: unknown): number | undefined {
-  const statusCode =
-    typeof value === 'string' && /^\d{3}$/.test(value) ? Number(value) : value;
+  const statusCode = typeof value === 'string' && /^\d{3}$/.test(value) ? Number(value) : value;
 
   return typeof statusCode === 'number' &&
     Number.isInteger(statusCode) &&

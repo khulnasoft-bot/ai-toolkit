@@ -1,9 +1,9 @@
 import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
-import { MistralToolChoice } from './mistral-chat-prompt';
+import type { MistralToolChoice } from './mistral-chat-prompt';
 
 export function prepareTools({
   tools,
@@ -81,9 +81,7 @@ export function prepareTools({
     // so we filter the tools and force the tool choice through 'any'
     case 'tool':
       return {
-        tools: mistralTools.filter(
-          tool => tool.function.name === toolChoice.toolName,
-        ),
+        tools: mistralTools.filter(tool => tool.function.name === toolChoice.toolName),
         toolChoice: 'any',
         toolWarnings,
       };

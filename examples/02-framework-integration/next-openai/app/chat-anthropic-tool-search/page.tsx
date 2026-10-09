@@ -1,13 +1,13 @@
 'use client';
 
-import { AnthropicToolSearchAgentMessage } from '@/agent/anthropic-tool-search-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { AnthropicToolSearchAgentMessage } from '@/agent/anthropic-tool-search-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import AnthropicToolSearchView from '@/components/tool/anthropic-tool-search-view';
-import WeatherView from '@/components/tool/weather-view';
 import SendEmailView from '@/components/tool/send-email-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
+import WeatherView from '@/components/tool/weather-view';
 
 export default function ChatAnthropicToolSearch() {
   const { error, status, sendMessage, messages, regenerate } =
@@ -21,8 +21,8 @@ export default function ChatAnthropicToolSearch() {
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
       <h1 className="mb-4 text-xl font-bold">Anthropic Tool Search</h1>
       <p className="mb-6 text-sm text-gray-600">
-        Ask about weather or send emails. Claude will use the tool search to
-        discover and load the appropriate tools dynamically.
+        Ask about weather or send emails. Claude will use the tool search to discover and load the
+        appropriate tools dynamically.
       </p>
 
       {messages.map(message => (
@@ -31,21 +31,22 @@ export default function ChatAnthropicToolSearch() {
             {message.role === 'user' ? 'User' : 'ai-toolkit'}
           </div>
           <div className="flex flex-col gap-2">
-            {message.parts.map((part, index) => {
+            {message.parts.map(part => {
               switch (part.type) {
                 case 'text': {
-                  return <Response key={index}>{part.text}</Response>;
+                  return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
                 }
                 case 'tool-toolSearch': {
-                  return (
-                    <AnthropicToolSearchView invocation={part} key={index} />
-                  );
+                  return <AnthropicToolSearchView invocation={part} key={part.toolCallId} />;
                 }
                 case 'tool-weather': {
-                  return <WeatherView invocation={part} key={index} />;
+                  return <WeatherView invocation={part} key={part.toolCallId} />;
                 }
                 case 'tool-send_email': {
-                  return <SendEmailView invocation={part} key={index} />;
+                  return <SendEmailView invocation={part} key={part.toolCallId} />;
+                }
+                default: {
+                  return null;
                 }
               }
             })}

@@ -1,11 +1,11 @@
-import { z } from 'zod/v4';
 import {
-  tool,
   type Experimental_SandboxSession as SandboxSession,
   type Tool,
   type ToolSet,
+  tool,
 } from '@ai-toolkit/provider-utils';
 import { describe, expect, it } from 'vitest';
+import { z } from 'zod/v4';
 import { mockSandboxSessionFileStubs } from '../test/mock-sandbox';
 import { prepareTools } from './prepare-tools';
 
@@ -144,12 +144,7 @@ describe('prepareTools', () => {
       toolOrder: ['middle'] as const,
     });
 
-    expect(result?.map(tool => tool.name)).toEqual([
-      'middle',
-      'alpha',
-      'providerTool',
-      'zebra',
-    ]);
+    expect(result?.map(tool => tool.name)).toEqual(['middle', 'alpha', 'providerTool', 'zebra']);
   });
 
   it('preserves toolOrder entries before alphabetically sorting the remaining tools', async () => {
@@ -171,11 +166,7 @@ describe('prepareTools', () => {
       toolOrder: ['zebra', 'middle'] as const,
     });
 
-    expect(result?.map(tool => tool.name)).toEqual([
-      'zebra',
-      'middle',
-      'alpha',
-    ]);
+    expect(result?.map(tool => tool.name)).toEqual(['zebra', 'middle', 'alpha']);
   });
 
   it('does not duplicate tools when toolOrder contains duplicate names', async () => {

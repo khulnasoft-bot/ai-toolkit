@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
+import type { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it } from 'vitest';
 import { createOpenAICompatible } from '../openai-compatible-provider';
 
 const dummyEmbeddings = [
@@ -118,16 +118,14 @@ describe('doEmbed', () => {
   it('should pass settings with deprecated openai-compatible key and emit warning', async () => {
     prepareJsonResponse();
 
-    const result = await provider
-      .embeddingModel('text-embedding-3-large')
-      .doEmbed({
-        values: testValues,
-        providerOptions: {
-          'openai-compatible': {
-            dimensions: 64,
-          },
+    const result = await provider.embeddingModel('text-embedding-3-large').doEmbed({
+      values: testValues,
+      providerOptions: {
+        'openai-compatible': {
+          dimensions: 64,
         },
-      });
+      },
+    });
 
     expect(await server.calls[0].requestBodyJson).toStrictEqual({
       model: 'text-embedding-3-large',

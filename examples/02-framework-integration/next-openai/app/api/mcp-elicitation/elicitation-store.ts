@@ -1,4 +1,4 @@
-import { ElicitationResponse } from './types';
+import type { ElicitationResponse } from './types';
 
 // Use globalThis to ensure the Map is shared across all Next.js API routes
 // This prevents issues with module reloading in development
@@ -17,7 +17,7 @@ declare global {
 }
 
 // Store pending elicitation requests with their resolvers
-const pendingElicitations =
+const pendingElicitationsStore =
   globalThis.pendingElicitations ??
   new Map<
     string,
@@ -30,19 +30,19 @@ const pendingElicitations =
   >();
 
 // Persist to globalThis
-globalThis.pendingElicitations = pendingElicitations;
+globalThis.pendingElicitations = pendingElicitationsStore;
 
 // Cleanup old/stale elicitations periodically
 function cleanupStaleElicitations() {
   const now = Date.now();
   const staleThreshold = 10 * 60 * 1000; // 10 minutes
 
-  const entries = Array.from(pendingElicitations.entries());
+  const entries = Array.from(pendingElicitationsStore.entries());
   for (const [id, data] of entries) {
     if (now - data.createdAt > staleThreshold) {
       console.log('[store] Cleaning up stale elicitation:', id);
       clearTimeout(data.timeoutId);
-      pendingElicitations.delete(id);
+      pendingElicitationsStore.delete(id);
     }
   }
 }
@@ -50,56 +50,46 @@ function cleanupStaleElicitations() {
 // Run cleanup every minute
 setInterval(cleanupStaleElicitations, 60 * 1000);
 
-export function createPendingElicitation(
-  id: string,
-): Promise<ElicitationResponse> {
+export function createPendingElicitation(id: string): Promise<ElicitationResponse> {
   console.log('[store] Creating pending elicitation:', id);
-  console.log(
-    '[store] Current pending IDs:',
-    Array.from(pendingElicitations.keys()),
-  );
-  console.log('[store] Current pending count:', pendingElicitations.size);
+  console.log('[store] Current pending IDs:', Array.from(pendingElicitationsStore.keys()));
+  console.log('[store] Current pending count:', pendingElicitationsStore.size);
 
   // Check if this ID already exists (shouldn't happen, but handle it)
-  if (pendingElicitations.has(id)) {
+  if (pendingElicitationsStore.has(id)) {
     console.warn('[store] WARNING: Elicitation ID already exists:', id);
-    const existing = pendingElicitations.get(id);
+    const existing = pendingElicitationsStore.get(id);
     if (existing) {
       clearTimeout(existing.timeoutId);
-      pendingElicitations.delete(id);
+      pendingElicitationsStore.delete(id);
     }
   }
 
   return new Promise<ElicitationResponse>((resolve, reject) => {
     // Set a timeout to prevent hanging indefinitely (60 seconds to match MCP timeout)
     const timeoutId = setTimeout(() => {
-      if (pendingElicitations.has(id)) {
+      if (pendingElicitationsStore.has(id)) {
         console.log('[store] Timeout for elicitation:', id);
-        pendingElicitations.delete(id);
+        pendingElicitationsStore.delete(id);
         reject(new Error('Request timed out'));
       }
     }, 60 * 1000);
 
-    pendingElicitations.set(id, {
+    pendingElicitationsStore.set(id, {
       resolve,
       reject,
       createdAt: Date.now(),
       timeoutId,
     });
-    console.log('[store] Added to map. New count:', pendingElicitations.size);
+    console.log('[store] Added to map. New count:', pendingElicitationsStore.size);
   });
 }
 
-export function resolvePendingElicitation(
-  response: ElicitationResponse,
-): boolean {
+export function resolvePendingElicitation(response: ElicitationResponse): boolean {
   console.log('[store] Attempting to resolve:', response.id);
-  console.log(
-    '[store] Current pending IDs:',
-    Array.from(pendingElicitations.keys()),
-  );
+  console.log('[store] Current pending IDs:', Array.from(pendingElicitationsStore.keys()));
 
-  const pending = pendingElicitations.get(response.id);
+  const pending = pendingElicitationsStore.get(response.id);
 
   if (!pending) {
     console.log('[store] Not found in map!');
@@ -109,17 +99,14 @@ export function resolvePendingElicitation(
   console.log('[store] Found! Resolving...');
   clearTimeout(pending.timeoutId);
   pending.resolve(response);
-  pendingElicitations.delete(response.id);
-  console.log(
-    '[store] Resolved and removed. Remaining count:',
-    pendingElicitations.size,
-  );
+  pendingElicitationsStore.delete(response.id);
+  console.log('[store] Resolved and removed. Remaining count:', pendingElicitationsStore.size);
   return true;
 }
 
 export function rejectPendingElicitation(id: string, error: Error): boolean {
   console.log('[store] Attempting to reject:', id);
-  const pending = pendingElicitations.get(id);
+  const pending = pendingElicitationsStore.get(id);
 
   if (!pending) {
     console.log('[store] Not found in map for rejection!');
@@ -129,10 +116,7 @@ export function rejectPendingElicitation(id: string, error: Error): boolean {
   console.log('[store] Found! Rejecting...');
   clearTimeout(pending.timeoutId);
   pending.reject(error);
-  pendingElicitations.delete(id);
-  console.log(
-    '[store] Rejected and removed. Remaining count:',
-    pendingElicitations.size,
-  );
+  pendingElicitationsStore.delete(id);
+  console.log('[store] Rejected and removed. Remaining count:', pendingElicitationsStore.size);
   return true;
 }

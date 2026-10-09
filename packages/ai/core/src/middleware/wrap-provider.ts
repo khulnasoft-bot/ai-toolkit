@@ -1,9 +1,9 @@
 import type { ProviderV2, ProviderV3 } from '@ai-toolkit/provider';
-import { ImageModelMiddleware } from '../types/image-model-middleware';
-import { LanguageModelMiddleware } from '../types/language-model-middleware';
+import { asProviderV3 } from '../model/as-provider-v3';
+import type { ImageModelMiddleware } from '../types/image-model-middleware';
+import type { LanguageModelMiddleware } from '../types/language-model-middleware';
 import { wrapImageModel } from './wrap-image-model';
 import { wrapLanguageModel } from './wrap-language-model';
-import { asProviderV3 } from '../model/as-provider-v3';
 
 /**
  * Wraps a ProviderV3 instance with middleware functionality.

@@ -1,4 +1,4 @@
-import {
+import type {
   EmbeddingModelV2,
   EmbeddingModelV3,
   EmbeddingModelV3Embedding,
@@ -7,10 +7,7 @@ import {
 /**
 Embedding model that is used by the AI TOOLKIT.
 */
-export type EmbeddingModel =
-  | string
-  | EmbeddingModelV3
-  | EmbeddingModelV2<string>;
+export type EmbeddingModel = string | EmbeddingModelV3 | EmbeddingModelV2<string>;
 
 /**
 Embedding.

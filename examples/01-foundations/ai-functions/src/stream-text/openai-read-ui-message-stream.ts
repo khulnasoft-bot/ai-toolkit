@@ -1,18 +1,10 @@
+import { readUIMessageStream, stepCountIs, streamText, type Tool, tool } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import {
-  readUIMessageStream,
-  stepCountIs,
-  streamText,
-  Tool,
-  tool,
-} from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
 run(async () => {
-  const toModelOutputArgs: Array<
-    Parameters<NonNullable<Tool['toModelOutput']>>[0]
-  > = [];
+  const toModelOutputArgs: Array<Parameters<NonNullable<Tool['toModelOutput']>>[0]> = [];
 
   const result = streamText({
     model: openai('gpt-5-mini'),

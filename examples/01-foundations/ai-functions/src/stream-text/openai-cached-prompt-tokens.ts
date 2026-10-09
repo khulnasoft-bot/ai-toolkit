@@ -1,7 +1,6 @@
-import { openai } from '@ai-toolkit/openai';
-import { streamText } from '@ai-toolkit/ai';
-import { setTimeout } from 'node:timers/promises';
 import { performance } from 'node:perf_hooks';
+import { streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 const longPrompt = `
@@ -154,15 +153,15 @@ function createCompletion() {
 }
 
 run(async () => {
-  let start = performance.now();
-  let result = await createCompletion();
-  let end = performance.now();
+  const start = performance.now();
+  const result = await createCompletion();
+  const end = performance.now();
   console.log(`duration: ${Math.floor(end - start)} ms`);
 
-  let fullResponse = '';
+  let _fullResponse = '';
   process.stdout.write('\nAssistant: ');
   for await (const delta of result.textStream) {
-    fullResponse += delta;
+    _fullResponse += delta;
     process.stdout.write(delta);
   }
   process.stdout.write('\n\n');

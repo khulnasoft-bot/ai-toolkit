@@ -2,8 +2,8 @@ import type {
   LanguageModelV3,
   LanguageModelV3CallOptions,
   LanguageModelV3FilePart,
-  LanguageModelV3StreamPart,
   LanguageModelV3GenerateResult,
+  LanguageModelV3StreamPart,
   LanguageModelV3StreamResult,
 } from '@ai-toolkit/provider';
 import {
@@ -11,16 +11,16 @@ import {
   convertUint8ArrayToBase64,
   createEventSourceResponseHandler,
   createJsonResponseHandler,
+  type ParseResult,
   postJsonToApi,
   resolve,
-  type ParseResult,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
+import { asGatewayError } from './errors';
+import { parseAuthMethod } from './errors/parse-auth-method';
 import type { GatewayModelConfig } from './gateway-config';
 import { gatewayErrorResponseHandler } from './gateway-config';
 import type { GatewayModelId } from './gateway-language-model-settings';
-import { asGatewayError } from './errors';
-import { parseAuthMethod } from './errors/parse-auth-method';
 
 export class GatewayLanguageModel implements LanguageModelV3 {
   readonly specificationVersion = 'v3';
@@ -47,9 +47,7 @@ export class GatewayLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const { args, warnings } = await this.getArgs(options);
     const { abortSignal } = options;
 
@@ -86,9 +84,7 @@ export class GatewayLanguageModel implements LanguageModelV3 {
     }
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs(options);
     const { abortSignal } = options;
 
@@ -112,10 +108,7 @@ export class GatewayLanguageModel implements LanguageModelV3 {
 
       return {
         stream: response.pipeThrough(
-          new TransformStream<
-            ParseResult<LanguageModelV3StreamPart>,
-            LanguageModelV3StreamPart
-          >({
+          new TransformStream<ParseResult<LanguageModelV3StreamPart>, LanguageModelV3StreamPart>({
             start(controller) {
               if (warnings.length > 0) {
                 controller.enqueue({ type: 'stream-start', warnings });
@@ -141,9 +134,7 @@ export class GatewayLanguageModel implements LanguageModelV3 {
 
                 controller.enqueue(streamPart);
               } else {
-                controller.error(
-                  (chunk as { success: false; error: unknown }).error,
-                );
+                controller.error((chunk as { success: false; error: unknown }).error);
               }
             },
           }),
@@ -157,9 +148,7 @@ export class GatewayLanguageModel implements LanguageModelV3 {
   }
 
   private isFilePart(part: unknown) {
-    return (
-      part && typeof part === 'object' && 'type' in part && part.type === 'file'
-    );
+    return part && typeof part === 'object' && 'type' in part && part.type === 'file';
   }
 
   /**

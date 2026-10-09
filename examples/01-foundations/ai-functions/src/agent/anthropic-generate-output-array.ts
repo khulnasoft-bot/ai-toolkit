@@ -1,5 +1,5 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { Output, ToolLoopAgent } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { run } from '../lib/run';

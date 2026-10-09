@@ -10,9 +10,7 @@ describe('controls', () => {
         <Controls />
       </Canvas>,
     );
-    expect(
-      container.querySelector('.react-flow__controls'),
-    ).toBeInTheDocument();
+    expect(container.querySelector('.react-flow__controls')).toBeInTheDocument();
   });
 
   it('applies custom className', () => {

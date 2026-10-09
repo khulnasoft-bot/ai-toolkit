@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { createReplicate } from './replicate-provider';
+import { describe, expect, it } from 'vitest';
 import { ReplicateImageModel } from './replicate-image-model';
+import { createReplicate } from './replicate-provider';
 
 describe('createReplicate', () => {
   it('creates a provider with required settings', () => {

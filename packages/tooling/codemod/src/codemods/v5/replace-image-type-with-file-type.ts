@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Find object expressions that have a property 'type' with value 'image'
@@ -30,11 +30,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       // Additional check: ensure this object also has an 'image' property
       // to distinguish from other objects that might have type: 'image'
       const hasImageProperty = node.properties.some(prop => {
-        return (
-          j.Property.check(prop) &&
-          j.Identifier.check(prop.key) &&
-          prop.key.name === 'image'
-        );
+        return j.Property.check(prop) && j.Identifier.check(prop.key) && prop.key.name === 'image';
       });
 
       return hasImageProperty;

@@ -1,4 +1,4 @@
-import { SpeechModelV2, SpeechModelV3 } from '@ai-toolkit/provider';
+import type { SpeechModelV2, SpeechModelV3 } from '@ai-toolkit/provider';
 
 /**
 Speech model that is used by the AI TOOLKIT.

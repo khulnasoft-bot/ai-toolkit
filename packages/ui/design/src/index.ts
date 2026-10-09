@@ -1,7 +1,7 @@
-import { Bars, type BarDatum } from './chart/bars';
+import { type BarDatum, Bars } from './chart/bars';
 import { Donut, type DonutDatum } from './chart/donut';
 import { Sparkline } from './chart/sparkline';
-import { type Column } from './data-table';
+import type { Column } from './data-table';
 import { KpiCard } from './kpi-card';
 import { Panel } from './panel';
 import { Section } from './section';

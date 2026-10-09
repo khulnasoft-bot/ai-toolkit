@@ -1,6 +1,6 @@
-import { deepgram } from '@ai-toolkit/deepgram';
+import { readFile } from 'node:fs/promises';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
-import { readFile } from 'fs/promises';
+import { deepgram } from '@ai-toolkit/deepgram';
 import { run } from '../lib/run';
 
 run(async () => {

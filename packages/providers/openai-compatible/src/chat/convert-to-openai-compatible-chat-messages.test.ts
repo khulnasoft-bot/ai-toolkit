@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertToOpenAICompatibleChatMessages } from './convert-to-openai-compatible-chat-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('user messages', () => {
   it('should convert messages with only a text part to a string content', async () => {

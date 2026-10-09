@@ -1,5 +1,5 @@
-import { StreamTextResult } from '@ai-toolkit/ai';
-import fs from 'fs';
+import fs from 'node:fs';
+import type { StreamTextResult } from '@ai-toolkit/ai';
 
 export async function saveRawChunks({
   result,

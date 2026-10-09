@@ -1,7 +1,7 @@
+import { readFile } from 'node:fs/promises';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
-import { readFile } from 'fs/promises';
-import { registry } from './setup-registry';
 import { run } from '../lib/run';
+import { registry } from './setup-registry';
 
 run(async () => {
   const result = await transcribe({

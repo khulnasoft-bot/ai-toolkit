@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { LangSmithDeploymentTransport } from './transport';
-import { describe, it, expect } from 'vitest';
 
 describe('LangSmithDeploymentTransport', () => {
   it('should create transport with options', () => {
@@ -34,8 +34,8 @@ describe('LangSmithDeploymentTransport', () => {
       url: 'https://test.langsmith.app',
     });
 
-    await expect(
-      transport.reconnectToStream({ chatId: 'chat-1' }),
-    ).rejects.toThrow('Method not implemented.');
+    await expect(transport.reconnectToStream({ chatId: 'chat-1' })).rejects.toThrow(
+      'Method not implemented.',
+    );
   });
 });

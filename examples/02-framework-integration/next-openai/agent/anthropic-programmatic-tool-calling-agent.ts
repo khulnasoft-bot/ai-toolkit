@@ -1,11 +1,11 @@
-import { rollDieToolWithProgrammaticCalling } from '@/tool/roll-die-tool-with-programmatic-calling';
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import {
+  type AnthropicProviderOptions,
   anthropic,
-  AnthropicProviderOptions,
   forwardAnthropicContainerIdFromLastStep,
 } from '@ai-toolkit/anthropic';
-import { InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { z } from 'zod';
+import { rollDieToolWithProgrammaticCalling } from '@/tool/roll-die-tool-with-programmatic-calling';
 
 export const anthropicProgrammaticToolCallingAgent = new ToolLoopAgent({
   model: anthropic('claude-sonnet-4-5'),

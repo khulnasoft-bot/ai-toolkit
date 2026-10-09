@@ -1,6 +1,6 @@
-import { azure } from '@ai-toolkit/azure';
-import { streamText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { streamText } from '@ai-toolkit/ai';
+import { azure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
 
 run(async () => {

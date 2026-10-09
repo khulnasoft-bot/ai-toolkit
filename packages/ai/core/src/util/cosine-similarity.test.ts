@@ -1,5 +1,5 @@
+import { expect, it } from 'vitest';
 import { cosineSimilarity } from './cosine-similarity';
-import { it, expect } from 'vitest';
 
 it('should calculate cosine similarity correctly', () => {
   const vector1 = [1, 2, 3];

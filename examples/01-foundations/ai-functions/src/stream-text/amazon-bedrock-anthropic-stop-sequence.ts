@@ -1,5 +1,5 @@
-import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
 import { run } from '../lib/run';
 
@@ -19,10 +19,7 @@ run(async () => {
         console.log('\n\n--- Finish Step ---');
         console.log('Finish reason:', part.finishReason);
         console.log('Raw finish reason:', part.rawFinishReason);
-        console.log(
-          'Stop sequence:',
-          part.providerMetadata?.anthropic?.stopSequence,
-        );
+        console.log('Stop sequence:', part.providerMetadata?.anthropic?.stopSequence);
         break;
     }
   }

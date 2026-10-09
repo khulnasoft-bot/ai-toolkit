@@ -1,27 +1,20 @@
 // This file provides the AI context to all AI Actions via AsyncLocalStorage.
 
 import * as React from 'react';
+import { getAIStateDeltaPromise, sealMutableAIState, withAIState } from './ai-state';
 import { InternalAIProvider } from './rsc-shared.mjs';
-import {
-  withAIState,
-  getAIStateDeltaPromise,
-  sealMutableAIState,
-} from './ai-state';
 import type {
-  ServerWrappedActions,
   AIAction,
   AIActions,
   AIProvider,
   InternalAIStateStorageOptions,
-  OnSetAIState,
   OnGetUIState,
+  OnSetAIState,
+  ServerWrappedActions,
 } from './types';
 
 async function innerAction<T>(
-  {
-    action,
-    options,
-  }: { action: AIAction; options: InternalAIStateStorageOptions },
+  { action, options }: { action: AIAction; options: InternalAIStateStorageOptions },
   state: T,
   ...args: unknown[]
 ) {
@@ -39,18 +32,11 @@ async function innerAction<T>(
   );
 }
 
-function wrapAction<T = unknown>(
-  action: AIAction,
-  options: InternalAIStateStorageOptions,
-) {
+function wrapAction<T = unknown>(action: AIAction, options: InternalAIStateStorageOptions) {
   return innerAction.bind(null, { action, options }) as AIAction<T>;
 }
 
-export function createAI<
-  AIState = any,
-  UIState = any,
-  Actions extends AIActions = {},
->({
+export function createAI<AIState = any, UIState = any, Actions extends AIActions = {}>({
   actions,
   initialAIState,
   initialUIState,
@@ -106,23 +92,19 @@ export function createAI<
     });
   }
 
-  const wrappedSyncUIState = onGetUIState
-    ? wrapAction(onGetUIState, {})
-    : undefined;
+  const wrappedSyncUIState = onGetUIState ? wrapAction(onGetUIState, {}) : undefined;
 
   const AI: AIProvider<AIState, UIState, Actions> = async props => {
     if ('useState' in React) {
       // This file must be running on the React Server layer.
       // Ideally we should be using `import "server-only"` here but we can have a
       // more customized error message with this implementation.
-      throw new Error(
-        'This component can only be used inside Server Components.',
-      );
+      throw new Error('This component can only be used inside Server Components.');
     }
 
     let uiState = props.initialUIState ?? initialUIState;
-    let aiState = props.initialAIState ?? initialAIState;
-    let aiStateDelta = undefined;
+    const aiState = props.initialAIState ?? initialAIState;
+    let aiStateDelta: any;
 
     if (wrappedSyncUIState) {
       const [newAIStateDelta, newUIState] = await wrappedSyncUIState(aiState);

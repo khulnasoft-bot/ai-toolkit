@@ -2,11 +2,9 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_InvalidDataContentError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class InvalidDataContentError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly content: unknown;
 
   constructor({

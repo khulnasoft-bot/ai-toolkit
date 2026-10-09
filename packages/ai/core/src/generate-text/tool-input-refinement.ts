@@ -1,8 +1,4 @@
-import type {
-  InferToolInput,
-  MaybePromiseLike,
-  ToolSet,
-} from '@ai-toolkit/provider-utils';
+import type { InferToolInput, MaybePromiseLike, ToolSet } from '@ai-toolkit/provider-utils';
 
 /**
  * Mapping of tool names to functions that refine parsed tool inputs.

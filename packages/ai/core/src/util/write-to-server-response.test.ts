@@ -1,8 +1,8 @@
 import { EventEmitter } from 'node:events';
-import { ServerResponse } from 'node:http';
-import { describe, it, expect } from 'vitest';
-import { writeToServerResponse } from './write-to-server-response';
+import type { ServerResponse } from 'node:http';
+import { describe, expect, it } from 'vitest';
 import { createMockServerResponse } from '../test/mock-server-response';
+import { writeToServerResponse } from './write-to-server-response';
 
 describe('writeToServerResponse', () => {
   it('should write data to ServerResponse', async () => {
@@ -69,7 +69,7 @@ describe('writeToServerResponse', () => {
     expect(mockResponse.writeCallCount).toBe(1);
 
     // Enqueue second chunk - it should trigger write which returns false (backpressure)
-    readyToEnqueue!(new TextEncoder().encode('chunk2'));
+    readyToEnqueue?.(new TextEncoder().encode('chunk2'));
     await new Promise(resolve => setTimeout(resolve, 5));
 
     // Second chunk write should have been called but returned false
@@ -77,7 +77,7 @@ describe('writeToServerResponse', () => {
     expect(mockResponse.writtenChunks.length).toBe(2);
 
     // Enqueue third chunk - it should NOT trigger write yet (still waiting for drain from chunk 2)
-    readyToEnqueue!(new TextEncoder().encode('chunk3'));
+    readyToEnqueue?.(new TextEncoder().encode('chunk3'));
     await new Promise(resolve => setTimeout(resolve, 5));
 
     // Third chunk shouldn't be written yet (waiting for drain)
@@ -89,7 +89,7 @@ describe('writeToServerResponse', () => {
     expect(mockResponse.writeCallCount).toBe(3);
 
     // Close the stream
-    readyToEnqueue!(null);
+    readyToEnqueue?.(null);
     await mockResponse.waitForEnd();
 
     // Verify that drain was called (indicating backpressure was respected)
@@ -259,8 +259,6 @@ class BackpressureMockResponse extends EventEmitter {
   }
 }
 
-function createBackpressureMockResponse(): ServerResponse &
-  BackpressureMockResponse {
-  return new BackpressureMockResponse() as ServerResponse &
-    BackpressureMockResponse;
+function createBackpressureMockResponse(): ServerResponse & BackpressureMockResponse {
+  return new BackpressureMockResponse() as ServerResponse & BackpressureMockResponse;
 }

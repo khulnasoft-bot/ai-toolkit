@@ -1,6 +1,6 @@
 import { convertArrayToReadableStream } from '@ai-toolkit/provider-utils/test';
+import { describe, expect, it, vi } from 'vitest';
 import { processTextStream } from './process-text-stream';
-import { describe, it, expect, vi } from 'vitest';
 
 describe('processTextStream', () => {
   it('should process stream chunks correctly', async () => {
@@ -10,9 +10,7 @@ describe('processTextStream', () => {
 
     // Create stream using utility
     const encoder = new TextEncoder();
-    const stream = convertArrayToReadableStream(
-      testData.map(chunk => encoder.encode(chunk)),
-    );
+    const stream = convertArrayToReadableStream(testData.map(chunk => encoder.encode(chunk)));
 
     // Mock callback function
     const onChunk = vi.fn((chunk: string) => {

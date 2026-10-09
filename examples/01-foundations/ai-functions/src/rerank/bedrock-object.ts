@@ -1,7 +1,7 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { rerank } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { print } from '../lib/print';
+import { run } from '../lib/run';
 import { documents } from './documents';
 
 run(async () => {

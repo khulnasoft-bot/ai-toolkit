@@ -14,10 +14,7 @@ describe('image', () => {
     );
     const img = screen.getByAltText('Test image');
     expect(img).toBeInTheDocument();
-    expect(img).toHaveAttribute(
-      'src',
-      expect.stringContaining('data:image/png;base64,'),
-    );
+    expect(img).toHaveAttribute('src', expect.stringContaining('data:image/png;base64,'));
   });
 
   it('applies custom className', () => {
@@ -35,11 +32,7 @@ describe('image', () => {
 
   it('renders without alt text', () => {
     const { container } = render(
-      <Image
-        base64="test"
-        mediaType="image/png"
-        uint8Array={new Uint8Array([0])}
-      />,
+      <Image base64="test" mediaType="image/png" uint8Array={new Uint8Array([0])} />,
     );
     const img = container.querySelector('img');
     expect(img).toBeInTheDocument();
@@ -55,9 +48,6 @@ describe('image', () => {
       />,
     );
     const img = screen.getByAltText('JPEG test');
-    expect(img).toHaveAttribute(
-      'src',
-      expect.stringContaining('data:image/jpeg;base64,'),
-    );
+    expect(img).toHaveAttribute('src', expect.stringContaining('data:image/jpeg;base64,'));
   });
 });

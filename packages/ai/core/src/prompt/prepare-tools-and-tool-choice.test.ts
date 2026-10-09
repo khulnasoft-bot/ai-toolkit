@@ -1,7 +1,7 @@
+import { type Tool, tool } from '@ai-toolkit/provider-utils';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
 import { prepareToolsAndToolChoice } from './prepare-tools-and-tool-choice';
-import { Tool, tool } from '@ai-toolkit/provider-utils';
-import { describe, it, expect } from 'vitest';
 
 const mockTools = {
   tool1: tool({

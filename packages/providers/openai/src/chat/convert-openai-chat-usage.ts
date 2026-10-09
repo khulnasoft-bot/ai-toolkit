@@ -1,4 +1,4 @@
-import { LanguageModelV3Usage } from '@ai-toolkit/provider';
+import type { LanguageModelV3Usage } from '@ai-toolkit/provider';
 
 export type OpenAIChatUsage = {
   prompt_tokens?: number | null;
@@ -37,8 +37,7 @@ export function convertOpenAIChatUsage(
   const promptTokens = usage.prompt_tokens ?? 0;
   const completionTokens = usage.completion_tokens ?? 0;
   const cachedTokens = usage.prompt_tokens_details?.cached_tokens ?? 0;
-  const reasoningTokens =
-    usage.completion_tokens_details?.reasoning_tokens ?? 0;
+  const reasoningTokens = usage.completion_tokens_details?.reasoning_tokens ?? 0;
 
   return {
     inputTokens: {

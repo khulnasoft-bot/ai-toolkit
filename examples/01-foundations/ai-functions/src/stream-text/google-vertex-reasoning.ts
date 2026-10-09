@@ -1,5 +1,5 @@
-import { vertex } from '@ai-toolkit/google-vertex';
 import { streamText } from '@ai-toolkit/ai';
+import { vertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -19,7 +19,7 @@ run(async () => {
 
   for await (const part of result.fullStream) {
     if (part.type === 'reasoning-delta') {
-      process.stdout.write('\x1b[34m' + part.text + '\x1b[0m');
+      process.stdout.write(`\x1b[34m${part.text}\x1b[0m`);
     } else if (part.type === 'text-delta') {
       process.stdout.write(part.text);
     }

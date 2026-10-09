@@ -34,15 +34,11 @@ describe('hashCanonical', () => {
   });
 
   it('is independent of key order', async () => {
-    expect(await hashCanonical({ a: 1, b: 2 })).toBe(
-      await hashCanonical({ b: 2, a: 1 }),
-    );
+    expect(await hashCanonical({ a: 1, b: 2 })).toBe(await hashCanonical({ b: 2, a: 1 }));
   });
 
   it('changes when the value changes', async () => {
-    expect(await hashCanonical({ a: 1 })).not.toBe(
-      await hashCanonical({ a: 2 }),
-    );
+    expect(await hashCanonical({ a: 1 })).not.toBe(await hashCanonical({ a: 2 }));
   });
 
   it('distinguishes empty arrays from arrays containing undefined', async () => {

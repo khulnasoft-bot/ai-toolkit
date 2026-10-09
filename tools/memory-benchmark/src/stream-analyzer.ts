@@ -43,7 +43,7 @@ export async function measureStream<T>(
   const warnings: StreamMemoryResult['warnings'] = [];
 
   let peakHeap = 0;
-  let initialHeap = process.memoryUsage().heapUsed;
+  const initialHeap = process.memoryUsage().heapUsed;
   let lastHeap = initialHeap;
   let chunkIndex = 0;
   let totalGrowth = 0;
@@ -127,6 +127,6 @@ function formatBytes(bytes: number): string {
   if (bytes === 0) return '0 B';
   const units = ['B', 'KB', 'MB', 'GB'];
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
-  const value = bytes / Math.pow(1024, i);
+  const value = bytes / 1024 ** i;
   return `${value.toFixed(2)} ${units[i]}`;
 }

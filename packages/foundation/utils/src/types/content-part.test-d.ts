@@ -1,43 +1,18 @@
 import { describe, expectTypeOf, it } from 'vitest';
+import type { FilePart, ReasoningFilePart, ToolResultOutput } from './content-part';
 import type { DataContent } from './data-content';
-import type {
-  FilePart,
-  ReasoningFilePart,
-  ToolResultOutput,
-} from './content-part';
 import type { ProviderReference } from './provider-reference';
 
-type ToolResultContentItem = Extract<
-  ToolResultOutput,
-  { type: 'content' }
->['value'][number];
+type ToolResultContentItem = Extract<ToolResultOutput, { type: 'content' }>['value'][number];
 type ToolResultFilePart = Extract<ToolResultContentItem, { type: 'file' }>;
-type ToolResultFileUrlPart = Extract<
-  ToolResultContentItem,
-  { type: 'file-url' }
->;
-type ToolResultFileDataPart = Extract<
-  ToolResultContentItem,
-  { type: 'file-data' }
->;
-type ToolResultFileReferencePart = Extract<
-  ToolResultContentItem,
-  { type: 'file-reference' }
->;
-type ToolResultImageDataPart = Extract<
-  ToolResultContentItem,
-  { type: 'image-data' }
->;
-type ToolResultImageUrlPart = Extract<
-  ToolResultContentItem,
-  { type: 'image-url' }
->;
+type ToolResultFileUrlPart = Extract<ToolResultContentItem, { type: 'file-url' }>;
+type ToolResultFileDataPart = Extract<ToolResultContentItem, { type: 'file-data' }>;
+type ToolResultFileReferencePart = Extract<ToolResultContentItem, { type: 'file-reference' }>;
+type ToolResultImageDataPart = Extract<ToolResultContentItem, { type: 'image-data' }>;
+type ToolResultImageUrlPart = Extract<ToolResultContentItem, { type: 'image-url' }>;
 
 type TaggedFileData = Extract<FilePart['data'], { type: string }>;
-type TaggedReasoningFileData = Extract<
-  ReasoningFilePart['data'],
-  { type: string }
->;
+type TaggedReasoningFileData = Extract<ReasoningFilePart['data'], { type: string }>;
 
 describe('FilePart.data', () => {
   it('narrows exhaustively across the 4 tagged arms', () => {
@@ -68,9 +43,7 @@ describe('FilePart.data', () => {
   });
 
   it('exposes exactly 4 tagged `type` discriminants', () => {
-    expectTypeOf<TaggedFileData['type']>().toEqualTypeOf<
-      'data' | 'url' | 'reference' | 'text'
-    >();
+    expectTypeOf<TaggedFileData['type']>().toEqualTypeOf<'data' | 'url' | 'reference' | 'text'>();
   });
 
   it('accepts the tagged `data` arm', () => {
@@ -153,9 +126,7 @@ describe('ReasoningFilePart.data', () => {
   });
 
   it('exposes exactly 2 tagged `type` discriminants', () => {
-    expectTypeOf<TaggedReasoningFileData['type']>().toEqualTypeOf<
-      'data' | 'url'
-    >();
+    expectTypeOf<TaggedReasoningFileData['type']>().toEqualTypeOf<'data' | 'url'>();
   });
 
   it('accepts the tagged `data` arm', () => {

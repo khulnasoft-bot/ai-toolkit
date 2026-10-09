@@ -4,9 +4,9 @@
  * CLI tool to find packages, providers, and their ownership.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -56,7 +56,9 @@ function listPackages() {
       .filter(e => fs.statSync(path.join(dir, e)).isDirectory() && !e.startsWith('.'));
     if (packages.length > 0) {
       console.log(`  ${domain}/`);
-      packages.forEach(p => console.log(`    └── ${p}`));
+      packages.forEach(p => {
+        console.log(`    └── ${p}`);
+      });
       console.log('');
     }
   }
@@ -68,7 +70,9 @@ function listPackages() {
 
   if (unorganized.length > 0) {
     console.log('  (unorganized — not yet migrated)');
-    unorganized.forEach(p => console.log(`    └── ${p}`));
+    unorganized.forEach(p => {
+      console.log(`    └── ${p}`);
+    });
     console.log('');
   }
 }
@@ -107,7 +111,9 @@ function searchPackages(query) {
   }
 
   console.log(`\n🔍 Packages matching "${query}":\n`);
-  results.forEach(r => console.log(`  ${r.name} → ${r.path}`));
+  results.forEach(r => {
+    console.log(`  ${r.name} → ${r.path}`);
+  });
   console.log('');
 }
 
@@ -125,7 +131,9 @@ function showOwnership(packages) {
     const lines = content.split('\n').filter(l => l.includes(query));
     if (lines.length > 0) {
       console.log(`\n📋 Ownership for "${query}":\n`);
-      lines.forEach(l => console.log(`  ${l.trim()}`));
+      lines.forEach(l => {
+        console.log(`  ${l.trim()}`);
+      });
       console.log('');
     } else {
       console.log(`No ownership info found for "${query}"`);

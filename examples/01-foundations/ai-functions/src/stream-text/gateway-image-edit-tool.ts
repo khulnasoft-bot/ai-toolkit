@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { convertBase64ToUint8Array } from '../lib/convert-base64';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
@@ -8,8 +8,7 @@ run(async () => {
   console.log('Generating base image of an echidna...');
   const baseResult = streamText({
     model: 'openai/gpt-5-nano',
-    prompt:
-      'Generate an image of an echidna swimming across the Mozambique channel.',
+    prompt: 'Generate an image of an echidna swimming across the Mozambique channel.',
     tools: {
       image_generation: openai.tools.imageGeneration({
         outputFormat: 'webp',
@@ -21,7 +20,7 @@ run(async () => {
   let baseImageData: Uint8Array | null = null;
 
   for await (const part of baseResult.fullStream) {
-    if (part.type == 'tool-result' && !part.dynamic) {
+    if (part.type === 'tool-result' && !part.dynamic) {
       baseImageData = convertBase64ToUint8Array(part.output.result);
       await presentImages([
         {
@@ -65,7 +64,7 @@ run(async () => {
   });
 
   for await (const part of editResult.fullStream) {
-    if (part.type == 'tool-result' && !part.dynamic) {
+    if (part.type === 'tool-result' && !part.dynamic) {
       await presentImages([
         {
           mediaType: 'image/webp',

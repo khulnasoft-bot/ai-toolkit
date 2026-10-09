@@ -18,8 +18,8 @@ import {
   isStreamRetryAttemptBoundaryPart,
   type StreamRetryAttemptBoundaryPart,
 } from './stream-retry-attempt-boundary';
-import { maybeSignApproval } from './tool-approval-signature';
 import type { ToolApprovalConfiguration } from './tool-approval-configuration';
+import { maybeSignApproval } from './tool-approval-signature';
 import type { TypedToolCall } from './tool-call';
 import type {
   OnToolExecutionEndCallback,
@@ -77,23 +77,16 @@ export function executeToolsFromStream<
   onToolExecutionStart?: Arrayable<OnToolExecutionStartCallback<TOOLS>>;
   onToolExecutionEnd?: Arrayable<OnToolExecutionEndCallback<TOOLS>>;
   executeToolInTelemetryContext?: Telemetry['executeTool'];
-  runInTracingChannelSpan?: NonNullable<
-    TelemetryDispatcher['runInTracingChannelSpan']
-  >;
+  runInTracingChannelSpan?: NonNullable<TelemetryDispatcher['runInTracingChannelSpan']>;
 }): ReadableStream<ExecuteToolsStreamPart<TOOLS>> {
   const toolCallsToExecute: Array<TypedToolCall<TOOLS>> = [];
 
   // forward stream
   return stream.pipeThrough(
-    new TransformStream<
-      ExecuteToolsInputStreamPart<TOOLS>,
-      ExecuteToolsStreamPart<TOOLS>
-    >({
+    new TransformStream<ExecuteToolsInputStreamPart<TOOLS>, ExecuteToolsStreamPart<TOOLS>>({
       async transform(
         chunk: ExecuteToolsInputStreamPart<TOOLS>,
-        controller: TransformStreamDefaultController<
-          ExecuteToolsStreamPart<TOOLS>
-        >,
+        controller: TransformStreamDefaultController<ExecuteToolsStreamPart<TOOLS>>,
       ) {
         // immediately forward all chunks
         controller.enqueue(chunk);

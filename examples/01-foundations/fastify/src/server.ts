@@ -1,15 +1,11 @@
+import { createUIMessageStream, createUIMessageStreamResponse, streamText } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import {
-  createUIMessageStream,
-  createUIMessageStreamResponse,
-  streamText,
-} from '@ai-toolkit/ai';
 import 'dotenv/config';
 import Fastify from 'fastify';
 
 const fastify = Fastify({ logger: true });
 
-fastify.post('/', async function (_, reply) {
+fastify.post('/', async (_, reply) => {
   const result = streamText({
     model: openai('gpt-4o'),
     prompt: 'Invent a new holiday and describe its traditions.',
@@ -18,7 +14,7 @@ fastify.post('/', async function (_, reply) {
   return reply.send(result.toUIMessageStreamResponse());
 });
 
-fastify.post('/stream-data', async function (_, reply) {
+fastify.post('/stream-data', async (_, reply) => {
   // immediately start streaming the response
   const stream = createUIMessageStream({
     execute: ({ writer }) => {

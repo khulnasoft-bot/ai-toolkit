@@ -1,4 +1,4 @@
-import { asArray, type Arrayable } from '@ai-toolkit/provider-utils';
+import { type Arrayable, asArray } from '@ai-toolkit/provider-utils';
 import type { Callback } from './callback';
 
 /**

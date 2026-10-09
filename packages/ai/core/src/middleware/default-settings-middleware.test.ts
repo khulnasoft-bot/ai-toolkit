@@ -1,12 +1,10 @@
-import { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
-import { defaultSettingsMiddleware } from './default-settings-middleware';
+import type { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
-import { describe, it, expect } from 'vitest';
+import { defaultSettingsMiddleware } from './default-settings-middleware';
 
 const BASE_PARAMS: LanguageModelV3CallOptions = {
-  prompt: [
-    { role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] },
-  ],
+  prompt: [{ role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] }],
 };
 
 const MOCK_MODEL = new MockLanguageModelV3();
@@ -18,7 +16,7 @@ describe('defaultSettingsMiddleware', () => {
         settings: { temperature: 0.7 },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS },
         model: MOCK_MODEL,
@@ -32,7 +30,7 @@ describe('defaultSettingsMiddleware', () => {
         settings: { temperature: 0.7 },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: {
           ...BASE_PARAMS,
@@ -56,7 +54,7 @@ describe('defaultSettingsMiddleware', () => {
         },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS },
         model: MOCK_MODEL,
@@ -85,7 +83,7 @@ describe('defaultSettingsMiddleware', () => {
         },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: {
           ...BASE_PARAMS,
@@ -125,7 +123,7 @@ describe('defaultSettingsMiddleware', () => {
         },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: {
           ...BASE_PARAMS,
@@ -159,7 +157,7 @@ describe('defaultSettingsMiddleware', () => {
         settings: {},
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, temperature: 0 },
         model: MOCK_MODEL,
@@ -173,7 +171,7 @@ describe('defaultSettingsMiddleware', () => {
         settings: { temperature: 0.7 },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, temperature: undefined },
         model: MOCK_MODEL,
@@ -187,7 +185,7 @@ describe('defaultSettingsMiddleware', () => {
         settings: { temperature: 0.7 },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, temperature: null as any },
         model: MOCK_MODEL,
@@ -201,7 +199,7 @@ describe('defaultSettingsMiddleware', () => {
         settings: { temperature: 0.7 },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, temperature: 0.9 },
         model: MOCK_MODEL,
@@ -216,7 +214,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { maxOutputTokens: 100 },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -228,7 +226,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { maxOutputTokens: 100 },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, maxOutputTokens: 50 },
         model: MOCK_MODEL,
@@ -240,7 +238,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { stopSequences: ['stop'] },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -252,7 +250,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { stopSequences: ['stop'] },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, stopSequences: ['end'] },
         model: MOCK_MODEL,
@@ -262,7 +260,7 @@ describe('defaultSettingsMiddleware', () => {
 
     it('should apply default topP', async () => {
       const middleware = defaultSettingsMiddleware({ settings: { topP: 0.9 } });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -272,7 +270,7 @@ describe('defaultSettingsMiddleware', () => {
 
     it('should prioritize param topP', async () => {
       const middleware = defaultSettingsMiddleware({ settings: { topP: 0.9 } });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, topP: 0.5 },
         model: MOCK_MODEL,
@@ -289,7 +287,7 @@ describe('defaultSettingsMiddleware', () => {
         },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: {
           ...BASE_PARAMS,
@@ -308,7 +306,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { headers: {} },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, headers: { 'X-Param-Header': 'param' } },
         model: MOCK_MODEL,
@@ -320,7 +318,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { headers: { 'X-Default-Header': 'default' } },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, headers: {} },
         model: MOCK_MODEL,
@@ -332,7 +330,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: {},
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS },
         model: MOCK_MODEL,
@@ -346,7 +344,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { providerOptions: {} },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: {
           ...BASE_PARAMS,
@@ -363,7 +361,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: { providerOptions: { anthropic: { user: 'default-user' } } },
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS, providerOptions: {} },
         model: MOCK_MODEL,
@@ -377,7 +375,7 @@ describe('defaultSettingsMiddleware', () => {
       const middleware = defaultSettingsMiddleware({
         settings: {},
       });
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: { ...BASE_PARAMS },
         model: MOCK_MODEL,

@@ -1,13 +1,13 @@
 import type { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
 import type { InferSchema, Resolvable } from '@ai-toolkit/provider-utils';
 import {
-  FetchFunction,
   combineHeaders,
   createBinaryResponseHandler,
   createJsonErrorResponseHandler,
   createJsonResponseHandler,
   createStatusCodeErrorResponseHandler,
   delay,
+  type FetchFunction,
   getFromApi,
   lazySchema,
   parseProviderOptions,
@@ -16,8 +16,10 @@ import {
   zodSchema,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import type { BlackForestLabsAspectRatio } from './black-forest-labs-image-settings';
-import { BlackForestLabsImageModelId } from './black-forest-labs-image-settings';
+import type {
+  BlackForestLabsAspectRatio,
+  BlackForestLabsImageModelId,
+} from './black-forest-labs-image-settings';
 
 const DEFAULT_POLL_INTERVAL_MILLIS = 500;
 const DEFAULT_POLL_TIMEOUT_MILLIS = 60000;
@@ -64,8 +66,7 @@ export class BlackForestLabsImageModel implements ImageModelV3 {
   }: Parameters<ImageModelV3['doGenerate']>[0]) {
     const warnings: Array<SharedV3Warning> = [];
 
-    const finalAspectRatio =
-      aspectRatio ?? (size ? convertSizeToAspectRatio(size) : undefined);
+    const finalAspectRatio = aspectRatio ?? (size ? convertSizeToAspectRatio(size) : undefined);
 
     if (size && !aspectRatio) {
       warnings.push({
@@ -108,12 +109,13 @@ export class BlackForestLabsImageModel implements ImageModelV3 {
       throw new Error('Black Forest Labs supports up to 10 input images.');
     }
 
-    const inputImagesObj: Record<string, string> = inputImages.reduce<
-      Record<string, string>
-    >((acc, img, index) => {
-      acc[`input_image${index === 0 ? '' : `_${index + 1}`}`] = img;
-      return acc;
-    }, {});
+    const inputImagesObj: Record<string, string> = inputImages.reduce<Record<string, string>>(
+      (acc, img, index) => {
+        acc[`input_image${index === 0 ? '' : `_${index + 1}`}`] = img;
+        return acc;
+      },
+      {},
+    );
 
     let maskValue: string | undefined;
     if (mask) {
@@ -184,10 +186,7 @@ export class BlackForestLabsImageModel implements ImageModelV3 {
     });
 
     const currentDate = this.config._internal?.currentDate?.() ?? new Date();
-    const combinedHeaders = combineHeaders(
-      await resolve(this.config.headers),
-      headers,
-    );
+    const combinedHeaders = combineHeaders(await resolve(this.config.headers), headers);
 
     const submit = await postJsonToApi({
       url: `${this.config.baseURL}/${this.modelId}`,
@@ -288,9 +287,7 @@ export class BlackForestLabsImageModel implements ImageModelV3 {
       pollOverrides?.pollTimeoutMillis ??
       this.config.pollTimeoutMillis ??
       DEFAULT_POLL_TIMEOUT_MILLIS;
-    const maxPollAttempts = Math.ceil(
-      pollTimeoutMillis / Math.max(1, pollIntervalMillis),
-    );
+    const maxPollAttempts = Math.ceil(pollTimeoutMillis / Math.max(1, pollIntervalMillis));
 
     const url = new URL(pollUrl);
     if (!url.searchParams.has('id')) {
@@ -318,9 +315,7 @@ export class BlackForestLabsImageModel implements ImageModelV3 {
             duration: value.result.duration ?? undefined,
           };
         }
-        throw new Error(
-          'Black Forest Labs poll response is Ready but missing result.sample',
-        );
+        throw new Error('Black Forest Labs poll response is Ready but missing result.sample');
       }
       if (status === 'Error' || status === 'Failed') {
         throw new Error('Black Forest Labs generation failed.');
@@ -378,18 +373,11 @@ export type BlackForestLabsImageProviderOptions = InferSchema<
   typeof blackForestLabsImageProviderOptionsSchema
 >;
 
-function convertSizeToAspectRatio(
-  size: string,
-): BlackForestLabsAspectRatio | undefined {
+function convertSizeToAspectRatio(size: string): BlackForestLabsAspectRatio | undefined {
   const [wStr, hStr] = size.split('x');
   const width = Number(wStr);
   const height = Number(hStr);
-  if (
-    !Number.isFinite(width) ||
-    !Number.isFinite(height) ||
-    width <= 0 ||
-    height <= 0
-  ) {
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width <= 0 || height <= 0) {
     return undefined;
   }
   const g = gcd(width, height);
@@ -453,8 +441,7 @@ const bflErrorSchema = z.object({
 
 const bflFailedResponseHandler = createJsonErrorResponseHandler({
   errorSchema: bflErrorSchema,
-  errorToMessage: error =>
-    bflErrorToMessage(error) ?? 'Unknown Black Forest Labs error',
+  errorToMessage: error => bflErrorToMessage(error) ?? 'Unknown Black Forest Labs error',
 });
 
 function bflErrorToMessage(error: unknown): string | undefined {

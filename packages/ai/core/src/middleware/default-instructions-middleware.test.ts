@@ -13,9 +13,7 @@ import { defaultInstructionsMiddleware } from './default-instructions-middleware
 import { wrapLanguageModel } from './wrap-language-model';
 
 const BASE_PARAMS: LanguageModelV4CallOptions = {
-  prompt: [
-    { role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] },
-  ],
+  prompt: [{ role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] }],
 };
 
 const MOCK_MODEL = new MockLanguageModelV4();
@@ -41,7 +39,7 @@ describe('defaultInstructionsMiddleware', () => {
         instructions: 'You are a helpful assistant.',
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -68,7 +66,7 @@ describe('defaultInstructionsMiddleware', () => {
         },
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -93,7 +91,7 @@ describe('defaultInstructionsMiddleware', () => {
         ],
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -122,7 +120,7 @@ describe('defaultInstructionsMiddleware', () => {
         ],
       };
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params,
         model: MOCK_MODEL,
@@ -143,7 +141,7 @@ describe('defaultInstructionsMiddleware', () => {
         ],
       };
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params,
         model: MOCK_MODEL,
@@ -166,7 +164,7 @@ describe('defaultInstructionsMiddleware', () => {
         },
       };
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params,
         model: MOCK_MODEL,
@@ -174,10 +172,7 @@ describe('defaultInstructionsMiddleware', () => {
 
       expect(result).toEqual({
         ...params,
-        prompt: [
-          { role: 'system', content: 'Default instructions' },
-          ...params.prompt,
-        ],
+        prompt: [{ role: 'system', content: 'Default instructions' }, ...params.prompt],
       });
     });
 
@@ -186,7 +181,7 @@ describe('defaultInstructionsMiddleware', () => {
         instructions: [],
       });
 
-      const result = await middleware.transformParams!({
+      const result = await middleware.transformParams?.({
         type: 'generate',
         params: BASE_PARAMS,
         model: MOCK_MODEL,
@@ -334,9 +329,9 @@ describe('defaultInstructionsMiddleware', () => {
 
       expect(prompts).toHaveLength(2);
       for (const prompt of prompts) {
-        expect(
-          prompt.filter(message => message.role === 'system'),
-        ).toStrictEqual([{ role: 'system', content: 'Default instructions' }]);
+        expect(prompt.filter(message => message.role === 'system')).toStrictEqual([
+          { role: 'system', content: 'Default instructions' },
+        ]);
       }
     });
 

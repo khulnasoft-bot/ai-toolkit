@@ -1,5 +1,5 @@
-import { IdGenerator } from '@ai-toolkit/provider-utils';
-import { UIMessage } from '../ui/ui-messages';
+import type { IdGenerator } from '@ai-toolkit/provider-utils';
+import type { UIMessage } from '../ui/ui-messages';
 
 export function getResponseUIMessageId({
   originalMessages,

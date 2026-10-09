@@ -1,5 +1,5 @@
-import { xai } from '@ai-toolkit/xai';
 import { generateText } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -19,9 +19,7 @@ run(async () => {
 
     console.log('Text:', result.text);
     console.log('Usage:', result.usage);
-    const reasoningParts = result.content.filter(
-      part => part.type === 'reasoning',
-    );
+    const reasoningParts = result.content.filter(part => part.type === 'reasoning');
     console.log('\nReasoning:');
     console.log('  - Parts found:', reasoningParts.length);
 
@@ -37,15 +35,12 @@ run(async () => {
         '  - Encrypted content length:',
         xaiMetadata?.reasoningEncryptedContent?.length || 0,
       );
-      console.log(
-        '  - Has encrypted content:',
-        !!xaiMetadata?.reasoningEncryptedContent,
-      );
+      console.log('  - Has encrypted content:', !!xaiMetadata?.reasoningEncryptedContent);
 
       if (xaiMetadata?.reasoningEncryptedContent) {
         console.log(
           '  - Encrypted content (first 100 chars):',
-          xaiMetadata.reasoningEncryptedContent.substring(0, 100) + '...',
+          `${xaiMetadata.reasoningEncryptedContent.substring(0, 100)}...`,
         );
       }
     }

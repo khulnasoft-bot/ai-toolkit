@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { ToolLoopAgent } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 const agent = new ToolLoopAgent({

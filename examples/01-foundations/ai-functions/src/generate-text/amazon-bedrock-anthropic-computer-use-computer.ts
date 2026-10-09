@@ -1,7 +1,7 @@
-import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { generateText, stepCountIs } from '@ai-toolkit/ai';
+import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
-import fs from 'fs';
+import fs from 'node:fs';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -17,9 +17,7 @@ run(async () => {
             case 'screenshot': {
               return {
                 type: 'image',
-                data: fs
-                  .readFileSync('./data/screenshot-editor.png')
-                  .toString('base64'),
+                data: fs.readFileSync('./data/screenshot-editor.png').toString('base64'),
               };
             }
             default: {
@@ -43,8 +41,7 @@ run(async () => {
         },
       }),
     },
-    prompt:
-      'How can I switch to dark mode? Take a look at the screen and tell me.',
+    prompt: 'How can I switch to dark mode? Take a look at the screen and tell me.',
     stopWhen: stepCountIs(5),
   });
 

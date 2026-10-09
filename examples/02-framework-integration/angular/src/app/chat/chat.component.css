@@ -69,7 +69,7 @@
 }
 
 .tool-status {
-  margin: 0.25rem 0 !important;
+  margin: 0.25rem 0;
   font-size: 0.8rem;
   color: #6c757d;
 }

@@ -33,10 +33,7 @@ function _parse(text: string) {
     return obj;
   }
 
-  if (
-    suspectProtoRx.test(text) === false &&
-    suspectConstructorRx.test(text) === false
-  ) {
+  if (suspectProtoRx.test(text) === false && suspectConstructorRx.test(text) === false) {
     return obj;
   }
 
@@ -52,14 +49,11 @@ function filter(obj: any) {
     next = [];
 
     for (const node of nodes) {
-      if (Object.prototype.hasOwnProperty.call(node, '__proto__')) {
+      if (Object.hasOwn(node, '__proto__')) {
         throw new SyntaxError('Object contains forbidden prototype property');
       }
 
-      if (
-        Object.prototype.hasOwnProperty.call(node, 'constructor') &&
-        Object.prototype.hasOwnProperty.call(node.constructor, 'prototype')
-      ) {
+      if (Object.hasOwn(node, 'constructor') && Object.hasOwn(node.constructor, 'prototype')) {
         throw new SyntaxError('Object contains forbidden prototype property');
       }
 
@@ -79,7 +73,7 @@ export function secureJsonParse(text: string) {
   try {
     // Performance optimization, see https://github.com/fastify/secure-json-parse/pull/90
     Error.stackTraceLimit = 0;
-  } catch (e) {
+  } catch (_e) {
     // Fallback in case Error is immutable (v8 readonly)
     return _parse(text);
   }

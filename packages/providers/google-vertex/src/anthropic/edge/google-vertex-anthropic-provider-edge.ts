@@ -1,12 +1,9 @@
 import { resolve } from '@ai-toolkit/provider-utils';
-import {
-  generateAuthToken,
-  GoogleCredentials,
-} from '../../edge/google-vertex-auth-edge';
+import { type GoogleCredentials, generateAuthToken } from '../../edge/google-vertex-auth-edge';
 import {
   createVertexAnthropic as createVertexAnthropicOriginal,
-  GoogleVertexAnthropicProvider,
-  GoogleVertexAnthropicProviderSettings as GoogleVertexAnthropicProviderSettingsOriginal,
+  type GoogleVertexAnthropicProvider,
+  type GoogleVertexAnthropicProviderSettings as GoogleVertexAnthropicProviderSettingsOriginal,
 } from '../google-vertex-anthropic-provider';
 
 export type { GoogleVertexAnthropicProvider };

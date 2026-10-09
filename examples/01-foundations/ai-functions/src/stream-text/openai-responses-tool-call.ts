@@ -1,8 +1,8 @@
-import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
-import { weatherTool } from '../tools/weather-tool';
 import { stepCountIs, streamText, tool } from '@ai-toolkit/ai';
+import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({
@@ -37,16 +37,12 @@ run(async () => {
       }
 
       case 'tool-call': {
-        console.log(
-          `TOOL CALL ${chunk.toolName} ${JSON.stringify(chunk.input)}`,
-        );
+        console.log(`TOOL CALL ${chunk.toolName} ${JSON.stringify(chunk.input)}`);
         break;
       }
 
       case 'tool-result': {
-        console.log(
-          `TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`,
-        );
+        console.log(`TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`);
         break;
       }
 

@@ -8,7 +8,7 @@ import { createTransformer } from '../lib/create-transformer';
  * - formatDataStreamPart('tool_result', obj) → { type: 'tool-result', value: obj }
  * - Removes unused formatDataStreamPart imports
  */
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Transform writer.writeData() calls
@@ -27,11 +27,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         path.node.arguments = [
           j.objectExpression([
             j.property('init', j.literal('type'), j.literal('data')),
-            j.property(
-              'init',
-              j.literal('value'),
-              j.arrayExpression([args[0]]),
-            ),
+            j.property('init', j.literal('value'), j.arrayExpression([args[0]])),
           ]),
         ];
         context.hasChanges = true;
@@ -53,16 +49,8 @@ export default createTransformer((fileInfo, api, options, context) => {
         path.node.callee.property.name = 'write';
         path.node.arguments = [
           j.objectExpression([
-            j.property(
-              'init',
-              j.literal('type'),
-              j.literal('message-annotations'),
-            ),
-            j.property(
-              'init',
-              j.literal('value'),
-              j.arrayExpression([args[0]]),
-            ),
+            j.property('init', j.literal('type'), j.literal('message-annotations')),
+            j.property('init', j.literal('value'), j.arrayExpression([args[0]])),
           ]),
         ];
         context.hasChanges = true;
@@ -135,17 +123,13 @@ export default createTransformer((fileInfo, api, options, context) => {
         (path.node.source.value === 'ai-toolkit' &&
           path.node.specifiers?.some(
             (spec: any) =>
-              spec.type === 'ImportSpecifier' &&
-              spec.imported.name === 'formatDataStreamPart',
+              spec.type === 'ImportSpecifier' && spec.imported.name === 'formatDataStreamPart',
           ))
       ) {
         // Remove the import
         path.node.specifiers = path.node.specifiers?.filter(
           (spec: any) =>
-            !(
-              spec.type === 'ImportSpecifier' &&
-              spec.imported.name === 'formatDataStreamPart'
-            ),
+            !(spec.type === 'ImportSpecifier' && spec.imported.name === 'formatDataStreamPart'),
         );
 
         // If no specifiers left, remove the entire import

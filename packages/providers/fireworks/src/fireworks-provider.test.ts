@@ -1,17 +1,16 @@
-import { describe, it, expect, vi, beforeEach, Mock } from 'vitest';
-import { createFireworks } from './fireworks-provider';
-import { LanguageModelV3, EmbeddingModelV3 } from '@ai-toolkit/provider';
-import { loadApiKey } from '@ai-toolkit/provider-utils';
 import {
   OpenAICompatibleChatLanguageModel,
   OpenAICompatibleCompletionLanguageModel,
   OpenAICompatibleEmbeddingModel,
 } from '@ai-toolkit/openai-compatible';
+import type { EmbeddingModelV3, LanguageModelV3 } from '@ai-toolkit/provider';
+import { loadApiKey } from '@ai-toolkit/provider-utils';
+import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { FireworksImageModel } from './fireworks-image-model';
+import { createFireworks } from './fireworks-provider';
 
 // Add type assertion for the mocked class
-const OpenAICompatibleChatLanguageModelMock =
-  OpenAICompatibleChatLanguageModel as unknown as Mock;
+const OpenAICompatibleChatLanguageModelMock = OpenAICompatibleChatLanguageModel as unknown as Mock;
 
 vi.mock('@ai-toolkit/openai-compatible', () => {
   // Create mock constructor functions that behave like classes
@@ -30,12 +29,8 @@ vi.mock('@ai-toolkit/openai-compatible', () => {
 
   return {
     OpenAICompatibleChatLanguageModel: createMockConstructor('fireworks.chat'),
-    OpenAICompatibleCompletionLanguageModel: createMockConstructor(
-      'fireworks.completion',
-    ),
-    OpenAICompatibleEmbeddingModel: createMockConstructor(
-      'fireworks.embedding',
-    ),
+    OpenAICompatibleCompletionLanguageModel: createMockConstructor('fireworks.completion'),
+    OpenAICompatibleEmbeddingModel: createMockConstructor('fireworks.embedding'),
   };
 });
 
@@ -53,15 +48,15 @@ vi.mock('./fireworks-image-model', () => ({
 }));
 
 describe('FireworksProvider', () => {
-  let mockLanguageModel: LanguageModelV3;
-  let mockEmbeddingModel: EmbeddingModelV3;
+  let _mockLanguageModel: LanguageModelV3;
+  let _mockEmbeddingModel: EmbeddingModelV3;
 
   beforeEach(() => {
     // Mock implementations of models
-    mockLanguageModel = {
+    _mockLanguageModel = {
       // Add any required methods for LanguageModelV3
     } as LanguageModelV3;
-    mockEmbeddingModel = {
+    _mockEmbeddingModel = {
       // Add any required methods for EmbeddingModelV3
     } as EmbeddingModelV3;
 
@@ -72,11 +67,10 @@ describe('FireworksProvider', () => {
   describe('createFireworks', () => {
     it('should create a FireworksProvider instance with default options', () => {
       const provider = createFireworks();
-      const model = provider('model-id');
+      const _model = provider('model-id');
 
       // Use the mocked version
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 
@@ -94,10 +88,9 @@ describe('FireworksProvider', () => {
         headers: { 'Custom-Header': 'value' },
       };
       const provider = createFireworks(options);
-      const model = provider('model-id');
+      const _model = provider('model-id');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 
@@ -174,10 +167,7 @@ describe('FireworksProvider', () => {
       const model = provider.image(modelId);
 
       expect(model).toBeInstanceOf(FireworksImageModel);
-      expect(FireworksImageModel).toHaveBeenCalledWith(
-        modelId,
-        expect.any(Object),
-      );
+      expect(FireworksImageModel).toHaveBeenCalledWith(modelId, expect.any(Object));
     });
 
     it('should respect custom baseURL', () => {

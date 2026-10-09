@@ -1,5 +1,5 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { print } from '../lib/print';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';

@@ -1,26 +1,26 @@
 // @ts-nocheck
 import { createAnthropic } from '@ai-toolkit/anthropic';
-import { createOpenAI } from '@ai-toolkit/openai';
 import { createMistral } from '@ai-toolkit/mistral';
+import { createOpenAI } from '@ai-toolkit/openai';
 
-const anthropic = createAnthropic({
+const _anthropic = createAnthropic({
   baseUrl: 'https://api.anthropic.com',
 });
 
-const openai = createOpenAI({
+const _openai = createOpenAI({
   baseUrl: 'https://api.openai.com',
 });
 
-const mistral = createMistral({
+const _mistral = createMistral({
   baseUrl: 'https://api.mistral.ai',
 });
 
 // Should NOT rename - not in provider creation
-const config = {
+const _config = {
   baseUrl: 'https://example.com',
 };
 
 // Should NOT rename - not a provider
-function someOtherFunction({ baseUrl }) {
+function _someOtherFunction({ baseUrl }) {
   return baseUrl;
 }

@@ -11,9 +11,9 @@
  * Output: build/capability-matrix.json
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -136,7 +136,7 @@ function detectCapabilitiesFromSource(filePath) {
 
   for (const [modelType, capability] of Object.entries(MODEL_TYPE_TO_CAPABILITY)) {
     // Match patterns like ": LanguageModelV3" or "=> LanguageModelV3" or "(modelId): LanguageModelV3"
-    const pattern = new RegExp(`[:\(]\\s*${modelType}\\b`, 'g');
+    const pattern = new RegExp(`[:(]\\s*${modelType}\\b`, 'g');
     if (pattern.test(content)) {
       capabilities.add(capability);
     }
@@ -272,7 +272,7 @@ function main() {
     return;
   }
 
-  fs.writeFileSync(OUT_FILE, JSON.stringify(matrix, null, 2) + '\n');
+  fs.writeFileSync(OUT_FILE, `${JSON.stringify(matrix, null, 2)}\n`);
 
   console.log('\nCapability Matrix\n');
   console.log(`Providers scanned: ${matrix.providers.length}`);

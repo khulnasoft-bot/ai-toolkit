@@ -1,9 +1,9 @@
 import { AITOOLKITError } from '@ai-toolkit/provider';
-import { ImageModelResponseMetadata } from '../types/image-model-response-metadata';
+import type { ImageModelResponseMetadata } from '../types/image-model-response-metadata';
 
 const name = 'AI_NoImageGeneratedError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
 Thrown when no image could be generated. This can have multiple causes:
@@ -12,8 +12,6 @@ Thrown when no image could be generated. This can have multiple causes:
 - The model generated a response that could not be parsed.
  */
 export class NoImageGeneratedError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   /**
 The response metadata for each call.
    */

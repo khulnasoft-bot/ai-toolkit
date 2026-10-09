@@ -1,10 +1,5 @@
-import {
-  Source,
-  Sources,
-  SourcesContent,
-  SourcesTrigger,
-} from './ai-elements/sources';
-import { SourceUrlUIPart } from '@ai-toolkit/ai';
+import type { SourceUrlUIPart } from '@ai-toolkit/ai';
+import { Source, Sources, SourcesContent, SourcesTrigger } from './ai-elements/sources';
 
 const SourcesView = ({ sources }: { sources: SourceUrlUIPart[] }) => {
   if (sources.length === 0) {
@@ -16,7 +11,11 @@ const SourcesView = ({ sources }: { sources: SourceUrlUIPart[] }) => {
       <SourcesTrigger count={sources.length} />
       <SourcesContent>
         {sources.map((source, index) => (
-          <Source key={index} href={source.url} title={source.title} />
+          <Source
+            key={source.url ?? `${source.title}-${index}`}
+            href={source.url}
+            title={source.title}
+          />
         ))}
       </SourcesContent>
     </Sources>

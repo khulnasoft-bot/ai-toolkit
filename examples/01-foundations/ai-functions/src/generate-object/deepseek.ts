@@ -1,5 +1,5 @@
-import { deepseek } from '@ai-toolkit/deepseek';
 import { generateObject } from '@ai-toolkit/ai';
+import { deepseek } from '@ai-toolkit/deepseek';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

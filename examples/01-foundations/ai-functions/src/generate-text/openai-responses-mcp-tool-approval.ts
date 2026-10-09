@@ -1,11 +1,11 @@
-import { createOpenAI } from '@ai-toolkit/openai';
+import * as readline from 'node:readline/promises';
 import {
   generateText,
-  ModelMessage,
+  type ModelMessage,
   stepCountIs,
-  ToolApprovalResponse,
+  type ToolApprovalResponse,
 } from '@ai-toolkit/ai';
-import * as readline from 'node:readline/promises';
+import { createOpenAI } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 const terminal = readline.createInterface({
@@ -83,14 +83,11 @@ run(async () => {
 
     for (const part of result.content) {
       if (part.type === 'tool-approval-request') {
-        const answer = await terminal.question(
-          `\nApprove MCP tool call? (y/n): `,
-        );
+        const answer = await terminal.question(`\nApprove MCP tool call? (y/n): `);
         approvals.push({
           type: 'tool-approval-response',
           approvalId: part.approvalId,
-          approved:
-            answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes',
+          approved: answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes',
         });
       } else if (part.type === 'text') {
         console.log(`\nAssistant:\n${part.text}`);

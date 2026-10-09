@@ -1,5 +1,5 @@
+import { expect, it } from 'vitest';
 import { selectTelemetryAttributes } from './select-telemetry-attributes';
-import { it, expect } from 'vitest';
 
 it('should return an empty object when telemetry is disabled', async () => {
   const result = await selectTelemetryAttributes({

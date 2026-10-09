@@ -1,6 +1,6 @@
-import { perplexity } from '@ai-toolkit/perplexity';
+import fs from 'node:fs';
 import { generateText } from '@ai-toolkit/ai';
-import fs from 'fs';
+import { perplexity } from '@ai-toolkit/perplexity';
 import { run } from '../lib/run';
 
 run(async () => {

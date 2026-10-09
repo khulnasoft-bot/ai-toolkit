@@ -1,7 +1,7 @@
-import { describe, it, expect } from 'vitest';
-import { parseJSON, safeParseJSON, isParsableJson } from './parse-json';
-import { z } from 'zod/v4';
 import { JSONParseError, TypeValidationError } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
+import { z } from 'zod/v4';
+import { isParsableJson, parseJSON, safeParseJSON } from './parse-json';
 
 describe('parseJSON', () => {
   it('should parse basic JSON without schema', async () => {
@@ -16,16 +16,14 @@ describe('parseJSON', () => {
   });
 
   it('should throw JSONParseError for invalid JSON', async () => {
-    await expect(() => parseJSON({ text: 'invalid json' })).rejects.toThrow(
-      JSONParseError,
-    );
+    await expect(() => parseJSON({ text: 'invalid json' })).rejects.toThrow(JSONParseError);
   });
 
   it('should throw TypeValidationError for schema validation failures', async () => {
     const schema = z.object({ foo: z.number() });
-    await expect(() =>
-      parseJSON({ text: '{"foo": "bar"}', schema }),
-    ).rejects.toThrow(TypeValidationError);
+    await expect(() => parseJSON({ text: '{"foo": "bar"}', schema })).rejects.toThrow(
+      TypeValidationError,
+    );
   });
 });
 

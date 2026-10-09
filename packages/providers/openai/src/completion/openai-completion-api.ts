@@ -1,6 +1,6 @@
+import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { openaiErrorDataSchema } from '../openai-error';
-import { InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 
 // limited version of the schema, focussed on what is needed for the implementation
 // this approach limits breakages when the API changes and increases efficiency
@@ -52,9 +52,7 @@ export const openaiCompletionChunkSchema = lazySchema(() =>
               .object({
                 tokens: z.array(z.string()),
                 token_logprobs: z.array(z.number()),
-                top_logprobs: z
-                  .array(z.record(z.string(), z.number()))
-                  .nullish(),
+                top_logprobs: z.array(z.record(z.string(), z.number())).nullish(),
               })
               .nullish(),
           }),
@@ -72,10 +70,6 @@ export const openaiCompletionChunkSchema = lazySchema(() =>
   ),
 );
 
-export type OpenAICompletionChunk = InferSchema<
-  typeof openaiCompletionChunkSchema
->;
+export type OpenAICompletionChunk = InferSchema<typeof openaiCompletionChunkSchema>;
 
-export type OpenAICompletionResponse = InferSchema<
-  typeof openaiCompletionResponseSchema
->;
+export type OpenAICompletionResponse = InferSchema<typeof openaiCompletionResponseSchema>;

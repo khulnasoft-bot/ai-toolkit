@@ -1,16 +1,12 @@
+import { type LanguageModelV3, NoSuchModelError, type ProviderV3 } from '@ai-toolkit/provider';
 import {
-  LanguageModelV3,
-  NoSuchModelError,
-  ProviderV3,
-} from '@ai-toolkit/provider';
-import {
-  FetchFunction,
+  type FetchFunction,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
-import { DeepSeekChatModelId } from './chat/deepseek-chat-options';
 import { DeepSeekChatLanguageModel } from './chat/deepseek-chat-language-model';
+import type { DeepSeekChatModelId } from './chat/deepseek-chat-options';
 import { VERSION } from './version';
 
 export interface DeepSeekProviderSettings {
@@ -58,12 +54,8 @@ Creates a DeepSeek chat model for text generation.
   textEmbeddingModel(modelId: string): never;
 }
 
-export function createDeepSeek(
-  options: DeepSeekProviderSettings = {},
-): DeepSeekProvider {
-  const baseURL = withoutTrailingSlash(
-    options.baseURL ?? 'https://api.deepseek.com',
-  );
+export function createDeepSeek(options: DeepSeekProviderSettings = {}): DeepSeekProvider {
+  const baseURL = withoutTrailingSlash(options.baseURL ?? 'https://api.deepseek.com');
 
   const getHeaders = () =>
     withUserAgentSuffix(
@@ -87,8 +79,7 @@ export function createDeepSeek(
     });
   };
 
-  const provider = (modelId: DeepSeekChatModelId) =>
-    createLanguageModel(modelId);
+  const provider = (modelId: DeepSeekChatModelId) => createLanguageModel(modelId);
 
   provider.specificationVersion = 'v3' as const;
   provider.languageModel = createLanguageModel;

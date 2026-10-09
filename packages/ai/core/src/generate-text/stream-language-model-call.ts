@@ -5,18 +5,17 @@ import {
   type SharedV4Headers,
 } from '@ai-toolkit/provider';
 import {
-  createIdGenerator,
   type Arrayable,
-  type Experimental_SandboxSession as SandboxSession,
+  createIdGenerator,
   type IdGenerator,
   type InferToolSetContext,
   type ModelMessage,
   type ProviderOptions,
+  type Experimental_SandboxSession as SandboxSession,
   type ToolSet,
 } from '@ai-toolkit/provider-utils';
 import { ToolCallNotFoundForApprovalError } from '../error/tool-call-not-found-for-approval-error';
 import { resolveLanguageModel } from '../model/resolve-model';
-import { getOwn } from '../util/get-own';
 import type { Instructions, Prompt } from '../prompt';
 import { convertToLanguageModelPrompt } from '../prompt/convert-to-language-model-prompt';
 import type { LanguageModelCallOptions } from '../prompt/language-model-call-options';
@@ -25,31 +24,24 @@ import { prepareToolChoice } from '../prompt/prepare-tool-choice';
 import { prepareTools } from '../prompt/prepare-tools';
 import { standardizePrompt } from '../prompt/standardize-prompt';
 import type { Telemetry } from '../telemetry/telemetry';
-import type {
-  CallWarning,
-  FinishReason,
-  LanguageModel,
-  ToolChoice,
-} from '../types/language-model';
+import type { CallWarning, FinishReason, LanguageModel, ToolChoice } from '../types/language-model';
 import type { ProviderMetadata } from '../types/provider-metadata';
 import { asLanguageModelUsage, type LanguageModelUsage } from '../types/usage';
-import {
-  createAsyncIterableStream,
-  type AsyncIterableStream,
-} from '../util/async-iterable-stream';
+import { type AsyncIterableStream, createAsyncIterableStream } from '../util/async-iterable-stream';
 import type { DownloadFunction } from '../util/download/download-function';
+import { getOwn } from '../util/get-own';
 import { notify } from '../util/notify';
 import { now as originalNow } from '../util/now';
 import { calculateTokensPerSecond } from './calculate-tokens-per-second';
 import type { ContentPart } from './content-part';
 import { DefaultGeneratedFileWithType } from './generated-file';
-import type { OutputChunkTimingStats } from './step-result';
 import type {
   OnLanguageModelCallEndCallback,
   OnLanguageModelCallStartCallback,
 } from './language-model-events';
 import type { Output } from './output';
 import { parseToolCall } from './parse-tool-call';
+import type { OutputChunkTimingStats } from './step-result';
 import type {
   TextStreamFilePart,
   TextStreamPart,
@@ -212,8 +204,7 @@ export async function streamLanguageModelCall<
   providerOptions,
   repairToolCall,
   refineToolInput,
-  executeLanguageModelCallInTelemetryContext = async ({ execute }) =>
-    await execute(),
+  executeLanguageModelCallInTelemetryContext = async ({ execute }) => await execute(),
   callId,
   toolsContext,
   experimental_sandbox: sandbox,
@@ -266,9 +257,7 @@ export async function streamLanguageModelCall<
   //
   // TODO explore decoupling by changing the telemetry callbacks to accept
   // a Prompt or a standardized Prompt.
-  onStart?: (args: {
-    promptMessages: LanguageModelV4Prompt;
-  }) => Promise<void> | void;
+  onStart?: (args: { promptMessages: LanguageModelV4Prompt }) => Promise<void> | void;
 } & Prompt &
   LanguageModelCallOptions): Promise<{
   stream: AsyncIterableStream<LanguageModelStreamPart<TOOLS>>;
@@ -387,9 +376,7 @@ export async function streamLanguageModelCall<
 }
 
 // Java Loves You.
-function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
-  TOOLS extends ToolSet,
->({
+function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<TOOLS extends ToolSet>({
   tools,
   instructions,
   messages,
@@ -428,10 +415,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
   let previousOutputChunkTimestampMs: number | undefined;
   const timeBetweenOutputChunksMs: number[] = [];
 
-  return new TransformStream<
-    LanguageModelV4StreamPart,
-    LanguageModelStreamPart<TOOLS>
-  >({
+  return new TransformStream<LanguageModelV4StreamPart, LanguageModelStreamPart<TOOLS>>({
     async transform(chunk, controller) {
       if (isOutputChunk(chunk)) {
         const outputChunkTimestampMs = now();
@@ -439,9 +423,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
         if (timeToFirstOutputMs == null) {
           timeToFirstOutputMs = outputChunkTimestampMs - callStartTimestampMs;
         } else if (previousOutputChunkTimestampMs != null) {
-          timeBetweenOutputChunksMs.push(
-            outputChunkTimestampMs - previousOutputChunkTimestampMs,
-          );
+          timeBetweenOutputChunksMs.push(outputChunkTimestampMs - previousOutputChunkTimestampMs);
         }
 
         previousOutputChunkTimestampMs = outputChunkTimestampMs;
@@ -538,19 +520,14 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
         case 'file':
         case 'reasoning-file': {
           const file = new DefaultGeneratedFileWithType({
-            data:
-              chunk.data.type === 'data'
-                ? chunk.data.data
-                : chunk.data.url.toString(),
+            data: chunk.data.type === 'data' ? chunk.data.data : chunk.data.url.toString(),
             mediaType: chunk.mediaType,
           });
 
           modelCallContent.push({
             type: chunk.type,
             file,
-            ...(chunk.providerMetadata != null
-              ? { providerMetadata: chunk.providerMetadata }
-              : {}),
+            ...(chunk.providerMetadata != null ? { providerMetadata: chunk.providerMetadata } : {}),
           });
 
           controller.enqueue({
@@ -648,9 +625,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
                   error: getErrorMessage(toolCall.error!),
                   dynamic: true,
                   title: toolCall.title,
-                  ...(toolCall.toolMetadata != null
-                    ? { toolMetadata: toolCall.toolMetadata }
-                    : {}),
+                  ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
                 });
               }
               break;
@@ -703,9 +678,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
                 ...(chunk.providerMetadata != null
                   ? { providerMetadata: chunk.providerMetadata }
                   : {}),
-                ...(toolCall?.toolMetadata != null
-                  ? { toolMetadata: toolCall.toolMetadata }
-                  : {}),
+                ...(toolCall?.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
               } as TypedToolError<TOOLS>)
             : ({
                 type: 'tool-result',
@@ -718,9 +691,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
                 ...(chunk.providerMetadata != null
                   ? { providerMetadata: chunk.providerMetadata }
                   : {}),
-                ...(toolCall?.toolMetadata != null
-                  ? { toolMetadata: toolCall.toolMetadata }
-                  : {}),
+                ...(toolCall?.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
               } as TypedToolResult<TOOLS>);
 
           controller.enqueue(toolResultPart);
@@ -790,9 +761,7 @@ function isOutputChunk(chunk: LanguageModelV4StreamPart): boolean {
   );
 }
 
-function calculateOutputChunkTimingStats(
-  timingsMs: number[],
-): OutputChunkTimingStats {
+function calculateOutputChunkTimingStats(timingsMs: number[]): OutputChunkTimingStats {
   const sortedTimingsMs = [...timingsMs].sort((a, b) => a - b);
   const sum = timingsMs.reduce((sum, timingMs) => sum + timingMs, 0);
 
@@ -806,10 +775,7 @@ function calculateOutputChunkTimingStats(
   };
 }
 
-function calculateNearestRankPercentile(
-  sortedValues: number[],
-  percentile: number,
-): number {
+function calculateNearestRankPercentile(sortedValues: number[], percentile: number): number {
   return sortedValues[Math.ceil(percentile * sortedValues.length) - 1];
 }
 

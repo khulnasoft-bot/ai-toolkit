@@ -55,10 +55,7 @@ export abstract class AbstractRealtimeSession {
   private readonly submittedToolOutputs = new Set<string>();
   private responseToolCallsClosed = false;
 
-  protected abstract setState<K extends keyof RealtimeState>(
-    key: K,
-    value: RealtimeState[K],
-  ): void;
+  protected abstract setState<K extends keyof RealtimeState>(key: K, value: RealtimeState[K]): void;
 
   constructor(options: RealtimeSessionOptions) {
     this.model = options.model;
@@ -71,10 +68,8 @@ export abstract class AbstractRealtimeSession {
     this.onError = options.onError;
 
     const sampleRate = options.sampleRate ?? 24000;
-    const captureSampleRate =
-      options.sessionConfig?.inputAudioFormat?.rate ?? sampleRate;
-    const playbackSampleRate =
-      options.sessionConfig?.outputAudioFormat?.rate ?? sampleRate;
+    const captureSampleRate = options.sessionConfig?.inputAudioFormat?.rate ?? sampleRate;
+    const playbackSampleRate = options.sessionConfig?.outputAudioFormat?.rate ?? sampleRate;
 
     this.transport = new BrowserRealtimeTransport({
       model: this.model,
@@ -138,9 +133,7 @@ export abstract class AbstractRealtimeSession {
     } catch (error) {
       this.applyState(this.reducer.setStatus(this.state, 'error'));
       this.onError?.(
-        error instanceof Error
-          ? error
-          : new Error(`Connection failed: ${String(error)}`),
+        error instanceof Error ? error : new Error(`Connection failed: ${String(error)}`),
       );
     }
   }
@@ -191,11 +184,7 @@ export abstract class AbstractRealtimeSession {
   // ── Tool output ───────────────────────────────────────────────────
 
   addToolOutput(callId: string, result: unknown): void {
-    const { state, output } = this.reducer.addToolOutput(
-      this.state,
-      callId,
-      result,
-    );
+    const { state, output } = this.reducer.addToolOutput(this.state, callId, result);
     this.applyState(state);
 
     this.sendEvent({
@@ -255,10 +244,7 @@ export abstract class AbstractRealtimeSession {
     this.audio.dispose();
     this.applyState(
       this.reducer.setStatus(
-        this.reducer.setPlaying(
-          this.reducer.setCapturing(this.state, false),
-          false,
-        ),
+        this.reducer.setPlaying(this.reducer.setCapturing(this.state, false), false),
         'disconnected',
       ),
     );

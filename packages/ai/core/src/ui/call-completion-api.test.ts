@@ -21,8 +21,6 @@ describe('callCompletionApi', () => {
       fetch: async () => new Response(null, { status: 502 }),
     });
 
-    expect(setError).toHaveBeenCalledWith(
-      new Error('Failed to fetch the chat response.'),
-    );
+    expect(setError).toHaveBeenCalledWith(new Error('Failed to fetch the chat response.'));
   });
 });

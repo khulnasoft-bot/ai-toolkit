@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { serializeModelOptions } from './serialize-model-options';
 import { SerializationError } from './serialization-error';
+import { serializeModelOptions } from './serialize-model-options';
 
 type TestConfig = Record<string, unknown> & {
   headers?: () => Record<string, string | undefined>;

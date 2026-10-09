@@ -12,17 +12,14 @@ export function isJSONSerializable(value: unknown): value is JSONValue {
 
   const type = typeof value;
   if (type === 'string' || type === 'number' || type === 'boolean') return true;
-  if (type === 'function' || type === 'symbol' || type === 'bigint')
-    return false;
+  if (type === 'function' || type === 'symbol' || type === 'bigint') return false;
 
   if (Array.isArray(value)) {
     return value.every(isJSONSerializable);
   }
 
   if (Object.getPrototypeOf(value) === Object.prototype) {
-    return Object.values(value as Record<string, unknown>).every(
-      isJSONSerializable,
-    );
+    return Object.values(value as Record<string, unknown>).every(isJSONSerializable);
   }
 
   return false;

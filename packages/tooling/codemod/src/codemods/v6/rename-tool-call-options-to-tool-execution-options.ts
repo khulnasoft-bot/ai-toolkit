@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Replace import specifiers from 'ai-toolkit' package
@@ -9,8 +9,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       return (
         path.node.source.type === 'StringLiteral' &&
-        (path.node.source.value === 'ai-toolkit' ||
-          path.node.source.value === 'ai-toolkit')
+        (path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit')
       );
     })
     .forEach(path => {
@@ -42,14 +41,9 @@ export default createTransformer((fileInfo, api, options, context) => {
       return (
         path.node.name === 'ToolCallOptions' &&
         parent.node.type !== 'ImportSpecifier' &&
-        !(
-          parent.node.type === 'MemberExpression' &&
-          parent.node.property === path.node
-        ) &&
+        !(parent.node.type === 'MemberExpression' && parent.node.property === path.node) &&
         !(parent.node.type === 'Property' && parent.node.key === path.node) &&
-        !(
-          parent.node.type === 'ObjectProperty' && parent.node.key === path.node
-        )
+        !(parent.node.type === 'ObjectProperty' && parent.node.key === path.node)
       );
     })
     .forEach(path => {
@@ -62,8 +56,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .find(j.TSTypeReference)
     .filter(path => {
       return (
-        path.node.typeName.type === 'Identifier' &&
-        path.node.typeName.name === 'ToolCallOptions'
+        path.node.typeName.type === 'Identifier' && path.node.typeName.name === 'ToolCallOptions'
       );
     })
     .forEach(path => {

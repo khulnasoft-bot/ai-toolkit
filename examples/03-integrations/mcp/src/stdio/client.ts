@@ -1,12 +1,12 @@
-import { openai } from '@ai-toolkit/openai';
-import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { generateText, stepCountIs } from '@ai-toolkit/ai';
 import { createMCPClient } from '@ai-toolkit/mcp';
+import { openai } from '@ai-toolkit/openai';
+import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import 'dotenv/config';
 import { z } from 'zod';
 
 async function main() {
-  let mcpClient;
+  let mcpClient: Awaited<ReturnType<typeof createMCPClient>> | undefined;
 
   try {
     // Or use the AI TOOLKIT's stdio transport by importing:
@@ -37,8 +37,7 @@ async function main() {
         console.log(`STEP RESULTS: ${JSON.stringify(toolResults, null, 2)}`);
       },
       system: 'You are an expert in Pokemon',
-      prompt:
-        'Which Pokemon could best defeat Feebas? Choose one and share details about it.',
+      prompt: 'Which Pokemon could best defeat Feebas? Choose one and share details about it.',
     });
 
     console.log(`FINAL ANSWER: ${answer}`);

@@ -3,15 +3,13 @@
  * Enables checking if an error is an instance of AITOOLKITError across package versions.
  */
 const marker = 'vercel.ai.error';
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * Custom error class for AI TOOLKIT related errors.
  * @extends Error
  */
 export class AITOOLKITError extends Error {
-  private readonly [symbol] = true; // used in isInstance
-
   /**
    * The underlying cause of the error, if any.
    */

@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
-import { UIToolInvocation } from '@ai-toolkit/ai';
+import type { UIToolInvocation } from '@ai-toolkit/ai';
+import type { openai } from '@ai-toolkit/openai';
 
 export default function CodeInterpreterView({
   invocation,
@@ -24,18 +24,21 @@ export default function CodeInterpreterView({
 
         {invocation.state === 'output-available' && (
           <div className="mb-3">
-            <div className="mb-2 text-sm font-medium text-yellow-400">
-              Output:
-            </div>
+            <div className="mb-2 text-sm font-medium text-yellow-400">Output:</div>
             <div className="space-y-2">
-              {invocation.output.outputs?.map((output, index) => (
-                <div key={index} className="p-3 bg-black rounded-lg">
+              {invocation.output.outputs?.map(output => (
+                <div
+                  key={output.type === 'image' ? output.url : `logs-${output.logs}`}
+                  className="p-3 bg-black rounded-lg"
+                >
                   {output.type === 'logs' && (
                     <div className="font-mono text-sm text-green-300">
                       <span className="whitespace-pre-wrap">{output.logs}</span>
                     </div>
                   )}
-                  {output.type === 'image' && <img src={output.url} />}
+                  {output.type === 'image' && (
+                    <img alt="Code interpreter output" src={output.url} />
+                  )}
                 </div>
               ))}
             </div>

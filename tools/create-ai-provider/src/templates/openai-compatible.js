@@ -1,9 +1,9 @@
 import {
+  baseTsconfigReferences,
   buildPackageJson,
   buildTsconfig,
-  baseTsconfigReferences,
-  TSUP_CONFIG,
   TSCONFIG_BUILD,
+  TSUP_CONFIG,
   TURBO_JSON,
   VERSION_TS,
   vitestConfig,
@@ -18,9 +18,7 @@ export function getFiles(ctx) {
   const { name, pascalName, camelName, envPrefix } = ctx;
   const models = ctx.models?.length ? ctx.models : DEFAULT_MODELS;
   const modelUnion =
-    models.length === 1
-      ? `'${models[0]}'`
-      : `\n${models.map(m => `  | '${m}'`).join('\n')}`;
+    models.length === 1 ? `'${models[0]}'` : `\n${models.map(m => `  | '${m}'`).join('\n')}`;
   const exampleModel = models[0];
 
   const providerTs = `import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';

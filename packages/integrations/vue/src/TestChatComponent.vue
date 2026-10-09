@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { UIMessage } from 'ai-toolkit';
+import type { UIMessage } from 'ai-toolkit';
 import { reactive } from 'vue';
 import { Chat } from './chat.vue';
 
 const onFinishCalls: Array<{ message: UIMessage }> = reactive([]);
 
-const chat = new Chat({
+const _chat = new Chat({
   onFinish: options => {
     onFinishCalls.push(options);
   },

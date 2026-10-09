@@ -1,5 +1,5 @@
-import { createVertex } from '@ai-toolkit/google-vertex';
 import { streamText } from '@ai-toolkit/ai';
+import { createVertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 
 run(async () => {

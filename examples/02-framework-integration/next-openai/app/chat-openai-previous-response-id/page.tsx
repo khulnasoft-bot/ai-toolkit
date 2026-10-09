@@ -1,22 +1,22 @@
 'use client';
 
-import {
+import { DefaultChatTransport, type ProviderMetadata } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import { useRef } from 'react';
+import type {
   PreviousResponseIdRequestBody,
   PreviousResponseIdUIMessage,
 } from '@/app/api/chat-openai-previous-response-id/route';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport, ProviderMetadata } from '@ai-toolkit/ai';
-import { useRef } from 'react';
 
 export default function OpenPreviousResponseIdPage() {
   // Keep the last provider metadata so we can supply previousResponseId on the next request.
   const providerMetadataRef = useRef<ProviderMetadata | undefined>(undefined);
 
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<PreviousResponseIdUIMessage>({
+  const { error, status, sendMessage, messages, regenerate } = useChat<PreviousResponseIdUIMessage>(
+    {
       transport: new DefaultChatTransport({
         api: '/api/chat-openai-previous-response-id',
         prepareSendMessagesRequest: ({ messages }) => {
@@ -39,7 +39,8 @@ export default function OpenPreviousResponseIdPage() {
           }
         }
       },
-    });
+    },
+  );
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -51,18 +52,21 @@ export default function OpenPreviousResponseIdPage() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${index}`}>{part.text}</Response>;
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={index} />;
+                return <ReasoningView part={part} key={`${part.type}-${index}`} />;
               }
               case 'tool-rollDieToolWithProgrammaticCalling': {
                 return (
-                  <div key={index} className="flex gap-2 p-1">
+                  <div key={part.toolCallId} className="flex gap-2 p-1">
                     <div>{part.input?.player}</div>
                     {part.output && <div>roll:{part.output.roll}</div>}
                   </div>
                 );
+              }
+              default: {
+                return null;
               }
             }
           })}

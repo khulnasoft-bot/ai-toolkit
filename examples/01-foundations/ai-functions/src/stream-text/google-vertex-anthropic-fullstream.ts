@@ -1,8 +1,8 @@
-import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({

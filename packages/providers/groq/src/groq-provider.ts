@@ -1,21 +1,20 @@
 import {
-  LanguageModelV3,
+  type LanguageModelV3,
   NoSuchModelError,
-  ProviderV3,
-  TranscriptionModelV3,
+  type ProviderV3,
+  type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { GroqChatLanguageModel } from './groq-chat-language-model';
-import { GroqChatModelId } from './groq-chat-options';
-import { GroqTranscriptionModelId } from './groq-transcription-options';
-import { GroqTranscriptionModel } from './groq-transcription-model';
-
+import type { GroqChatModelId } from './groq-chat-options';
 import { groqTools } from './groq-tools';
+import { GroqTranscriptionModel } from './groq-transcription-model';
+import type { GroqTranscriptionModelId } from './groq-transcription-options';
 import { VERSION } from './version';
 export interface GroqProvider extends ProviderV3 {
   /**
@@ -71,8 +70,7 @@ or to provide a custom fetch implementation for e.g. testing.
 Create an Groq provider instance.
  */
 export function createGroq(options: GroqProviderSettings = {}): GroqProvider {
-  const baseURL =
-    withoutTrailingSlash(options.baseURL) ?? 'https://api.groq.com/openai/v1';
+  const baseURL = withoutTrailingSlash(options.baseURL) ?? 'https://api.groq.com/openai/v1';
 
   const getHeaders = () =>
     withUserAgentSuffix(
@@ -97,9 +95,7 @@ export function createGroq(options: GroqProviderSettings = {}): GroqProvider {
 
   const createLanguageModel = (modelId: GroqChatModelId) => {
     if (new.target) {
-      throw new Error(
-        'The Groq model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Groq model function cannot be called with the new keyword.');
     }
 
     return createChatModel(modelId);
@@ -114,9 +110,7 @@ export function createGroq(options: GroqProviderSettings = {}): GroqProvider {
     });
   };
 
-  const provider = function (modelId: GroqChatModelId) {
-    return createLanguageModel(modelId);
-  };
+  const provider = (modelId: GroqChatModelId) => createLanguageModel(modelId);
 
   provider.specificationVersion = 'v3' as const;
   provider.languageModel = createLanguageModel;

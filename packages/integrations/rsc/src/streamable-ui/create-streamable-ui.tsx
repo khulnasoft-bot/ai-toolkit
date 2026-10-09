@@ -59,7 +59,7 @@ function createStreamableUI(initialValue?: React.ReactNode) {
 
   function assertStream(method: string) {
     if (closed) {
-      throw new Error(method + ': UI stream is already closed.');
+      throw new Error(`${method}: UI stream is already closed.`);
     }
   }
 

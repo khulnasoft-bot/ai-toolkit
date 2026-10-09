@@ -97,13 +97,9 @@ export type BatchV4ItemResult<RESULT> =
  * processing.
  */
 export type BatchModelV4<REQUEST, RESULT> = {
-  experimental_doStartBatch(
-    options: BatchV4StartOptions<REQUEST>,
-  ): PromiseLike<BatchV4StartResult>;
+  experimental_doStartBatch(options: BatchV4StartOptions<REQUEST>): PromiseLike<BatchV4StartResult>;
 
-  experimental_doGetBatchStatus(
-    options: BatchV4OperationOptions,
-  ): PromiseLike<BatchV4Status>;
+  experimental_doGetBatchStatus(options: BatchV4OperationOptions): PromiseLike<BatchV4Status>;
 
   experimental_doGetBatchResults(
     options: BatchV4OperationOptions,

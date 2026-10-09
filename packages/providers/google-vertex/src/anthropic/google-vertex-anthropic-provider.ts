@@ -1,19 +1,12 @@
+import { AnthropicMessagesLanguageModel, anthropicTools } from '@ai-toolkit/anthropic/internal';
+import { type LanguageModelV3, NoSuchModelError, type ProviderV3 } from '@ai-toolkit/provider';
 import {
-  LanguageModelV3,
-  NoSuchModelError,
-  ProviderV3,
-} from '@ai-toolkit/provider';
-import {
-  FetchFunction,
-  Resolvable,
+  type FetchFunction,
   loadOptionalSetting,
+  type Resolvable,
   withoutTrailingSlash,
 } from '@ai-toolkit/provider-utils';
-import {
-  anthropicTools,
-  AnthropicMessagesLanguageModel,
-} from '@ai-toolkit/anthropic/internal';
-import { GoogleVertexAnthropicMessagesModelId } from './google-vertex-anthropic-messages-options';
+import type { GoogleVertexAnthropicMessagesModelId } from './google-vertex-anthropic-messages-options';
 
 /**
  * Tools supported by Google Vertex Anthropic.
@@ -152,7 +145,7 @@ export function createVertexAnthropic(
 
     return (
       withoutTrailingSlash(options.baseURL) ??
-      `https://${location === 'global' ? '' : location + '-'}aiplatform.googleapis.com/v1/projects/${project}/locations/${location}/publishers/anthropic/models`
+      `https://${location === 'global' ? '' : `${location}-`}aiplatform.googleapis.com/v1/projects/${project}/locations/${location}/publishers/anthropic/models`
     );
   };
 
@@ -181,9 +174,7 @@ export function createVertexAnthropic(
 
   const provider = function (modelId: GoogleVertexAnthropicMessagesModelId) {
     if (new.target) {
-      throw new Error(
-        'The Anthropic model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Anthropic model function cannot be called with the new keyword.');
     }
 
     return createChatModel(modelId);

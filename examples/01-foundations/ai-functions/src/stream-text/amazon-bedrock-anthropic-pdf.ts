@@ -1,7 +1,7 @@
-import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
-import fs from 'fs';
+import fs from 'node:fs';
 import { run } from '../lib/run';
 
 run(async () => {

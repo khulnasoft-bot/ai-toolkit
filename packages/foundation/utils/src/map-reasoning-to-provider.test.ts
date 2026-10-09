@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import type { SharedV4Warning } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import {
   isCustomReasoning,
   mapReasoningToProviderBudget,
@@ -95,13 +95,7 @@ describe('isCustomReasoning', () => {
   });
 
   it('returns true for all reasoning levels', () => {
-    for (const value of [
-      'minimal',
-      'low',
-      'medium',
-      'high',
-      'xhigh',
-    ] as const) {
+    for (const value of ['minimal', 'low', 'medium', 'high', 'xhigh'] as const) {
       expect(isCustomReasoning(value)).toBe(true);
     }
   });

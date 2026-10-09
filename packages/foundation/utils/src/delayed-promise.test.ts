@@ -1,6 +1,6 @@
-import { DelayedPromise } from './delayed-promise';
 import { delay } from '@ai-toolkit/provider-utils';
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+import { DelayedPromise } from './delayed-promise';
 
 describe('DelayedPromise', () => {
   it('should resolve when accessed after resolution', async () => {

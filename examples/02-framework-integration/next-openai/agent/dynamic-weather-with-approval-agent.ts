@@ -1,10 +1,5 @@
+import { dynamicTool, type InferAgentUIMessage, ToolLoopAgent, type ToolSet } from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
-import {
-  ToolLoopAgent,
-  dynamicTool,
-  InferAgentUIMessage,
-  ToolSet,
-} from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 function randomWeather() {

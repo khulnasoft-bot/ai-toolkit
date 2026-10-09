@@ -1,5 +1,5 @@
-import { google } from '@ai-toolkit/google';
 import { streamText } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { run } from '../lib/run';
 
 run(async () => {

@@ -11,7 +11,7 @@ const PROVIDER_CREATORS = [
   'createOpenAI',
 ];
 
-function isWithinProviderCall(j: any, path: any): boolean {
+function isWithinProviderCall(_j: any, path: any): boolean {
   // Walk up the AST to find parent CallExpression
   let current = path;
   while (current) {
@@ -27,7 +27,7 @@ function isWithinProviderCall(j: any, path: any): boolean {
   return false;
 }
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Find and rename baseUrl properties

@@ -1,19 +1,19 @@
 import {
-  EmbeddingModelV3,
-  LanguageModelV3,
+  type EmbeddingModelV3,
+  type LanguageModelV3,
   NoSuchModelError,
-  ProviderV3,
+  type ProviderV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { MistralChatLanguageModel } from './mistral-chat-language-model';
-import { MistralChatModelId } from './mistral-chat-options';
+import type { MistralChatModelId } from './mistral-chat-options';
 import { MistralEmbeddingModel } from './mistral-embedding-model';
-import { MistralEmbeddingModelId } from './mistral-embedding-options';
+import type { MistralEmbeddingModelId } from './mistral-embedding-options';
 import { VERSION } from './version';
 
 export interface MistralProvider extends ProviderV3 {
@@ -80,11 +80,8 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create a Mistral AI provider instance.
  */
-export function createMistral(
-  options: MistralProviderSettings = {},
-): MistralProvider {
-  const baseURL =
-    withoutTrailingSlash(options.baseURL) ?? 'https://api.mistral.ai/v1';
+export function createMistral(options: MistralProviderSettings = {}): MistralProvider {
+  const baseURL = withoutTrailingSlash(options.baseURL) ?? 'https://api.mistral.ai/v1';
 
   const getHeaders = () =>
     withUserAgentSuffix(
@@ -118,9 +115,7 @@ export function createMistral(
 
   const provider = function (modelId: MistralChatModelId) {
     if (new.target) {
-      throw new Error(
-        'The Mistral model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Mistral model function cannot be called with the new keyword.');
     }
 
     return createChatModel(modelId);

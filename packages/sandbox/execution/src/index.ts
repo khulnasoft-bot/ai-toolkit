@@ -19,7 +19,7 @@ export interface ExecutionEngine {
 
 export function createExecutionEngine(): ExecutionEngine {
   return {
-    execute: async (code, language) => ({
+    execute: async (_code, _language) => ({
       executionId: `exec_${Date.now()}`,
       stdout: '',
       stderr: '',

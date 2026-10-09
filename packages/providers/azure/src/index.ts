@@ -1,15 +1,14 @@
 export type {
-  OpenAIResponsesProviderOptions,
   OpenAIChatLanguageModelOptions,
+  OpenAIResponsesProviderOptions,
 } from '@ai-toolkit/openai';
-
-export { azure, createAzure } from './azure-openai-provider';
 export type {
   AzureOpenAIProvider,
   AzureOpenAIProviderSettings,
 } from './azure-openai-provider';
+export { azure, createAzure } from './azure-openai-provider';
 export type {
-  AzureResponsesTextProviderMetadata,
   AzureResponsesSourceDocumentProviderMetadata,
+  AzureResponsesTextProviderMetadata,
 } from './azure-openai-provider-metadata';
 export { VERSION } from './version';

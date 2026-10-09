@@ -1,26 +1,24 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable @next/next/no-img-element */
-import {
-  createTestServer,
-  TestResponseController,
-} from '@ai-toolkit/test-server/with-vitest';
+
 import { mockId } from '@ai-toolkit/provider-utils/test';
+import { createTestServer, TestResponseController } from '@ai-toolkit/test-server/with-vitest';
 import '@testing-library/jest-dom/vitest';
-import { screen, waitFor, render } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {
   DefaultChatTransport,
-  FinishReason,
+  type FinishReason,
   isStaticToolUIPart,
   TextStreamChatTransport,
-  UIMessage,
-  UIMessageChunk,
+  type UIMessage,
+  type UIMessageChunk,
 } from '@ai-toolkit/ai';
+import { render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import React, { act, useRef, useState } from 'react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { Chat } from './chat.react';
 import { setupTestComponent } from './setup-test-component';
 import { useChat } from './use-chat';
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 
 function formatChunk(part: UIMessageChunk) {
   return `data: ${JSON.stringify(part)}\n\n`;
@@ -34,7 +32,7 @@ const server = createTestServer({
 describe('initial messages', () => {
   setupTestComponent(
     ({ id: idParam }: { id: string }) => {
-      const [id, setId] = React.useState<string>(idParam);
+      const [id, _setId] = React.useState<string>(idParam);
       const {
         messages,
         status,
@@ -66,9 +64,7 @@ describe('initial messages', () => {
 
   it('should show initial messages', async () => {
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           parts: [
@@ -118,12 +114,14 @@ describe('data protocol stream', () => {
           {error && <div data-testid="error">{error.toString()}</div>}
           <div data-testid="messages">{JSON.stringify(messages, null, 2)}</div>
           <button
+            type="button"
             data-testid="do-send"
             onClick={() => {
               sendMessage({ parts: [{ text: 'hi', type: 'text' }] });
             }}
           />
           <button
+            type="button"
             data-testid="do-change-id"
             onClick={() => {
               setId('second-id');
@@ -158,9 +156,7 @@ describe('data protocol stream', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           parts: [
@@ -196,9 +192,7 @@ describe('data protocol stream', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           parts: [
@@ -229,17 +223,13 @@ describe('data protocol stream', () => {
   it('should show error response when there is a streaming error', async () => {
     server.urls['/api/chat'].response = {
       type: 'stream-chunks',
-      chunks: [
-        formatChunk({ type: 'error', errorText: 'custom error message' }),
-      ],
+      chunks: [formatChunk({ type: 'error', errorText: 'custom error message' })],
     };
 
     await userEvent.click(screen.getByTestId('do-send'));
 
     await screen.findByTestId('error');
-    expect(screen.getByTestId('error')).toHaveTextContent(
-      'Error: custom error message',
-    );
+    expect(screen.getByTestId('error')).toHaveTextContent('Error: custom error message');
   });
 
   describe('status', () => {
@@ -258,9 +248,7 @@ describe('data protocol stream', () => {
       });
 
       controller.write(formatChunk({ type: 'text-start', id: '0' }));
-      controller.write(
-        formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-      );
+      controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
       controller.write(formatChunk({ type: 'text-end', id: '0' }));
 
       await waitFor(() => {
@@ -300,13 +288,9 @@ describe('data protocol stream', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     controller.write(formatChunk({ type: 'text-start', id: '0' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ',' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: ' world' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ' world' }));
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: '.' }));
     controller.write(formatChunk({ type: 'text-end', id: '0' }));
     controller.write(
@@ -322,9 +306,7 @@ describe('data protocol stream', () => {
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           parts: [
@@ -471,18 +453,15 @@ describe('text stream', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}-text-stream`} key={m.id}>
             <div data-testid={`message-${idx}-id`}>{m.id}</div>
-            <div data-testid={`message-${idx}-role`}>
-              {m.role === 'user' ? 'User: ' : 'AI: '}
-            </div>
+            <div data-testid={`message-${idx}-role`}>{m.role === 'user' ? 'User: ' : 'AI: '}</div>
             <div data-testid={`message-${idx}-content`}>
-              {m.parts
-                .map(part => (part.type === 'text' ? part.text : ''))
-                .join('')}
+              {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
             </div>
           </div>
         ))}
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({
@@ -511,9 +490,7 @@ describe('text stream', () => {
     expect(screen.getByTestId('message-0-content')).toHaveTextContent('hi');
 
     await screen.findByTestId('message-1-content');
-    expect(screen.getByTestId('message-1-content')).toHaveTextContent(
-      'Hello, world.',
-    );
+    expect(screen.getByTestId('message-1-content')).toHaveTextContent('Hello, world.');
   });
 
   it('should have stable message ids', async () => {
@@ -634,13 +611,12 @@ describe('prepareChatRequest', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.role === 'user' ? 'User: ' : 'AI: '}
-            {m.parts
-              .map(part => (part.type === 'text' ? part.text : ''))
-              .join('')}
+            {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
           </div>
         ))}
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage(
@@ -728,9 +704,7 @@ describe('prepareChatRequest', () => {
     `);
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: Hello, world.',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello, world.');
   });
 });
 
@@ -757,7 +731,7 @@ describe('onToolCall', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.parts.filter(isStaticToolUIPart).map((toolPart, toolIdx) => (
-              <div key={toolIdx} data-testid={`tool-${toolIdx}`}>
+              <div key={toolPart.toolCallId} data-testid={`tool-${toolIdx}`}>
                 {JSON.stringify(toolPart)}
               </div>
             ))}
@@ -765,6 +739,7 @@ describe('onToolCall', () => {
         ))}
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({
@@ -798,9 +773,7 @@ describe('onToolCall', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     await screen.findByTestId('message-1');
-    expect(
-      JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-    ).toStrictEqual({
+    expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
       state: 'input-available',
       input: { testArg: 'test-value' },
       toolCallId: 'tool-call-0',
@@ -810,15 +783,12 @@ describe('onToolCall', () => {
     resolve();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'output-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
         type: 'tool-test-tool',
-        output:
-          'test-tool-response: test-tool tool-call-0 {"testArg":"test-value"}',
+        output: 'test-tool-response: test-tool tool-call-0 {"testArg":"test-value"}',
       });
     });
   });
@@ -835,8 +805,9 @@ describe('onToolCall', () => {
 
       return (
         <div>
-          <button data-testid="toggle" onClick={() => setUseB(true)} />
+          <button type="button" data-testid="toggle" onClick={() => setUseB(true)} />
           <button
+            type="button"
             data-testid="do-send"
             onClick={() => {
               sendMessage({
@@ -887,12 +858,11 @@ describe('tool invocations', () => {
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.parts.filter(isStaticToolUIPart).map((toolPart, toolIdx) => {
               return (
-                <div key={toolIdx}>
-                  <div data-testid={`tool-invocation-${toolIdx}`}>
-                    {JSON.stringify(toolPart)}
-                  </div>
+                <div key={toolPart.toolCallId}>
+                  <div data-testid={`tool-invocation-${toolIdx}`}>{JSON.stringify(toolPart)}</div>
                   {toolPart.state === 'input-available' && (
                     <button
+                      type="button"
                       data-testid={`add-result-${toolIdx}`}
                       onClick={() => {
                         addToolOutput({
@@ -908,9 +878,7 @@ describe('tool invocations', () => {
             })}
             {m.role === 'assistant' && (
               <div data-testid={`message-${idx}-text`}>
-                {m.parts
-                  .map(part => (part.type === 'text' ? part.text : ''))
-                  .join('')}
+                {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
               </div>
             )}
           </div>
@@ -919,6 +887,7 @@ describe('tool invocations', () => {
         <div data-testid="messages">{JSON.stringify(messages, null, 2)}</div>
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({
@@ -949,9 +918,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-streaming',
         toolCallId: 'tool-call-0',
         type: 'tool-test-tool',
@@ -967,9 +934,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-streaming',
         toolCallId: 'tool-call-0',
         type: 'tool-test-tool',
@@ -986,9 +951,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-streaming',
         toolCallId: 'tool-call-0',
         type: 'tool-test-tool',
@@ -1006,9 +969,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -1026,9 +987,7 @@ describe('tool invocations', () => {
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'output-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -1057,9 +1016,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -1077,9 +1034,7 @@ describe('tool invocations', () => {
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'output-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -1110,9 +1065,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -1123,9 +1076,7 @@ describe('tool invocations', () => {
     await userEvent.click(screen.getByTestId('add-result-0'));
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'output-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -1146,9 +1097,7 @@ describe('tool invocations', () => {
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-1',
           parts: [
@@ -1265,9 +1214,7 @@ describe('file attachments with data url', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-1',
           role: 'user',
@@ -1355,9 +1302,7 @@ describe('file attachments with data url', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           id: 'id-1',
@@ -1480,9 +1425,7 @@ describe('file attachments with url', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           id: 'id-1',
@@ -1589,9 +1532,7 @@ describe('attachments with empty submit', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-1',
           role: 'user',
@@ -1697,9 +1638,7 @@ describe('should send message with attachments', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-1',
           parts: [
@@ -1766,13 +1705,12 @@ describe('regenerate', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.role === 'user' ? 'User: ' : 'AI: '}
-            {m.parts
-              .map(part => (part.type === 'text' ? part.text : ''))
-              .join('')}
+            {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
           </div>
         ))}
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({ parts: [{ text: 'hi', type: 'text' }] });
@@ -1780,6 +1718,7 @@ describe('regenerate', () => {
         />
 
         <button
+          type="button"
           data-testid="do-regenerate"
           onClick={() => {
             regenerate({
@@ -1856,9 +1795,7 @@ describe('regenerate', () => {
     });
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: second response',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: second response');
   });
 });
 
@@ -1875,13 +1812,12 @@ describe('test sending additional fields during message submission', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.role === 'user' ? 'User: ' : 'AI: '}
-            {m.parts
-              .map(part => (part.type === 'text' ? part.text : ''))
-              .join('')}
+            {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
           </div>
         ))}
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({
@@ -1961,9 +1897,7 @@ describe('resume ongoing stream and return assistant message', () => {
           {messages.map((m, idx) => (
             <div data-testid={`message-${idx}`} key={m.id}>
               {m.role === 'user' ? 'User: ' : 'AI: '}
-              {m.parts
-                .map(part => (part.type === 'text' ? part.text : ''))
-                .join('')}
+              {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
             </div>
           ))}
 
@@ -1992,27 +1926,21 @@ describe('resume ongoing stream and return assistant message', () => {
     });
 
     controller.write(formatChunk({ type: 'text-start', id: '0' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
 
     await waitFor(() => {
       expect(screen.getByTestId('status')).toHaveTextContent('streaming');
     });
 
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ',' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: ' world' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ' world' }));
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: '.' }));
     controller.write(formatChunk({ type: 'text-end', id: '0' }));
 
     controller.close();
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: Hello, world.',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello, world.');
 
     await waitFor(() => {
       expect(screen.getByTestId('status')).toHaveTextContent('ready');
@@ -2038,13 +1966,12 @@ describe('stop', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.role === 'user' ? 'User: ' : 'AI: '}
-            {m.parts
-              .map(part => (part.type === 'text' ? part.text : ''))
-              .join('')}
+            {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
           </div>
         ))}
 
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({
@@ -2054,7 +1981,7 @@ describe('stop', () => {
           }}
         />
 
-        <button data-testid="do-stop" onClick={stop} />
+        <button type="button" data-testid="do-stop" onClick={stop} />
 
         <p data-testid="status">{status}</p>
       </div>
@@ -2072,9 +1999,7 @@ describe('stop', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     controller.write(formatChunk({ type: 'text-start', id: '0' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
 
     await waitFor(() => {
       expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello');
@@ -2088,9 +2013,7 @@ describe('stop', () => {
     });
 
     await expect(
-      controller.write(
-        formatChunk({ type: 'text-delta', id: '0', delta: ', world!' }),
-      ),
+      controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ', world!' })),
     ).rejects.toThrow();
 
     await expect(controller.close()).rejects.toThrow();
@@ -2115,12 +2038,11 @@ describe('experimental_throttle', () => {
         {messages.map((m, idx) => (
           <div data-testid={`message-${idx}`} key={m.id}>
             {m.role === 'user' ? 'User: ' : 'AI: '}
-            {m.parts
-              .map(part => (part.type === 'text' ? part.text : ''))
-              .join('')}
+            {m.parts.map(part => (part.type === 'text' ? part.text : '')).join('')}
           </div>
         ))}
         <button
+          type="button"
           data-testid="do-send"
           onClick={() => {
             sendMessage({ parts: [{ text: 'hi', type: 'text' }] });
@@ -2144,9 +2066,7 @@ describe('experimental_throttle', () => {
     vi.useFakeTimers();
 
     controller.write(formatChunk({ type: 'text-start', id: '0' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'Hel' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hel' }));
     await act(async () => {
       await vi.advanceTimersByTimeAsync(throttleMs + 10);
     });
@@ -2154,25 +2074,17 @@ describe('experimental_throttle', () => {
     expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hel');
 
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'lo' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: ' Th' }),
-    );
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'ere' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ' Th' }));
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'ere' }));
     controller.write(formatChunk({ type: 'text-end', id: '0' }));
 
-    expect(screen.getByTestId('message-1')).not.toHaveTextContent(
-      'AI: Hello There',
-    );
+    expect(screen.getByTestId('message-1')).not.toHaveTextContent('AI: Hello There');
 
     await act(async () => {
       await vi.advanceTimersByTimeAsync(throttleMs + 10);
     });
 
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: Hello There',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello There');
 
     vi.useRealTimers();
   });
@@ -2201,12 +2113,14 @@ describe('id changes', () => {
           {error && <div data-testid="error">{error.toString()}</div>}
           <div data-testid="messages">{JSON.stringify(messages, null, 2)}</div>
           <button
+            type="button"
             data-testid="do-send"
             onClick={() => {
               sendMessage({ parts: [{ text: 'hi', type: 'text' }] });
             }}
           />
           <button
+            type="button"
             data-testid="do-change-id"
             onClick={() => {
               setId('second-id');
@@ -2236,9 +2150,7 @@ describe('id changes', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: expect.any(String),
           parts: [
@@ -2295,12 +2207,14 @@ describe('chat instance changes', () => {
           {error && <div data-testid="error">{error.toString()}</div>}
           <div data-testid="messages">{JSON.stringify(messages, null, 2)}</div>
           <button
+            type="button"
             data-testid="do-send"
             onClick={() => {
               sendMessage({ parts: [{ text: 'hi', type: 'text' }] });
             }}
           />
           <button
+            type="button"
             data-testid="do-change-chat"
             onClick={() => {
               setChat(
@@ -2335,9 +2249,7 @@ describe('chat instance changes', () => {
     await userEvent.click(screen.getByTestId('do-send'));
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: expect.any(String),
           parts: [
@@ -2384,15 +2296,11 @@ describe('chat instance changes', () => {
     });
 
     controller.write(formatChunk({ type: 'text-start', id: '0' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
 
     // Verify streaming is working - text should appear immediately
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toContainEqual(
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toContainEqual(
         expect.objectContaining({
           role: 'assistant',
           parts: expect.arrayContaining([
@@ -2406,17 +2314,13 @@ describe('chat instance changes', () => {
     });
 
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ',' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: ' world' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ' world' }));
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: '.' }));
     controller.write(formatChunk({ type: 'text-end', id: '0' }));
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toContainEqual(
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toContainEqual(
         expect.objectContaining({
           role: 'assistant',
           parts: expect.arrayContaining([
@@ -2446,12 +2350,14 @@ describe('streaming with id change from undefined to defined', () => {
           <div data-testid="status">{status.toString()}</div>
           <div data-testid="messages">{JSON.stringify(messages, null, 2)}</div>
           <button
+            type="button"
             data-testid="change-id"
             onClick={() => {
               setId('chat-123');
             }}
           />
           <button
+            type="button"
             data-testid="send-message"
             onClick={() => {
               sendMessage({ parts: [{ text: 'hi', type: 'text' }] });
@@ -2483,15 +2389,11 @@ describe('streaming with id change from undefined to defined', () => {
     });
 
     controller.write(formatChunk({ type: 'text-start', id: '0' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
 
     // Verify streaming is working - text should appear immediately
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toContainEqual(
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toContainEqual(
         expect.objectContaining({
           role: 'assistant',
           parts: expect.arrayContaining([
@@ -2505,17 +2407,13 @@ describe('streaming with id change from undefined to defined', () => {
     });
 
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ',' }));
-    controller.write(
-      formatChunk({ type: 'text-delta', id: '0', delta: ' world' }),
-    );
+    controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ' world' }));
     controller.write(formatChunk({ type: 'text-delta', id: '0', delta: '.' }));
     controller.write(formatChunk({ type: 'text-end', id: '0' }));
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toContainEqual(
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toContainEqual(
         expect.objectContaining({
           role: 'assistant',
           parts: expect.arrayContaining([

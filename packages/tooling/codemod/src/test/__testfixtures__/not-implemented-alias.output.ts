@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { StreamData as SData, appendClientMessage as ACM } from 'ai';
+import { appendClientMessage as ACM, StreamData as SData } from 'ai';
 import { appendClientMessage } from 'some-other-package';
 
 /* FIXME(@ai-toolkit-upgrade-v5): The `StreamData` type has been removed. Please manually migrate following https://studio.khulnasoft.com/docs/migration-guides/migration-guide-5-0#stream-data-removal */
@@ -12,4 +12,4 @@ const messages = ACM({
   message: lastUserMessage,
 });
 
-const unrelated = appendClientMessage();
+const _unrelated = appendClientMessage();

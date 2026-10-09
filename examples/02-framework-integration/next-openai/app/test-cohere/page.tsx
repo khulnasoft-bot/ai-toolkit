@@ -1,7 +1,7 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 
 export default function TestCohere() {
@@ -11,9 +11,7 @@ export default function TestCohere() {
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        Cohere Block-Based Streaming Test
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">Cohere Block-Based Streaming Test</h1>
 
       {messages.map(m => (
         <div key={m.id} className="whitespace-pre-wrap">
@@ -22,6 +20,7 @@ export default function TestCohere() {
             if (part.type === 'text') {
               return part.text;
             }
+            return null;
           })}
         </div>
       ))}

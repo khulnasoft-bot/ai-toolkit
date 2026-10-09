@@ -1,10 +1,6 @@
-import { openai } from '@ai-toolkit/openai';
-import {
-  convertToModelMessages,
-  stepCountIs,
-  streamText,
-} from '@ai-toolkit/ai';
+import { convertToModelMessages, stepCountIs, streamText } from '@ai-toolkit/ai';
 import { createMCPClient } from '@ai-toolkit/mcp';
+import { openai } from '@ai-toolkit/openai';
 
 export const maxDuration = 30;
 
@@ -32,7 +28,7 @@ export async function POST(req: Request) {
     });
 
     return result.toUIMessageStreamResponse();
-  } catch (error) {
+  } catch (_error) {
     return new Response('Internal Server Error', { status: 500 });
   }
 }

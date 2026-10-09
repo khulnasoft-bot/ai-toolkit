@@ -1,5 +1,5 @@
+import { generateText, type ModelMessage, stepCountIs, tool } from '@ai-toolkit/ai';
 import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
-import { generateText, tool, ModelMessage, stepCountIs } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -45,8 +45,7 @@ run(async () => {
   const result1 = await generateText({
     model,
     tools,
-    prompt:
-      'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+    prompt: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     stopWhen: stepCountIs(5),
     onStepFinish: ({ toolCalls, toolResults }) => {
       if (toolCalls) {
@@ -55,7 +54,7 @@ run(async () => {
           console.log(
             `    Tool call ${call.toolName}: ${
               sig && typeof sig === 'string'
-                ? 'Signature: ' + sig.substring(0, 50) + '...'
+                ? `Signature: ${sig.substring(0, 50)}...`
                 : 'No signature'
             }`,
           );
@@ -67,9 +66,7 @@ run(async () => {
           const sig = result.providerMetadata?.google?.thoughtSignature;
           console.log(
             `    Tool result ${result.toolName}: ${
-              sig && typeof sig === 'string'
-                ? 'Signature preserved'
-                : 'No signature'
+              sig && typeof sig === 'string' ? 'Signature preserved' : 'No signature'
             }`,
           );
         });
@@ -86,9 +83,7 @@ run(async () => {
       msg.content.forEach(part => {
         if (part.type === 'tool-call') {
           const sig = part.providerOptions?.google?.thoughtSignature;
-          console.log(
-            `  ${part.toolName}: ${sig ? 'Has signature' : 'No signature'}`,
-          );
+          console.log(`  ${part.toolName}: ${sig ? 'Has signature' : 'No signature'}`);
         }
       });
     }
@@ -99,8 +94,7 @@ run(async () => {
   const messagesForTurn2: ModelMessage[] = [
     {
       role: 'user',
-      content:
-        'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+      content: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     },
     ...result1.response.messages,
     {

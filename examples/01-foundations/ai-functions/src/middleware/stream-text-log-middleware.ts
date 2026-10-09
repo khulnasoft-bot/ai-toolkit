@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamText, wrapLanguageModel } from '@ai-toolkit/ai';
-import { yourLogMiddleware } from './your-log-middleware';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
+import { yourLogMiddleware } from './your-log-middleware';
 
 run(async () => {
   const result = streamText({
@@ -12,7 +12,7 @@ run(async () => {
     prompt: 'What cities are in the United States?',
   });
 
-  for await (const textPart of result.textStream) {
+  for await (const _textPart of result.textStream) {
     // consume the stream
   }
 });

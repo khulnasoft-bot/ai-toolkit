@@ -1,17 +1,17 @@
-import { cohere } from '@ai-toolkit/cohere';
 import {
+  type ModelMessage,
   streamText,
-  ModelMessage,
-  ToolCallPart,
-  ToolResultPart,
+  type ToolCallPart,
+  type ToolResultPart,
 } from '@ai-toolkit/ai';
-import { weatherTool } from '../tools/weather-tool';
+import { cohere } from '@ai-toolkit/cohere';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 const messages: ModelMessage[] = [];
 
 run(async () => {
-  let toolResponseAvailable = false;
+  let _toolResponseAvailable = false;
 
   const result = streamText({
     model: cohere('command-r-plus'),
@@ -19,8 +19,7 @@ run(async () => {
     tools: {
       weather: weatherTool,
     },
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
+    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   let fullResponse = '';
@@ -40,9 +39,7 @@ run(async () => {
       case 'tool-call': {
         toolCalls.push(delta);
 
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
 
@@ -76,5 +73,5 @@ run(async () => {
     messages.push({ role: 'tool', content: toolResponses });
   }
 
-  toolResponseAvailable = toolCalls.length > 0;
+  _toolResponseAvailable = toolCalls.length > 0;
 });

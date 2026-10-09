@@ -2,13 +2,12 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_MCPClientError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * An error occurred with the MCP client.
  */
 export class MCPClientError extends AITOOLKITError {
-  private readonly [symbol] = true;
   readonly data?: unknown;
   readonly code?: number;
 

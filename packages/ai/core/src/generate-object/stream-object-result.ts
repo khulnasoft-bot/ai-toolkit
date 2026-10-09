@@ -1,13 +1,13 @@
-import type { ServerResponse } from 'http';
-import { AsyncIterableStream } from '../util/async-iterable-stream';
-import {
+import type { ServerResponse } from 'node:http';
+import type {
   CallWarning,
   FinishReason,
   LanguageModelRequestMetadata,
   LanguageModelResponseMetadata,
   ProviderMetadata,
 } from '../types';
-import { LanguageModelUsage } from '../types/usage';
+import type { LanguageModelUsage } from '../types/usage';
+import type { AsyncIterableStream } from '../util/async-iterable-stream';
 
 /**
 The result of a `streamObject` call that contains the partial object stream and additional information.

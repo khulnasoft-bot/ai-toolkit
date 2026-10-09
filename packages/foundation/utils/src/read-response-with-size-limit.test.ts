@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { readResponseWithSizeLimit } from './read-response-with-size-limit';
+import { describe, expect, it } from 'vitest';
 import { DownloadError } from './download-error';
+import { readResponseWithSizeLimit } from './read-response-with-size-limit';
 
 function createMockResponse({
   body,
@@ -73,9 +73,7 @@ describe('readResponseWithSizeLimit', () => {
       }),
     ).rejects.toSatisfy((error: unknown) => {
       expect(DownloadError.isInstance(error)).toBe(true);
-      expect((error as DownloadError).message).toContain(
-        'Content-Length: 1000',
-      );
+      expect((error as DownloadError).message).toContain('Content-Length: 1000');
       return true;
     });
   });
@@ -114,9 +112,7 @@ describe('readResponseWithSizeLimit', () => {
       }),
     ).rejects.toSatisfy((error: unknown) => {
       expect(DownloadError.isInstance(error)).toBe(true);
-      expect((error as DownloadError).message).toContain(
-        'exceeded maximum size of 50 bytes',
-      );
+      expect((error as DownloadError).message).toContain('exceeded maximum size of 50 bytes');
       return true;
     });
   });
@@ -174,9 +170,7 @@ describe('readResponseWithSizeLimit', () => {
       }),
     ).rejects.toSatisfy((error: unknown) => {
       expect(DownloadError.isInstance(error)).toBe(true);
-      expect((error as DownloadError).message).toContain(
-        'exceeded maximum size of 50 bytes',
-      );
+      expect((error as DownloadError).message).toContain('exceeded maximum size of 50 bytes');
       return true;
     });
   });

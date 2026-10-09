@@ -1,14 +1,14 @@
 // @ts-nocheck
-import { LanguageModelUsage, EmbeddingModelUsage } from 'ai';
+import type { EmbeddingModelUsage, LanguageModelUsage } from 'ai';
 
-function recordUsage(usage: LanguageModelUsage) {
+function _recordUsage(usage: LanguageModelUsage) {
   console.log(usage);
 }
 
-function processEmbedding(usage: EmbeddingModelUsage) {
+function _processEmbedding(usage: EmbeddingModelUsage) {
   console.log(usage);
 }
 
-const handler = (data: LanguageModelUsage) => {
+const _handler = (data: LanguageModelUsage) => {
   console.log(data);
 };

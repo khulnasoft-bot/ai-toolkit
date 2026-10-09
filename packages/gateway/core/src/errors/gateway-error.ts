@@ -2,8 +2,6 @@ const marker = 'vercel.ai.gateway.error';
 const symbol = Symbol.for(marker);
 
 export abstract class GatewayError extends Error {
-  private readonly [symbol] = true; // used in isInstance
-
   abstract readonly name: string;
   abstract readonly type: string;
   readonly statusCode: number;

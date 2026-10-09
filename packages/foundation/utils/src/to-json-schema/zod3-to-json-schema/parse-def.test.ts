@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
 import { parseDef } from './parse-def';
 import { getRefs } from './refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
 
 describe('parseDef', () => {
   it('should return a proper json schema with some common types without validation', () => {

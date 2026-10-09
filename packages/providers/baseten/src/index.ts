@@ -1,8 +1,8 @@
 export type { BasetenChatModelId } from './baseten-chat-options';
-export { baseten, createBaseten } from './baseten-provider';
 export type {
+  BasetenErrorData,
   BasetenProvider,
   BasetenProviderSettings,
-  BasetenErrorData,
 } from './baseten-provider';
+export { baseten, createBaseten } from './baseten-provider';
 export { VERSION } from './version';

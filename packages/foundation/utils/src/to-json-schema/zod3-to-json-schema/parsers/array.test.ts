@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseArrayDef } from './array';
 import { getRefs } from '../refs';
+import { parseArrayDef } from './array';
 
 describe('array', () => {
   it('should be possible to describe a simple array', () => {
@@ -25,10 +25,7 @@ describe('array', () => {
   });
 
   it('should be possible to describe a string array with a minimum and maximum length', () => {
-    const parsedSchema = parseArrayDef(
-      z.array(z.string()).min(2).max(4)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseArrayDef(z.array(z.string()).min(2).max(4)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'array',
@@ -41,10 +38,7 @@ describe('array', () => {
   });
 
   it('should be possible to describe a string array with an exact length', () => {
-    const parsedSchema = parseArrayDef(
-      z.array(z.string()).length(5)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseArrayDef(z.array(z.string()).length(5)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'array',
@@ -57,10 +51,7 @@ describe('array', () => {
   });
 
   it('should be possible to describe a string array with a minimum length of 1 by using nonempty', () => {
-    const parsedSchema = parseArrayDef(
-      z.array(z.any()).nonempty()._def,
-      getRefs(),
-    );
+    const parsedSchema = parseArrayDef(z.array(z.any()).nonempty()._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'array',
