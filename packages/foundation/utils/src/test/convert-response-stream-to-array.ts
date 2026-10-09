@@ -5,7 +5,5 @@ export async function convertResponseStreamToArray(response: Response): Promise<
     return [];
   }
 
-  return convertReadableStreamToArray(
-    response.body.pipeThrough(new TextDecoderStream()),
-  );
+  return convertReadableStreamToArray(response.body.pipeThrough(new TextDecoderStream()));
 }

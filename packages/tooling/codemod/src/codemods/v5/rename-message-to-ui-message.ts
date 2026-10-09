@@ -107,7 +107,9 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
 
         const value = node[key];
         if (Array.isArray(value)) {
-          value.forEach(item => traverseAndRename(item));
+          value.forEach(item => {
+            traverseAndRename(item);
+          });
         } else if (value && typeof value === 'object') {
           traverseAndRename(value);
         }

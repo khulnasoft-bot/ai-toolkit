@@ -41,6 +41,7 @@ export function ProviderSelector({
           <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
             {aiProviders.map(provider => (
               <button
+                type="button"
                 key={provider.id}
                 onClick={() => {
                   onProviderChange(provider.id);
@@ -74,6 +75,7 @@ export function ProviderSelector({
           <div className="absolute top-full left-0 right-0 mt-1 bg-background border rounded-md shadow-lg z-10 max-h-60 overflow-y-auto">
             {currentModels.map(model => (
               <button
+                type="button"
                 key={model}
                 onClick={() => {
                   onModelChange(model);

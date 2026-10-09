@@ -96,7 +96,7 @@ export default function OpenAIApplyPatchView({
                 <div className="font-mono text-xs">
                   {lines.length > 0 ? (
                     <div>
-                      {lines.map((lineItem, idx) => {
+                      {lines.map((lineItem, _idx) => {
                         if (lineItem.type === 'removed') {
                           return (
                             <div
@@ -237,7 +237,7 @@ export default function OpenAIApplyPatchView({
             <div className="mt-2 overflow-hidden rounded border border-gray-200 bg-white">
               <div className="max-h-96 overflow-y-auto">
                 <div className="font-mono text-xs">
-                  {lines.map((lineItem, idx) => {
+                  {lines.map((lineItem, _idx) => {
                     if (lineItem.type === 'removed') {
                       return (
                         <div

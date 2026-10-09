@@ -123,7 +123,9 @@ export async function experimental_startVideo({
 }): Promise<StartVideoResult> {
   const model = resolveVideoModel(modelArg);
 
-  if (model.doStart == null) {
+  const { doStart } = model;
+
+  if (doStart == null) {
     throw new Error(
       `Video model ${model.modelId} does not implement doStart. ` +
         'Use generateVideo for models without an asynchronous start/status flow.',
@@ -185,7 +187,7 @@ export async function experimental_startVideo({
     webhookUrl,
   };
 
-  const startResult = await retry(() => model.doStart?.(callOptions));
+  const startResult = await retry(() => doStart.call(model, callOptions));
 
   return {
     operation: startResult.operation,

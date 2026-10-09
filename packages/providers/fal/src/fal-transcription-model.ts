@@ -148,9 +148,11 @@ export class FalTranscriptionModel implements TranscriptionModelV3 {
     const timeoutMs = 60000; // 60 seconds timeout
     const pollIntervalMs = 1000; // 1 second interval
 
-    let response: Awaited<
-      ReturnType<typeof getFromApi<z.infer<typeof falTranscriptionResponseSchema>>>
-    >['value'] | undefined;
+    let response:
+      | Awaited<
+          ReturnType<typeof getFromApi<z.infer<typeof falTranscriptionResponseSchema>>>
+        >['value']
+      | undefined;
     let responseHeaders: Record<string, string> | undefined;
     let rawResponse: unknown | undefined;
 

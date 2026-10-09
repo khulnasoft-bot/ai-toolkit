@@ -1,3 +1,4 @@
+// biome-ignore-all lint/correctness/useUniqueElementIds: react-flow node/edge ids are static graph identifiers in these tests, not DOM ids
 import { render } from '@testing-library/react';
 import { Position, ReactFlowProvider } from '@xyflow/react';
 

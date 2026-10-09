@@ -132,6 +132,11 @@ export async function convertToOpenAIResponsesInput({
                   });
                 }
               }
+              default: {
+                throw new UnsupportedFunctionalityError({
+                  functionality: 'unsupported content part type',
+                });
+              }
             }
           }),
         });

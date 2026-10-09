@@ -1,6 +1,7 @@
 export const AITOOLKITLogo = () => {
   return (
     <svg
+      aria-hidden="true"
       width="55.28888888888889"
       height="16"
       viewBox="0 0 311 90"

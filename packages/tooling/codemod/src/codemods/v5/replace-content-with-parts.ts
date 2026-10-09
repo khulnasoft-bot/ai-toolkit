@@ -90,7 +90,7 @@ export default createTransformer((_fileInfo: FileInfo, _api: API, _options, cont
         const contentValue = contentProperty.value;
 
         // Create parts array based on content type
-        let partsArray;
+        let partsArray: any;
 
         if (j.StringLiteral.check(contentValue) || j.Literal.check(contentValue)) {
           // String content -> parts: [{ type: 'text', text: content }]

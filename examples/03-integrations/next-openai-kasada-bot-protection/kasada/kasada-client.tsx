@@ -3,8 +3,8 @@ import Script from 'next/script';
 export function KasadaClient() {
   return (
     <>
-      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: required to inject the Kasada bot-protection bootstrap snippet */}
       <script
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: required to inject the Kasada bot-protection bootstrap snippet
         dangerouslySetInnerHTML={{
           __html: `document.addEventListener('kpsdk-load', () => {window.KPSDK.configure([
           {

@@ -15,7 +15,7 @@ import {
   Zap,
 } from 'lucide-react';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { AITOOLKITLogo } from '@/components/icons';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -269,7 +269,7 @@ function App() {
   const [expandedSteps, setExpandedSteps] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
 
-  const fetchRuns = async () => {
+  const fetchRuns = useCallback(async () => {
     try {
       const res = await fetch('/api/runs');
       const data = await res.json();
@@ -279,7 +279,7 @@ function App() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   const handleClear = async () => {
     await fetch('/api/clear', { method: 'POST' });
@@ -490,6 +490,7 @@ function App() {
                   const isSelected = selectedRun?.run.id === run.id;
                   return (
                     <button
+                      type="button"
                       key={run.id}
                       className={`w-full text-left px-4 py-3 border-b border-border/50 transition-colors ${
                         isSelected ? 'bg-accent' : 'hover:bg-accent/50'
@@ -631,6 +632,7 @@ function App() {
                           {/* Step Header */}
                           <CollapsibleTrigger asChild>
                             <button
+                              type="button"
                               className={`w-full flex items-center justify-between px-4 py-3 text-left transition-colors hover:bg-accent/50 ${
                                 isExpanded ? 'border-b border-border' : ''
                               }`}
@@ -867,7 +869,10 @@ function StepConfigBar({
           <span className="text-muted-foreground/30">·</span>
           <Drawer direction="right">
             <DrawerTrigger asChild>
-              <button className="inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer"
+              >
                 <Wrench className="size-3" />
                 {toolCount} available {toolCount === 1 ? 'tool' : 'tools'}
               </button>
@@ -893,7 +898,10 @@ function StepConfigBar({
           <span className="text-muted-foreground/30">·</span>
           <Drawer direction="right">
             <DrawerTrigger asChild>
-              <button className="inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer"
+              >
                 <Settings className="size-3" />
                 Provider options
               </button>
@@ -915,7 +923,10 @@ function StepConfigBar({
           <span className="text-muted-foreground/30">·</span>
           <Drawer direction="right">
             <DrawerTrigger asChild>
-              <button className="inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 hover:text-foreground transition-colors cursor-pointer"
+              >
                 <BarChart3 className="size-3" />
                 Usage
               </button>
@@ -946,7 +957,10 @@ function InputPanel({ input }: { input: any }) {
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
-        <button className="w-full h-full text-left p-4 hover:bg-accent/30 transition-colors cursor-pointer flex flex-col justify-start">
+        <button
+          type="button"
+          className="w-full h-full text-left p-4 hover:bg-accent/30 transition-colors cursor-pointer flex flex-col justify-start"
+        >
           <h3 className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-3">
             Input
           </h3>
@@ -1118,6 +1132,7 @@ function ToolItem({ tool }: { tool: any }) {
   return (
     <div className="rounded-md border border-border bg-background overflow-hidden">
       <button
+        type="button"
         className="w-full flex items-center justify-between p-2.5 hover:bg-accent/50 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -1162,6 +1177,7 @@ function CollapsibleToolCall({
   return (
     <div className="rounded-md border border-purple/30 overflow-hidden">
       <button
+        type="button"
         className="w-full flex items-center gap-2 px-3 py-2 bg-purple/10 hover:bg-purple/20 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -1206,6 +1222,7 @@ function CollapsibleToolResult({
   return (
     <div className="rounded-md border border-success/30 overflow-hidden">
       <button
+        type="button"
         className="w-full flex items-center gap-2 px-3 py-2 bg-success/10 hover:bg-success/20 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -1404,6 +1421,7 @@ function ToolCallCard({ toolName, args, result }: { toolName: string; args: any;
     <div className="rounded-md border border-purple/30 overflow-hidden">
       {/* Tool Call Header */}
       <button
+        type="button"
         className="w-full flex items-center gap-2 px-3 py-2 bg-purple/10 hover:bg-purple/20 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -1455,6 +1473,7 @@ function ReasoningBlock({ content }: { content: string }) {
   return (
     <div className="rounded-md border border-amber-500/30 overflow-hidden">
       <button
+        type="button"
         className="w-full flex items-center gap-2 px-3 py-2 bg-amber-500/10 hover:bg-amber-500/20 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -1512,6 +1531,7 @@ function TextBlock({
   return (
     <div className={`rounded-md border ${borderColor} overflow-hidden`}>
       <button
+        type="button"
         className={`w-full flex items-center gap-2 px-3 py-2 ${bgColor} ${hoverBgColor} transition-colors`}
         onClick={() => setExpanded(!expanded)}
       >
@@ -1534,6 +1554,7 @@ function TextBlock({
       {expanded && (
         <div className={`p-3 bg-card/50 border-t ${borderColor} group relative`}>
           <button
+            type="button"
             onClick={handleCopy}
             className="absolute top-1.5 right-1.5 p-1.5 rounded-md border border-border bg-background opacity-0 group-hover:opacity-100 transition-opacity z-10"
             title="Copy to clipboard"
@@ -1582,6 +1603,7 @@ function JsonBlock({
   return (
     <div className="relative group">
       <button
+        type="button"
         onClick={handleCopy}
         className="absolute top-1.5 right-1.5 p-1.5 rounded-md border border-border bg-background opacity-0 group-hover:opacity-100 transition-opacity z-10"
         title="Copy to clipboard"
@@ -1624,6 +1646,7 @@ function RawDataSection({
   return (
     <div className="border-t border-border">
       <button
+        type="button"
         className="w-full flex items-center gap-2 px-4 py-2.5 text-[11px] text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
         onClick={() => setExpanded(!expanded)}
       >
@@ -1654,6 +1677,7 @@ function RawDataSection({
                 {hasRawChunks && (
                   <div className="inline-flex rounded-md border border-border bg-muted/30 p-0.5">
                     <button
+                      type="button"
                       onClick={() => setResponseView('parsed')}
                       className={`px-2 py-0.5 text-[10px] font-medium rounded transition-colors ${
                         responseView === 'parsed'
@@ -1664,6 +1688,7 @@ function RawDataSection({
                       AI TOOLKIT
                     </button>
                     <button
+                      type="button"
                       onClick={() => setResponseView('raw')}
                       className={`px-2 py-0.5 text-[10px] font-medium rounded transition-colors ${
                         responseView === 'raw'

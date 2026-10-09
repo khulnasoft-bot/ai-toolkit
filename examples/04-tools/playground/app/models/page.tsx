@@ -432,6 +432,7 @@ export default function ModelsPage() {
               {showProviders && (
                 <div className="absolute top-full left-0 mt-2 w-48 rounded-lg border bg-background shadow-lg z-10">
                   <button
+                    type="button"
                     onClick={() => setSelectedProvider(null)}
                     className={`w-full px-4 py-2 text-left hover:bg-accent ${
                       selectedProvider === null ? 'bg-accent' : ''
@@ -441,6 +442,7 @@ export default function ModelsPage() {
                   </button>
                   {modelProviders.map(provider => (
                     <button
+                      type="button"
                       key={provider.id}
                       onClick={() => setSelectedProvider(provider.id)}
                       className={`w-full px-4 py-2 text-left hover:bg-accent ${
@@ -470,6 +472,7 @@ export default function ModelsPage() {
               {showCategories && (
                 <div className="absolute top-full left-0 mt-2 w-48 rounded-lg border bg-background shadow-lg z-10">
                   <button
+                    type="button"
                     onClick={() => setSelectedCategory(null)}
                     className={`w-full px-4 py-2 text-left hover:bg-accent flex items-center justify-between ${
                       selectedCategory === null ? 'bg-accent' : ''
@@ -480,6 +483,7 @@ export default function ModelsPage() {
                   </button>
                   {modelCategories.map(category => (
                     <button
+                      type="button"
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
                       className={`w-full px-4 py-2 text-left hover:bg-accent flex items-center justify-between ${

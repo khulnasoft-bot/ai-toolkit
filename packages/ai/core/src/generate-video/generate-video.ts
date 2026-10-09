@@ -316,6 +316,12 @@ export async function experimental_generateVideo({
     });
   }
 
+  const { doGenerate } = model;
+
+  if (doGenerate == null) {
+    throw new Error(`Video model ${model.modelId} does not implement doGenerate.`);
+  }
+
   // parallelize calls to the model:
   const callCount = Math.ceil(n / maxVideosPerCallWithDefault);
   const callVideoCounts = Array.from({ length: callCount }, (_, index) => {
@@ -352,7 +358,7 @@ export async function experimental_generateVideo({
         });
       }
 
-      return retry(() => model.doGenerate?.(callOptions));
+      return retry(() => doGenerate.call(model, callOptions));
     }),
   );
 
@@ -470,6 +476,12 @@ async function executeStartStatusFlow({
   webhook?: GenerateVideoWebhookFactory;
   retry: <OUTPUT>(fn: () => PromiseLike<OUTPUT>) => PromiseLike<OUTPUT>;
 }): Promise<Experimental_VideoModelV4Result> {
+  const { doStart, doStatus } = model;
+
+  if (doStart == null || doStatus == null) {
+    throw new Error(`Video model ${model.modelId} does not implement doStart/doStatus.`);
+  }
+
   // 1. If webhook and provider supports it, set up the webhook
   const earlyWarnings: Experimental_VideoModelV4Result['warnings'] = [];
   let webhookUrl: string | undefined;
@@ -504,7 +516,7 @@ async function executeStartStatusFlow({
     },
     webhookUrl,
   };
-  const startResult = await retry(() => model.doStart?.(startCallOptions));
+  const startResult = await retry(() => doStart.call(model, startCallOptions));
 
   const allWarnings = [...earlyWarnings, ...startResult.warnings];
   let operationProviderMetadata =
@@ -540,7 +552,7 @@ async function executeStartStatusFlow({
     }
 
     const statusResult = await retry(() =>
-      model.doStatus?.({
+      doStatus.call(model, {
         operation: startResult.operation,
         abortSignal: callOptions.abortSignal,
         headers: callOptions.headers,

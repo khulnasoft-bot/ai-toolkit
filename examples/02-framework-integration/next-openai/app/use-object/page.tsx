@@ -48,7 +48,7 @@ export default function Page() {
       </div>
 
       <div className="flex flex-col gap-4 mt-4">
-        {object?.notifications?.map((notification, index) => (
+        {object?.notifications?.map((notification, _index) => (
           <div
             className="flex items-start gap-4 p-4 bg-gray-100 rounded-md dark:bg-gray-800"
             key={`${notification?.name}-${notification?.message}`}

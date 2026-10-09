@@ -16,7 +16,7 @@ export default function Home() {
       ...currentMessages,
       {
         id: generateId(),
-        display: <Message role="user">{input}</Message>,
+        display: <Message>{input}</Message>,
       },
     ]);
 

@@ -44,6 +44,11 @@ export function convertToGroqChatMessages(prompt: LanguageModelV3Prompt): GroqCh
                   },
                 };
               }
+              default: {
+                throw new UnsupportedFunctionalityError({
+                  functionality: 'unsupported content part type',
+                });
+              }
             }
           }),
         });

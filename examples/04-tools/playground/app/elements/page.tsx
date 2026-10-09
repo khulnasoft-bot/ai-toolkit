@@ -227,6 +227,7 @@ export default function ElementsPage() {
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-sm text-muted-foreground">React</span>
                     <button
+                      type="button"
                       onClick={() => copyToClipboard(chatMessageExample, setCopiedChat)}
                       className="p-2 rounded hover:bg-accent"
                     >
@@ -263,6 +264,7 @@ export default function ElementsPage() {
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-sm text-muted-foreground">React</span>
                     <button
+                      type="button"
                       onClick={() => copyToClipboard(codeBlockExample, setCopiedCode)}
                       className="p-2 rounded hover:bg-accent"
                     >
@@ -297,6 +299,7 @@ console.log(greet('World'));`}</code>
                   <div className="flex items-center justify-between mb-4">
                     <span className="text-sm text-muted-foreground">React</span>
                     <button
+                      type="button"
                       onClick={() => copyToClipboard(reasoningExample, setCopiedReasoning)}
                       className="p-2 rounded hover:bg-accent"
                     >
@@ -334,6 +337,7 @@ console.log(greet('World'));`}</code>
       </section>
 
       {/* Components Grid */}
+      {/* biome-ignore lint/correctness/useUniqueElementIds: static anchor target for the in-page nav link */}
       <section id="components" className="py-20 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">

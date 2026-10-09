@@ -102,8 +102,10 @@ export function customProvider<
         return transcriptionModels[modelId];
       }
 
-      if (fallbackProvider?.transcriptionModel) {
-        return (fallbackProvider as ProviderV3).transcriptionModel?.(modelId);
+      const { transcriptionModel: fallbackTranscriptionModel } = fallbackProvider ?? {};
+
+      if (fallbackTranscriptionModel != null) {
+        return fallbackTranscriptionModel.call(fallbackProvider, modelId);
       }
 
       throw new NoSuchModelError({ modelId, modelType: 'transcriptionModel' });
@@ -114,8 +116,10 @@ export function customProvider<
         return speechModels[modelId];
       }
 
-      if (fallbackProvider?.speechModel) {
-        return (fallbackProvider as ProviderV3).speechModel?.(modelId);
+      const { speechModel: fallbackSpeechModel } = fallbackProvider ?? {};
+
+      if (fallbackSpeechModel != null) {
+        return fallbackSpeechModel.call(fallbackProvider, modelId);
       }
 
       throw new NoSuchModelError({ modelId, modelType: 'speechModel' });

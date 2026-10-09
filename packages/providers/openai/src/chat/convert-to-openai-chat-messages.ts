@@ -132,6 +132,11 @@ export function convertToOpenAIChatMessages({
                   });
                 }
               }
+              default: {
+                throw new UnsupportedFunctionalityError({
+                  functionality: 'unsupported content part type',
+                });
+              }
             }
           }),
         });

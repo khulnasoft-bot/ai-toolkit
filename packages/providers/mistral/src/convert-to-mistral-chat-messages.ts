@@ -62,6 +62,11 @@ export function convertToMistralChatMessages(prompt: LanguageModelV3Prompt): Mis
                   });
                 }
               }
+              default: {
+                throw new UnsupportedFunctionalityError({
+                  functionality: 'unsupported content part type',
+                });
+              }
             }
           }),
         });

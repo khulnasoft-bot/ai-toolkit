@@ -52,6 +52,11 @@ export function convertToXaiChatMessages(prompt: LanguageModelV3Prompt): {
                   });
                 }
               }
+              default: {
+                throw new UnsupportedFunctionalityError({
+                  functionality: 'unsupported content part type',
+                });
+              }
             }
           }),
         });

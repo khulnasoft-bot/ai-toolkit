@@ -84,6 +84,7 @@ export function DataTable<T>({
                 >
                   {column.sortValue ? (
                     <button
+                      type="button"
                       onClick={() => toggleSort(column.id)}
                       className="inline-flex items-center gap-1 hover:text-foreground"
                     >
@@ -141,6 +142,7 @@ export function DataTable<T>({
         </p>
         <div className="flex items-center gap-1">
           <button
+            type="button"
             disabled={safePage === 0}
             onClick={() => setPage(value => Math.max(0, value - 1))}
             aria-label="Previous page"
@@ -152,6 +154,7 @@ export function DataTable<T>({
             {safePage + 1} / {pageCount}
           </span>
           <button
+            type="button"
             disabled={safePage === pageCount - 1}
             onClick={() => setPage(value => Math.min(pageCount - 1, value + 1))}
             aria-label="Next page"

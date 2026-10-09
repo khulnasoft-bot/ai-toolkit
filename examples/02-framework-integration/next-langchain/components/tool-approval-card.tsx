@@ -48,10 +48,7 @@ export function ToolApprovalCard({
 
       {showRejectInput && (
         <div className="space-y-2">
-          <label
-            htmlFor={rejectReasonId}
-            className="text-sm text-[var(--foreground-secondary)]"
-          >
+          <label htmlFor={rejectReasonId} className="text-sm text-[var(--foreground-secondary)]">
             Rejection reason (optional):
           </label>
           <input

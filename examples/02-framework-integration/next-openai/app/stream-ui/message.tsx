@@ -4,15 +4,19 @@ import { type StreamableValue, useStreamableValue } from '@ai-toolkit/rsc';
 
 export function BotMessage({ textStream }: { textStream: StreamableValue }) {
   const [text] = useStreamableValue(textStream);
-  return <Message role="assistant">{text}</Message>;
+  return <Message>{text}</Message>;
 }
 
-export function Message({ role, children }: { role: string; children: React.ReactNode }) {
+export function Message({
+  role,
+  children,
+}: {
+  role?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col gap-1 border-b p-2">
-      <div className="flex flex-row justify-between">
-        <div className="text-sm text-zinc-500">{role}</div>
-      </div>
+      {role != null ? <div className="text-sm text-zinc-500">{role}</div> : null}
       {children}
     </div>
   );

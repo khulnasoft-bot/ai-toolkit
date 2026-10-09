@@ -46,7 +46,7 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
           );
 
           // Create the new wrapped model call
-          let modelCall;
+          let modelCall: any;
           if (filteredProperties.length > 0) {
             // Keep remaining properties
             modelCall = j.callExpression(callee, [args[0], j.objectExpression(filteredProperties)]);

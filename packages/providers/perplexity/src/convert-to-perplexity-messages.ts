@@ -73,6 +73,8 @@ export function convertToPerplexityMessages(prompt: LanguageModelV3Prompt): Perp
                 }
               }
             }
+
+            return undefined;
           })
           .filter(Boolean) as PerplexityMessageContent[];
         messages.push({

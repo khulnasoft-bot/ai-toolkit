@@ -42,6 +42,8 @@ export function convertToOpenAICompletionPrompt({
                 return part.text;
               }
             }
+
+            return undefined;
           })
           .filter(Boolean)
           .join('');
@@ -63,6 +65,8 @@ export function convertToOpenAICompletionPrompt({
                 });
               }
             }
+
+            return undefined;
           })
           .join('');
 

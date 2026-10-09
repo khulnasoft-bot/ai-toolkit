@@ -59,14 +59,15 @@ function parseErrors(transform: string, output: string): TransformErrors {
   const errorRegex = /ERR (.+) Transformation error/g;
   const syntaxErrorRegex = /SyntaxError: .+/g;
 
-  let match;
-  while ((match = errorRegex.exec(output)) !== null) {
+  let match = errorRegex.exec(output);
+  while (match !== null) {
     const filename = match[1];
     const syntaxErrorMatch = syntaxErrorRegex.exec(output);
     if (syntaxErrorMatch) {
       const summary = syntaxErrorMatch[0];
       errors.push({ transform, filename, summary });
     }
+    match = errorRegex.exec(output);
   }
 
   return errors;
@@ -76,11 +77,12 @@ function parseNotImplementedErrors(transform: string, output: string): Transform
   const notImplementedErrors: TransformErrors = [];
   const notImplementedRegex = /Not Implemented (.+): (.+)/g;
 
-  let match;
-  while ((match = notImplementedRegex.exec(output)) !== null) {
+  let match = notImplementedRegex.exec(output);
+  while (match !== null) {
     const filename = match[1];
     const summary = match[2];
     notImplementedErrors.push({ transform, filename, summary });
+    match = notImplementedRegex.exec(output);
   }
 
   return notImplementedErrors;

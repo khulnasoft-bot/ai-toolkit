@@ -129,6 +129,11 @@ export function convertToOpenAICompatibleChatMessages(
                   functionality: `file part media type ${part.mediaType}`,
                 });
               }
+              default: {
+                throw new UnsupportedFunctionalityError({
+                  functionality: 'unsupported content part type',
+                });
+              }
             }
           }),
           ...metadata,

@@ -251,7 +251,7 @@ function ModelPanel({
           <span className="font-mono text-[10px] text-muted-foreground">MODEL {index + 1}</span>
           <span className={`size-2 rounded-full ${model.color}`} />
         </div>
-        <button className="text-muted-foreground hover:text-foreground">
+        <button type="button" className="text-muted-foreground hover:text-foreground">
           <Settings2 className="size-4" />
         </button>
       </div>
@@ -344,12 +344,13 @@ export default function HomePage() {
         <div className="flex h-14 items-center justify-between px-4 lg:px-6">
           <div className="flex items-center gap-3">
             <button
+              type="button"
               onClick={() => setMobileNav(!mobileNav)}
               className="rounded-md p-2 hover:bg-muted lg:hidden"
             >
               {mobileNav ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
-            <a href="#" className="flex items-center gap-2 font-semibold tracking-tight">
+            <a href="/" className="flex items-center gap-2 font-semibold tracking-tight">
               <span className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
                 <Sparkles className="size-4" />
               </span>
@@ -360,20 +361,41 @@ export default function HomePage() {
             </span>
           </div>
           <div className="hidden items-center gap-5 text-xs text-muted-foreground md:flex">
-            <a href="#" className="hover:text-foreground">
+            <a
+              href="https://studio.khulnasoft.com/docs"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground"
+            >
               Docs
             </a>
-            <a href="#" className="hover:text-foreground">
+            <a
+              href="https://github.com/khulnasoft/ai-toolkit"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground"
+            >
               GitHub
             </a>
-            <a href="#" className="hover:text-foreground">
+            <a
+              href="https://discord.gg/khulnasoft"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-foreground"
+            >
               Discord
             </a>
-            <button className="rounded-md border border-border px-3 py-1.5 text-foreground hover:bg-muted">
+            <button
+              type="button"
+              className="rounded-md border border-border px-3 py-1.5 text-foreground hover:bg-muted"
+            >
               Sign in
             </button>
           </div>
-          <button className="rounded-md p-2 text-muted-foreground hover:bg-muted md:hidden">
+          <button
+            type="button"
+            className="rounded-md p-2 text-muted-foreground hover:bg-muted md:hidden"
+          >
             <Github className="size-4" />
           </button>
         </div>
@@ -391,6 +413,7 @@ export default function HomePage() {
           <nav className="flex flex-col gap-1">
             {sections.map(({ label, icon: Icon, count }) => (
               <button
+                type="button"
                 key={label}
                 onClick={() => {
                   setActive(label);
@@ -412,11 +435,17 @@ export default function HomePage() {
             <p className="mb-3 px-3 font-mono text-[10px] uppercase tracking-[.2em] text-muted-foreground">
               Your workspace
             </p>
-            <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted">
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
+            >
               <Plus className="size-4" />
               New session
             </button>
-            <button className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted">
+            <button
+              type="button"
+              className="flex w-full items-center gap-3 rounded-md px-3 py-2.5 text-sm text-muted-foreground hover:bg-muted"
+            >
               <Terminal className="size-4" />
               Code snippets
             </button>
@@ -428,7 +457,10 @@ export default function HomePage() {
             <p className="mt-2 text-xs leading-5 text-muted-foreground">
               Hundreds of models. One API key. No markup.
             </p>
-            <button className="mt-3 flex items-center gap-1 text-xs font-medium text-foreground hover:text-primary">
+            <button
+              type="button"
+              className="mt-3 flex items-center gap-1 text-xs font-medium text-foreground hover:text-primary"
+            >
               Learn more <ArrowUpRight className="size-3" />
             </button>
           </div>
@@ -450,10 +482,16 @@ export default function HomePage() {
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <button className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs hover:bg-muted">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-md border border-border px-3 py-2 text-xs hover:bg-muted"
+                  >
                     <BookOpen className="size-3.5" /> Docs
                   </button>
-                  <button className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90">
+                  <button
+                    type="button"
+                    className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:opacity-90"
+                  >
                     <Plus className="size-3.5" /> Add model
                   </button>
                 </div>
@@ -467,7 +505,9 @@ export default function HomePage() {
                   one API key.
                 </span>
                 <a
-                  href="#"
+                  href="https://studio.khulnasoft.com/docs/ai-sdk-core/providers-and-models"
+                  target="_blank"
+                  rel="noreferrer"
                   className="ml-auto flex items-center gap-1 font-medium text-foreground hover:text-primary"
                 >
                   Explore providers <ArrowUpRight className="size-3" />
@@ -482,6 +522,7 @@ export default function HomePage() {
                     </span>
                   </div>
                   <button
+                    type="button"
                     onClick={copyCode}
                     className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
                   >
@@ -519,13 +560,14 @@ export default function HomePage() {
                   />
                   <div className="flex items-center justify-between border-t border-border pt-3">
                     <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                      <button className="rounded-md p-1.5 hover:bg-muted">
+                      <button type="button" className="rounded-md p-1.5 hover:bg-muted">
                         <Plus className="size-4" />
                       </button>
                       <span className="hidden sm:inline">Add context or tools</span>
                       <span className="font-mono text-[10px]">⌘ ↵ to run</span>
                     </div>
                     <button
+                      type="button"
                       onClick={runPrompt}
                       disabled={running}
                       className="inline-flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-xs font-medium text-primary-foreground disabled:opacity-60"

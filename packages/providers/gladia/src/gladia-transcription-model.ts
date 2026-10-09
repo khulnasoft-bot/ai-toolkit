@@ -522,9 +522,11 @@ export class GladiaTranscriptionModel implements TranscriptionModelV3 {
 
     // Poll the result URL until the transcription is done or an error occurs
     const resultUrl = transcriptionInitResponse.result_url;
-    let transcriptionResult: Awaited<
-      ReturnType<typeof getFromApi<z.infer<typeof gladiaTranscriptionResultResponseSchema>>>
-    >['value'] | undefined;
+    let transcriptionResult:
+      | Awaited<
+          ReturnType<typeof getFromApi<z.infer<typeof gladiaTranscriptionResultResponseSchema>>>
+        >['value']
+      | undefined;
     let transcriptionResultHeaders: Record<string, string> | undefined;
     const timeoutMs = 60 * 1000; // 60 seconds timeout
     const startTime = Date.now();

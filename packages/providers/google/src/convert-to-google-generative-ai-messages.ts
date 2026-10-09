@@ -130,6 +130,8 @@ export function convertToGoogleGenerativeAIMessages(
                   };
                 }
               }
+
+              return undefined;
             })
             .filter(part => part !== undefined),
         });

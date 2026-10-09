@@ -44,7 +44,9 @@ export async function experimental_getVideoStatus(
 ): Promise<GetVideoStatusResult> {
   const model = resolveVideoModel(modelArg);
 
-  if (model.doStatus == null) {
+  const { doStatus } = model;
+
+  if (doStatus == null) {
     throw new Error(`Video model ${model.modelId} does not implement doStatus.`);
   }
 
@@ -54,7 +56,7 @@ export async function experimental_getVideoStatus(
   });
 
   return retry(() =>
-    model.doStatus?.({
+    doStatus.call(model, {
       operation,
       headers: withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`),
       abortSignal,

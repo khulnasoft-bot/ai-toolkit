@@ -193,6 +193,7 @@ export default function GatewayPage() {
       </section>
 
       {/* Features Section */}
+      {/* biome-ignore lint/correctness/useUniqueElementIds: static anchor target for the in-page nav link */}
       <section id="features" className="py-24 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -219,6 +220,7 @@ export default function GatewayPage() {
       </section>
 
       {/* Providers Section */}
+      {/* biome-ignore lint/correctness/useUniqueElementIds: static anchor target for the in-page nav link */}
       <section id="providers" className="py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
