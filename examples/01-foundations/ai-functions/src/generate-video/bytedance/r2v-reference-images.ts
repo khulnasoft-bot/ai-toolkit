@@ -1,5 +1,5 @@
-import { byteDance } from '@ai-toolkit/bytedance';
 import { experimental_generateVideo as generateVideo } from '@ai-toolkit/ai';
+import { byteDance } from '@ai-toolkit/bytedance';
 import { presentVideos } from '../../lib/present-video';
 import { run } from '../../lib/run';
 import { withSpinner } from '../../lib/spinner';
@@ -10,8 +10,7 @@ run(async () => {
     () =>
       generateVideo({
         model: byteDance.video('seedance-1-0-lite-i2v-250428'),
-        prompt:
-          'The two characters walk together through a vibrant city street at night',
+        prompt: 'The two characters walk together through a vibrant city street at night',
         inputReferences: [
           'https://ark-doc.tos-ap-southeast-1.bytepluses.com/doc_image/seepro_first_frame.jpeg',
           'https://ark-doc.tos-ap-southeast-1.bytepluses.com/doc_image/seepro_last_frame.jpeg',

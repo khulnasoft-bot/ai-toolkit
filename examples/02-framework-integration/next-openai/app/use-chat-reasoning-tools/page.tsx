@@ -1,17 +1,16 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { ReasoningToolsMessage } from '../api/use-chat-reasoning-tools/route';
+import { useChat } from '@ai-toolkit/react';
+import ChatInput from '@/components/chat-input';
+import type { ReasoningToolsMessage } from '../api/use-chat-reasoning-tools/route';
 
 export default function Chat() {
-  const { messages, sendMessage, addToolOutput, status } =
-    useChat<ReasoningToolsMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/use-chat-reasoning-tools',
-      }),
-    });
+  const { messages, sendMessage, addToolOutput, status } = useChat<ReasoningToolsMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/use-chat-reasoning-tools',
+    }),
+  });
 
   console.log(structuredClone(messages));
 
@@ -24,7 +23,7 @@ export default function Chat() {
             if (part.type === 'text') {
               return (
                 <pre
-                  key={index}
+                  key={`${message.id}-text-${index}`}
                   className="overflow-x-auto max-w-full whitespace-pre-wrap break-words"
                 >
                   {part.text}
@@ -35,7 +34,7 @@ export default function Chat() {
             if (part.type === 'reasoning') {
               return (
                 <pre
-                  key={index}
+                  key={`${message.id}-reasoning-${index}`}
                   className="overflow-x-auto mb-4 max-w-full italic text-gray-500 whitespace-pre-wrap break-words"
                 >
                   {part.text}
@@ -47,11 +46,7 @@ export default function Chat() {
               switch (part.state) {
                 // example of pre-rendering streaming tool calls:
                 case 'input-streaming':
-                  return (
-                    <pre key={part.toolCallId}>
-                      {JSON.stringify(part, null, 2)}
-                    </pre>
-                  );
+                  return <pre key={part.toolCallId}>{JSON.stringify(part, null, 2)}</pre>;
                 case 'input-available':
                   return (
                     <div key={part.toolCallId} className="text-gray-500">
@@ -66,6 +61,7 @@ export default function Chat() {
                   );
               }
             }
+            return null;
           })}
         </div>
       ))}

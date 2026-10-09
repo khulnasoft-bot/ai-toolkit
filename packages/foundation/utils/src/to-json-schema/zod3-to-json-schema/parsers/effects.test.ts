@@ -1,15 +1,12 @@
-import { describe, it, expect, test } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it, test } from 'vitest';
 import { z } from 'zod/v3';
-import { parseEffectsDef } from './effects';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseEffectsDef } from './effects';
 
 describe('effects', () => {
   it('should be possible to use refine', () => {
-    const parsedSchema = parseEffectsDef(
-      z.number().refine(x => x + 1)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseEffectsDef(z.number().refine(x => x + 1)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'number',
@@ -17,7 +14,7 @@ describe('effects', () => {
   });
 
   it('should default to the input type', () => {
-    const schema = z.string().transform(arg => parseInt(arg));
+    const schema = z.string().transform(arg => parseInt(arg, 10));
 
     const jsonSchema = parseEffectsDef(schema._def, getRefs());
 
@@ -27,7 +24,7 @@ describe('effects', () => {
   });
 
   test("should return object based on 'any' strategy", () => {
-    const schema = z.string().transform(arg => parseInt(arg));
+    const schema = z.string().transform(arg => parseInt(arg, 10));
 
     const jsonSchema = parseEffectsDef(
       schema._def,

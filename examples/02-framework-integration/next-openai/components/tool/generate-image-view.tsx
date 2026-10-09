@@ -1,4 +1,4 @@
-import { GenerateImageUIToolInvocation } from '@/tool/generate-image-tool';
+import type { GenerateImageUIToolInvocation } from '@/tool/generate-image-tool';
 
 export default function GenerateImageView({
   invocation,
@@ -16,6 +16,7 @@ export default function GenerateImageView({
       return (
         <div className="mb-2 bg-gray-900 rounded-xl border border-gray-600 shadow-lg">
           <img
+            alt="Generated output"
             src={`data:${invocation.output.mediaType};base64,${invocation.output.base64}`}
           />
         </div>

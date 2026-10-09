@@ -1,12 +1,10 @@
-import { anthropic } from '@ai-toolkit/anthropic';
-import { UIToolInvocation } from '@ai-toolkit/ai';
+import type { UIToolInvocation } from '@ai-toolkit/ai';
+import type { anthropic } from '@ai-toolkit/anthropic';
 
 export default function AnthropicToolSearchView({
   invocation,
 }: {
-  invocation: UIToolInvocation<
-    ReturnType<typeof anthropic.tools.toolSearchBm25_20251119>
-  >;
+  invocation: UIToolInvocation<ReturnType<typeof anthropic.tools.toolSearchBm25_20251119>>;
 }) {
   switch (invocation.state) {
     case 'input-available': {
@@ -50,9 +48,9 @@ export default function AnthropicToolSearchView({
             <div className="pl-5 text-sm text-amber-900">
               <span className="font-semibold">Discovered tools:</span>
               <div className="flex flex-wrap gap-1.5 mt-1">
-                {output.map((tool, index) => (
+                {output.map(tool => (
                   <span
-                    key={index}
+                    key={tool.toolName}
                     className="inline-block bg-amber-100 border border-amber-200 rounded px-2 py-0.5 font-mono text-xs"
                   >
                     {tool.toolName}

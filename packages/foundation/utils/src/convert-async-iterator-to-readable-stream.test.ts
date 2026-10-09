@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertAsyncIteratorToReadableStream } from './convert-async-iterator-to-readable-stream';
-import { describe, it, expect } from 'vitest';
 
 async function* makeGenerator(onFinally: () => void) {
   try {

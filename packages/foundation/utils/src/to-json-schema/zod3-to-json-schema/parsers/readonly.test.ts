@@ -1,15 +1,12 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseReadonlyDef } from './readonly';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseReadonlyDef } from './readonly';
 
 describe('readonly', () => {
   it('should be possible to use readonly', () => {
-    const parsedSchema = parseReadonlyDef(
-      z.object({}).readonly()._def,
-      getRefs(),
-    );
+    const parsedSchema = parseReadonlyDef(z.object({}).readonly()._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'object',

@@ -1,9 +1,8 @@
-import { createAnthropic } from '@ai-toolkit/anthropic';
 import { generateText } from '@ai-toolkit/ai';
-
+import { createAnthropic } from '@ai-toolkit/anthropic';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { run } from '../lib/run';
 
 const sdk = new NodeSDK({

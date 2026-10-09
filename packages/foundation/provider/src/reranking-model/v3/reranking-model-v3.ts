@@ -1,9 +1,5 @@
-import {
-  SharedV3Headers,
-  SharedV3ProviderMetadata,
-  SharedV3Warning,
-} from '../../shared/v3/';
-import { RerankingModelV3CallOptions } from './reranking-model-v3-call-options';
+import type { SharedV3Headers, SharedV3ProviderMetadata, SharedV3Warning } from '../../shared/v3/';
+import type { RerankingModelV3CallOptions } from './reranking-model-v3-call-options';
 
 /**
  * Specification for a reranking model that implements the reranking model interface version 3.

@@ -1,20 +1,16 @@
+import type { ImageModelV3, ImageModelV3File, SharedV3Warning } from '@ai-toolkit/provider';
 import {
-  ImageModelV3,
-  ImageModelV3File,
-  SharedV3Warning,
-} from '@ai-toolkit/provider';
-import {
-  Resolvable,
   combineHeaders,
   convertUint8ArrayToBase64,
   createJsonResponseHandler,
   parseProviderOptions,
   postJsonToApi,
+  type Resolvable,
   resolve,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { googleVertexFailedResponseHandler } from './google-vertex-error';
-import { GoogleVertexImageModelId } from './google-vertex-image-settings';
+import type { GoogleVertexImageModelId } from './google-vertex-image-settings';
 
 interface GoogleVertexImageModelConfig {
   provider: string;
@@ -61,8 +57,7 @@ export class GoogleVertexImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'size',
-        details:
-          'This model does not support the `size` option. Use `aspectRatio` instead.',
+        details: 'This model does not support the `size` option. Use `aspectRatio` instead.',
       });
     }
 
@@ -147,18 +142,13 @@ export class GoogleVertexImageModel implements ImageModelV3 {
       headers: combineHeaders(await resolve(this.config.headers), headers),
       body,
       failedResponseHandler: googleVertexFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        vertexImageResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(vertexImageResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });
 
     return {
-      images:
-        response.predictions?.map(
-          ({ bytesBase64Encoded }) => bytesBase64Encoded,
-        ) ?? [],
+      images: response.predictions?.map(({ bytesBase64Encoded }) => bytesBase64Encoded) ?? [],
       warnings,
       response: {
         timestamp: currentDate,
@@ -198,16 +188,9 @@ const vertexImageResponseSchema = z.object({
 
 const vertexImageProviderOptionsSchema = z.object({
   negativePrompt: z.string().nullish(),
-  personGeneration: z
-    .enum(['dont_allow', 'allow_adult', 'allow_all'])
-    .nullish(),
+  personGeneration: z.enum(['dont_allow', 'allow_adult', 'allow_all']).nullish(),
   safetySetting: z
-    .enum([
-      'block_low_and_above',
-      'block_medium_and_above',
-      'block_only_high',
-      'block_none',
-    ])
+    .enum(['block_low_and_above', 'block_medium_and_above', 'block_only_high', 'block_none'])
     .nullish(),
   addWatermark: z.boolean().nullish(),
   storageUri: z.string().nullish(),
@@ -265,9 +248,7 @@ const vertexImageProviderOptionsSchema = z.object({
     })
     .nullish(),
 });
-export type GoogleVertexImageProviderOptions = z.infer<
-  typeof vertexImageProviderOptionsSchema
->;
+export type GoogleVertexImageProviderOptions = z.infer<typeof vertexImageProviderOptionsSchema>;
 
 /**
  * Helper to convert ImageModelV3File data to base64 string

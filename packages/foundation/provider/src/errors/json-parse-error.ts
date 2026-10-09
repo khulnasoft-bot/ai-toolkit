@@ -3,20 +3,15 @@ import { getErrorMessage } from './get-error-message';
 
 const name = 'AI_JSONParseError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class JSONParseError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly text: string;
 
   constructor({ text, cause }: { text: string; cause: unknown }) {
     super({
       name,
-      message:
-        `JSON parsing failed: ` +
-        `Text: ${text}.\n` +
-        `Error message: ${getErrorMessage(cause)}`,
+      message: `JSON parsing failed: Text: ${text}.\nError message: ${getErrorMessage(cause)}`,
       cause,
     });
 

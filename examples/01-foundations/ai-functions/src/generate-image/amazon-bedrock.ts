@@ -1,5 +1,5 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { generateImage } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

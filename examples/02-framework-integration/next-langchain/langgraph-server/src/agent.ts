@@ -29,8 +29,8 @@
  * @see https://langchain-ai.github.io/langgraph/ for LangGraph documentation
  */
 
-import { createAgent } from 'langchain';
 import { tool } from '@langchain/core/tools';
+import { createAgent } from 'langchain';
 import { z } from 'zod';
 
 // Define a simple weather tool
@@ -67,9 +67,7 @@ const calculatorTool = tool(
     schema: z.object({
       expression: z
         .string()
-        .describe(
-          'The mathematical expression to evaluate (e.g., "2 + 2", "10 * 5")',
-        ),
+        .describe('The mathematical expression to evaluate (e.g., "2 + 2", "10 * 5")'),
     }),
   },
 );

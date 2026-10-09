@@ -1,5 +1,5 @@
-import { JSONObject } from '@ai-toolkit/provider';
-import { AnthropicMessageMetadata } from './anthropic-message-metadata';
+import type { JSONObject } from '@ai-toolkit/provider';
+import type { AnthropicMessageMetadata } from './anthropic-message-metadata';
 
 /**
  * Sets the Anthropic container ID in the provider options based on
@@ -18,9 +18,7 @@ export function forwardAnthropicContainerIdFromLastStep({
   // Search backwards through steps to find the most recent container ID
   for (let i = steps.length - 1; i >= 0; i--) {
     const containerId = (
-      steps[i].providerMetadata?.anthropic as
-        | AnthropicMessageMetadata
-        | undefined
+      steps[i].providerMetadata?.anthropic as AnthropicMessageMetadata | undefined
     )?.container?.id;
 
     if (containerId) {

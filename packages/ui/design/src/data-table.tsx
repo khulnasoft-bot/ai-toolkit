@@ -1,8 +1,8 @@
 'use client';
 
 import { ArrowDown, ArrowUp, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
+import { useMemo, useState } from 'react';
 import { cn } from './utils';
 
 export interface Column<T> {
@@ -29,9 +29,7 @@ export function DataTable<T>({
   onRowClick?: (row: T) => void;
   emptyLabel?: string;
 }) {
-  const [sort, setSort] = useState<{ id: string; dir: 'asc' | 'desc' } | null>(
-    null,
-  );
+  const [sort, setSort] = useState<{ id: string; dir: 'asc' | 'desc' } | null>(null);
   const [page, setPage] = useState(0);
 
   const sorted = useMemo(() => {
@@ -40,8 +38,8 @@ export function DataTable<T>({
     if (!column?.sortValue) return data;
     const { dir } = sort;
     return [...data].sort((a, b) => {
-      const aValue = column.sortValue!(a);
-      const bValue = column.sortValue!(b);
+      const aValue = column.sortValue?.(a);
+      const bValue = column.sortValue?.(b);
       if (typeof aValue === 'number' && typeof bValue === 'number') {
         return dir === 'asc' ? aValue - bValue : bValue - aValue;
       }
@@ -57,9 +55,7 @@ export function DataTable<T>({
 
   function toggleSort(id: string) {
     setSort(prev =>
-      prev?.id === id
-        ? { id, dir: prev.dir === 'asc' ? 'desc' : 'asc' }
-        : { id, dir: 'asc' },
+      prev?.id === id ? { id, dir: prev.dir === 'asc' ? 'desc' : 'asc' } : { id, dir: 'asc' },
     );
   }
 
@@ -126,15 +122,11 @@ export function DataTable<T>({
                 onClick={onRowClick ? () => onRowClick(row) : undefined}
                 className={cn(
                   'border-b border-alpha-border last:border-0',
-                  onRowClick &&
-                    'cursor-pointer transition-colors hover:bg-surface-200/60',
+                  onRowClick && 'cursor-pointer transition-colors hover:bg-surface-200/60',
                 )}
               >
                 {columns.map(column => (
-                  <td
-                    key={column.id}
-                    className={cn('px-4 py-3', column.className)}
-                  >
+                  <td key={column.id} className={cn('px-4 py-3', column.className)}>
                     {column.cell ? column.cell(row) : null}
                   </td>
                 ))}

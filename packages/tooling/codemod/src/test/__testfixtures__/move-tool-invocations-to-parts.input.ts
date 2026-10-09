@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { useChat } from 'ai/react';
 
-function ProcessMessages() {
+function _ProcessMessages() {
   const { messages } = useChat();
 
   // Check for tool-invocation type
@@ -14,8 +14,8 @@ function ProcessMessages() {
   });
 
   // Check for tool-invocation with == operator
-  const results = message.parts.filter(part => {
-    if (part.type == 'tool-invocation') {
+  const _results = message.parts.filter(part => {
+    if (part.type === 'tool-invocation') {
       return true;
     }
   });
@@ -35,7 +35,7 @@ function ProcessMessages() {
   });
 
   // Access toolInvocation.toolName directly
-  const toolNames = message.parts.map(part => {
+  const _toolNames = message.parts.map(part => {
     if (part.type === 'tool-invocation') {
       const name = part.toolInvocation.toolName;
       console.log(`Tool: ${part.toolInvocation.toolName}`);

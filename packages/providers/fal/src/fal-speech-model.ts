@@ -1,4 +1,4 @@
-import { SpeechModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { SharedV3Warning, SpeechModelV3 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createBinaryResponseHandler,
@@ -9,10 +9,10 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { FalConfig } from './fal-config';
-import { falFailedResponseHandler } from './fal-error';
 import { FAL_EMOTIONS, FAL_LANGUAGE_BOOSTS } from './fal-api-types';
-import { FalSpeechModelId } from './fal-speech-settings';
+import type { FalConfig } from './fal-config';
+import { falFailedResponseHandler } from './fal-error';
+import type { FalSpeechModelId } from './fal-speech-settings';
 
 const falSpeechProviderOptionsSchema = z.looseObject({
   voice_setting: z
@@ -31,9 +31,7 @@ const falSpeechProviderOptionsSchema = z.looseObject({
   pronunciation_dict: z.record(z.string(), z.string()).nullish(),
 });
 
-export type FalSpeechCallOptions = z.infer<
-  typeof falSpeechProviderOptionsSchema
->;
+export type FalSpeechCallOptions = z.infer<typeof falSpeechProviderOptionsSchema>;
 
 interface FalSpeechModelConfig extends FalConfig {
   _internal?: {
@@ -117,9 +115,7 @@ export class FalSpeechModel implements SpeechModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body: requestBody,
       failedResponseHandler: falFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        falSpeechResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(falSpeechResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });

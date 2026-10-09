@@ -1,9 +1,6 @@
-import {
-  createTransformer,
-  TransformContext,
-} from '../codemods/lib/create-transformer';
-import { FileInfo, API, JSCodeshift } from 'jscodeshift';
-import { describe, test, expect, beforeEach, vi } from 'vitest';
+import type { API, FileInfo, JSCodeshift } from 'jscodeshift';
+import { beforeEach, describe, expect, test, vi } from 'vitest';
+import { createTransformer, type TransformContext } from '../codemods/lib/create-transformer';
 
 describe('createTransformer', () => {
   let mockApi: API;
@@ -39,35 +36,30 @@ describe('createTransformer', () => {
 
   test('should return transformed code when changes are made', () => {
     // Create a transformer function that makes changes
-    const transformFn = vi.fn(
-      (fileInfo, api, options, context: TransformContext) => {
-        const { j, root } = context;
+    const transformFn = vi.fn((_fileInfo, _api, _options, context: TransformContext) => {
+      const { j, root } = context;
 
-        // Replace all console.log statements with console.error
-        root
-          .find(j.CallExpression, {
-            callee: {
-              object: { name: 'console' },
-              property: { name: 'log' },
-            },
-          })
-          .forEach(path => {
-            context.hasChanges = true;
-            j(path).replaceWith(
-              j.callExpression(
-                j.memberExpression(
-                  j.identifier('console'),
-                  j.identifier('error'),
-                ),
-                path.node.arguments,
-              ),
-            );
-          });
+      // Replace all console.log statements with console.error
+      root
+        .find(j.CallExpression, {
+          callee: {
+            object: { name: 'console' },
+            property: { name: 'log' },
+          },
+        })
+        .forEach(path => {
+          context.hasChanges = true;
+          j(path).replaceWith(
+            j.callExpression(
+              j.memberExpression(j.identifier('console'), j.identifier('error')),
+              path.node.arguments,
+            ),
+          );
+        });
 
-        // Add a message to report
-        context.messages.push('Replaced console.log with console.error');
-      },
-    );
+      // Add a message to report
+      context.messages.push('Replaced console.log with console.error');
+    });
 
     const transformer = createTransformer(transformFn);
 
@@ -80,14 +72,12 @@ describe('createTransformer', () => {
     expect(result).toContain('console.error(a);');
 
     // The report method should have been called with the message
-    expect(mockReport).toHaveBeenCalledWith(
-      'Replaced console.log with console.error',
-    );
+    expect(mockReport).toHaveBeenCalledWith('Replaced console.log with console.error');
   });
 
   test('should return null when no changes are made', () => {
     // Create a transformer function that makes no changes
-    const transformFn = vi.fn((fileInfo, api, options, context) => {
+    const transformFn = vi.fn((_fileInfo, _api, _options, _context) => {
       // Intentionally do nothing
     });
 
@@ -108,7 +98,7 @@ describe('createTransformer', () => {
     let contextJ: JSCodeshift | undefined;
     let contextRoot: any;
 
-    const transformFn = vi.fn((fileInfo, api, options, context) => {
+    const transformFn = vi.fn((_fileInfo, _api, _options, context) => {
       contextJ = context.j;
       contextRoot = context.root;
     });
@@ -145,7 +135,7 @@ describe('createTransformer', () => {
   });
 
   test('should handle multiple messages', () => {
-    const transformFn = vi.fn((fileInfo, api, options, context) => {
+    const transformFn = vi.fn((_fileInfo, _api, _options, context) => {
       context.messages.push('First message');
       context.messages.push('Second message');
     });

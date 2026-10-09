@@ -18,7 +18,7 @@ const chat = new Chat({
   }),
 });
 
-const isLoading = computed(() => chat.status !== 'ready');
+const _isLoading = computed(() => chat.status !== 'ready');
 </script>
 
 <template>

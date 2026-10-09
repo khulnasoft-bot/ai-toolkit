@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
-import { readdir, readFile, writeFile } from 'fs/promises';
-import { join } from 'path';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import { join } from 'node:path';
 
 async function getAllFiles(dir: string): Promise<string[]> {
   const files: string[] = [];

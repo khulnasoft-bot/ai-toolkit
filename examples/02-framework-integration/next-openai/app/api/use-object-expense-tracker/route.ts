@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamObject } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { expenseSchema } from './schema';
 
 // Allow streaming responses up to 30 seconds

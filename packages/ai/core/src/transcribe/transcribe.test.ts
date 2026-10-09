@@ -1,17 +1,9 @@
-import { JSONObject, TranscriptionModelV3 } from '@ai-toolkit/provider';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vitest,
-  vi,
-} from 'vitest';
+import type { JSONObject, TranscriptionModelV3 } from '@ai-toolkit/provider';
+import { afterEach, beforeEach, describe, expect, it, vi, vitest } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
 import { MockTranscriptionModelV3 } from '../test/mock-transcription-model-v3';
+import type { Warning } from '../types/warning';
 import { transcribe } from './transcribe';
-import { Warning } from '../types/warning';
 
 vi.mock('../version', () => {
   return {
@@ -72,9 +64,7 @@ describe('transcribe', () => {
   let logWarningsSpy: ReturnType<typeof vitest.spyOn>;
 
   beforeEach(() => {
-    logWarningsSpy = vitest
-      .spyOn(logWarningsModule, 'logWarnings')
-      .mockImplementation(() => {});
+    logWarningsSpy = vitest.spyOn(logWarningsModule, 'logWarnings').mockImplementation(() => {});
   });
 
   afterEach(() => {

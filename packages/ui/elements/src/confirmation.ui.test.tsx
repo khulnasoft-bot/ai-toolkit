@@ -78,10 +78,7 @@ describe('confirmationRequest, ConfirmationAccepted, ConfirmationRejected', () =
 
   it('renders ConfirmationAccepted when approved and state is approval-responded', () => {
     render(
-      <Confirmation
-        approval={{ approved: true, id: 'test-id' }}
-        state="approval-responded"
-      >
+      <Confirmation approval={{ approved: true, id: 'test-id' }} state="approval-responded">
         <ConfirmationRequest>Custom approval message</ConfirmationRequest>
         <ConfirmationAccepted>
           <CheckIcon />
@@ -94,18 +91,13 @@ describe('confirmationRequest, ConfirmationAccepted, ConfirmationRejected', () =
       </Confirmation>,
     );
     expect(screen.getByText('Accepted')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Custom approval message'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Custom approval message')).not.toBeInTheDocument();
     expect(screen.queryByText('Rejected')).not.toBeInTheDocument();
   });
 
   it('renders ConfirmationRejected when not approved and state is output-denied', () => {
     render(
-      <Confirmation
-        approval={{ approved: false, id: 'test-id' }}
-        state="output-denied"
-      >
+      <Confirmation approval={{ approved: false, id: 'test-id' }} state="output-denied">
         <ConfirmationRequest>Custom approval message</ConfirmationRequest>
         <ConfirmationAccepted>
           <CheckIcon />
@@ -118,9 +110,7 @@ describe('confirmationRequest, ConfirmationAccepted, ConfirmationRejected', () =
       </Confirmation>,
     );
     expect(screen.getByText('Rejected')).toBeInTheDocument();
-    expect(
-      screen.queryByText('Custom approval message'),
-    ).not.toBeInTheDocument();
+    expect(screen.queryByText('Custom approval message')).not.toBeInTheDocument();
     expect(screen.queryByText('Accepted')).not.toBeInTheDocument();
   });
 });
@@ -235,10 +225,7 @@ describe('confirmationActions', () => {
 describe('confirmationAccepted', () => {
   it('renders accepted status with icon', () => {
     render(
-      <Confirmation
-        approval={{ approved: true, id: 'test-id' }}
-        state="approval-responded"
-      >
+      <Confirmation approval={{ approved: true, id: 'test-id' }} state="approval-responded">
         <ConfirmationRequest>Request</ConfirmationRequest>
         <ConfirmationAccepted>
           <CheckIcon className="size-4" />
@@ -254,10 +241,7 @@ describe('confirmationAccepted', () => {
 describe('confirmationRejected', () => {
   it('renders rejected status with icon', () => {
     render(
-      <Confirmation
-        approval={{ approved: false, id: 'test-id' }}
-        state="output-denied"
-      >
+      <Confirmation approval={{ approved: false, id: 'test-id' }} state="output-denied">
         <ConfirmationRequest>Request</ConfirmationRequest>
         <ConfirmationAccepted>Accepted</ConfirmationAccepted>
         <ConfirmationRejected>

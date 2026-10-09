@@ -1,7 +1,7 @@
-import { Span } from '@opentelemetry/api';
-import { describe, it, expect, beforeEach } from 'vitest';
-import { recordSpan, recordErrorOnSpan } from './record-span';
+import type { Span } from '@opentelemetry/api';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { MockTracer } from '../test/mock-tracer';
+import { recordErrorOnSpan, recordSpan } from './record-span';
 
 describe('recordSpan', () => {
   let tracer: MockTracer;

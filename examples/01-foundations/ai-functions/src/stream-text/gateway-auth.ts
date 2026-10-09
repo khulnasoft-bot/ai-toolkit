@@ -138,9 +138,9 @@ async function testStream(abortSignal?: AbortSignal) {
 
     (async () => {
       try {
-        let text = '';
+        let _text = '';
         for await (const chunk of result.textStream) {
-          text += chunk;
+          _text += chunk;
         }
 
         const hasApiKey = !!process.env.AI_GATEWAY_API_KEY;
@@ -196,7 +196,9 @@ run(async () => {
     const scenario = testScenarios.find(s => s.name === scenarioArg);
     if (!scenario) {
       console.log('Available scenarios:');
-      testScenarios.forEach(s => console.log(`  ${s.name}`));
+      testScenarios.forEach(s => {
+        console.log(`  ${s.name}`);
+      });
       return;
     }
     await testAuthenticationScenario(scenario);

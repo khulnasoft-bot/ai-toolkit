@@ -15,9 +15,9 @@
  * Run with: pnpm split-ts-references
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -40,7 +40,7 @@ const DOMAIN_MAP = {
 
 function getDomain(refPath) {
   for (const [prefix, domain] of Object.entries(DOMAIN_MAP)) {
-    if (refPath.startsWith(prefix + '/') || refPath === prefix) return domain;
+    if (refPath.startsWith(`${prefix}/`) || refPath === prefix) return domain;
   }
   return 'other';
 }
@@ -93,7 +93,7 @@ function main() {
       compilerOptions: {},
     };
 
-    const json = JSON.stringify(output, null, 2) + '\n';
+    const json = `${JSON.stringify(output, null, 2)}\n`;
 
     console.log(`${domain}/`);
     console.log(`  File: ${filename}`);

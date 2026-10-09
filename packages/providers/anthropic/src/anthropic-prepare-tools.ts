@@ -1,14 +1,14 @@
 import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
-import { AnthropicTool, AnthropicToolChoice } from './anthropic-messages-api';
+import { validateTypes } from '@ai-toolkit/provider-utils';
+import type { AnthropicTool, AnthropicToolChoice } from './anthropic-messages-api';
 import { CacheControlValidator } from './get-cache-control';
 import { textEditor_20250728ArgsSchema } from './tool/text-editor_20250728';
-import { webSearch_20250305ArgsSchema } from './tool/web-search_20250305';
 import { webFetch_20250910ArgsSchema } from './tool/web-fetch-20250910';
-import { validateTypes } from '@ai-toolkit/provider-utils';
+import { webSearch_20250305ArgsSchema } from './tool/web-search_20250305';
 
 export interface AnthropicToolOptions {
   deferLoading?: boolean;
@@ -74,14 +74,10 @@ export async function prepareTools({
             ? { strict: tool.strict }
             : {}),
           ...(deferLoading != null ? { defer_loading: deferLoading } : {}),
-          ...(allowedCallers != null
-            ? { allowed_callers: allowedCallers }
-            : {}),
+          ...(allowedCallers != null ? { allowed_callers: allowedCallers } : {}),
           ...(tool.inputExamples != null
             ? {
-                input_examples: tool.inputExamples.map(
-                  example => example.input,
-                ),
+                input_examples: tool.inputExamples.map(example => example.input),
               }
             : {}),
         });

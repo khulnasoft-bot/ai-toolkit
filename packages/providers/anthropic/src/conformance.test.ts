@@ -1,11 +1,7 @@
+import { type ConformanceContext, runConformanceTests } from '@ai-toolkit/provider/conformance';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { describe, vi } from 'vitest';
-
 import { createAnthropic } from './anthropic-provider';
-import {
-  runConformanceTests,
-  type ConformanceContext,
-} from '@ai-toolkit/provider/conformance';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',

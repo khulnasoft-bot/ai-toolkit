@@ -2,15 +2,13 @@ import { AITOOLKITError } from './ai-toolkit-error';
 
 const name = 'AI_InvalidPromptError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * A prompt is invalid. This error should be thrown by providers when they cannot
  * process a prompt.
  */
 export class InvalidPromptError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly prompt: unknown;
 
   constructor({

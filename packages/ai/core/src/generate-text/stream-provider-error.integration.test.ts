@@ -1,15 +1,15 @@
 import { createAmazonBedrock } from '@ai-sdk/amazon-bedrock';
 import { createDeepSeek } from '@ai-sdk/deepseek';
-import { createGateway } from '@ai-toolkit/gateway';
 import { createGoogle } from '@ai-sdk/google';
 import { createGroq } from '@ai-sdk/groq';
 import { createHuggingFace } from '@ai-sdk/huggingface';
 import { createMoonshotAI } from '@ai-sdk/moonshotai';
 import { createOpenAI } from '@ai-sdk/openai';
-import type { LanguageModelV4 } from '@ai-toolkit/provider';
-import { convertAsyncIterableToArray } from '@ai-toolkit/provider-utils/test';
 import { createTestServer } from '@ai-sdk/test-server/with-vitest';
 import { createXai } from '@ai-sdk/xai';
+import { createGateway } from '@ai-toolkit/gateway';
+import type { LanguageModelV4 } from '@ai-toolkit/provider';
+import { convertAsyncIterableToArray } from '@ai-toolkit/provider-utils/test';
 import { EventStreamCodec } from '@smithy/eventstream-codec';
 import { fromUtf8, toUtf8 } from '@smithy/util-utf8';
 import { describe, expect, it } from 'vitest';
@@ -161,15 +161,12 @@ describe('stream provider error integration', () => {
         region: 'us-east-1',
         baseURL: 'https://api.test.com/bedrock',
         fetch: async () =>
-          new Response(
-            createAmazonBedrockExceptionStream({ type, data: details }),
-            {
-              status: 200,
-              headers: {
-                'content-type': 'application/vnd.amazon.eventstream',
-              },
+          new Response(createAmazonBedrockExceptionStream({ type, data: details }), {
+            status: 200,
+            headers: {
+              'content-type': 'application/vnd.amazon.eventstream',
             },
-          ),
+          }),
       })('anthropic.claude-3-haiku-20240307-v1:0'),
       expected: {
         message: details.message,
@@ -388,23 +385,22 @@ describe('stream provider error integration', () => {
       },
     };
 
-    server.urls['https://api.test.com/moonshot/v1/chat/completions'].response =
-      {
-        type: 'stream-chunks',
-        chunks: [
-          `data: ${JSON.stringify({
-            id: 'chatcmpl-test',
-            choices: [
-              {
-                delta: { role: 'assistant', content: 'Partial output' },
-                finish_reason: null,
-              },
-            ],
-          })}\n\n`,
-          `data: ${JSON.stringify(data)}\n\n`,
-          'data: [DONE]\n\n',
-        ],
-      };
+    server.urls['https://api.test.com/moonshot/v1/chat/completions'].response = {
+      type: 'stream-chunks',
+      chunks: [
+        `data: ${JSON.stringify({
+          id: 'chatcmpl-test',
+          choices: [
+            {
+              delta: { role: 'assistant', content: 'Partial output' },
+              finish_reason: null,
+            },
+          ],
+        })}\n\n`,
+        `data: ${JSON.stringify(data)}\n\n`,
+        'data: [DONE]\n\n',
+      ],
+    };
 
     await expectNormalizedProviderError({
       model: createMoonshotAI({

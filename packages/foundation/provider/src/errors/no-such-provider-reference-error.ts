@@ -3,15 +3,13 @@ import { AITOOLKITError } from './ai-toolkit-error';
 
 const name = 'AI_NoSuchProviderReferenceError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * Thrown when a provider reference cannot be resolved because the specified
  * provider is not found in the provider reference mapping.
  */
 export class NoSuchProviderReferenceError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly provider: string;
   readonly reference: SharedV4ProviderReference;
 

@@ -12,7 +12,7 @@ import { createTransformer } from '../lib/create-transformer';
  * const { messages } = useChat({
  * });
  */
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Find useChat call expressions
@@ -36,12 +36,9 @@ export default createTransformer((fileInfo, api, options, context) => {
       configObject.properties = configObject.properties.filter((prop: any) => {
         if (
           (prop.type === 'Property' || prop.type === 'ObjectProperty') &&
-          ((prop.key.type === 'Identifier' &&
-            prop.key.name === 'sendExtraMessageFields') ||
-            (prop.key.type === 'Literal' &&
-              prop.key.value === 'sendExtraMessageFields') ||
-            (prop.key.type === 'StringLiteral' &&
-              prop.key.value === 'sendExtraMessageFields'))
+          ((prop.key.type === 'Identifier' && prop.key.name === 'sendExtraMessageFields') ||
+            (prop.key.type === 'Literal' && prop.key.value === 'sendExtraMessageFields') ||
+            (prop.key.type === 'StringLiteral' && prop.key.value === 'sendExtraMessageFields'))
         ) {
           foundSendExtraMessageFields = true;
           context.hasChanges = true;

@@ -1,5 +1,5 @@
-import { groq } from '@ai-toolkit/groq';
 import { generateObject } from '@ai-toolkit/ai';
+import { groq } from '@ai-toolkit/groq';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

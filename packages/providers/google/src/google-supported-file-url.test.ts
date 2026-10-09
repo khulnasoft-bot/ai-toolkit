@@ -1,5 +1,5 @@
+import { expect, it } from 'vitest';
 import { isSupportedFileUrl } from './google-supported-file-url';
-import { it, expect } from 'vitest';
 
 it('should return true for valid Google generative language file URLs', () => {
   const validUrl = new URL(
@@ -7,9 +7,7 @@ it('should return true for valid Google generative language file URLs', () => {
   );
   expect(isSupportedFileUrl(validUrl)).toBe(true);
 
-  const simpleValidUrl = new URL(
-    'https://generativelanguage.googleapis.com/v1beta/files/test123',
-  );
+  const simpleValidUrl = new URL('https://generativelanguage.googleapis.com/v1beta/files/test123');
   expect(isSupportedFileUrl(simpleValidUrl)).toBe(true);
 });
 

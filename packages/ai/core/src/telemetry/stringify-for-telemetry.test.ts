@@ -1,6 +1,6 @@
+import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { stringifyForTelemetry } from './stringify-for-telemetry';
-import { LanguageModelV3Prompt } from '@ai-toolkit/provider';
-import { describe, it, expect } from 'vitest';
 
 describe('stringifyForTelemetry', () => {
   it('should stringify a prompt with text parts', () => {

@@ -1,8 +1,8 @@
 'use client';
 
+import { BookOpen, ExternalLink, Github } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BookOpen, Github, ExternalLink } from 'lucide-react';
 import { navItems } from '../app/constants';
 
 export function Sidebar() {
@@ -18,9 +18,7 @@ export function Sidebar() {
         </div>
         <div>
           <h1 className="font-semibold text-[var(--foreground)]">LangChain</h1>
-          <p className="text-xs text-[var(--foreground-muted)]">
-            AI TOOLKIT Examples
-          </p>
+          <p className="text-xs text-[var(--foreground-muted)]">AI TOOLKIT Examples</p>
         </div>
       </div>
 

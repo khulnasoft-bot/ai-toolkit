@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { executeTool } from './execute-tool';
 import type { ExecutableTool } from './executable-tool';
+import { executeTool } from './execute-tool';
 import { tool } from './tool';
 import type { ToolExecutionOptions } from './tool-execute-function';
+
 describe('executeTool', () => {
   // Guards against re-introducing a "this-binding guard" (e.g. destructuring
   // `execute` off the tool before calling it), which would break class-based
@@ -40,9 +41,7 @@ describe('executeTool', () => {
       results.push(result);
     }
 
-    expect(results).toEqual([
-      { type: 'final', output: { id: 'calc', sum: 3 } },
-    ]);
+    expect(results).toEqual([{ type: 'final', output: { id: 'calc', sum: 3 } }]);
   });
 
   it('yields a single final output for non-streaming tools', async () => {
@@ -104,8 +103,7 @@ describe('executeTool', () => {
       },
     });
 
-    const results: Array<{ type: 'preliminary' | 'final'; output: string }> =
-      [];
+    const results: Array<{ type: 'preliminary' | 'final'; output: string }> = [];
 
     for await (const result of executeTool({
       tool: weatherTool as ExecutableTool<typeof weatherTool>,

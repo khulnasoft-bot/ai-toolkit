@@ -1,18 +1,17 @@
 'use client';
 
-import { OpenAIImageGenerationMessage } from '@/agent/openai-image-generation-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { OpenAIImageGenerationMessage } from '@/agent/openai-image-generation-agent';
 import ChatInput from '@/components/chat-input';
 import ImageGenerationView from '@/components/tool/openai-image-generation-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestOpenAIWebSearch() {
-  const { status, sendMessage, messages } =
-    useChat<OpenAIImageGenerationMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-openai-image-generation',
-      }),
-    });
+  const { status, sendMessage, messages } = useChat<OpenAIImageGenerationMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-openai-image-generation',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -21,12 +20,17 @@ export default function TestOpenAIWebSearch() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
-              case 'text':
-                return <div key={index}>{part.text}</div>;
-              case 'tool-image':
-                return <ImageGenerationView key={index} invocation={part} />;
+              case 'text': {
+                return <div key={`${part.type}-${part.text}`}>{part.text}</div>;
+              }
+              case 'tool-image': {
+                return <ImageGenerationView key={part.toolCallId} invocation={part} />;
+              }
+              default: {
+                return null;
+              }
             }
           })}
         </div>

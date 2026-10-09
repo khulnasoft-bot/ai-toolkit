@@ -11,7 +11,7 @@ function removeUndefinedEntries(record: unknown): unknown {
   if (record == null || typeof record !== 'object') {
     return record;
   }
-  if (record instanceof Array) {
+  if (Array.isArray(record)) {
     return record.map(removeUndefinedEntries);
   }
   return Object.fromEntries(

@@ -1,5 +1,5 @@
-import { fireworks } from '@ai-toolkit/fireworks';
 import { generateText } from '@ai-toolkit/ai';
+import { fireworks } from '@ai-toolkit/fireworks';
 import { run } from '../lib/run';
 
 run(async () => {

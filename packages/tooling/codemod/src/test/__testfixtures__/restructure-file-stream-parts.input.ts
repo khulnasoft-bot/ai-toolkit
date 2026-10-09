@@ -32,7 +32,7 @@ for await (const delta of result.fullStream) {
 }
 
 // Test object literal that should be restructured
-const fileStreamPart = {
+const _fileStreamPart = {
   type: 'file',
   mimeType: 'image/png',
   data: new Uint8Array([1, 2, 3]),

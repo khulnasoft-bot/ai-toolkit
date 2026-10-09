@@ -1,9 +1,6 @@
 import { readFileSync } from 'node:fs';
-import {
-  GoogleVertexImageProviderOptions,
-  vertex,
-} from '@ai-toolkit/google-vertex';
 import { generateImage } from '@ai-toolkit/ai';
+import { type GoogleVertexImageProviderOptions, vertex } from '@ai-toolkit/google-vertex';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 
@@ -20,8 +17,7 @@ run(async () => {
     },
   ]);
 
-  const prompt =
-    'A sunlit indoor lounge area with a pool containing a flamingo';
+  const prompt = 'A sunlit indoor lounge area with a pool containing a flamingo';
   console.log(`PROMPT: ${prompt}`);
 
   const { images } = await generateImage({

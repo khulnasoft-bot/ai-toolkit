@@ -1,8 +1,8 @@
 import type { ChildProcess, IOType } from 'node:child_process';
-import { Stream } from 'node:stream';
-import { JSONRPCMessage, JSONRPCMessageSchema } from '../json-rpc-message';
-import { MCPTransport } from '../mcp-transport';
+import type { Stream } from 'node:stream';
 import { MCPClientError } from '../../error/mcp-client-error';
+import { type JSONRPCMessage, JSONRPCMessageSchema } from '../json-rpc-message';
+import type { MCPTransport } from '../mcp-transport';
 import { createChildProcess } from './create-child-process';
 
 export interface StdioConfig {
@@ -36,10 +36,7 @@ export class StdioMCPTransport implements MCPTransport {
 
     return new Promise((resolve, reject) => {
       try {
-        const process = createChildProcess(
-          this.serverParams,
-          this.abortController.signal,
-        );
+        const process = createChildProcess(this.serverParams, this.abortController.signal);
 
         this.process = process;
 
@@ -146,7 +143,7 @@ class ReadBuffer {
 }
 
 function serializeMessage(message: JSONRPCMessage): string {
-  return JSON.stringify(message) + '\n';
+  return `${JSON.stringify(message)}\n`;
 }
 
 export function deserializeMessage(line: string): JSONRPCMessage {

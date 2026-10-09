@@ -1,10 +1,6 @@
 import { expect } from 'vitest';
 
-import {
-  FinishReason,
-  LanguageModelResponseMetadata,
-  LanguageModelUsage,
-} from '../types';
+import type { FinishReason, LanguageModelResponseMetadata, LanguageModelUsage } from '../types';
 import { NoObjectGeneratedError } from './no-object-generated-error';
 
 export function verifyNoObjectGeneratedError(

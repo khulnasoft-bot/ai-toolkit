@@ -1,14 +1,6 @@
-import {
-  type ImageModelV3,
-  NoSuchModelError,
-  type ProviderV3,
-} from '@ai-toolkit/provider';
+import { type ImageModelV3, NoSuchModelError, type ProviderV3 } from '@ai-toolkit/provider';
 import type { FetchFunction } from '@ai-toolkit/provider-utils';
-import {
-  loadApiKey,
-  withoutTrailingSlash,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import { loadApiKey, withoutTrailingSlash, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { ProdiaImageModel } from './prodia-image-model';
 import type { ProdiaImageModelId } from './prodia-image-settings';
 import { VERSION } from './version';
@@ -55,9 +47,7 @@ export interface ProdiaProvider extends ProviderV3 {
 
 const defaultBaseURL = 'https://inference.prodia.com/v2';
 
-export function createProdia(
-  options: ProdiaProviderSettings = {},
-): ProdiaProvider {
+export function createProdia(options: ProdiaProviderSettings = {}): ProdiaProvider {
   const baseURL = withoutTrailingSlash(options.baseURL ?? defaultBaseURL);
   const getHeaders = () =>
     withUserAgentSuffix(

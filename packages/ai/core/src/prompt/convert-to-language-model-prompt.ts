@@ -1,4 +1,4 @@
-import {
+import type {
   LanguageModelV3FilePart,
   LanguageModelV3Message,
   LanguageModelV3Prompt,
@@ -6,30 +6,27 @@ import {
   LanguageModelV3ToolResultOutput,
 } from '@ai-toolkit/provider';
 import {
-  DataContent,
-  FilePart,
-  ImagePart,
+  type DataContent,
+  type FilePart,
+  type ImagePart,
   isUrlSupported,
-  ModelMessage,
-  ReasoningPart,
-  TextPart,
-  ToolCallPart,
-  ToolResultOutput,
-  ToolResultPart,
+  type ModelMessage,
+  type ReasoningPart,
+  type TextPart,
+  type ToolCallPart,
+  type ToolResultOutput,
+  type ToolResultPart,
 } from '@ai-toolkit/provider-utils';
-import {
-  detectMediaType,
-  imageMediaTypeSignatures,
-} from '../util/detect-media-type';
+import { MissingToolResultsError } from '../error/missing-tool-result-error';
+import { asArray } from '../util/as-array';
+import { detectMediaType, imageMediaTypeSignatures } from '../util/detect-media-type';
 import {
   createDefaultDownloadFunction,
-  DownloadFunction,
+  type DownloadFunction,
 } from '../util/download/download-function';
 import { convertToLanguageModelV3DataContent } from './data-content';
 import { InvalidMessageRoleError } from './invalid-message-role-error';
-import { StandardizedPrompt } from './standardize-prompt';
-import { asArray } from '../util/as-array';
-import { MissingToolResultsError } from '../error/missing-tool-result-error';
+import type { StandardizedPrompt } from './standardize-prompt';
 
 export async function convertToLanguageModelPrompt({
   prompt,
@@ -40,25 +37,14 @@ export async function convertToLanguageModelPrompt({
   supportedUrls: Record<string, RegExp[]>;
   download: DownloadFunction | undefined;
 }): Promise<LanguageModelV3Prompt> {
-  const downloadedAssets = await downloadAssets(
-    prompt.messages,
-    download,
-    supportedUrls,
-  );
+  const downloadedAssets = await downloadAssets(prompt.messages, download, supportedUrls);
 
   const approvalIdToToolCallId = new Map<string, string>();
   for (const message of prompt.messages) {
     if (message.role === 'assistant' && Array.isArray(message.content)) {
       for (const part of message.content) {
-        if (
-          part.type === 'tool-approval-request' &&
-          'approvalId' in part &&
-          'toolCallId' in part
-        ) {
-          approvalIdToToolCallId.set(
-            part.approvalId as string,
-            part.toolCallId as string,
-          );
+        if (part.type === 'tool-approval-request' && 'approvalId' in part && 'toolCallId' in part) {
+          approvalIdToToolCallId.set(part.approvalId as string, part.toolCallId as string);
         }
       }
     }
@@ -88,9 +74,7 @@ export async function convertToLanguageModelPrompt({
             providerOptions: message.providerOptions,
           }))
       : []),
-    ...prompt.messages.map(message =>
-      convertToLanguageModelMessage({ message, downloadedAssets }),
-    ),
+    ...prompt.messages.map(message => convertToLanguageModelMessage({ message, downloadedAssets })),
   ];
 
   // combine consecutive tool messages into a single tool message
@@ -175,10 +159,7 @@ export function convertToLanguageModelMessage({
   downloadedAssets,
 }: {
   message: ModelMessage;
-  downloadedAssets: Record<
-    string,
-    { mediaType: string | undefined; data: Uint8Array }
-  >;
+  downloadedAssets: Record<string, { mediaType: string | undefined; data: Uint8Array }>;
 }): LanguageModelV3Message {
   const role = message.role;
   switch (role) {
@@ -223,29 +204,18 @@ export function convertToLanguageModelMessage({
         content: message.content
           .filter(
             // remove empty text parts (no text, and no provider options):
-            part =>
-              part.type !== 'text' ||
-              part.text !== '' ||
-              part.providerOptions != null,
+            part => part.type !== 'text' || part.text !== '' || part.providerOptions != null,
           )
           .filter(
-            (
-              part,
-            ): part is
-              | TextPart
-              | FilePart
-              | ReasoningPart
-              | ToolCallPart
-              | ToolResultPart => part.type !== 'tool-approval-request',
+            (part): part is TextPart | FilePart | ReasoningPart | ToolCallPart | ToolResultPart =>
+              part.type !== 'tool-approval-request',
           )
           .map(part => {
             const providerOptions = part.providerOptions;
 
             switch (part.type) {
               case 'file': {
-                const { data, mediaType } = convertToLanguageModelV3DataContent(
-                  part.data,
-                );
+                const { data, mediaType } = convertToLanguageModelV3DataContent(part.data);
                 return {
                   type: 'file',
                   data,
@@ -287,6 +257,13 @@ export function convertToLanguageModelMessage({
                   providerOptions,
                 };
               }
+
+              default: {
+                const _exhaustiveCheck: never = part;
+                throw new Error(
+                  `Unsupported assistant message part: ${JSON.stringify(_exhaustiveCheck)}`,
+                );
+              }
             }
           }),
         providerOptions: message.providerOptions,
@@ -299,8 +276,7 @@ export function convertToLanguageModelMessage({
         content: message.content
           .filter(
             // Only include tool-approval-response for provider-executed tools
-            part =>
-              part.type !== 'tool-approval-response' || part.providerExecuted,
+            part => part.type !== 'tool-approval-response' || part.providerExecuted,
           )
           .map(part => {
             switch (part.type) {
@@ -320,6 +296,13 @@ export function convertToLanguageModelMessage({
                   approved: part.approved,
                   reason: part.reason,
                 };
+              }
+
+              default: {
+                const _exhaustiveCheck: never = part;
+                throw new Error(
+                  `Unsupported tool message part: ${JSON.stringify(_exhaustiveCheck)}`,
+                );
               }
             }
           }),
@@ -341,37 +324,28 @@ async function downloadAssets(
   messages: ModelMessage[],
   download: DownloadFunction,
   supportedUrls: Record<string, RegExp[]>,
-): Promise<
-  Record<string, { mediaType: string | undefined; data: Uint8Array }>
-> {
+): Promise<Record<string, { mediaType: string | undefined; data: Uint8Array }>> {
   const plannedDownloads = messages
     .filter(message => message.role === 'user')
     .map(message => message.content)
-    .filter((content): content is Array<TextPart | ImagePart | FilePart> =>
-      Array.isArray(content),
-    )
+    .filter((content): content is Array<TextPart | ImagePart | FilePart> => Array.isArray(content))
     .flat()
-    .filter(
-      (part): part is ImagePart | FilePart =>
-        part.type === 'image' || part.type === 'file',
-    )
+    .filter((part): part is ImagePart | FilePart => part.type === 'image' || part.type === 'file')
     .map(part => {
-      const mediaType =
-        part.mediaType ?? (part.type === 'image' ? 'image/*' : undefined);
+      const mediaType = part.mediaType ?? (part.type === 'image' ? 'image/*' : undefined);
 
       let data = part.type === 'image' ? part.image : part.data;
       if (typeof data === 'string') {
         try {
           data = new URL(data);
-        } catch (ignored) {}
+        } catch (_ignored) {}
       }
 
       return { mediaType, data };
     })
 
     .filter(
-      (part): part is { mediaType: string | undefined; data: URL } =>
-        part.data instanceof URL,
+      (part): part is { mediaType: string | undefined; data: URL } => part.data instanceof URL,
     )
     .map(part => ({
       url: part.data,
@@ -411,10 +385,7 @@ async function downloadAssets(
  */
 function convertPartToLanguageModelPart(
   part: TextPart | ImagePart | FilePart,
-  downloadedAssets: Record<
-    string,
-    { mediaType: string | undefined; data: Uint8Array }
-  >,
+  downloadedAssets: Record<string, { mediaType: string | undefined; data: Uint8Array }>,
 ): LanguageModelV3TextPart | LanguageModelV3FilePart {
   if (part.type === 'text') {
     return {
@@ -461,9 +432,7 @@ function convertPartToLanguageModelPart(
       // to deal with incorrect media type inputs.
       // When detection fails, use provided media type.
       if (data instanceof Uint8Array || typeof data === 'string') {
-        mediaType =
-          detectMediaType({ data, signatures: imageMediaTypeSignatures }) ??
-          mediaType;
+        mediaType = detectMediaType({ data, signatures: imageMediaTypeSignatures }) ?? mediaType;
       }
 
       return {
@@ -492,9 +461,7 @@ function convertPartToLanguageModelPart(
   }
 }
 
-function mapToolResultOutput(
-  output: ToolResultOutput,
-): LanguageModelV3ToolResultOutput {
+function mapToolResultOutput(output: ToolResultOutput): LanguageModelV3ToolResultOutput {
   if (output.type !== 'content') {
     return output;
   }

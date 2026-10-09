@@ -1,8 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import {
-  createProviderStreamError,
-  isProviderStreamError,
-} from './create-provider-stream-error';
+import { createProviderStreamError, isProviderStreamError } from './create-provider-stream-error';
 
 describe('createProviderStreamError', () => {
   it('preserves provider-owned metadata and raw data', () => {

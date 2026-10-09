@@ -8,7 +8,9 @@
   "files": {
     "includes": [
       "**",
-      "!packages/providers/azure/src/__fixtures__/**",
+      "!packages/providers/azure/src/__fixtures__",
+      "!**/next-env.d.ts",
+      "!packages/tooling/codemod/src/test/__testfixtures__",
       "!examples/02-framework-integration/nest/src/app.controller.ts",
       "!packages/providers/cerebras/vitest.edge.config.js",
       "!packages/providers/cerebras/vitest.node.config.js"
@@ -27,6 +29,18 @@
       "recommended": true
     }
   },
+  "overrides": [
+    {
+      "includes": ["**/*.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noUnknownAtRules": "off"
+          }
+        }
+      }
+    }
+  ],
   "formatter": {
     "enabled": true,
     "indentStyle": "space",

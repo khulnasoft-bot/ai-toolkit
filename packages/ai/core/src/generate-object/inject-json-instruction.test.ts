@@ -1,6 +1,6 @@
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { expect, it } from 'vitest';
 import { injectJsonInstruction } from './inject-json-instruction';
-import { describe, it, expect } from 'vitest';
 
 const basicSchema: JSONSchema7 = {
   type: 'object',

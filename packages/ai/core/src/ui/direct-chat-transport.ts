@@ -1,11 +1,11 @@
-import { Output } from '../generate-text/output';
-import { UIMessageStreamOptions } from '../generate-text/stream-text-result';
-import { ToolSet } from '../generate-text/tool-set';
-import { UIMessageChunk } from '../ui-message-stream/ui-message-chunks';
-import { Agent } from '../agent/agent';
-import { ChatTransport } from './chat-transport';
+import type { Agent } from '../agent/agent';
+import type { Output } from '../generate-text/output';
+import type { UIMessageStreamOptions } from '../generate-text/stream-text-result';
+import type { ToolSet } from '../generate-text/tool-set';
+import type { UIMessageChunk } from '../ui-message-stream/ui-message-chunks';
+import type { ChatTransport } from './chat-transport';
 import { convertToModelMessages } from './convert-to-model-messages';
-import { InferUITools, UIMessage } from './ui-messages';
+import type { InferUITools, UIMessage } from './ui-messages';
 import { validateUIMessages } from './validate-ui-messages';
 
 /**
@@ -59,10 +59,7 @@ export class DirectChatTransport<
 {
   private readonly agent: Agent<CALL_OPTIONS, TOOLS, OUTPUT>;
   private readonly agentOptions: CALL_OPTIONS | undefined;
-  private readonly uiMessageStreamOptions: Omit<
-    UIMessageStreamOptions<UI_MESSAGE>,
-    'onFinish'
-  >;
+  private readonly uiMessageStreamOptions: Omit<UIMessageStreamOptions<UI_MESSAGE>, 'onFinish'>;
 
   constructor({
     agent,
@@ -95,9 +92,7 @@ export class DirectChatTransport<
     const result = await this.agent.stream({
       prompt: modelMessages,
       abortSignal,
-      ...(this.agentOptions !== undefined
-        ? { options: this.agentOptions }
-        : {}),
+      ...(this.agentOptions !== undefined ? { options: this.agentOptions } : {}),
     } as Parameters<Agent<CALL_OPTIONS, TOOLS, OUTPUT>['stream']>[0]);
 
     // Return the UI message stream

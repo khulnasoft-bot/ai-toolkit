@@ -1,24 +1,24 @@
 import {
-  EmbeddingModelV3,
-  LanguageModelV3,
+  type EmbeddingModelV3,
+  type LanguageModelV3,
   NoSuchModelError,
-  RerankingModelV3,
-  ProviderV3,
+  type ProviderV3,
+  type RerankingModelV3,
 } from '@ai-toolkit/provider';
 
 import {
-  FetchFunction,
+  type FetchFunction,
   generateId,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { CohereChatLanguageModel } from './cohere-chat-language-model';
-import { CohereChatModelId } from './cohere-chat-options';
+import type { CohereChatModelId } from './cohere-chat-options';
 import { CohereEmbeddingModel } from './cohere-embedding-model';
-import { CohereRerankingModelId } from './reranking/cohere-reranking-options';
+import type { CohereEmbeddingModelId } from './cohere-embedding-options';
 import { CohereRerankingModel } from './reranking/cohere-reranking-model';
-import { CohereEmbeddingModelId } from './cohere-embedding-options';
+import type { CohereRerankingModelId } from './reranking/cohere-reranking-options';
 import { VERSION } from './version';
 
 export interface CohereProvider extends ProviderV3 {
@@ -93,11 +93,8 @@ Optional function to generate a unique ID for each request.
 /**
 Create a Cohere AI provider instance.
  */
-export function createCohere(
-  options: CohereProviderSettings = {},
-): CohereProvider {
-  const baseURL =
-    withoutTrailingSlash(options.baseURL) ?? 'https://api.cohere.com/v2';
+export function createCohere(options: CohereProviderSettings = {}): CohereProvider {
+  const baseURL = withoutTrailingSlash(options.baseURL) ?? 'https://api.cohere.com/v2';
 
   const getHeaders = () =>
     withUserAgentSuffix(
@@ -139,9 +136,7 @@ export function createCohere(
 
   const provider = function (modelId: CohereChatModelId) {
     if (new.target) {
-      throw new Error(
-        'The Cohere model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Cohere model function cannot be called with the new keyword.');
     }
 
     return createChatModel(modelId);

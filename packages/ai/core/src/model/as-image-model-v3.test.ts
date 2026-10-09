@@ -1,9 +1,9 @@
-import { ImageModelV2 } from '@ai-toolkit/provider';
-import { asImageModelV3 } from './as-image-model-v3';
-import { MockImageModelV2 } from '../test/mock-image-model-v2';
-import { MockImageModelV3 } from '../test/mock-image-model-v3';
+import type { ImageModelV2 } from '@ai-toolkit/provider';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
+import { MockImageModelV2 } from '../test/mock-image-model-v2';
+import { MockImageModelV3 } from '../test/mock-image-model-v3';
+import { asImageModelV3 } from './as-image-model-v3';
 
 describe('asImageModelV3', () => {
   let logWarningSpy: ReturnType<typeof vi.spyOn>;
@@ -82,9 +82,7 @@ describe('asImageModelV3', () => {
           {
             type: 'compatibility',
             feature: 'specificationVersion',
-            details: expect.stringContaining(
-              'Using v2 specification compatibility',
-            ),
+            details: expect.stringContaining('Using v2 specification compatibility'),
           },
         ],
         provider: 'test-provider',

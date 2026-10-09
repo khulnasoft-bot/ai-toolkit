@@ -3,7 +3,7 @@ import { tool } from 'ai';
 import { z } from 'zod';
 
 // Using tool() function
-const weatherTool = tool({
+const _weatherTool = tool({
   description: 'Get weather for a location',
   inputSchema: z.object({
     location: z.string(),
@@ -14,7 +14,7 @@ const weatherTool = tool({
 });
 
 // In tools object
-const tools = {
+const _tools = {
   weather: {
     description: 'Get weather information',
     inputSchema: z.object({

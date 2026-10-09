@@ -1,11 +1,11 @@
 'use client';
 
+import { DefaultChatTransport, isToolUIPart, type UIMessage } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 import DynamicToolView from '@/components/tool/dynamic-tool-view';
 import OpenAIMCPApprovalView from '@/components/tool/openai-mcp-approval-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport, UIMessage, isToolUIPart } from '@ai-toolkit/ai';
-import { OpenAIResponsesMCPApprovalMessage } from '../api/chat-openai-responses-mcp-approval/route';
+import type { OpenAIResponsesMCPApprovalMessage } from '../api/chat-openai-responses-mcp-approval/route';
 
 // Custom helper that handles provider-executed tools (like OpenAI MCP)
 function lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses({
@@ -24,14 +24,11 @@ function lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses({
   }, -1);
 
   // Include provider-executed tools (unlike the default helper)
-  const lastStepToolInvocations = message.parts
-    .slice(lastStepStartIndex + 1)
-    .filter(isToolUIPart);
+  const lastStepToolInvocations = message.parts.slice(lastStepStartIndex + 1).filter(isToolUIPart);
 
   return (
     // has at least one tool approval response
-    lastStepToolInvocations.filter(part => part.state === 'approval-responded')
-      .length > 0 &&
+    lastStepToolInvocations.filter(part => part.state === 'approval-responded').length > 0 &&
     // all tool approvals must have a response
     lastStepToolInvocations.every(
       part =>
@@ -48,15 +45,12 @@ export default function TestOpenAIResponsesMCPApproval() {
       transport: new DefaultChatTransport({
         api: '/api/chat-openai-responses-mcp-approval',
       }),
-      sendAutomaticallyWhen:
-        lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses,
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses,
     });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        OpenAI Responses MCP Tool Approval Test
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">OpenAI Responses MCP Tool Approval Test</h1>
       <p className="mb-4 text-sm text-gray-600">
         Try asking: &quot;Shorten the link https://studio.khulnasoft.com/&quot;
       </p>
@@ -70,19 +64,16 @@ export default function TestOpenAIResponsesMCPApproval() {
             switch (part.type) {
               case 'text':
                 return (
-                  <div key={index} className="mb-2">
+                  <div key={`${part.type}-${index}`} className="mb-2">
                     {part.text}
                   </div>
                 );
               case 'dynamic-tool':
                 // MCP tools from OpenAI are dynamic tools - check if it's an MCP tool
                 // by looking at the toolName (starts with 'mcp.')
-                if (
-                  part.toolName.startsWith('mcp.') ||
-                  part.toolName === 'mcp'
-                ) {
+                if (part.toolName.startsWith('mcp.') || part.toolName === 'mcp') {
                   return (
-                    <div key={index} className="mb-4">
+                    <div key={`${part.type}-${index}`} className="mb-4">
                       <OpenAIMCPApprovalView
                         invocation={part}
                         addToolApprovalResponse={addToolApprovalResponse}
@@ -91,14 +82,16 @@ export default function TestOpenAIResponsesMCPApproval() {
                   );
                 }
                 return (
-                  <div key={index} className="mb-4">
+                  <div key={`${part.type}-${index}`} className="mb-4">
                     <DynamicToolView invocation={part} />
                   </div>
                 );
               case 'step-start':
                 return index > 0 ? (
-                  <div key={index} className="my-2 border-t border-gray-300" />
+                  <div key={`${part.type}-${index}`} className="my-2 border-t border-gray-300" />
                 ) : null;
+              default:
+                return null;
             }
           })}
         </div>

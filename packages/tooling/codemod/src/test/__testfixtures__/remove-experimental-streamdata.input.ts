@@ -8,12 +8,12 @@ class CustomStream extends StreamData {
 }
 
 // Should rename - type usage
-const createStream = (): StreamData => {
+const _createStream = (): StreamData => {
   return new StreamData();
 };
 
 // Should rename - instance check
-const isStreamData = (obj: unknown): obj is StreamData => {
+const _isStreamData = (obj: unknown): obj is StreamData => {
   return obj instanceof StreamData;
 };
 

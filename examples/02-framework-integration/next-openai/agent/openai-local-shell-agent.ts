@@ -1,6 +1,6 @@
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { Sandbox } from '@vercel/sandbox';
-import { ToolLoopAgent, InferAgentUIMessage } from '@ai-toolkit/ai';
 
 // warning: this is a demo sandbox that is shared across chats on localhost
 let globalSandboxId: string | null = null;
@@ -40,6 +40,4 @@ export const openaiLocalShellAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAILocalShellMessage = InferAgentUIMessage<
-  typeof openaiLocalShellAgent
->;
+export type OpenAILocalShellMessage = InferAgentUIMessage<typeof openaiLocalShellAgent>;

@@ -63,28 +63,27 @@ export function chatCompletionResponse(
 export function streamingChatResponse(
   chunks: Array<{ content?: string; finish_reason?: string; usage?: any }>,
 ): Response {
-  const body =
-    chunks
-      .map((chunk, i) => {
-        const data: any = {
-          id: `chatcmpl-${i}`,
-          object: 'chat.completion.chunk',
-          created: 1234567890,
-          model: 'gpt-3.5-turbo',
-          choices: [
-            {
-              index: 0,
-              delta: { content: chunk.content },
-              finish_reason: chunk.finish_reason ?? null,
-            },
-          ],
-        };
-        if (chunk.usage) {
-          data.usage = chunk.usage;
-        }
-        return `data: ${JSON.stringify(data)}\n\n`;
-      })
-      .join('') + 'data: [DONE]\n\n';
+  const body = `${chunks
+    .map((chunk, i) => {
+      const data: any = {
+        id: `chatcmpl-${i}`,
+        object: 'chat.completion.chunk',
+        created: 1234567890,
+        model: 'gpt-3.5-turbo',
+        choices: [
+          {
+            index: 0,
+            delta: { content: chunk.content },
+            finish_reason: chunk.finish_reason ?? null,
+          },
+        ],
+      };
+      if (chunk.usage) {
+        data.usage = chunk.usage;
+      }
+      return `data: ${JSON.stringify(data)}\n\n`;
+    })
+    .join('')}data: [DONE]\n\n`;
 
   return new Response(body, {
     status: 200,

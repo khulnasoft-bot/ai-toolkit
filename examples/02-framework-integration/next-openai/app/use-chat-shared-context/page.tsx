@@ -13,6 +13,7 @@ export default function Chat() {
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
       <button
+        type="button"
         onClick={clearChat}
         disabled={messages.length === 0}
         className="mb-4 px-3 py-1.5 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-50 hover:text-gray-800 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -27,13 +28,14 @@ export default function Chat() {
             if (part.type === 'text') {
               return (
                 <div
-                  key={index}
+                  key={`${message.id}-text-${index}`}
                   className="overflow-x-auto max-w-full whitespace-pre-wrap break-words"
                 >
                   {part.text}
                 </div>
               );
             }
+            return null;
           })}
         </div>
       ))}

@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamText, wrapLanguageModel } from '@ai-toolkit/ai';
-import { yourRagMiddleware } from './your-rag-middleware';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
+import { yourRagMiddleware } from './your-rag-middleware';
 
 run(async () => {
   const result = streamText({

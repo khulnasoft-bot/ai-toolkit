@@ -1,5 +1,5 @@
-import { ImageModelV3 } from '../../image-model/v3/image-model-v3';
-import { ImageModelV3CallOptions } from '../../image-model/v3/image-model-v3-call-options';
+import type { ImageModelV3 } from '../../image-model/v3/image-model-v3';
+import type { ImageModelV3CallOptions } from '../../image-model/v3/image-model-v3-call-options';
 
 /**
  * Middleware for ImageModelV3.
@@ -28,9 +28,7 @@ export type ImageModelV3Middleware = {
    * Override the limit of how many images can be generated in a single API call if desired.
    * @param options.model - The image model instance.
    */
-  overrideMaxImagesPerCall?: (options: {
-    model: ImageModelV3;
-  }) => ImageModelV3['maxImagesPerCall'];
+  overrideMaxImagesPerCall?: (options: { model: ImageModelV3 }) => ImageModelV3['maxImagesPerCall'];
 
   /**
    * Transforms the parameters before they are passed to the image model.

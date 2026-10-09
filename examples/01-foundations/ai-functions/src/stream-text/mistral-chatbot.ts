@@ -1,6 +1,6 @@
-import { mistral } from '@ai-toolkit/mistral';
-import { stepCountIs, ModelMessage, streamText, tool } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
+import { type ModelMessage, stepCountIs, streamText, tool } from '@ai-toolkit/ai';
+import { mistral } from '@ai-toolkit/mistral';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -27,9 +27,7 @@ run(async () => {
         weather: tool({
           description: 'Get the weather in a location',
           inputSchema: z.object({
-            location: z
-              .string()
-              .describe('The location to get the weather for'),
+            location: z.string().describe('The location to get the weather for'),
           }),
           execute: async ({ location }) => ({
             location,

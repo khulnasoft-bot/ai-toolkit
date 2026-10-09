@@ -1,7 +1,7 @@
-import { JSONArray, JSONValue } from '../../json-value';
-import { ImageModelV3Usage } from './image-model-v3-usage';
-import { ImageModelV3CallOptions } from './image-model-v3-call-options';
-import { SharedV3Warning } from '../../shared/v3/shared-v3-warning';
+import type { JSONArray, JSONValue } from '../../json-value';
+import type { SharedV3Warning } from '../../shared/v3/shared-v3-warning';
+import type { ImageModelV3CallOptions } from './image-model-v3-call-options';
+import type { ImageModelV3Usage } from './image-model-v3-usage';
 
 export type ImageModelV3ProviderMetadata = Record<
   string,

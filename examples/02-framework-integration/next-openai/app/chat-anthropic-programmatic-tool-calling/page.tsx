@@ -1,11 +1,11 @@
 'use client';
 
-import { AnthropicProgrammaticToolCallingMessage } from '@/agent/anthropic-programmatic-tool-calling-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { AnthropicProgrammaticToolCallingMessage } from '@/agent/anthropic-programmatic-tool-calling-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import AnthropicCodeExecutionView from '@/components/tool/anthropic-code-execution-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function ChatAnthropicProgrammaticToolCalling() {
   const { error, status, sendMessage, messages, regenerate } =
@@ -17,41 +17,39 @@ export default function ChatAnthropicProgrammaticToolCalling() {
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        Anthropic Programmatic Tool Calling
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">Anthropic Programmatic Tool Calling</h1>
       <p className="mb-4 text-sm text-gray-600">
-        This example demonstrates programmatic tool calling, where Claude can
-        write code that calls tools programmatically within a code execution
-        container.
+        This example demonstrates programmatic tool calling, where Claude can write code that calls
+        tools programmatically within a code execution container.
       </p>
       <p className="mb-4 text-sm text-gray-500">
-        Try: &quot;Two players are playing a dice game. Each round both players
-        roll a die. The player with the higher roll wins the round. The first
-        player to win 3 rounds wins the game.&quot;
+        Try: &quot;Two players are playing a dice game. Each round both players roll a die. The
+        player with the higher roll wins the round. The first player to win 3 rounds wins the
+        game.&quot;
       </p>
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'tool-code_execution': {
-                return (
-                  <AnthropicCodeExecutionView invocation={part} key={index} />
-                );
+                return <AnthropicCodeExecutionView invocation={part} key={part.toolCallId} />;
               }
               case 'tool-rollDie': {
                 return (
-                  <div key={index} className="text-gray-500">
+                  <div key={part.toolCallId} className="text-gray-500">
                     {part.state === 'output-available'
                       ? `🎲 ${part.input.player} rolled: ${part.output.roll}`
                       : `🎲 ${part.input?.player ?? 'Player'} rolling...`}
                   </div>
                 );
+              }
+              default: {
+                return null;
               }
             }
           })}

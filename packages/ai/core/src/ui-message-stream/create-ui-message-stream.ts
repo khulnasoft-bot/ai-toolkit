@@ -1,13 +1,13 @@
 import {
   generateId as generateIdFunc,
   getErrorMessage,
-  IdGenerator,
+  type IdGenerator,
 } from '@ai-toolkit/provider-utils';
-import { UIMessage } from '../ui/ui-messages';
+import type { UIMessage } from '../ui/ui-messages';
 import { handleUIMessageStreamFinish } from './handle-ui-message-stream-finish';
-import { InferUIMessageChunk } from './ui-message-chunks';
-import { UIMessageStreamOnFinishCallback } from './ui-message-stream-on-finish-callback';
-import { UIMessageStreamWriter } from './ui-message-stream-writer';
+import type { InferUIMessageChunk } from './ui-message-chunks';
+import type { UIMessageStreamOnFinishCallback } from './ui-message-stream-on-finish-callback';
+import type { UIMessageStreamWriter } from './ui-message-stream-writer';
 
 export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   execute,
@@ -16,9 +16,7 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   onFinish,
   generateId = generateIdFunc,
 }: {
-  execute: (options: {
-    writer: UIMessageStreamWriter<UI_MESSAGE>;
-  }) => Promise<void> | void;
+  execute: (options: { writer: UIMessageStreamWriter<UI_MESSAGE> }) => Promise<void> | void;
   onError?: (error: unknown) => string;
 
   /**
@@ -31,9 +29,7 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
 
   generateId?: IdGenerator;
 }): ReadableStream<InferUIMessageChunk<UI_MESSAGE>> {
-  let controller!: ReadableStreamDefaultController<
-    InferUIMessageChunk<UI_MESSAGE>
-  >;
+  let controller!: ReadableStreamDefaultController<InferUIMessageChunk<UI_MESSAGE>>;
 
   const ongoingStreamPromises: Promise<void>[] = [];
 
@@ -46,7 +42,7 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   function safeEnqueue(data: InferUIMessageChunk<UI_MESSAGE>) {
     try {
       controller.enqueue(data);
-    } catch (error) {
+    } catch (_error) {
       // suppress errors when the stream has been closed
     }
   }
@@ -99,17 +95,16 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   // streams even after execute has returned, as long as there is still an
   // open merged stream. This is important to e.g. forward new streams and
   // from callbacks.
-  const waitForStreams: Promise<void> = new Promise(async resolve => {
+  const waitForStreams: Promise<void> = (async () => {
     while (ongoingStreamPromises.length > 0) {
       await ongoingStreamPromises.shift();
     }
-    resolve();
-  });
+  })();
 
   waitForStreams.finally(() => {
     try {
       controller.close();
-    } catch (error) {
+    } catch (_error) {
       // suppress errors when the stream has been closed
     }
   });

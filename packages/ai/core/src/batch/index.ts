@@ -1,7 +1,7 @@
 export {
-  startTextBatch as experimental_startTextBatch,
   getBatchResults as experimental_getBatchResults,
   getBatchStatus as experimental_getBatchStatus,
+  startTextBatch as experimental_startTextBatch,
 } from './batch';
 export type {
   BatchError as Experimental_BatchError,

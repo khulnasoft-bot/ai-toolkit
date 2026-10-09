@@ -1,11 +1,11 @@
 import { APICallError } from '@ai-toolkit/provider';
 import { describe, expect, it, vi } from 'vitest';
+import { z } from 'zod/v4';
 import { postMultipartStreamToApi } from './post-multipart-stream-to-api';
 import {
   createJsonResponseHandler,
   createStatusCodeErrorResponseHandler,
 } from './response-handler';
-import { z } from 'zod/v4';
 
 const responseSchema = z.object({ id: z.string() });
 
@@ -70,11 +70,7 @@ describe('postMultipartStreamToApi', () => {
     expect(init.headers.authorization).toBe('Bearer test');
 
     const formData = await parseCapturedFormData(init);
-    expect([...formData.keys()]).toEqual([
-      'purpose',
-      'expires_after[seconds]',
-      'file',
-    ]);
+    expect([...formData.keys()]).toEqual(['purpose', 'expires_after[seconds]', 'file']);
     expect(formData.get('purpose')).toBe('batch');
     expect(formData.get('expires_after[seconds]')).toBe('172800');
 
@@ -224,9 +220,7 @@ describe('postMultipartStreamToApi', () => {
   it('throws an APICallError for a failed response', async () => {
     const mockFetch = vi
       .fn()
-      .mockResolvedValue(
-        new Response('bad request', { status: 400, statusText: 'Bad Request' }),
-      );
+      .mockResolvedValue(new Response('bad request', { status: 400, statusText: 'Bad Request' }));
 
     await expect(
       postMultipartStreamToApi({
@@ -242,9 +236,7 @@ describe('postMultipartStreamToApi', () => {
   it('reports part names but never stream contents in error request values', async () => {
     const mockFetch = vi
       .fn()
-      .mockResolvedValue(
-        new Response('bad request', { status: 400, statusText: 'Bad Request' }),
-      );
+      .mockResolvedValue(new Response('bad request', { status: 400, statusText: 'Bad Request' }));
 
     const error = await postMultipartStreamToApi({
       url: 'https://api.test.com/files',

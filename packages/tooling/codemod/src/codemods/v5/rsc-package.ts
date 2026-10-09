@@ -22,7 +22,7 @@ import { createStreamableValue } from '@ai-toolkit/rsc';
 Commit: https://github.com/khulnasoft/ai-toolkit/pull/5542
 */
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   root

@@ -1,8 +1,8 @@
-import { groq } from '@ai-toolkit/groq';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
+import { groq } from '@ai-toolkit/groq';
 import 'dotenv/config';
-import { readFile } from 'fs/promises';
-import path from 'path';
+import { readFile } from 'node:fs/promises';
+import path from 'node:path';
 
 async function main() {
   const result = await transcribe({

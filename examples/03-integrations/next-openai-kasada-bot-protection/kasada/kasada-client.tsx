@@ -3,10 +3,10 @@ import Script from 'next/script';
 export function KasadaClient() {
   return (
     <>
+      {/* biome-ignore lint/security/noDangerouslySetInnerHtml: required to inject the Kasada bot-protection bootstrap snippet */}
       <script
         dangerouslySetInnerHTML={{
-          __html:
-            `document.addEventListener('kpsdk-load', () => {window.KPSDK.configure([
+          __html: `document.addEventListener('kpsdk-load', () => {window.KPSDK.configure([
           {
             domain: location.host,
             path: '/api/chat',

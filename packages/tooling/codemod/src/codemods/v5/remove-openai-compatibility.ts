@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Track which createOpenAI identifiers are imported from @ai-toolkit/openai
@@ -11,8 +11,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .find(j.ImportDeclaration)
     .filter(path => {
       return (
-        path.node.source.type === 'StringLiteral' &&
-        path.node.source.value === '@ai-toolkit/openai'
+        path.node.source.type === 'StringLiteral' && path.node.source.value === '@ai-toolkit/openai'
       );
     })
     .forEach(path => {

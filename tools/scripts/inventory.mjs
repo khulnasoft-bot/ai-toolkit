@@ -11,10 +11,10 @@
  *   - public API surface (exports map leaf entries)
  */
 
-import fs from 'fs';
-import path from 'path';
-import { builtinModules } from 'module';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import { builtinModules } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -52,11 +52,12 @@ function readWorkspaceGlobs() {
 }
 
 function globToRegex(glob) {
+  const doubleStarPlaceholder = '\u0000';
   const escaped = glob
     .replace(/[.+^${}()|[\]\\]/g, '\\$&')
-    .replace(/\*\*/g, '\u0000')
+    .replace(/\*\*/g, doubleStarPlaceholder)
     .replace(/\*/g, '[^/]*')
-    .replace(/\u0000/g, '.*');
+    .replaceAll(doubleStarPlaceholder, '.*');
   return new RegExp(`^${escaped}$`);
 }
 
@@ -86,7 +87,7 @@ function readJson(file) {
   }
 }
 
-function classifyDependency(name, packageNames, workspaceGlobs) {
+function classifyDependency(name, packageNames, _workspaceGlobs) {
   if (name.startsWith('node:') || builtinModules.includes(name)) {
     return 'node-builtin';
   }
@@ -282,7 +283,8 @@ function main() {
 
   const byDomain = {};
   for (const pkg of enriched) {
-    (byDomain[pkg.domain] = byDomain[pkg.domain] || []).push(pkg.name);
+    byDomain[pkg.domain] = byDomain[pkg.domain] || [];
+    byDomain[pkg.domain].push(pkg.name);
   }
 
   console.log('\nWorkspace Inventory\n');

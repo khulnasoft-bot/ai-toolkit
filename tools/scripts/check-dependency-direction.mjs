@@ -6,9 +6,9 @@
  * Run with: pnpm arch:deps (or: node tools/scripts/check-dependency-direction.mjs)
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -92,7 +92,7 @@ function readJson(file) {
   }
 }
 
-function getPackageLayer(dir, manifest) {
+function getPackageLayer(dir, _manifest) {
   const relDir = path.relative(PACKAGES, dir);
   const parts = relDir.split(path.sep);
   const domain = parts[0];
@@ -121,7 +121,7 @@ function scanPackages() {
     const rootManifestPath = path.join(domainDir, 'package.json');
     if (fs.existsSync(rootManifestPath)) {
       const manifest = readJson(rootManifestPath);
-      if (manifest && manifest.name) {
+      if (manifest?.name) {
         packages.push({
           name: manifest.name,
           dir: domainDir,
@@ -288,12 +288,16 @@ function printReport() {
 
   if (warnings.length) {
     console.log('\nWarnings:');
-    warnings.forEach(w => console.log(`  - ${w}`));
+    warnings.forEach(w => {
+      console.log(`  - ${w}`);
+    });
   }
 
   if (errors.length) {
     console.log('\nErrors:');
-    errors.forEach(e => console.log(`  - ${e}`));
+    errors.forEach(e => {
+      console.log(`  - ${e}`);
+    });
     console.log('\nThese require resolution. See DEPENDENCY_RULES.md for options.');
     process.exit(1);
   } else {

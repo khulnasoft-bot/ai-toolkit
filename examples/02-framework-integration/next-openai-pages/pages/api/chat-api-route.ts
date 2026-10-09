@@ -1,11 +1,8 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamText } from '@ai-toolkit/ai';
-import { NextApiRequest, NextApiResponse } from 'next';
+import { openai } from '@ai-toolkit/openai';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse,
-) {
+export default async function handler(request: NextApiRequest, response: NextApiResponse) {
   const { messages } = await request.body;
 
   const result = streamText({

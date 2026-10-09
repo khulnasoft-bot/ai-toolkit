@@ -1,4 +1,4 @@
-import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
+import { type HandleUploadBody, handleUpload } from '@vercel/blob/client';
 import { NextResponse } from 'next/server';
 
 /*
@@ -13,7 +13,7 @@ export async function POST(request: Request): Promise<NextResponse> {
       body,
       request,
       onBeforeGenerateToken: async (
-        pathname,
+        _pathname,
         /* clientPayload */
       ) => {
         // Generate a client token for the browser to upload the file
@@ -41,13 +41,9 @@ export async function POST(request: Request): Promise<NextResponse> {
 
         console.log('file upload completed', blob, tokenPayload);
 
-        try {
-          // Run any logic after the file upload completed
-          // const { userId } = JSON.parse(tokenPayload);
-          // await db.update({ avatar: blob.url, userId });
-        } catch (error) {
-          throw new Error('Could not complete operation');
-        }
+        // Run any logic after the file upload completed
+        // const { userId } = JSON.parse(tokenPayload);
+        // await db.update({ avatar: blob.url, userId });
       },
     });
 

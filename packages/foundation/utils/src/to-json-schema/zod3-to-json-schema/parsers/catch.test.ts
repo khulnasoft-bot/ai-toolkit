@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseCatchDef } from './catch';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseCatchDef } from './catch';
 
 describe('catch', () => {
   it('should be possible to use catch', () => {

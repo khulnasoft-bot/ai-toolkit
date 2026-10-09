@@ -14,15 +14,15 @@ console.log(result1.providerMetadata?.google?.promptFeedback);
 console.log(result1.providerMetadata?.google?.usageMetadata);
 
 // Case 2: Non-optional access
-const metadata = result1.providerMetadata.google;
-const ratings = result1.providerMetadata.google.safetyRatings;
+const _metadata = result1.providerMetadata.google;
+const _ratings = result1.providerMetadata.google.safetyRatings;
 
 // Case 3: Destructuring from providerMetadata
 const { google } = result1.providerMetadata ?? {};
 const { google: vertexMeta } = result1.providerMetadata ?? {};
 
 // Case 4: providerOptions input
-const result2 = await generateText({
+const _result2 = await generateText({
   model: vertex('gemini-2.5-flash'),
   providerOptions: {
     google: {
@@ -63,15 +63,15 @@ for (const part of result3.content) {
 
 // Case 7: Variable assignment
 const providerMetadata = result1.providerMetadata;
-const googleMeta = providerMetadata?.google;
+const _googleMeta = providerMetadata?.google;
 
 // Case 8: Function that accesses providerMetadata
-function logSafetyRatings(result: any) {
+function _logSafetyRatings(result: any) {
   return result.providerMetadata?.google?.safetyRatings;
 }
 
 // Case 9: Nested providerOptions in larger config
-const config = {
+const _config = {
   model: vertex('gemini-2.5-flash'),
   providerOptions: {
     google: {

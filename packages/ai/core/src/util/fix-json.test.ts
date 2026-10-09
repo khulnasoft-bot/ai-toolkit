@@ -75,10 +75,7 @@ describe('string', () => {
   });
 
   test('should handle unicode characters', () => {
-    assert.strictEqual(
-      fixJson('"value with unicode \u003C"'),
-      '"value with unicode \u003C"',
-    );
+    assert.strictEqual(fixJson('"value with unicode \u003C"'), '"value with unicode \u003C"');
   });
 });
 
@@ -122,10 +119,7 @@ describe('object', () => {
   });
 
   test('should handle closing brace after number in object', () => {
-    assert.strictEqual(
-      fixJson('{"a": {"b": 1}, "c": {"d": 2'),
-      '{"a": {"b": 1}, "c": {"d": 2}}',
-    );
+    assert.strictEqual(fixJson('{"a": {"b": 1}, "c": {"d": 2'), '{"a": {"b": 1}, "c": {"d": 2}}');
   });
 
   test('should handle closing brace after string in object', () => {
@@ -143,17 +137,11 @@ describe('object', () => {
   });
 
   test('should handle closing brace after array in object', () => {
-    assert.strictEqual(
-      fixJson('{"a": {"b": []}, "c": {"d": 2'),
-      '{"a": {"b": []}, "c": {"d": 2}}',
-    );
+    assert.strictEqual(fixJson('{"a": {"b": []}, "c": {"d": 2'), '{"a": {"b": []}, "c": {"d": 2}}');
   });
 
   test('should handle closing brace after object in object', () => {
-    assert.strictEqual(
-      fixJson('{"a": {"b": {}}, "c": {"d": 2'),
-      '{"a": {"b": {}}, "c": {"d": 2}}',
-    );
+    assert.strictEqual(fixJson('{"a": {"b": {}}, "c": {"d": 2'), '{"a": {"b": {}}, "c": {"d": 2}}');
   });
 
   test('should handle partial keys (first key)', () => {
@@ -191,17 +179,11 @@ describe('nesting', () => {
   });
 
   test('should handle nested objects with numbers', () => {
-    assert.strictEqual(
-      fixJson('{"key": 123, "key2": {"subKey":'),
-      '{"key": 123, "key2": {}}',
-    );
+    assert.strictEqual(fixJson('{"key": 123, "key2": {"subKey":'), '{"key": 123, "key2": {}}');
   });
 
   test('should handle nested objects with literals', () => {
-    assert.strictEqual(
-      fixJson('{"key": null, "key2": {"subKey":'),
-      '{"key": null, "key2": {}}',
-    );
+    assert.strictEqual(fixJson('{"key": null, "key2": {"subKey":'), '{"key": null, "key2": {}}');
   });
 
   test('should handle arrays within objects', () => {
@@ -209,24 +191,15 @@ describe('nesting', () => {
   });
 
   test('should handle objects within arrays', () => {
-    assert.strictEqual(
-      fixJson('[1, 2, {"key": "value",'),
-      '[1, 2, {"key": "value"}]',
-    );
+    assert.strictEqual(fixJson('[1, 2, {"key": "value",'), '[1, 2, {"key": "value"}]');
   });
 
   test('should handle nested arrays and objects', () => {
-    assert.strictEqual(
-      fixJson('{"a": {"b": ["c", {"d": "e",'),
-      '{"a": {"b": ["c", {"d": "e"}]}}',
-    );
+    assert.strictEqual(fixJson('{"a": {"b": ["c", {"d": "e",'), '{"a": {"b": ["c", {"d": "e"}]}}');
   });
 
   test('should handle deeply nested objects', () => {
-    assert.strictEqual(
-      fixJson('{"a": {"b": {"c": {"d":'),
-      '{"a": {"b": {"c": {}}}}',
-    );
+    assert.strictEqual(fixJson('{"a": {"b": {"c": {"d":'), '{"a": {"b": {"c": {}}}}');
   });
 
   test('should handle potential nested arrays or objects', () => {

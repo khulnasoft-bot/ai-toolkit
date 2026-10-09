@@ -1,5 +1,5 @@
-import { fireworks } from '@ai-toolkit/fireworks';
 import { streamObject } from '@ai-toolkit/ai';
+import { fireworks } from '@ai-toolkit/fireworks';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -11,15 +11,12 @@ run(async () => {
       characters: z.array(
         z.object({
           name: z.string(),
-          class: z
-            .string()
-            .describe('Character class, e.g. warrior, mage, or thief.'),
+          class: z.string().describe('Character class, e.g. warrior, mage, or thief.'),
           description: z.string(),
         }),
       ),
     }),
-    prompt:
-      'Generate 3 character descriptions for a fantasy role playing game.',
+    prompt: 'Generate 3 character descriptions for a fantasy role playing game.',
   });
 
   for await (const partialObject of result.partialObjectStream) {

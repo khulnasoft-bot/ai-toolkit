@@ -127,10 +127,7 @@ export const defaultFiles = {
     }),
   },
   'src/lib/ai.ts': {
-    template: (
-      name,
-      provider,
-    ) => `import { generateText } from '@ai-toolkit/ai';
+    template: (_name, provider) => `import { generateText } from '@ai-toolkit/ai';
 import { ${provider.name} } from '${provider.package}';
 
 export async function generateCompletion(prompt: string) {

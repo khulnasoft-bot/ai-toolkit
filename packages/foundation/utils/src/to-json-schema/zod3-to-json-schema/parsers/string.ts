@@ -1,7 +1,7 @@
-import { ZodStringDef } from 'zod/v3';
-import { Refs } from '../refs';
+import type { ZodStringDef } from 'zod/v3';
+import type { Refs } from '../refs';
 
-let emojiRegex: RegExp | undefined = undefined;
+let emojiRegex: RegExp | undefined;
 
 /**
  * Generated from the regular expressions found here as of 2024-05-22:
@@ -20,7 +20,7 @@ export const zodPatterns = {
    * `a-z` was added to replicate /i flag
    */
   email:
-    /^(?!\.)(?!.*\.\.)([a-zA-Z0-9_'+\-\.]*)[a-zA-Z0-9_+-]@([a-zA-Z0-9][a-zA-Z0-9\-]*\.)+[a-zA-Z]{2,}$/,
+    /^(?!\.)(?!.*\.\.)([a-zA-Z0-9_'+\-.]*)[a-zA-Z0-9_+-]@([a-zA-Z0-9][a-zA-Z0-9-]*\.)+[a-zA-Z]{2,}$/,
   /**
    * Constructed a valid Unicode RegExp
    *
@@ -34,10 +34,7 @@ export const zodPatterns = {
    */
   emoji: () => {
     if (emojiRegex === undefined) {
-      emojiRegex = RegExp(
-        '^(\\p{Extended_Pictographic}|\\p{Emoji_Component})+$',
-        'u',
-      );
+      emojiRegex = /^(\p{Extended_Pictographic}|\p{Emoji_Component})+$/u;
     }
     return emojiRegex;
   },
@@ -58,8 +55,7 @@ export const zodPatterns = {
   ipv6Cidr:
     /^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))\/(12[0-8]|1[01][0-9]|[1-9]?[0-9])$/,
   base64: /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/,
-  base64url:
-    /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/,
+  base64url: /^([0-9a-zA-Z-_]{4})*(([0-9a-zA-Z-_]{2}(==)?)|([0-9a-zA-Z-_]{3}(=)?))?$/,
   nanoid: /^[a-zA-Z0-9_-]{21}$/,
   jwt: /^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$/,
 } as const;
@@ -89,10 +85,7 @@ export type JsonSchema7StringType = {
   contentEncoding?: string;
 };
 
-export function parseStringDef(
-  def: ZodStringDef,
-  refs: Refs,
-): JsonSchema7StringType {
+export function parseStringDef(def: ZodStringDef, refs: Refs): JsonSchema7StringType {
   const res: JsonSchema7StringType = {
     type: 'string',
   };
@@ -102,15 +95,11 @@ export function parseStringDef(
       switch (check.kind) {
         case 'min':
           res.minLength =
-            typeof res.minLength === 'number'
-              ? Math.max(res.minLength, check.value)
-              : check.value;
+            typeof res.minLength === 'number' ? Math.max(res.minLength, check.value) : check.value;
           break;
         case 'max':
           res.maxLength =
-            typeof res.maxLength === 'number'
-              ? Math.min(res.maxLength, check.value)
-              : check.value;
+            typeof res.maxLength === 'number' ? Math.min(res.maxLength, check.value) : check.value;
 
           break;
         case 'email':
@@ -172,21 +161,12 @@ export function parseStringDef(
           break;
         case 'length':
           res.minLength =
-            typeof res.minLength === 'number'
-              ? Math.max(res.minLength, check.value)
-              : check.value;
+            typeof res.minLength === 'number' ? Math.max(res.minLength, check.value) : check.value;
           res.maxLength =
-            typeof res.maxLength === 'number'
-              ? Math.min(res.maxLength, check.value)
-              : check.value;
+            typeof res.maxLength === 'number' ? Math.min(res.maxLength, check.value) : check.value;
           break;
         case 'includes': {
-          addPattern(
-            res,
-            RegExp(escapeLiteralCheckValue(check.value, refs)),
-            check.message,
-            refs,
-          );
+          addPattern(res, RegExp(escapeLiteralCheckValue(check.value, refs)), check.message, refs);
           break;
         }
         case 'ip': {
@@ -241,6 +221,7 @@ export function parseStringDef(
         }
         case 'nanoid': {
           addPattern(res, zodPatterns.nanoid, check.message, refs);
+          break;
         }
         case 'toLowerCase':
         case 'toUpperCase':
@@ -257,14 +238,10 @@ export function parseStringDef(
 }
 
 function escapeLiteralCheckValue(literal: string, refs: Refs): string {
-  return refs.patternStrategy === 'escape'
-    ? escapeNonAlphaNumeric(literal)
-    : literal;
+  return refs.patternStrategy === 'escape' ? escapeNonAlphaNumeric(literal) : literal;
 }
 
-const ALPHA_NUMERIC = new Set(
-  'ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvxyz0123456789',
-);
+const ALPHA_NUMERIC = new Set('ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvxyz0123456789');
 
 function escapeNonAlphaNumeric(source: string) {
   let result = '';
@@ -293,16 +270,15 @@ function addFormat(
     }
 
     if (schema.format) {
-      schema.anyOf!.push({
+      schema.anyOf?.push({
         format: schema.format,
       });
       delete schema.format;
     }
 
-    schema.anyOf!.push({
+    schema.anyOf?.push({
       format: value,
-      ...(message &&
-        refs.errorMessages && { errorMessage: { format: message } }),
+      ...(message && refs.errorMessages && { errorMessage: { format: message } }),
     });
   } else {
     schema.format = value;
@@ -322,16 +298,15 @@ function addPattern(
     }
 
     if (schema.pattern) {
-      schema.allOf!.push({
+      schema.allOf?.push({
         pattern: schema.pattern,
       });
       delete schema.pattern;
     }
 
-    schema.allOf!.push({
+    schema.allOf?.push({
       pattern: stringifyRegExpWithFlags(regex, refs),
-      ...(message &&
-        refs.errorMessages && { errorMessage: { pattern: message } }),
+      ...(message && refs.errorMessages && { errorMessage: { pattern: message } }),
     });
   } else {
     schema.pattern = stringifyRegExpWithFlags(regex, refs);

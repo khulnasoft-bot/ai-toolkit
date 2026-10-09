@@ -1,16 +1,14 @@
-import { tool, type ProviderDefinedTool, type Tool } from './types/tool';
 import type { FlexibleSchema } from './schema';
 import type { Context } from './types/context';
+import { type ProviderDefinedTool, type Tool, tool } from './types/tool';
 import type { ToolExecuteFunction } from './types/tool-execute-function';
 /**
  * A provider-defined tool is a tool for which the provider defines the input
  * and output schemas, but does not execute the tool.
  */
-export type ProviderDefinedToolFactory<
-  INPUT,
-  ARGS extends object,
-  CONTEXT extends Context = {},
-> = <OUTPUT>(
+export type ProviderDefinedToolFactory<INPUT, ARGS extends object, CONTEXT extends Context = {}> = <
+  OUTPUT,
+>(
   options: ARGS & {
     execute?: ToolExecuteFunction<INPUT, OUTPUT, CONTEXT>;
     needsApproval?: Tool<INPUT, OUTPUT, CONTEXT>['needsApproval'];

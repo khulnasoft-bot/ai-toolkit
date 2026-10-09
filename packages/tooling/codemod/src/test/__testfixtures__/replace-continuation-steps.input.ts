@@ -1,10 +1,9 @@
 // @ts-nocheck
-import { generateText } from 'ai';
-import { generateText as genText } from 'ai';
+import { generateText, generateText as genText } from 'ai';
 import { generateText as otherGen } from 'other-pkg';
 
 // Should rename - direct import
-const result = await generateText({
+const _result = await generateText({
   model,
   prompt: 'Hello',
   experimental_continuationSteps: true,
@@ -21,6 +20,6 @@ await otherGen({
 });
 
 // Should NOT rename - not in generateText call
-const config = {
+const _config = {
   experimental_continuationSteps: true,
 };

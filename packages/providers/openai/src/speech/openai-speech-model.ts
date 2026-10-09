@@ -1,16 +1,16 @@
-import { SpeechModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { SharedV3Warning, SpeechModelV3 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createBinaryResponseHandler,
   parseProviderOptions,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
-import { OpenAIConfig } from '../openai-config';
+import type { OpenAIConfig } from '../openai-config';
 import { openaiFailedResponseHandler } from '../openai-error';
-import { OpenAISpeechAPITypes } from './openai-speech-api';
+import type { OpenAISpeechAPITypes } from './openai-speech-api';
 import {
+  type OpenAISpeechModelId,
   openaiSpeechProviderOptionsSchema,
-  OpenAISpeechModelId,
 } from './openai-speech-options';
 
 interface OpenAISpeechModelConfig extends OpenAIConfig {

@@ -25,10 +25,7 @@ export type FilesV4UploadFileCallOptions = {
    * - `{ type: 'stream', stream }`: a byte stream (not buffered by providers
    *   that support streaming uploads).
    */
-  data:
-    | SharedV4FileDataData
-    | SharedV4FileDataText
-    | FilesV4UploadFileStreamData;
+  data: SharedV4FileDataData | SharedV4FileDataText | FilesV4UploadFileStreamData;
 
   /**
    * The IANA media type of the file (e.g. `'application/pdf'`).

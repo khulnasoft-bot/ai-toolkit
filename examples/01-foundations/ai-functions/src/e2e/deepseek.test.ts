@@ -1,12 +1,8 @@
 import 'dotenv/config';
+import type { APICallError } from '@ai-toolkit/ai';
+import { type DeepSeekErrorData, deepseek as provider } from '@ai-toolkit/deepseek';
 import { expect } from 'vitest';
-import { deepseek as provider } from '@ai-toolkit/deepseek';
-import { APICallError } from '@ai-toolkit/ai';
-import {
-  createFeatureTestSuite,
-  createLanguageModelWithCapabilities,
-} from './feature-test-suite';
-import { DeepSeekErrorData } from '@ai-toolkit/deepseek';
+import { createFeatureTestSuite, createLanguageModelWithCapabilities } from './feature-test-suite';
 
 const createChatModel = (modelId: string) =>
   createLanguageModelWithCapabilities(provider.chat(modelId));
@@ -20,9 +16,7 @@ createFeatureTestSuite({
   timeout: 10000,
   customAssertions: {
     errorValidator: (error: APICallError) => {
-      expect(
-        (error.data as DeepSeekErrorData).error.message === 'Model Not Exist',
-      ).toBe(true);
+      expect((error.data as DeepSeekErrorData).error.message === 'Model Not Exist').toBe(true);
     },
   },
 })();

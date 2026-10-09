@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 if (!process.env.GOOGLE_TEMP_OAUTH_KEY) {

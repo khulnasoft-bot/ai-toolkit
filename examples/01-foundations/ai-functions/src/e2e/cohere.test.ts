@@ -1,9 +1,6 @@
 import 'dotenv/config';
 import { cohere as provider } from '@ai-toolkit/cohere';
-import {
-  createFeatureTestSuite,
-  createLanguageModelWithCapabilities,
-} from './feature-test-suite';
+import { createFeatureTestSuite, createLanguageModelWithCapabilities } from './feature-test-suite';
 
 const createChatModel = (modelId: string) =>
   createLanguageModelWithCapabilities(provider.languageModel(modelId));

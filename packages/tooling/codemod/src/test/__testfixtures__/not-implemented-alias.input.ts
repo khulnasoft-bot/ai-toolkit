@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { StreamData as SData, appendClientMessage as ACM } from 'ai';
+import { appendClientMessage as ACM, StreamData as SData } from 'ai';
 import { appendClientMessage } from 'some-other-package';
 
 const streamData = new SData();
@@ -10,4 +10,4 @@ const messages = ACM({
   message: lastUserMessage,
 });
 
-const unrelated = appendClientMessage();
+const _unrelated = appendClientMessage();

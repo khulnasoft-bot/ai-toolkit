@@ -1,11 +1,9 @@
 'use client';
 
+import { generateId } from '@ai-toolkit/ai';
+import { useActions, useUIState } from '@ai-toolkit/rsc';
 import { Fragment, useState } from 'react';
 import type { AI } from './ai';
-import { useActions } from '@ai-toolkit/rsc';
-
-import { useAIState, useUIState } from '@ai-toolkit/rsc';
-import { generateId } from '@ai-toolkit/ai';
 import { Message } from './message';
 
 export default function Home() {
@@ -18,7 +16,7 @@ export default function Home() {
       ...currentMessages,
       {
         id: generateId(),
-        display: <Message role="user">{input}</Message>,
+        display: <Message>{input}</Message>,
       },
     ]);
 
@@ -42,6 +40,7 @@ export default function Home() {
           }}
         />
         <button
+          type="button"
           className="p-2 bg-zinc-900 text-zinc-100 rounded-md"
           onClick={handleSubmission}
         >

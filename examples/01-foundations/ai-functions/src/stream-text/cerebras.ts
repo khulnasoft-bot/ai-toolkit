@@ -1,5 +1,5 @@
-import { cerebras } from '@ai-toolkit/cerebras';
 import { streamText } from '@ai-toolkit/ai';
+import { cerebras } from '@ai-toolkit/cerebras';
 import { run } from '../lib/run';
 
 run(async () => {

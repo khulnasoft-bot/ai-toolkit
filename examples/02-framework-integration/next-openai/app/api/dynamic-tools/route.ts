@@ -1,15 +1,15 @@
-import { openai } from '@ai-toolkit/openai';
 import {
   convertToModelMessages,
   dynamicTool,
-  InferUITools,
+  type InferUITools,
   stepCountIs,
   streamText,
+  type ToolSet,
   tool,
-  ToolSet,
-  UIDataTypes,
-  UIMessage,
+  type UIDataTypes,
+  type UIMessage,
 } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 
 // Allow streaming responses up to 30 seconds
@@ -20,9 +20,7 @@ const getWeatherInformationTool = tool({
   inputSchema: z.object({ city: z.string() }),
   execute: async ({ city }: { city: string }, { messages }) => {
     // count the number of assistant messages. throw error if 2 or less
-    const assistantMessageCount = messages.filter(
-      message => message.role === 'assistant',
-    ).length;
+    const assistantMessageCount = messages.filter(message => message.role === 'assistant').length;
 
     if (assistantMessageCount <= 2) {
       throw new Error('could not get weather information');
@@ -41,11 +39,7 @@ const staticTools = {
   getWeatherInformation: getWeatherInformationTool,
 } as const;
 
-export type ToolsMessage = UIMessage<
-  never,
-  UIDataTypes,
-  InferUITools<typeof staticTools>
->;
+export type ToolsMessage = UIMessage<never, UIDataTypes, InferUITools<typeof staticTools>>;
 
 function dynamicTools(): ToolSet {
   return {

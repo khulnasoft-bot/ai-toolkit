@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
 import { Server } from 'lucide-react';
+import { useId, useState } from 'react';
 
 interface LangsmithConfigPanelProps {
   deploymentUrl: string;
@@ -21,6 +21,8 @@ export function LangsmithConfigPanel({
   localDevUrl,
 }: LangsmithConfigPanelProps) {
   const [showConfig, setShowConfig] = useState(false);
+  const urlInputId = useId();
+  const apiKeyInputId = useId();
 
   return (
     <div className="p-4 bg-[var(--background-tertiary)] border border-[var(--border)] rounded-xl">
@@ -30,15 +32,12 @@ export function LangsmithConfigPanel({
             <Server className="w-4 h-4 text-[var(--accent)]" strokeWidth={2} />
           </div>
           <div>
-            <div className="text-sm font-medium text-[var(--foreground)]">
-              Connected to
-            </div>
-            <code className="text-xs text-[var(--accent)]">
-              {deploymentUrl}
-            </code>
+            <div className="text-sm font-medium text-[var(--foreground)]">Connected to</div>
+            <code className="text-xs text-[var(--accent)]">{deploymentUrl}</code>
           </div>
         </div>
         <button
+          type="button"
           onClick={() => setShowConfig(!showConfig)}
           className="px-3 py-1.5 text-xs font-medium text-[var(--foreground-secondary)] hover:text-[var(--foreground)] hover:bg-[var(--background-secondary)] rounded-lg transition-colors"
         >
@@ -49,10 +48,14 @@ export function LangsmithConfigPanel({
       {showConfig && (
         <div className="mt-4 pt-4 border-t border-[var(--border)] space-y-3 animate-fade-in">
           <div>
-            <label className="block text-xs font-medium text-[var(--foreground-secondary)] mb-1.5">
+            <label
+              htmlFor={urlInputId}
+              className="block text-xs font-medium text-[var(--foreground-secondary)] mb-1.5"
+            >
               Deployment URL
             </label>
             <input
+              id={urlInputId}
               type="url"
               value={customUrl}
               onChange={e => setCustomUrl(e.target.value)}
@@ -61,10 +64,14 @@ export function LangsmithConfigPanel({
             />
           </div>
           <div>
-            <label className="block text-xs font-medium text-[var(--foreground-secondary)] mb-1.5">
+            <label
+              htmlFor={apiKeyInputId}
+              className="block text-xs font-medium text-[var(--foreground-secondary)] mb-1.5"
+            >
               API Key
             </label>
             <input
+              id={apiKeyInputId}
               type="password"
               value={apiKey}
               onChange={e => setApiKey(e.target.value)}

@@ -1,15 +1,15 @@
-import { JSONObject, RerankingModelV3CallOptions } from '@ai-toolkit/provider';
-import { ProviderOptions } from '@ai-toolkit/provider-utils';
+import type { JSONObject, RerankingModelV3CallOptions } from '@ai-toolkit/provider';
+import type { ProviderOptions } from '@ai-toolkit/provider-utils';
 import { prepareRetries } from '../../src/util/prepare-retries';
+import { logWarnings } from '../logger/log-warnings';
 import { assembleOperationName } from '../telemetry/assemble-operation-name';
 import { getBaseTelemetryAttributes } from '../telemetry/get-base-telemetry-attributes';
 import { getTracer } from '../telemetry/get-tracer';
 import { recordSpan } from '../telemetry/record-span';
 import { selectTelemetryAttributes } from '../telemetry/select-telemetry-attributes';
-import { TelemetrySettings } from '../telemetry/telemetry-settings';
-import { RerankingModel } from '../types';
-import { RerankResult } from './rerank-result';
-import { logWarnings } from '../logger/log-warnings';
+import type { TelemetrySettings } from '../telemetry/telemetry-settings';
+import type { RerankingModel } from '../types';
+import type { RerankResult } from './rerank-result';
 
 /**
 Rerank documents using an reranking model. The type of the value is defined by the reranking model.
@@ -132,59 +132,56 @@ Only applicable for HTTP-based providers.
     }),
     tracer,
     fn: async () => {
-      const { ranking, response, providerMetadata, warnings } = await retry(
-        () =>
-          recordSpan({
-            name: 'ai.rerank.doRerank',
-            attributes: selectTelemetryAttributes({
-              telemetry,
-              attributes: {
-                ...assembleOperationName({
-                  operationId: 'ai.rerank.doRerank',
-                  telemetry,
-                }),
-                ...baseTelemetryAttributes,
-                // specific settings that only make sense on the outer level:
-                'ai.documents': {
-                  input: () =>
-                    documents.map(document => JSON.stringify(document)),
-                },
+      const { ranking, response, providerMetadata, warnings } = await retry(() =>
+        recordSpan({
+          name: 'ai.rerank.doRerank',
+          attributes: selectTelemetryAttributes({
+            telemetry,
+            attributes: {
+              ...assembleOperationName({
+                operationId: 'ai.rerank.doRerank',
+                telemetry,
+              }),
+              ...baseTelemetryAttributes,
+              // specific settings that only make sense on the outer level:
+              'ai.documents': {
+                input: () => documents.map(document => JSON.stringify(document)),
               },
-            }),
-            tracer,
-            fn: async doRerankSpan => {
-              const modelResponse = await model.doRerank({
-                documents: documentsToSend,
-                query,
-                topN,
-                providerOptions,
-                abortSignal,
-                headers,
-              });
-
-              const ranking = modelResponse.ranking;
-
-              doRerankSpan.setAttributes(
-                await selectTelemetryAttributes({
-                  telemetry,
-                  attributes: {
-                    'ai.ranking.type': documentsToSend.type,
-                    'ai.ranking': {
-                      output: () =>
-                        ranking.map(ranking => JSON.stringify(ranking)),
-                    },
-                  },
-                }),
-              );
-
-              return {
-                ranking,
-                providerMetadata: modelResponse.providerMetadata,
-                response: modelResponse.response,
-                warnings: modelResponse.warnings,
-              };
             },
           }),
+          tracer,
+          fn: async doRerankSpan => {
+            const modelResponse = await model.doRerank({
+              documents: documentsToSend,
+              query,
+              topN,
+              providerOptions,
+              abortSignal,
+              headers,
+            });
+
+            const ranking = modelResponse.ranking;
+
+            doRerankSpan.setAttributes(
+              await selectTelemetryAttributes({
+                telemetry,
+                attributes: {
+                  'ai.ranking.type': documentsToSend.type,
+                  'ai.ranking': {
+                    output: () => ranking.map(ranking => JSON.stringify(ranking)),
+                  },
+                },
+              }),
+            );
+
+            return {
+              ranking,
+              providerMetadata: modelResponse.providerMetadata,
+              response: modelResponse.response,
+              warnings: modelResponse.warnings,
+            };
+          },
+        }),
       );
 
       logWarnings({

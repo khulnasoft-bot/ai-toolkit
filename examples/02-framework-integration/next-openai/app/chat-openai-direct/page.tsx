@@ -1,8 +1,8 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DirectChatTransport, ToolLoopAgent } from '@ai-toolkit/ai';
 import { createOpenAI } from '@ai-toolkit/openai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 
 /**
@@ -40,6 +40,7 @@ export default function Chat() {
             if (part.type === 'text') {
               return part.text;
             }
+            return null;
           })}
         </div>
       ))}

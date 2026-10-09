@@ -1,11 +1,10 @@
-import { createUIMessageStreamResponse, UIMessage } from '@ai-toolkit/ai';
-import { NextResponse } from 'next/server';
-
-import { createAgent, humanInTheLoopMiddleware } from 'langchain';
-import { ChatOpenAI } from '@langchain/openai';
-import { tool } from '@langchain/core/tools';
+import { createUIMessageStreamResponse, type UIMessage } from '@ai-toolkit/ai';
 import { toBaseMessages, toUIMessageStream } from '@ai-toolkit/langchain';
-import { MemorySaver, Command } from '@langchain/langgraph';
+import { tool } from '@langchain/core/tools';
+import { Command, MemorySaver } from '@langchain/langgraph';
+import { ChatOpenAI } from '@langchain/openai';
+import { createAgent, humanInTheLoopMiddleware } from 'langchain';
+import { NextResponse } from 'next/server';
 import { z } from 'zod';
 
 /**
@@ -41,8 +40,7 @@ const sendEmailTool = tool(
   },
   {
     name: 'send_email',
-    description:
-      'Send an email to a recipient. This action requires human approval.',
+    description: 'Send an email to a recipient. This action requires human approval.',
     schema: z.object({
       to: z.string().describe('The email recipient'),
       subject: z.string().describe('The email subject'),
@@ -62,8 +60,7 @@ const deleteFileTool = tool(
   },
   {
     name: 'delete_file',
-    description:
-      'Delete a file from the system. This action requires human approval.',
+    description: 'Delete a file from the system. This action requires human approval.',
     schema: z.object({
       filename: z.string().describe('The name of the file to delete'),
     }),
@@ -208,10 +205,7 @@ export async function POST(req: Request) {
         };
       });
 
-      stream = await agent.stream(
-        new Command({ resume: { decisions } }),
-        config,
-      );
+      stream = await agent.stream(new Command({ resume: { decisions } }), config);
     } else {
       /**
        * Convert AI TOOLKIT UIMessages to LangChain messages and start new conversation
@@ -227,8 +221,7 @@ export async function POST(req: Request) {
       stream: toUIMessageStream(stream as unknown as ReadableStream),
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'An unknown error occurred';
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

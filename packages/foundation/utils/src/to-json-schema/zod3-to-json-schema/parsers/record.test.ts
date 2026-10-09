@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseRecordDef } from './record';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseRecordDef } from './record';
 
 describe('record', () => {
   it('should be possible to describe a simple record', () => {
@@ -31,9 +31,7 @@ describe('record', () => {
   });
 
   it('should be possible to describe a complex record with checks', () => {
-    const schema = z.record(
-      z.object({ foo: z.number().min(2) }).catchall(z.string().cuid()),
-    );
+    const schema = z.record(z.object({ foo: z.number().min(2) }).catchall(z.string().cuid()));
 
     const parsedSchema = parseRecordDef(schema._def, getRefs());
 
@@ -73,10 +71,7 @@ describe('record', () => {
   });
 
   it('should be possible to describe a branded key schema', () => {
-    const schema = z.record(
-      z.string().regex(/.+/).brand('MyBrandedThingo'),
-      z.number(),
-    );
+    const schema = z.record(z.string().regex(/.+/).brand('MyBrandedThingo'), z.number());
 
     const parsedSchema = parseRecordDef(schema._def, getRefs());
 

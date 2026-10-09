@@ -14,13 +14,13 @@ export async function POST(req: Request) {
 
 // Another example
 const stream = streamText({ model, prompt });
-const response = stream.toDataStreamResponse({
+const _response = stream.toDataStreamResponse({
   status: 200,
   headers: { custom: 'header' },
 });
 
-const result1 = result.toDataStreamResponse({
-  getErrorMessage: error => {
+const _result1 = result.toDataStreamResponse({
+  getErrorMessage: _error => {
     return {
       errorCode: 'STREAM_ERROR',
       message: 'An error occurred while processing your request',
@@ -30,11 +30,11 @@ const result1 = result.toDataStreamResponse({
 
 // Variable object with getErrorMessage
 const opts = {
-  getErrorMessage: error => {
+  getErrorMessage: _error => {
     return {
       errorCode: 'STREAM_ERROR',
       message: 'An error occurred while processing your request',
     };
   },
 };
-const result2 = result.toDataStreamResponse(opts);
+const _result2 = result.toDataStreamResponse(opts);

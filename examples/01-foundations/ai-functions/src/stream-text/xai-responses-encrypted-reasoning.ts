@@ -1,5 +1,5 @@
-import { xai } from '@ai-toolkit/xai';
 import { streamText } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -55,7 +55,7 @@ run(async () => {
     if (encryptedContent) {
       console.log(
         '  - Encrypted content (first 100 chars):',
-        encryptedContent.substring(0, 100) + '...',
+        `${encryptedContent.substring(0, 100)}...`,
       );
     }
   }

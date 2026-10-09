@@ -1,8 +1,5 @@
-import {
-  TypeValidationContext,
-  TypeValidationError,
-} from '@ai-toolkit/provider';
-import { FlexibleSchema, asSchema } from './schema';
+import { type TypeValidationContext, TypeValidationError } from '@ai-toolkit/provider';
+import { asSchema, type FlexibleSchema } from './schema';
 
 /**
  * Validates the types of an unknown object using a schema and

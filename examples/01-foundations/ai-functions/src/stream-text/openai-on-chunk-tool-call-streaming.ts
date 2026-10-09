@@ -1,8 +1,8 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({
@@ -20,6 +20,6 @@ run(async () => {
   });
 
   // consume stream:
-  for await (const textPart of result.textStream) {
+  for await (const _textPart of result.textStream) {
   }
 });

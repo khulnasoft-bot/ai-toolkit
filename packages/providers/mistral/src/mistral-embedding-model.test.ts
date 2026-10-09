@@ -1,7 +1,7 @@
-import { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
+import type { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createMistral } from './mistral-provider';
-import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
@@ -120,8 +120,6 @@ describe('doEmbed', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/mistral/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/mistral/0.0.0-test`);
   });
 });

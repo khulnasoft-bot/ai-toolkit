@@ -1,5 +1,5 @@
-import type { WeatherUIToolWithApprovalInvocation } from '@/tool/weather-tool-with-approval';
 import type { ChatAddToolApproveResponseFunction } from '@ai-toolkit/ai';
+import type { WeatherUIToolWithApprovalInvocation } from '@/tool/weather-tool-with-approval';
 
 export default function WeatherWithApprovalView({
   invocation,
@@ -15,6 +15,7 @@ export default function WeatherWithApprovalView({
           Can I retrieve the weather for {invocation.input.city}?
           <div>
             <button
+              type="button"
               className="px-4 py-2 mr-2 text-white bg-blue-500 rounded transition-colors hover:bg-blue-600"
               onClick={() =>
                 addToolApprovalResponse({
@@ -26,6 +27,7 @@ export default function WeatherWithApprovalView({
               Approve
             </button>
             <button
+              type="button"
               className="px-4 py-2 text-white bg-red-500 rounded transition-colors hover:bg-red-600"
               onClick={() =>
                 addToolApprovalResponse({

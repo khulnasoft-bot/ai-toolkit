@@ -1,4 +1,4 @@
-import { JSONObject } from '@ai-toolkit/provider';
+import type { JSONObject } from '@ai-toolkit/provider';
 import { lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 

@@ -1,19 +1,14 @@
-import {
-  convertArrayToAsyncIterable,
-  convertReadableStreamToArray,
-} from '@ai-toolkit/ai/test';
+import { convertArrayToAsyncIterable, convertReadableStreamToArray } from '@ai-toolkit/ai/test';
+import { describe, expect, it } from 'vitest';
 import { toUIMessageStream } from './llamaindex-adapter';
-import { describe, it, expect } from 'vitest';
 
 describe('toUIMessageStream', () => {
   it('should convert AsyncIterable<EngineResponse>', async () => {
-    const inputStream = convertArrayToAsyncIterable([
-      { delta: 'Hello' },
-      { delta: 'World' },
-    ]);
+    const inputStream = convertArrayToAsyncIterable([{ delta: 'Hello' }, { delta: 'World' }]);
 
-    expect(await convertReadableStreamToArray(toUIMessageStream(inputStream)))
-      .toMatchInlineSnapshot(`
+    expect(
+      await convertReadableStreamToArray(toUIMessageStream(inputStream)),
+    ).toMatchInlineSnapshot(`
         [
           {
             "id": "1",

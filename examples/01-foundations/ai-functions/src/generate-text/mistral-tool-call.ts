@@ -1,8 +1,8 @@
-import { mistral } from '@ai-toolkit/mistral';
 import { generateText, tool } from '@ai-toolkit/ai';
+import { mistral } from '@ai-toolkit/mistral';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = await generateText({
@@ -14,8 +14,7 @@ run(async () => {
         inputSchema: z.object({ city: z.string() }),
       }),
     },
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
+    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   // typed tool calls:

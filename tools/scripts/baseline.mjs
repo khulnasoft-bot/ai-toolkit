@@ -8,10 +8,10 @@
  * to a log file; the summary is printed to stdout and stored as report.json.
  */
 
-import { execSync } from 'child_process';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -46,7 +46,7 @@ function run(label, command) {
   } catch (error) {
     fs.writeFileSync(
       log,
-      String(error.stdout ?? '') + '\n' + String(error.stderr ?? error.message),
+      `${String(error.stdout ?? '')}\n${String(error.stderr ?? error.message)}`,
     );
     results.push({
       label,

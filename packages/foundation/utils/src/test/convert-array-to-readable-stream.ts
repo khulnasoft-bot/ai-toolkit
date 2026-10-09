@@ -1,6 +1,4 @@
-export function convertArrayToReadableStream<T>(
-  values: T[],
-): ReadableStream<T> {
+export function convertArrayToReadableStream<T>(values: T[]): ReadableStream<T> {
   return new ReadableStream({
     start(controller) {
       try {

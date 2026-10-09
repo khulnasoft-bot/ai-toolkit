@@ -8,4 +8,4 @@ const /* WARNING: toAIStream has been removed from streamText.
     onToken: token => console.log(token),
   });
 
-const response = new Response(stream);
+const _response = new Response(stream);

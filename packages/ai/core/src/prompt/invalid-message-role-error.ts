@@ -2,11 +2,9 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_InvalidMessageRoleError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export class InvalidMessageRoleError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly role: string;
 
   constructor({

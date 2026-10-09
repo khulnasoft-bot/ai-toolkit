@@ -1,16 +1,12 @@
+import { type LanguageModelV3, NoSuchModelError, type ProviderV3 } from '@ai-toolkit/provider';
 import {
-  LanguageModelV3,
-  NoSuchModelError,
-  ProviderV3,
-} from '@ai-toolkit/provider';
-import {
-  FetchFunction,
+  type FetchFunction,
   generateId,
   loadApiKey,
   withoutTrailingSlash,
 } from '@ai-toolkit/provider-utils';
 import { HuggingFaceResponsesLanguageModel } from './responses/huggingface-responses-language-model';
-import { HuggingFaceResponsesModelId } from './responses/huggingface-responses-settings';
+import type { HuggingFaceResponsesModelId } from './responses/huggingface-responses-settings';
 
 export interface HuggingFaceProviderSettings {
   /**
@@ -59,11 +55,8 @@ Creates a Hugging Face responses model for text generation.
 /**
 Create a Hugging Face provider instance.
  */
-export function createHuggingFace(
-  options: HuggingFaceProviderSettings = {},
-): HuggingFaceProvider {
-  const baseURL =
-    withoutTrailingSlash(options.baseURL) ?? 'https://router.huggingface.co/v1';
+export function createHuggingFace(options: HuggingFaceProviderSettings = {}): HuggingFaceProvider {
+  const baseURL = withoutTrailingSlash(options.baseURL) ?? 'https://router.huggingface.co/v1';
 
   const getHeaders = () => ({
     Authorization: `Bearer ${loadApiKey({
@@ -84,8 +77,7 @@ export function createHuggingFace(
     });
   };
 
-  const provider = (modelId: HuggingFaceResponsesModelId) =>
-    createResponsesModel(modelId);
+  const provider = (modelId: HuggingFaceResponsesModelId) => createResponsesModel(modelId);
 
   provider.specificationVersion = 'v3' as const;
   provider.languageModel = createResponsesModel;

@@ -1,7 +1,7 @@
-import { DownloadError } from '@ai-toolkit/provider-utils';
 import {
-  withUserAgentSuffix,
+  DownloadError,
   getRuntimeEnvironmentUserAgent,
+  withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { VERSION } from '../../version';
 
@@ -17,11 +17,7 @@ export const download = async ({ url }: { url: URL }) => {
   const urlText = url.toString();
   try {
     const response = await fetch(urlText, {
-      headers: withUserAgentSuffix(
-        {},
-        `ai-toolkit/${VERSION}`,
-        getRuntimeEnvironmentUserAgent(),
-      ),
+      headers: withUserAgentSuffix({}, `ai-toolkit/${VERSION}`, getRuntimeEnvironmentUserAgent()),
     });
 
     if (!response.ok) {

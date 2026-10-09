@@ -5,11 +5,8 @@ import type {
   ModelMessage,
   ToolSet,
 } from '@ai-toolkit/provider-utils';
-import type {
-  ToolApprovalConfiguration,
-  ToolApprovalStatus,
-} from './tool-approval-configuration';
 import { getOwn } from '../util/get-own';
+import type { ToolApprovalConfiguration, ToolApprovalStatus } from './tool-approval-configuration';
 import type { TypedToolCall } from './tool-call';
 import { validateToolContext } from './validate-tool-context';
 

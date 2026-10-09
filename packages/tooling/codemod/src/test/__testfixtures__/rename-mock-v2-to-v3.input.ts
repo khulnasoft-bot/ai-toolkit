@@ -8,28 +8,28 @@ import {
   MockTranscriptionModelV2,
 } from 'ai/test';
 
-const languageModel = new MockLanguageModelV2();
+const _languageModel = new MockLanguageModelV2();
 
-const embeddingModel = new MockEmbeddingModelV2();
+const _embeddingModel = new MockEmbeddingModelV2();
 
-const imageModel = new MockImageModelV2();
+const _imageModel = new MockImageModelV2();
 
-const provider = new MockProviderV2();
+const _provider = new MockProviderV2();
 
-const speechModel = new MockSpeechModelV2();
+const _speechModel = new MockSpeechModelV2();
 
-const transcriptionModel = new MockTranscriptionModelV2();
+const _transcriptionModel = new MockTranscriptionModelV2();
 
 // Type annotations
-function testWithModel(model: MockLanguageModelV2) {
+function _testWithModel(model: MockLanguageModelV2) {
   return model;
 }
 
 // Using as type parameter
-const models: MockLanguageModelV2[] = [];
+const _models: MockLanguageModelV2[] = [];
 
 // Function that returns a mock
-function createMock(): MockEmbeddingModelV2 {
+function _createMock(): MockEmbeddingModelV2 {
   return new MockEmbeddingModelV2();
 }
 

@@ -1,7 +1,6 @@
-import { API, FileInfo } from 'jscodeshift';
-import jscodeshift from 'jscodeshift';
-import { join } from 'path';
-import { existsSync, readFileSync, writeFileSync } from 'fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import jscodeshift, { type API, type FileInfo } from 'jscodeshift';
 import ts from 'typescript';
 import { expect } from 'vitest';
 
@@ -55,9 +54,7 @@ export function readFixture(
       return { content: readFileSync(fullPath, 'utf8'), extension: ext };
     }
   }
-  throw new Error(
-    `Fixture not found: ${name}.${type} with extensions ${extensions.join(', ')}`,
-  );
+  throw new Error(`Fixture not found: ${name}.${type} with extensions ${extensions.join(', ')}`);
 }
 
 /**
@@ -92,7 +89,6 @@ export function validateSyntax(code: string, extension: string): void {
     case '.ts':
       scriptKind = ts.ScriptKind.TS;
       break;
-    case '.js':
     default:
       scriptKind = ts.ScriptKind.JS;
   }
@@ -144,7 +140,7 @@ export function validateSyntax(code: string, extension: string): void {
   };
 
   // Override module resolution
-  host.resolveModuleNameLiterals = (moduleLiterals, containingFile) => {
+  host.resolveModuleNameLiterals = (moduleLiterals, _containingFile) => {
     return moduleLiterals.map(moduleLiteral => ({
       resolvedModule: {
         resolvedFileName: `${moduleLiteral.text}.d.ts`,
@@ -185,8 +181,9 @@ export function validateSyntax(code: string, extension: string): void {
     const errors = relevantDiagnostics
       .map(diagnostic => {
         if (diagnostic.file) {
-          const { line, character } =
-            diagnostic.file.getLineAndCharacterOfPosition(diagnostic.start!);
+          const { line, character } = diagnostic.file.getLineAndCharacterOfPosition(
+            diagnostic.start!,
+          );
           return `${line + 1}:${
             character + 1
           } - ${ts.flattenDiagnosticMessageText(diagnostic.messageText, '\n')}`;
@@ -195,9 +192,7 @@ export function validateSyntax(code: string, extension: string): void {
       })
       .join('\n');
 
-    throw new Error(
-      `Syntax error in code with extension ${extension}:\n${errors}`,
-    );
+    throw new Error(`Syntax error in code with extension ${extension}:\n${errors}`);
   }
 }
 
@@ -213,14 +208,8 @@ export function testTransform(
   fixtureName: string,
 ) {
   // Read input and output fixtures along with their extensions
-  const { content: input, extension: inputExt } = readFixture(
-    fixtureName,
-    'input',
-  );
-  const { content: expectedOutput, extension: outputExt } = readFixture(
-    fixtureName,
-    'output',
-  );
+  const { content: input, extension: inputExt } = readFixture(fixtureName, 'input');
+  const { content: expectedOutput, extension: outputExt } = readFixture(fixtureName, 'output');
 
   // Validate that input code is syntactically correct
   validateSyntax(input, inputExt);
@@ -236,11 +225,7 @@ export function testTransform(
 
   if (process.env.UPDATE_SNAPSHOT) {
     // Update the expected output fixture if the environment variable is set
-    const outputPath = join(
-      __dirname,
-      '__testfixtures__',
-      `${fixtureName}.output${outputExt}`,
-    );
+    const outputPath = join(__dirname, '__testfixtures__', `${fixtureName}.output${outputExt}`);
     writeFileSync(outputPath, actualOutput, 'utf8');
   } else {
     // Compare actual output to expected output

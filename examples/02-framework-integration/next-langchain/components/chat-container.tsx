@@ -1,13 +1,13 @@
 'use client';
 
-import { ChatStatus } from '@ai-toolkit/ai';
-import { useEffect, useRef } from 'react';
+import type { ChatStatus } from '@ai-toolkit/ai';
 import { AlertCircle } from 'lucide-react';
-import { ChatMessage } from './chat-message';
+import { useEffect, useRef } from 'react';
+import type { CustomDataMessage } from '../app/types';
 import { ChatInput } from './chat-input';
-import { ThinkingIndicator } from './thinking-indicator';
+import { ChatMessage } from './chat-message';
 import { EmptyState } from './empty-state';
-import { type CustomDataMessage } from '../app/types';
+import { ThinkingIndicator } from './thinking-indicator';
 
 interface ChatContainerProps {
   messages: CustomDataMessage[];
@@ -37,15 +37,13 @@ export function ChatContainer({
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, []);
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
       <div className="flex-shrink-0 p-6 border-b border-[var(--border)] rounded-t-xl">
-        <h1 className="text-2xl font-semibold text-[var(--foreground)] mb-2">
-          {title}
-        </h1>
+        <h1 className="text-2xl font-semibold text-[var(--foreground)] mb-2">{title}</h1>
         {description && (
           <div className="text-sm text-[var(--foreground-secondary)] leading-relaxed">
             {description}
@@ -73,9 +71,7 @@ export function ChatContainer({
             {messages.map(message => (
               <ChatMessage key={message.id} message={message} />
             ))}
-            <ThinkingIndicator
-              isStreaming={status === 'submitted' || status === 'streaming'}
-            />
+            <ThinkingIndicator isStreaming={status === 'submitted' || status === 'streaming'} />
             <div ref={messagesEndRef} />
           </>
         )}

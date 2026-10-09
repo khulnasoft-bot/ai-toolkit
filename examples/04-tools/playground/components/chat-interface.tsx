@@ -1,19 +1,12 @@
 'use client';
 
+import { Bot, Loader2, Send, User } from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Bot, Loader2, Send, User } from 'lucide-react';
 
-export function ChatInterface({
-  modelId,
-}: {
-  providerId: string;
-  modelId: string;
-}) {
+export function ChatInterface({ modelId }: { providerId: string; modelId: string }) {
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<
-    { role: 'user' | 'assistant'; text: string }[]
-  >([]);
+  const [messages, setMessages] = useState<{ role: 'user' | 'assistant'; text: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -50,9 +43,7 @@ export function ChatInterface({
               key={`${message.role}-${index}`}
               className={`flex items-start gap-3 ${message.role === 'user' ? 'justify-end' : ''}`}
             >
-              {message.role === 'assistant' && (
-                <Bot className="mt-2 size-4 text-primary" />
-              )}
+              {message.role === 'assistant' && <Bot className="mt-2 size-4 text-primary" />}
               {message.role === 'user' && (
                 <div className="max-w-[80%] rounded-lg bg-primary p-3 text-sm text-primary-foreground">
                   <User className="mb-1 size-3" />
@@ -60,9 +51,7 @@ export function ChatInterface({
                 </div>
               )}
               {message.role === 'assistant' && (
-                <div className="max-w-[80%] rounded-lg bg-muted p-3 text-sm">
-                  {message.text}
-                </div>
+                <div className="max-w-[80%] rounded-lg bg-muted p-3 text-sm">{message.text}</div>
               )}
             </div>
           ))}
@@ -78,11 +67,7 @@ export function ChatInterface({
           disabled={loading}
         />
         <Button type="submit" disabled={loading || !input.trim()}>
-          {loading ? (
-            <Loader2 className="size-4 animate-spin" />
-          ) : (
-            <Send className="size-4" />
-          )}
+          {loading ? <Loader2 className="size-4 animate-spin" /> : <Send className="size-4" />}
         </Button>
       </form>
     </div>

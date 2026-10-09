@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Track identifiers that are source stream parts in various contexts
@@ -18,8 +18,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       return (
         path.node.source.type === 'StringLiteral' &&
-        (path.node.source.value === 'ai-toolkit' ||
-          path.node.source.value === 'ai-toolkit')
+        (path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit')
       );
     })
     .forEach(path => {
@@ -43,8 +42,7 @@ export default createTransformer((fileInfo, api, options, context) => {
                 // Look for variable declarations that store the result
                 const parent = callPath.parent;
                 if (
-                  parent &&
-                  parent.value &&
+                  parent?.value &&
                   parent.value.type === 'VariableDeclarator' &&
                   parent.value.id.type === 'Identifier'
                 ) {
@@ -71,10 +69,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       const left = path.node.left;
       if (left.type === 'VariableDeclaration' && left.declarations[0]) {
         const declaration = left.declarations[0];
-        if (
-          declaration.type === 'VariableDeclarator' &&
-          declaration.id.type === 'Identifier'
-        ) {
+        if (declaration.type === 'VariableDeclarator' && declaration.id.type === 'Identifier') {
           fullStreamIteratorVariables.add(declaration.id.name);
         }
       }
@@ -131,8 +126,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       if (
         typeProperty &&
         sourceProperty &&
-        (sourceProperty.type === 'ObjectProperty' ||
-          sourceProperty.type === 'Property') &&
+        (sourceProperty.type === 'ObjectProperty' || sourceProperty.type === 'Property') &&
         sourceProperty.value.type === 'ObjectExpression'
       ) {
         // Extract all properties from the nested source object
@@ -160,8 +154,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       // Look for the switch expression to find the identifier
       const switchStatement = path.parent;
       if (
-        switchStatement &&
-        switchStatement.value &&
+        switchStatement?.value &&
         switchStatement.value.type === 'SwitchStatement' &&
         switchStatement.value.discriminant.type === 'MemberExpression' &&
         switchStatement.value.discriminant.property.type === 'Identifier' &&
@@ -213,16 +206,11 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       const callee = path.node.callee;
       if (callee.type !== 'MemberExpression') return false;
-      if (
-        callee.property.type !== 'Identifier' ||
-        callee.property.name !== 'map'
-      )
-        return false;
+      if (callee.property.type !== 'Identifier' || callee.property.name !== 'map') return false;
       if (callee.object.type !== 'CallExpression') return false;
 
       const filterCall = callee.object;
-      if (!filterCall.callee || filterCall.callee.type !== 'MemberExpression')
-        return false;
+      if (!filterCall.callee || filterCall.callee.type !== 'MemberExpression') return false;
       if (
         filterCall.callee.property.type !== 'Identifier' ||
         filterCall.callee.property.name !== 'filter'
@@ -233,12 +221,9 @@ export default createTransformer((fileInfo, api, options, context) => {
     })
     .forEach(path => {
       const callee = path.node.callee;
-      if (
-        callee.type === 'MemberExpression' &&
-        callee.object.type === 'CallExpression'
-      ) {
+      if (callee.type === 'MemberExpression' && callee.object.type === 'CallExpression') {
         const filterCall = callee.object;
-        if (filterCall.arguments && filterCall.arguments[0]) {
+        if (filterCall.arguments?.[0]) {
           const filterCallback = filterCall.arguments[0];
           if (filterCallback.type === 'ArrowFunctionExpression') {
             const body = filterCallback.body;
@@ -252,7 +237,7 @@ export default createTransformer((fileInfo, api, options, context) => {
               body.right.value === 'source'
             ) {
               // Found filter for source types, now track the map callback parameter
-              if (path.node.arguments && path.node.arguments[0]) {
+              if (path.node.arguments?.[0]) {
                 const mapCallback = path.node.arguments[0];
                 if (
                   mapCallback.type === 'ArrowFunctionExpression' &&

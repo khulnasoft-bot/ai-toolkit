@@ -1,21 +1,18 @@
 import {
-  ImageModelV3,
+  type ImageModelV3,
   NoSuchModelError,
-  ProviderV3,
-  SpeechModelV3,
-  TranscriptionModelV3,
+  type ProviderV3,
+  type SpeechModelV3,
+  type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
 import type { FetchFunction } from '@ai-toolkit/provider-utils';
-import {
-  withoutTrailingSlash,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import { withoutTrailingSlash, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { FalImageModel } from './fal-image-model';
-import { FalImageModelId } from './fal-image-settings';
-import { FalTranscriptionModelId } from './fal-transcription-options';
-import { FalTranscriptionModel } from './fal-transcription-model';
-import { FalSpeechModelId } from './fal-speech-settings';
+import type { FalImageModelId } from './fal-image-settings';
 import { FalSpeechModel } from './fal-speech-model';
+import type { FalSpeechModelId } from './fal-speech-settings';
+import { FalTranscriptionModel } from './fal-transcription-model';
+import type { FalTranscriptionModelId } from './fal-transcription-options';
 import { VERSION } from './version';
 
 export interface FalProviderSettings {

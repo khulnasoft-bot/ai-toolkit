@@ -3,7 +3,7 @@ import {
   OpenAICompatibleCompletionLanguageModel,
   OpenAICompatibleEmbeddingModel,
 } from '@ai-toolkit/openai-compatible';
-import {
+import type {
   EmbeddingModelV3,
   ImageModelV3,
   LanguageModelV3,
@@ -11,18 +11,18 @@ import {
   RerankingModelV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { TogetherAIRerankingModel } from './reranking/togetherai-reranking-model';
-import { TogetherAIRerankingModelId } from './reranking/togetherai-reranking-options';
-import { TogetherAIChatModelId } from './togetherai-chat-options';
-import { TogetherAICompletionModelId } from './togetherai-completion-options';
-import { TogetherAIEmbeddingModelId } from './togetherai-embedding-options';
+import type { TogetherAIRerankingModelId } from './reranking/togetherai-reranking-options';
+import type { TogetherAIChatModelId } from './togetherai-chat-options';
+import type { TogetherAICompletionModelId } from './togetherai-completion-options';
+import type { TogetherAIEmbeddingModelId } from './togetherai-embedding-options';
 import { TogetherAIImageModel } from './togetherai-image-model';
-import { TogetherAIImageModelId } from './togetherai-image-settings';
+import type { TogetherAIImageModelId } from './togetherai-image-settings';
 import { VERSION } from './version';
 
 export interface TogetherAIProviderSettings {
@@ -97,12 +97,8 @@ Creates a model for image generation.
   rerankingModel(modelId: TogetherAIRerankingModelId): RerankingModelV3;
 }
 
-export function createTogetherAI(
-  options: TogetherAIProviderSettings = {},
-): TogetherAIProvider {
-  const baseURL = withoutTrailingSlash(
-    options.baseURL ?? 'https://api.together.xyz/v1/',
-  );
+export function createTogetherAI(options: TogetherAIProviderSettings = {}): TogetherAIProvider {
+  const baseURL = withoutTrailingSlash(options.baseURL ?? 'https://api.together.xyz/v1/');
   const getHeaders = () =>
     withUserAgentSuffix(
       {
@@ -131,23 +127,14 @@ export function createTogetherAI(
   });
 
   const createChatModel = (modelId: TogetherAIChatModelId) => {
-    return new OpenAICompatibleChatLanguageModel(
-      modelId,
-      getCommonModelConfig('chat'),
-    );
+    return new OpenAICompatibleChatLanguageModel(modelId, getCommonModelConfig('chat'));
   };
 
   const createCompletionModel = (modelId: TogetherAICompletionModelId) =>
-    new OpenAICompatibleCompletionLanguageModel(
-      modelId,
-      getCommonModelConfig('completion'),
-    );
+    new OpenAICompatibleCompletionLanguageModel(modelId, getCommonModelConfig('completion'));
 
   const createEmbeddingModel = (modelId: TogetherAIEmbeddingModelId) =>
-    new OpenAICompatibleEmbeddingModel(
-      modelId,
-      getCommonModelConfig('embedding'),
-    );
+    new OpenAICompatibleEmbeddingModel(modelId, getCommonModelConfig('embedding'));
 
   const createImageModel = (modelId: TogetherAIImageModelId) =>
     new TogetherAIImageModel(modelId, {

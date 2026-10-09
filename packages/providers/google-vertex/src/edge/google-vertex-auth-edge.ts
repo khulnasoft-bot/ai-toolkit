@@ -1,8 +1,8 @@
 import {
+  getRuntimeEnvironmentUserAgent,
   loadOptionalSetting,
   loadSetting,
   withUserAgentSuffix,
-  getRuntimeEnvironmentUserAgent,
 } from '@ai-toolkit/provider-utils';
 import { VERSION } from '../version';
 
@@ -60,10 +60,7 @@ const importPrivateKey = async (pemKey: string) => {
   const pemFooter = '-----END PRIVATE KEY-----';
 
   // Remove header, footer, and any whitespace/newlines
-  const pemContents = pemKey
-    .replace(pemHeader, '')
-    .replace(pemFooter, '')
-    .replace(/\s/g, '');
+  const pemContents = pemKey.replace(pemHeader, '').replace(pemFooter, '').replace(/\s/g, '');
 
   // Decode base64 to binary
   const binaryString = atob(pemContents);
@@ -110,15 +107,9 @@ const buildJwt = async (credentials: GoogleCredentials) => {
   const encoder = new TextEncoder();
   const data = encoder.encode(signingInput);
 
-  const signature = await crypto.subtle.sign(
-    'RSASSA-PKCS1-v1_5',
-    privateKey,
-    data,
-  );
+  const signature = await crypto.subtle.sign('RSASSA-PKCS1-v1_5', privateKey, data);
 
-  const signatureBase64 = base64url(
-    String.fromCharCode(...new Uint8Array(signature)),
-  );
+  const signatureBase64 = base64url(String.fromCharCode(...new Uint8Array(signature)));
 
   return `${base64url(JSON.stringify(header))}.${base64url(
     JSON.stringify(payload),
@@ -130,30 +121,26 @@ const buildJwt = async (credentials: GoogleCredentials) => {
  * with the Edge runtime.
  */
 export async function generateAuthToken(credentials?: GoogleCredentials) {
-  try {
-    const creds = credentials || (await loadCredentials());
-    const jwt = await buildJwt(creds);
+  const creds = credentials || (await loadCredentials());
+  const jwt = await buildJwt(creds);
 
-    const response = await fetch('https://oauth2.googleapis.com/token', {
-      method: 'POST',
-      headers: withUserAgentSuffix(
-        { 'Content-Type': 'application/x-www-form-urlencoded' },
-        `ai-toolkit/google-vertex/${VERSION}`,
-        getRuntimeEnvironmentUserAgent(),
-      ),
-      body: new URLSearchParams({
-        grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
-        assertion: jwt,
-      }),
-    });
+  const response = await fetch('https://oauth2.googleapis.com/token', {
+    method: 'POST',
+    headers: withUserAgentSuffix(
+      { 'Content-Type': 'application/x-www-form-urlencoded' },
+      `ai-toolkit/google-vertex/${VERSION}`,
+      getRuntimeEnvironmentUserAgent(),
+    ),
+    body: new URLSearchParams({
+      grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer',
+      assertion: jwt,
+    }),
+  });
 
-    if (!response.ok) {
-      throw new Error(`Token request failed: ${response.statusText}`);
-    }
-
-    const data = await response.json();
-    return data.access_token;
-  } catch (error) {
-    throw error;
+  if (!response.ok) {
+    throw new Error(`Token request failed: ${response.statusText}`);
   }
+
+  const data = await response.json();
+  return data.access_token;
 }

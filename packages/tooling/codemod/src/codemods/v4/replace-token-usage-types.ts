@@ -1,11 +1,11 @@
-import { createTransformer } from '../lib/create-transformer';
-import {
-  ImportSpecifier,
+import type {
   ImportDefaultSpecifier,
   ImportNamespaceSpecifier,
+  ImportSpecifier,
 } from 'jscodeshift';
+import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Define the mapping from old names to new names
@@ -16,23 +16,18 @@ export default createTransformer((fileInfo, api, options, context) => {
   };
 
   // Set to keep track of already imported new names to avoid duplicates
-  const importedNewNames = new Set<string>();
+  const _importedNewNames = new Set<string>();
 
   // Replace imports at ImportDeclaration level
   root
     .find(j.ImportDeclaration)
     .filter(
-      path =>
-        path.node.source.value === 'ai-toolkit' ||
-        path.node.source.value === 'ai-toolkit',
+      path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
     )
     .forEach(path => {
       const importSpecifiers = path.node.specifiers || [];
-      const newSpecifiers: (
-        | ImportSpecifier
-        | ImportDefaultSpecifier
-        | ImportNamespaceSpecifier
-      )[] = [];
+      const newSpecifiers: (ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier)[] =
+        [];
       const addedNewSpecifiers = new Set<string>();
 
       importSpecifiers.forEach(spec => {
@@ -43,7 +38,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         }
 
         const oldName = spec.imported.name;
-        if (!renameMap.hasOwnProperty(oldName)) {
+        if (!Object.hasOwn(renameMap, oldName)) {
           // Retain specifiers that are not part of the renaming
           newSpecifiers.push(spec);
           return;

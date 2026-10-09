@@ -1,8 +1,8 @@
-import { vertex } from '@ai-toolkit/google-vertex';
 import { streamText } from '@ai-toolkit/ai';
+import { vertex } from '@ai-toolkit/google-vertex';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({

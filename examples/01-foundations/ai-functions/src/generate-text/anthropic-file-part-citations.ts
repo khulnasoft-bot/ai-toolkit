@@ -1,7 +1,7 @@
-import { anthropic } from '@ai-toolkit/anthropic';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { generateText } from '@ai-toolkit/ai';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -38,10 +38,7 @@ run(async () => {
 
   const citations = result.content.filter(part => part.type === 'source');
   citations.forEach((citation, i) => {
-    if (
-      citation.sourceType === 'document' &&
-      citation.providerMetadata?.anthropic
-    ) {
+    if (citation.sourceType === 'document' && citation.providerMetadata?.anthropic) {
       const meta = citation.providerMetadata.anthropic;
       console.log(
         `\n[${i + 1}] "${meta.citedText}" (Pages: ${meta.startPageNumber}-${meta.endPageNumber})`,

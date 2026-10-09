@@ -8,8 +8,6 @@ const symbol = Symbol.for(marker);
  * Authentication failed - invalid API key or OIDC token
  */
 export class GatewayAuthenticationError extends GatewayError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly name = name;
   readonly type = 'authentication_error';
 

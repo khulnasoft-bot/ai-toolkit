@@ -1,6 +1,6 @@
-import { gladia } from '@ai-toolkit/gladia';
+import { readFile } from 'node:fs/promises';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
-import { readFile } from 'fs/promises';
+import { gladia } from '@ai-toolkit/gladia';
 import { run } from '../lib/run';
 
 run(async () => {

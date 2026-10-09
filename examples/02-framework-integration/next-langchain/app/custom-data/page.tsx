@@ -1,9 +1,9 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import { ChatContainer } from '../../components/chat-container';
-import { CustomDataMessage } from '../types';
+import type { CustomDataMessage } from '../types';
 
 const transport = new DefaultChatTransport({
   api: '/api/custom-data',
@@ -15,33 +15,28 @@ export default function CustomDataPage() {
   });
 
   return (
-    <>
-      <ChatContainer
-        title="Custom Data Parts Demo"
-        description={
-          <>
-            Demonstrates <strong>typed custom streaming events</strong> with
-            LangGraph. Tools emit progress updates using{' '}
-            <code>
-              config.writer(&#123; type: &apos;progress&apos;, ... &#125;)
-            </code>
-            , which the adapter converts to typed data parts like{' '}
-            <code>data-progress</code>. Watch the live panel on the right for
-            real-time events!
-          </>
-        }
-        messages={messages}
-        onSend={text => sendMessage({ text })}
-        status={status}
-        error={error}
-        placeholder="Try: 'Analyze sales data for trends' or 'Process report.pdf file'"
-        suggestions={[
-          'Analyze sales data for trends',
-          'Run anomaly analysis on customer data',
-          'Process quarterly-report.csv and validate it',
-          'Analyze transactions for correlations',
-        ]}
-      />
-    </>
+    <ChatContainer
+      title="Custom Data Parts Demo"
+      description={
+        <>
+          Demonstrates <strong>typed custom streaming events</strong> with LangGraph. Tools emit
+          progress updates using{' '}
+          <code>config.writer(&#123; type: &apos;progress&apos;, ... &#125;)</code>, which the
+          adapter converts to typed data parts like <code>data-progress</code>. Watch the live panel
+          on the right for real-time events!
+        </>
+      }
+      messages={messages}
+      onSend={text => sendMessage({ text })}
+      status={status}
+      error={error}
+      placeholder="Try: 'Analyze sales data for trends' or 'Process report.pdf file'"
+      suggestions={[
+        'Analyze sales data for trends',
+        'Run anomaly analysis on customer data',
+        'Process quarterly-report.csv and validate it',
+        'Analyze transactions for correlations',
+      ]}
+    />
   );
 }

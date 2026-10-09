@@ -1,6 +1,7 @@
 /* eslint-disable turbo/no-undeclared-env-vars */
+
+import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { createAnthropic } from './anthropic-provider';
 
 vi.mock('./version', () => ({
@@ -28,8 +29,7 @@ const createSuccessfulResponse = () =>
     },
   );
 
-const createFetchMock = () =>
-  vi.fn().mockResolvedValue(createSuccessfulResponse());
+const createFetchMock = () => vi.fn().mockResolvedValue(createSuccessfulResponse());
 
 describe('createAnthropic', () => {
   describe('baseURL configuration', () => {
@@ -139,9 +139,7 @@ describe('anthropic provider - supportedUrls', () => {
     const supportedUrls = await model.supportedUrls;
 
     expect(supportedUrls['image/*']).toBeDefined();
-    expect(
-      supportedUrls['image/*']![0]!.test('https://example.com/image.png'),
-    ).toBe(true);
+    expect(supportedUrls['image/*']?.[0]?.test('https://example.com/image.png')).toBe(true);
   });
 
   it('should support application/pdf URLs', async () => {
@@ -153,10 +151,8 @@ describe('anthropic provider - supportedUrls', () => {
     const supportedUrls = await model.supportedUrls;
 
     expect(supportedUrls['application/pdf']).toBeDefined();
-    expect(
-      supportedUrls['application/pdf']![0]!.test(
-        'https://arxiv.org/pdf/2401.00001',
-      ),
-    ).toBe(true);
+    expect(supportedUrls['application/pdf']?.[0]?.test('https://arxiv.org/pdf/2401.00001')).toBe(
+      true,
+    );
   });
 });

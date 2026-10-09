@@ -1,13 +1,12 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createGoogleGenerativeAI } from './google-provider';
-import { GoogleGenerativeAILanguageModel } from './google-generative-ai-language-model';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { GoogleGenerativeAIEmbeddingModel } from './google-generative-ai-embedding-model';
 import { GoogleGenerativeAIImageModel } from './google-generative-ai-image-model';
+import { GoogleGenerativeAILanguageModel } from './google-generative-ai-language-model';
+import { createGoogleGenerativeAI } from './google-provider';
 
 // Mock the imported modules using a partial mock to preserve original exports
 vi.mock('@ai-toolkit/provider-utils', async importOriginal => {
-  const mod =
-    await importOriginal<typeof import('@ai-toolkit/provider-utils')>();
+  const mod = await importOriginal<typeof import('@ai-toolkit/provider-utils')>();
   return {
     ...mod,
     loadApiKey: vi.fn().mockImplementation(({ apiKey }) => apiKey),
@@ -122,10 +121,7 @@ describe('google-provider', () => {
     });
     provider.chat('gemini-pro');
 
-    expect(GoogleGenerativeAILanguageModel).toHaveBeenCalledWith(
-      'gemini-pro',
-      expect.any(Object),
-    );
+    expect(GoogleGenerativeAILanguageModel).toHaveBeenCalledWith('gemini-pro', expect.any(Object));
   });
 
   it('should use custom baseURL when provided', () => {
@@ -205,7 +201,7 @@ describe('google-provider', () => {
 
     expect(supportedUrlsFunction).toBeDefined();
 
-    const supportedUrls = supportedUrlsFunction!() as Record<string, RegExp[]>;
+    const supportedUrls = supportedUrlsFunction?.() as Record<string, RegExp[]>;
     const patterns = supportedUrls['*'];
 
     expect(patterns).toBeDefined();

@@ -1,30 +1,27 @@
-import {
-  LanguageModelV3StreamPart,
-  SharedV3Warning,
-} from '@ai-toolkit/provider';
+import type { LanguageModelV3StreamPart, SharedV3Warning } from '@ai-toolkit/provider';
 import {
   getErrorMessage,
-  IdGenerator,
-  InferToolSetContext,
-  ModelMessage,
-  SystemModelMessage,
+  type IdGenerator,
+  type InferToolSetContext,
+  type ModelMessage,
+  type SystemModelMessage,
 } from '@ai-toolkit/provider-utils';
-import { Tracer } from '@opentelemetry/api';
+import type { Tracer } from '@opentelemetry/api';
 import { ToolCallNotFoundForApprovalError } from '../error/tool-call-not-found-for-approval-error';
-import { TelemetrySettings } from '../telemetry/telemetry-settings';
-import { FinishReason, LanguageModelUsage, ProviderMetadata } from '../types';
-import { Source } from '../types/language-model';
+import type { TelemetrySettings } from '../telemetry/telemetry-settings';
+import type { FinishReason, LanguageModelUsage, ProviderMetadata } from '../types';
+import type { Source } from '../types/language-model';
 import { asLanguageModelUsage } from '../types/usage';
 import { executeToolCall } from './execute-tool-call';
-import { DefaultGeneratedFileWithType, GeneratedFile } from './generated-file';
+import { DefaultGeneratedFileWithType, type GeneratedFile } from './generated-file';
 import { isApprovalNeeded } from './is-approval-needed';
 import { parseToolCall } from './parse-tool-call';
-import { ToolApprovalRequestOutput } from './tool-approval-request-output';
-import { TypedToolCall } from './tool-call';
-import { ToolCallRepairFunction } from './tool-call-repair-function';
-import { TypedToolError } from './tool-error';
-import { TypedToolResult } from './tool-result';
-import { ToolSet } from './tool-set';
+import type { ToolApprovalRequestOutput } from './tool-approval-request-output';
+import type { TypedToolCall } from './tool-call';
+import type { ToolCallRepairFunction } from './tool-call-repair-function';
+import type { TypedToolError } from './tool-error';
+import type { TypedToolResult } from './tool-result';
+import type { ToolSet } from './tool-set';
 
 export type SingleRequestTextStreamPart<TOOLS extends ToolSet> =
   // Text blocks:
@@ -138,9 +135,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
   let toolResultsStreamController: ReadableStreamDefaultController<
     SingleRequestTextStreamPart<TOOLS>
   > | null = null;
-  const toolResultsStream = new ReadableStream<
-    SingleRequestTextStreamPart<TOOLS>
-  >({
+  const toolResultsStream = new ReadableStream<SingleRequestTextStreamPart<TOOLS>>({
     start(controller) {
       toolResultsStreamController = controller;
     },
@@ -156,9 +151,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
   const toolCallsByToolCallId = new Map<string, TypedToolCall<TOOLS>>();
 
   let canClose = false;
-  let finishChunk:
-    | (SingleRequestTextStreamPart<TOOLS> & { type: 'finish' })
-    | undefined = undefined;
+  let finishChunk: (SingleRequestTextStreamPart<TOOLS> & { type: 'finish' }) | undefined;
 
   function attemptClose() {
     // close the tool results controller if no more outstanding tool calls
@@ -167,10 +160,10 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
       // are received to ensure that the frontend receives tool results before a message
       // finish event arrives.
       if (finishChunk != null) {
-        toolResultsStreamController!.enqueue(finishChunk);
+        toolResultsStreamController?.enqueue(finishChunk);
       }
 
-      toolResultsStreamController!.close();
+      toolResultsStreamController?.close();
     }
   }
 
@@ -181,9 +174,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
   >({
     async transform(
       chunk: LanguageModelV3StreamPart,
-      controller: TransformStreamDefaultController<
-        SingleRequestTextStreamPart<TOOLS>
-      >,
+      controller: TransformStreamDefaultController<SingleRequestTextStreamPart<TOOLS>>,
     ) {
       const chunkType = chunk.type;
 
@@ -232,7 +223,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
         case 'tool-approval-request': {
           const toolCall = toolCallsByToolCallId.get(chunk.toolCallId);
           if (toolCall == null) {
-            toolResultsStreamController!.enqueue({
+            toolResultsStreamController?.enqueue({
               type: 'error',
               error: new ToolCallNotFoundForApprovalError({
                 toolCallId: chunk.toolCallId,
@@ -265,7 +256,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
             controller.enqueue(toolCall);
 
             if (toolCall.invalid) {
-              toolResultsStreamController!.enqueue({
+              toolResultsStreamController?.enqueue({
                 type: 'tool-error',
                 toolCallId: toolCall.toolCallId,
                 toolName: toolCall.toolName,
@@ -292,9 +283,8 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
                 messages,
                 abortSignal,
                 context:
-                  toolsContext[
-                    toolCall.toolName as keyof InferToolSetContext<TOOLS>
-                  ] ?? experimental_context,
+                  toolsContext[toolCall.toolName as keyof InferToolSetContext<TOOLS>] ??
+                  experimental_context,
                 experimental_context,
               });
             }
@@ -307,7 +297,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
                 experimental_context,
               })
             ) {
-              toolResultsStreamController!.enqueue({
+              toolResultsStreamController?.enqueue({
                 type: 'tool-approval-request',
                 approvalId: generateId(),
                 toolCall,
@@ -335,16 +325,16 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
                 experimental_context,
                 toolsContext,
                 onPreliminaryToolResult: result => {
-                  toolResultsStreamController!.enqueue(result);
+                  toolResultsStreamController?.enqueue(result);
                 },
               })
                 .then(result => {
                   if (result != null) {
-                    toolResultsStreamController!.enqueue(result.output);
+                    toolResultsStreamController?.enqueue(result.output);
                   }
                 })
                 .catch(error => {
-                  toolResultsStreamController!.enqueue({
+                  toolResultsStreamController?.enqueue({
                     type: 'error',
                     error,
                   });
@@ -355,7 +345,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
                 });
             }
           } catch (error) {
-            toolResultsStreamController!.enqueue({ type: 'error', error });
+            toolResultsStreamController?.enqueue({ type: 'error', error });
           }
 
           break;
@@ -365,7 +355,7 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
           const toolName = chunk.toolName as keyof TOOLS & string;
 
           if (chunk.isError) {
-            toolResultsStreamController!.enqueue({
+            toolResultsStreamController?.enqueue({
               type: 'tool-error',
               toolCallId: chunk.toolCallId,
               toolName,

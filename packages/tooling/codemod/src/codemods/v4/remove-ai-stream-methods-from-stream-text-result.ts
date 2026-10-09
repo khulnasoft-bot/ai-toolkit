@@ -1,12 +1,8 @@
 import { createTransformer } from '../lib/create-transformer';
 
-const REMOVED_METHODS = [
-  'toAIStream',
-  'pipeAIStreamToResponse',
-  'toAIStreamResponse',
-];
+const REMOVED_METHODS = ['toAIStream', 'pipeAIStreamToResponse', 'toAIStreamResponse'];
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Find calls to removed methods
@@ -19,7 +15,7 @@ export default createTransformer((fileInfo, api, options, context) => {
 
       // Find the parent statement to add the comment
       const statement = path.parent.parent;
-      if (statement && statement.node) {
+      if (statement?.node) {
         // Add block comment above the statement
         const comment = j.commentBlock(
           ` WARNING: ${path.node.property.name} has been removed from streamText.\n` +

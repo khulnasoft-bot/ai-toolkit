@@ -1,9 +1,6 @@
-import {
-  EventSourceMessage,
-  EventSourceParserStream,
-} from 'eventsource-parser/stream';
-import { ParseResult, safeParseJSON } from './parse-json';
-import { FlexibleSchema } from './schema';
+import { type EventSourceMessage, EventSourceParserStream } from 'eventsource-parser/stream';
+import { type ParseResult, safeParseJSON } from './parse-json';
+import type { FlexibleSchema } from './schema';
 
 /**
  * Parses a JSON event stream into a stream of parsed JSON objects.

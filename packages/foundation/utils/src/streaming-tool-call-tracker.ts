@@ -84,9 +84,7 @@ export class StreamingToolCallTracker<
   private readonly controller: StreamingToolCallTrackerController;
   private readonly _generateId: () => string;
   private readonly typeValidation: 'none' | 'if-present' | 'required';
-  private readonly extractMetadata?: (
-    delta: DELTA,
-  ) => SharedV4ProviderMetadata | undefined;
+  private readonly extractMetadata?: (delta: DELTA) => SharedV4ProviderMetadata | undefined;
   private readonly buildToolCallProviderMetadata?: (
     metadata: SharedV4ProviderMetadata | undefined,
   ) => SharedV4ProviderMetadata | undefined;
@@ -210,10 +208,7 @@ export class StreamingToolCallTracker<
     return toolCall;
   }
 
-  private processExistingToolCall(
-    toolCall: TrackedToolCall,
-    toolCallDelta: DELTA,
-  ): void {
+  private processExistingToolCall(toolCall: TrackedToolCall, toolCallDelta: DELTA): void {
     if (toolCall.hasFinished) {
       return;
     }
@@ -235,9 +230,7 @@ export class StreamingToolCallTracker<
       id: toolCall.id,
     });
 
-    const providerMetadata = this.buildToolCallProviderMetadata?.(
-      toolCall.metadata,
-    );
+    const providerMetadata = this.buildToolCallProviderMetadata?.(toolCall.metadata);
 
     this.controller.enqueue({
       type: 'tool-call',

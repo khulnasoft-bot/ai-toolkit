@@ -1,10 +1,7 @@
-import {
-  createTestServer,
-  TestResponseController,
-} from '@ai-toolkit/test-server/with-vitest';
+import { createTestServer, TestResponseController } from '@ai-toolkit/test-server/with-vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
 import { MCPClientError } from '../error/mcp-client-error';
 import { SseMCPTransport } from './mcp-sse-transport';
-import { beforeEach, describe, expect, it } from 'vitest';
 import { LATEST_PROTOCOL_VERSION } from './types';
 
 describe('SseMCPTransport', () => {
@@ -41,9 +38,7 @@ describe('SseMCPTransport', () => {
 
     const connectPromise = transport.start();
 
-    controller.write(
-      'event: endpoint\ndata: http://localhost:3000/messages\n\n',
-    );
+    controller.write('event: endpoint\ndata: http://localhost:3000/messages\n\n');
 
     await connectPromise;
     await transport.close();
@@ -81,9 +76,7 @@ describe('SseMCPTransport', () => {
 
     const connectPromise = transport.start();
 
-    controller.write(
-      'event: endpoint\ndata: http://localhost:3000/messages\n\n',
-    );
+    controller.write('event: endpoint\ndata: http://localhost:3000/messages\n\n');
 
     await connectPromise;
 
@@ -94,9 +87,7 @@ describe('SseMCPTransport', () => {
       id: '1',
     };
 
-    controller.write(
-      `event: message\ndata: ${JSON.stringify(testMessage)}\n\n`,
-    );
+    controller.write(`event: message\ndata: ${JSON.stringify(testMessage)}\n\n`);
 
     expect(await messagePromise).toEqual(testMessage);
 
@@ -117,15 +108,11 @@ describe('SseMCPTransport', () => {
 
     const connectPromise = transport.start();
 
-    controller.write(
-      'event: endpoint\ndata: http://localhost:3000/messages\n\n',
-    );
+    controller.write('event: endpoint\ndata: http://localhost:3000/messages\n\n');
     await connectPromise;
 
     const invalidMessage = { foo: 'bar' };
-    controller.write(
-      `event: message\ndata: ${JSON.stringify(invalidMessage)}\n\n`,
-    );
+    controller.write(`event: message\ndata: ${JSON.stringify(invalidMessage)}\n\n`);
 
     const error = await errorPromise;
     expect(error).toBeInstanceOf(MCPClientError);
@@ -143,9 +130,7 @@ describe('SseMCPTransport', () => {
     };
 
     const connectPromise = transport.start();
-    controller.write(
-      'event: endpoint\ndata: http://localhost:3000/messages\n\n',
-    );
+    controller.write('event: endpoint\ndata: http://localhost:3000/messages\n\n');
     await connectPromise;
 
     const message = {
@@ -184,9 +169,7 @@ describe('SseMCPTransport', () => {
     });
 
     const connectPromise = transport.start();
-    controller.write(
-      'event: endpoint\ndata: http://localhost:3000/messages\n\n',
-    );
+    controller.write('event: endpoint\ndata: http://localhost:3000/messages\n\n');
     await connectPromise;
 
     const message = {
@@ -201,7 +184,7 @@ describe('SseMCPTransport', () => {
     const error = await errorPromise;
     expect(error).toBeInstanceOf(MCPClientError);
     expect((error as Error).message).toContain('Error: POSTing to endpoint');
-    expect(transport['connected']).toBe(true);
+    expect(transport.connected).toBe(true);
 
     await transport.close();
   });
@@ -251,9 +234,7 @@ describe('SseMCPTransport', () => {
 
     const connectPromise = transport.start();
 
-    controller.write(
-      'event: endpoint\ndata: http://localhost:3000/messages\n\n',
-    );
+    controller.write('event: endpoint\ndata: http://localhost:3000/messages\n\n');
 
     await connectPromise;
 

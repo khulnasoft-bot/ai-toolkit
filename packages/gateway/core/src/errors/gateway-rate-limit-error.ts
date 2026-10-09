@@ -8,8 +8,6 @@ const symbol = Symbol.for(marker);
  * Rate limit exceeded.
  */
 export class GatewayRateLimitError extends GatewayError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly name = name;
   readonly type = 'rate_limit_exceeded';
 

@@ -1,7 +1,7 @@
 // @ts-nocheck
 import { createMistral } from '@ai-toolkit/mistral';
 
-const mistral = createMistral({
+const _mistral = createMistral({
   apiKey: 'key',
   baseURL: 'url',
   headers: { custom: 'header' },

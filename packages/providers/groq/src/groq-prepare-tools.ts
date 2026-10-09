@@ -1,13 +1,13 @@
 import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 import {
   getSupportedModelsString,
   isBrowserSearchSupportedModel,
 } from './groq-browser-search-models';
-import { GroqChatModelId } from './groq-chat-options';
+import type { GroqChatModelId } from './groq-chat-options';
 
 export function prepareTools({
   tools,

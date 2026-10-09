@@ -1,6 +1,6 @@
-import { BedrockReasoningMetadata } from './bedrock-chat-language-model';
+import { describe, expect, it } from 'vitest';
+import type { BedrockReasoningMetadata } from './bedrock-chat-language-model';
 import { convertToBedrockChatMessages } from './convert-to-bedrock-chat-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('system messages', () => {
   it('should combine multiple leading system messages into a single system message', async () => {
@@ -979,8 +979,7 @@ describe('additional file format tests', () => {
           {
             type: 'file',
             data: 'base64data',
-            mediaType:
-              'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            mediaType: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           },
         ],
       },
@@ -1017,8 +1016,7 @@ describe('additional file format tests', () => {
           {
             type: 'file',
             data: 'base64data',
-            mediaType:
-              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            mediaType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
           },
         ],
       },

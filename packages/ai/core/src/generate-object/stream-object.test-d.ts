@@ -1,10 +1,9 @@
-import { JSONValue } from '@ai-toolkit/provider';
-import { expectTypeOf } from 'vitest';
+import type { JSONValue } from '@ai-toolkit/provider';
+import { describe, expectTypeOf, it } from 'vitest';
 import { z } from 'zod/v4';
-import { AsyncIterableStream } from '../util/async-iterable-stream';
-import { FinishReason } from '../types';
+import type { FinishReason } from '../types';
+import type { AsyncIterableStream } from '../util/async-iterable-stream';
 import { streamObject } from './stream-object';
-import { describe, it } from 'vitest';
 
 describe('streamObject', () => {
   it('should have finishReason property with correct type', () => {
@@ -14,9 +13,7 @@ describe('streamObject', () => {
       prompt: 'test',
     });
 
-    expectTypeOf<typeof result.finishReason>().toEqualTypeOf<
-      Promise<FinishReason>
-    >();
+    expectTypeOf<typeof result.finishReason>().toEqualTypeOf<Promise<FinishReason>>();
   });
 
   it('should support enum types', async () => {
@@ -27,9 +24,7 @@ describe('streamObject', () => {
       prompt: 'test',
     });
 
-    expectTypeOf<typeof result.object>().toEqualTypeOf<
-      Promise<'a' | 'b' | 'c'>
-    >;
+    expectTypeOf<typeof result.object>().toEqualTypeOf<Promise<'a' | 'b' | 'c'>>;
 
     for await (const text of result.partialObjectStream) {
       expectTypeOf(text).toEqualTypeOf<string>();
@@ -43,9 +38,7 @@ describe('streamObject', () => {
       prompt: 'test',
     });
 
-    expectTypeOf<typeof result.object>().toEqualTypeOf<
-      Promise<{ number: number }>
-    >();
+    expectTypeOf<typeof result.object>().toEqualTypeOf<Promise<{ number: number }>>();
   });
 
   it('should support no-schema output mode', async () => {

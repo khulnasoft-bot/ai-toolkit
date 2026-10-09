@@ -1,13 +1,13 @@
-import { StreamTextTransform, UIMessageStreamOptions } from '../generate-text';
-import { Output } from '../generate-text/output';
-import { ToolSet } from '../generate-text/tool-set';
-import { TimeoutConfiguration } from '../prompt/call-settings';
-import { InferUIMessageChunk } from '../ui-message-stream';
+import type { StreamTextTransform, UIMessageStreamOptions } from '../generate-text';
+import type { Output } from '../generate-text/output';
+import type { ToolSet } from '../generate-text/tool-set';
+import type { TimeoutConfiguration } from '../prompt/call-settings';
 import { convertToModelMessages } from '../ui/convert-to-model-messages';
-import { InferUITools, UIMessage } from '../ui/ui-messages';
+import type { InferUITools, UIMessage } from '../ui/ui-messages';
 import { validateUIMessages } from '../ui/validate-ui-messages';
-import { AsyncIterableStream } from '../util/async-iterable-stream';
-import { Agent } from './agent';
+import type { InferUIMessageChunk } from '../ui-message-stream';
+import type { AsyncIterableStream } from '../util/async-iterable-stream';
+import type { Agent } from './agent';
 
 /**
  * Runs the agent and stream the output as a UI message stream.
@@ -40,15 +40,9 @@ export async function createAgentUIStream<
   abortSignal?: AbortSignal;
   timeout?: TimeoutConfiguration;
   options?: CALL_OPTIONS;
-  experimental_transform?:
-    | StreamTextTransform<TOOLS>
-    | Array<StreamTextTransform<TOOLS>>;
-} & UIMessageStreamOptions<
-  UIMessage<MESSAGE_METADATA, never, InferUITools<TOOLS>>
->): Promise<
-  AsyncIterableStream<
-    InferUIMessageChunk<UIMessage<MESSAGE_METADATA, never, InferUITools<TOOLS>>>
-  >
+  experimental_transform?: StreamTextTransform<TOOLS> | Array<StreamTextTransform<TOOLS>>;
+} & UIMessageStreamOptions<UIMessage<MESSAGE_METADATA, never, InferUITools<TOOLS>>>): Promise<
+  AsyncIterableStream<InferUIMessageChunk<UIMessage<MESSAGE_METADATA, never, InferUITools<TOOLS>>>>
 > {
   const validatedMessages = await validateUIMessages<
     UIMessage<MESSAGE_METADATA, never, InferUITools<TOOLS>>

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v4';
-import { executeTool } from './execute-tool';
 import { isExecutableTool } from './executable-tool';
+import { executeTool } from './execute-tool';
 import { tool } from './tool';
 
 describe('isExecutableTool', () => {

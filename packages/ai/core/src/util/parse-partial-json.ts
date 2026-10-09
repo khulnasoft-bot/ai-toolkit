@@ -1,14 +1,10 @@
-import { JSONValue } from '@ai-toolkit/provider';
+import type { JSONValue } from '@ai-toolkit/provider';
 import { safeParseJSON } from '@ai-toolkit/provider-utils';
 import { fixJson } from './fix-json';
 
 export async function parsePartialJson(jsonText: string | undefined): Promise<{
   value: JSONValue | undefined;
-  state:
-    | 'undefined-input'
-    | 'successful-parse'
-    | 'repaired-parse'
-    | 'failed-parse';
+  state: 'undefined-input' | 'successful-parse' | 'repaired-parse' | 'failed-parse';
 }> {
   if (jsonText === undefined) {
     return { value: undefined, state: 'undefined-input' };

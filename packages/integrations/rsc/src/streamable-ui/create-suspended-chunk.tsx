@@ -1,4 +1,5 @@
-import React, { Suspense } from 'react';
+import type React from 'react';
+import { Suspense } from 'react';
 import { createResolvablePromise } from '../util/create-resolvable-promise';
 
 // Recursive type for the chunk.
@@ -18,13 +19,7 @@ type ChunkType =
 // `R` for `Row`, `c` for `current`, `n` for `next`.
 // Note: Array construction is needed to access the name R.
 const R = [
-  (async ({
-    c: current,
-    n: next,
-  }: {
-    c: React.ReactNode;
-    n: Promise<ChunkType>;
-  }) => {
+  (async ({ c: current, n: next }: { c: React.ReactNode; n: Promise<ChunkType> }) => {
     const chunk = await next;
 
     if (chunk.done) {

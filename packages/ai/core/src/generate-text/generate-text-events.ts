@@ -211,40 +211,25 @@ export type GenerateTextEndEvent<
   readonly toolCalls: StepResult<TOOLS, RUNTIME_CONTEXT>['toolCalls'];
 
   /** Static tool calls that were made in all steps. */
-  readonly staticToolCalls: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['staticToolCalls'];
+  readonly staticToolCalls: StepResult<TOOLS, RUNTIME_CONTEXT>['staticToolCalls'];
 
   /** Dynamic tool calls that were made in all steps. */
-  readonly dynamicToolCalls: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['dynamicToolCalls'];
+  readonly dynamicToolCalls: StepResult<TOOLS, RUNTIME_CONTEXT>['dynamicToolCalls'];
 
   /** Tool results that were generated in all steps. */
   readonly toolResults: StepResult<TOOLS, RUNTIME_CONTEXT>['toolResults'];
 
   /** Static tool results that were generated in all steps. */
-  readonly staticToolResults: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['staticToolResults'];
+  readonly staticToolResults: StepResult<TOOLS, RUNTIME_CONTEXT>['staticToolResults'];
 
   /** Dynamic tool results that were generated in all steps. */
-  readonly dynamicToolResults: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['dynamicToolResults'];
+  readonly dynamicToolResults: StepResult<TOOLS, RUNTIME_CONTEXT>['dynamicToolResults'];
 
   /** The unified reason why the generation finished. Taken from the final step. */
   readonly finishReason: StepResult<TOOLS, RUNTIME_CONTEXT>['finishReason'];
 
   /** The raw reason why the generation finished. Taken from the final step. */
-  readonly rawFinishReason: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['rawFinishReason'];
+  readonly rawFinishReason: StepResult<TOOLS, RUNTIME_CONTEXT>['rawFinishReason'];
 
   /** Aggregated token usage across all steps. */
   readonly usage: LanguageModelUsage;
@@ -278,10 +263,7 @@ export type GenerateTextEndEvent<
    *
    * @deprecated Use `finalStep.providerMetadata` instead.
    */
-  readonly providerMetadata: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['providerMetadata'];
+  readonly providerMetadata: StepResult<TOOLS, RUNTIME_CONTEXT>['providerMetadata'];
 
   /** The response messages that were generated during the call. */
   readonly responseMessages: ResponseMessage[];

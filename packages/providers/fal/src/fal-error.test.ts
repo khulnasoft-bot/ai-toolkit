@@ -1,6 +1,6 @@
 import { safeParseJSON } from '@ai-toolkit/provider-utils';
+import { describe, expect, it } from 'vitest';
 import { falErrorDataSchema } from './fal-error';
-import { describe, it, expect } from 'vitest';
 
 describe('falErrorDataSchema', () => {
   it('should parse Fal resource exhausted error', async () => {

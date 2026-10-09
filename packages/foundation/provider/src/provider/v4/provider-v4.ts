@@ -3,9 +3,9 @@ import type { FilesV4 } from '../../files/v4/files-v4';
 import type { ImageModelV4 } from '../../image-model/v4/image-model-v4';
 import type { LanguageModelV4 } from '../../language-model/v4/language-model-v4';
 import type { RerankingModelV4 } from '../../reranking-model/v4/reranking-model-v4';
+import type { SkillsV4 } from '../../skills/v4/skills-v4';
 import type { SpeechModelV4 } from '../../speech-model/v4/speech-model-v4';
 import type { TranscriptionModelV4 } from '../../transcription-model/v4/transcription-model-v4';
-import type { SkillsV4 } from '../../skills/v4/skills-v4';
 
 /**
  * Provider for language, text embedding, and image generation models.

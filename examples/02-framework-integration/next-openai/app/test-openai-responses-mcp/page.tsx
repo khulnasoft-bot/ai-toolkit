@@ -1,11 +1,11 @@
 'use client';
 
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 import DynamicToolView from '@/components/tool/dynamic-tool-view';
 import OpenAIMCPView from '@/components/tool/openai-mcp-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { OpenAIResponsesMCPMessage } from '../api/chat-openai-responses-mcp/route';
+import type { OpenAIResponsesMCPMessage } from '../api/chat-openai-responses-mcp/route';
 
 export default function TestOpenAIResponsesMCP() {
   const { status, sendMessage, messages } = useChat<OpenAIResponsesMCPMessage>({
@@ -27,29 +27,31 @@ export default function TestOpenAIResponsesMCP() {
             switch (part.type) {
               case 'text':
                 return (
-                  <div key={index} className="mb-2">
+                  <div key={`${part.type}-${index}`} className="mb-2">
                     {part.text}
                   </div>
                 );
 
               case 'dynamic-tool':
                 return (
-                  <div key={index} className="mb-4">
+                  <div key={`${part.type}-${index}`} className="mb-4">
                     <DynamicToolView invocation={part} />
                   </div>
                 );
 
               case 'tool-mcp':
                 return (
-                  <div key={index} className="mb-4">
+                  <div key={`${part.type}-${index}`} className="mb-4">
                     <OpenAIMCPView invocation={part} />
                   </div>
                 );
 
               case 'step-start':
                 return index > 0 ? (
-                  <div key={index} className="my-2 border-t border-gray-300" />
+                  <div key={`${part.type}-${index}`} className="my-2 border-t border-gray-300" />
                 ) : null;
+              default:
+                return null;
             }
           })}
         </div>

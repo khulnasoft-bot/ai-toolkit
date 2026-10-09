@@ -115,9 +115,7 @@ export interface StreamTranslationResult {
   /**
    * Usage information for the translation call, if reported by the provider.
    */
-  readonly usage: PromiseLike<
-    Experimental_SpeechTranslationModelV4Usage | undefined
-  >;
+  readonly usage: PromiseLike<Experimental_SpeechTranslationModelV4Usage | undefined>;
 
   /**
    * Warnings for the call, e.g. unsupported settings.

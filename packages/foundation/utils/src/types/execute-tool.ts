@@ -13,14 +13,11 @@ export async function* executeTool<INPUT = any, OUTPUT = any, CONTEXT = any>({
   execute?: ToolExecuteFunction<INPUT, OUTPUT, CONTEXT>;
   input: INPUT;
   options: ToolExecutionOptions & { context?: CONTEXT };
-}): AsyncGenerator<
-  { type: 'preliminary'; output: OUTPUT } | { type: 'final'; output: OUTPUT }
-> {
+}): AsyncGenerator<{ type: 'preliminary'; output: OUTPUT } | { type: 'final'; output: OUTPUT }> {
   // Fall back to the legacy `experimental_context` field so callers that
   // have not migrated to `context` yet keep working at runtime.
   const context =
-    options.context ??
-    (options as { experimental_context?: CONTEXT }).experimental_context;
+    options.context ?? (options as { experimental_context?: CONTEXT }).experimental_context;
 
   const execute = executeArg ?? tool?.execute;
 

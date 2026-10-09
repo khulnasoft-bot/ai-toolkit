@@ -1,6 +1,6 @@
+import { describe, expect, it } from 'vitest';
 import { InvalidArgumentError } from '../error/invalid-argument-error';
 import { prepareCallSettings } from './prepare-call-settings';
-import { describe, it, expect } from 'vitest';
 
 describe('prepareCallSettings', () => {
   describe('valid inputs', () => {
@@ -59,9 +59,7 @@ describe('prepareCallSettings', () => {
 
     describe('temperature', () => {
       it('should throw InvalidArgumentError if temperature is not a number', () => {
-        expect(() =>
-          prepareCallSettings({ temperature: 'invalid' as any }),
-        ).toThrow(
+        expect(() => prepareCallSettings({ temperature: 'invalid' as any })).toThrow(
           new InvalidArgumentError({
             parameter: 'temperature',
             value: 'invalid',
@@ -97,9 +95,7 @@ describe('prepareCallSettings', () => {
 
     describe('presencePenalty', () => {
       it('should throw InvalidArgumentError if presencePenalty is not a number', () => {
-        expect(() =>
-          prepareCallSettings({ presencePenalty: 'invalid' as any }),
-        ).toThrow(
+        expect(() => prepareCallSettings({ presencePenalty: 'invalid' as any })).toThrow(
           new InvalidArgumentError({
             parameter: 'presencePenalty',
             value: 'invalid',
@@ -111,9 +107,7 @@ describe('prepareCallSettings', () => {
 
     describe('frequencyPenalty', () => {
       it('should throw InvalidArgumentError if frequencyPenalty is not a number', () => {
-        expect(() =>
-          prepareCallSettings({ frequencyPenalty: 'invalid' as any }),
-        ).toThrow(
+        expect(() => prepareCallSettings({ frequencyPenalty: 'invalid' as any })).toThrow(
           new InvalidArgumentError({
             parameter: 'frequencyPenalty',
             value: 'invalid',

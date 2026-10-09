@@ -6,17 +6,13 @@ export type ReplayEntry = {
 };
 
 export interface ReplayEngine {
-  record(
-    executionId: string,
-    traces: readonly string[],
-    logs: readonly string[],
-  ): Promise<void>;
+  record(executionId: string, traces: readonly string[], logs: readonly string[]): Promise<void>;
   replay(executionId: string): Promise<ReplayEntry>;
   isDeterministic(executionId: string): Promise<boolean>;
 }
 
 export function createReplayEngine(): ReplayEngine {
-  const recordings = new Map<string, ReplayEntry>();
+  const _recordings = new Map<string, ReplayEntry>();
 
   return {
     record: async () => {},

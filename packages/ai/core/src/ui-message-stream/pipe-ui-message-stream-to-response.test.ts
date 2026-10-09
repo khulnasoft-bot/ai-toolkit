@@ -1,7 +1,7 @@
 import { convertArrayToReadableStream } from '@ai-toolkit/provider-utils/test';
+import { describe, expect, it } from 'vitest';
 import { createMockServerResponse } from '../test/mock-server-response';
 import { pipeUIMessageStreamToResponse } from './pipe-ui-message-stream-to-response';
-import { describe, it, expect } from 'vitest';
 
 describe('pipeUIMessageStreamToResponse', () => {
   it('should write to ServerResponse with correct headers and encoded stream', async () => {
@@ -66,9 +66,7 @@ describe('pipeUIMessageStreamToResponse', () => {
     pipeUIMessageStreamToResponse({
       response: mockResponse,
       status: 200,
-      stream: convertArrayToReadableStream([
-        { type: 'error', errorText: 'Custom error message' },
-      ]),
+      stream: convertArrayToReadableStream([{ type: 'error', errorText: 'Custom error message' }]),
     });
 
     // Wait for the stream to finish writing

@@ -8,10 +8,10 @@ const chat = new Chat({
   id: generateId(),
   generateId: mockId(),
 });
-const files = ref<FileList>();
-const fileInputRef = ref<HTMLInputElement | null>(null);
-const isLoading = computed(() => chat.status !== 'ready');
-const input = ref('');
+const _files = ref<FileList>();
+const _fileInputRef = ref<HTMLInputElement | null>(null);
+const _isLoading = computed(() => chat.status !== 'ready');
+const _input = ref('');
 </script>
 
 <template>

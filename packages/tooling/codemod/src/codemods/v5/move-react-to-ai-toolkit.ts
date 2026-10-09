@@ -4,7 +4,7 @@ import { createTransformer } from '../lib/create-transformer';
  * Migrates from ai/react to @ai-toolkit/react:
  * - import { useChat } from 'ai/react' → import { useChat } from '@ai-toolkit/react'
  */
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Transform imports from 'ai/react' to '@ai-toolkit/react'

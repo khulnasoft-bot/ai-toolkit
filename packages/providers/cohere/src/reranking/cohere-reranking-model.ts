@@ -1,18 +1,15 @@
-import { RerankingModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { RerankingModelV3, SharedV3Warning } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
-  FetchFunction,
+  type FetchFunction,
   parseProviderOptions,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { cohereFailedResponseHandler } from '../cohere-error';
+import { type CohereRerankingInput, cohereRerankingResponseSchema } from './cohere-reranking-api';
 import {
-  CohereRerankingInput,
-  cohereRerankingResponseSchema,
-} from './cohere-reranking-api';
-import {
-  CohereRerankingModelId,
+  type CohereRerankingModelId,
   cohereRerankingOptionsSchema,
 } from './cohere-reranking-options';
 
@@ -84,9 +81,7 @@ export class CohereRerankingModel implements RerankingModelV3 {
         priority: rerankingOptions?.priority,
       } satisfies CohereRerankingInput,
       failedResponseHandler: cohereFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        cohereRerankingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(cohereRerankingResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });

@@ -1,12 +1,11 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, tool } from '@ai-toolkit/ai';
-import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
-
+import { openai } from '@ai-toolkit/openai';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
-import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { z } from 'zod';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 const sdk = new NodeSDK({
   traceExporter: new ConsoleSpanExporter(),
@@ -25,8 +24,7 @@ run(async () => {
         inputSchema: z.object({ city: z.string() }),
       }),
     },
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
+    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
     experimental_telemetry: {
       isEnabled: true,
       functionId: 'my-awesome-function',

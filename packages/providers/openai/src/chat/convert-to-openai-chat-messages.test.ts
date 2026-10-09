@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertToOpenAIChatMessages } from './convert-to-openai-chat-messages';
-import { describe, it, expect } from 'vitest';
 
 describe('system messages', () => {
   it('should forward system messages', async () => {
@@ -7,9 +7,7 @@ describe('system messages', () => {
       prompt: [{ role: 'system', content: 'You are a helpful assistant.' }],
     });
 
-    expect(result.messages).toEqual([
-      { role: 'system', content: 'You are a helpful assistant.' },
-    ]);
+    expect(result.messages).toEqual([{ role: 'system', content: 'You are a helpful assistant.' }]);
   });
 
   it('should convert system messages to developer messages when requested', async () => {

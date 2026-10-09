@@ -1,6 +1,6 @@
 // @ts-nocheck
-import { generateObject, LanguageModelResponseMetadata } from 'ai';
-import { LanguageModelResponseMetadataWithHeaders as MetadataWithHeaders } from 'other-pkg';
+import { generateObject, type LanguageModelResponseMetadata } from 'ai';
+import type { LanguageModelResponseMetadataWithHeaders as MetadataWithHeaders } from 'other-pkg';
 
 // Direct type usage
 interface Config {
@@ -8,7 +8,7 @@ interface Config {
 }
 
 // Usage with generateObject result
-async function processResult() {
+async function _processResult() {
   const result = await generateObject({
     model,
     schema: schema,
@@ -35,7 +35,7 @@ async function processResult() {
 type OtherMetadata = MetadataWithHeaders;
 
 // Should rename
-const data: LanguageModelResponseMetadata = {
+const _data: LanguageModelResponseMetadata = {
   id: 'test',
   timestamp: new Date(),
   headers: {},

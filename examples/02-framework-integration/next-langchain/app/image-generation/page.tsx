@@ -1,9 +1,9 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
 import { ChatContainer } from '../../components/chat-container';
-import { type CustomDataMessage } from '../types';
+import type { CustomDataMessage } from '../types';
 
 const transport = new DefaultChatTransport({
   api: '/api/image-generation',
@@ -20,8 +20,8 @@ export default function ImageGenerationPage() {
       description={
         <>
           Uses <strong>ChatOpenAI</strong> with the Responses API and{' '}
-          <code>tools.imageGeneration()</code> to generate images as multimodal
-          output. Ask the AI to create, draw, or visualize anything!
+          <code>tools.imageGeneration()</code> to generate images as multimodal output. Ask the AI
+          to create, draw, or visualize anything!
         </>
       }
       messages={messages}

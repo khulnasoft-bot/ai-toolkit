@@ -1,23 +1,19 @@
-import { ReasoningPart } from '@ai-toolkit/provider-utils';
-import {
+import type { ReasoningPart } from '@ai-toolkit/provider-utils';
+import type {
   CallWarning,
   FinishReason,
   LanguageModelRequestMetadata,
   LanguageModelResponseMetadata,
   ProviderMetadata,
 } from '../types';
-import { Source } from '../types/language-model';
-import { LanguageModelUsage } from '../types/usage';
-import { ContentPart } from './content-part';
-import { GeneratedFile } from './generated-file';
-import { ResponseMessage } from './response-message';
-import { DynamicToolCall, StaticToolCall, TypedToolCall } from './tool-call';
-import {
-  DynamicToolResult,
-  StaticToolResult,
-  TypedToolResult,
-} from './tool-result';
-import { ToolSet } from './tool-set';
+import type { Source } from '../types/language-model';
+import type { LanguageModelUsage } from '../types/usage';
+import type { ContentPart } from './content-part';
+import type { GeneratedFile } from './generated-file';
+import type { ResponseMessage } from './response-message';
+import type { DynamicToolCall, StaticToolCall, TypedToolCall } from './tool-call';
+import type { DynamicToolResult, StaticToolResult, TypedToolResult } from './tool-result';
+import type { ToolSet } from './tool-set';
 
 /**
  * The result of a single step in the generation process.
@@ -133,9 +129,7 @@ results that can be fully encapsulated in the provider.
   readonly providerMetadata: ProviderMetadata | undefined;
 };
 
-export class DefaultStepResult<TOOLS extends ToolSet>
-  implements StepResult<TOOLS>
-{
+export class DefaultStepResult<TOOLS extends ToolSet> implements StepResult<TOOLS> {
   readonly content: StepResult<TOOLS>['content'];
   readonly finishReason: StepResult<TOOLS>['finishReason'];
   readonly rawFinishReason: StepResult<TOOLS>['rawFinishReason'];
@@ -186,15 +180,11 @@ export class DefaultStepResult<TOOLS extends ToolSet>
   }
 
   get reasoningText() {
-    return this.reasoning.length === 0
-      ? undefined
-      : this.reasoning.map(part => part.text).join('');
+    return this.reasoning.length === 0 ? undefined : this.reasoning.map(part => part.text).join('');
   }
 
   get files() {
-    return this.content
-      .filter(part => part.type === 'file')
-      .map(part => part.file);
+    return this.content.filter(part => part.type === 'file').map(part => part.file);
   }
 
   get sources() {
@@ -207,8 +197,7 @@ export class DefaultStepResult<TOOLS extends ToolSet>
 
   get staticToolCalls() {
     return this.toolCalls.filter(
-      (toolCall): toolCall is StaticToolCall<TOOLS> =>
-        toolCall.dynamic !== true,
+      (toolCall): toolCall is StaticToolCall<TOOLS> => toolCall.dynamic !== true,
     );
   }
 
@@ -224,15 +213,13 @@ export class DefaultStepResult<TOOLS extends ToolSet>
 
   get staticToolResults() {
     return this.toolResults.filter(
-      (toolResult): toolResult is StaticToolResult<TOOLS> =>
-        toolResult.dynamic !== true,
+      (toolResult): toolResult is StaticToolResult<TOOLS> => toolResult.dynamic !== true,
     );
   }
 
   get dynamicToolResults() {
     return this.toolResults.filter(
-      (toolResult): toolResult is DynamicToolResult =>
-        toolResult.dynamic === true,
+      (toolResult): toolResult is DynamicToolResult => toolResult.dynamic === true,
     );
   }
 }

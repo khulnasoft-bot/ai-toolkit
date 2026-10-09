@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { useChat, DefaultChatTransport } from '@ai-toolkit/react';
+import { DefaultChatTransport, useChat } from '@ai-toolkit/react';
 
 export function ChatWithApiString() {
   const { messages, sendMessage } = useChat({

@@ -1,5 +1,5 @@
-import { JSONSchema7, LanguageModelV3Prompt } from '@ai-toolkit/provider';
-import { expect, it, describe } from 'vitest';
+import type { JSONSchema7, LanguageModelV3Prompt } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import {
   injectJsonInstruction,
   injectJsonInstructionIntoMessages,
@@ -216,9 +216,7 @@ describe('injectJsonInstructionIntoMessages', () => {
       schema: basicSchema,
     });
 
-    expect(originalMessages).toEqual([
-      { role: 'system', content: 'Generate a person' },
-    ]);
+    expect(originalMessages).toEqual([{ role: 'system', content: 'Generate a person' }]);
   });
 
   it('should handle empty messages array', () => {

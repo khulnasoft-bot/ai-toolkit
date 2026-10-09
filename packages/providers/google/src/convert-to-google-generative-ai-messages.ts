@@ -1,13 +1,10 @@
-import {
-  LanguageModelV3Prompt,
-  UnsupportedFunctionalityError,
-} from '@ai-toolkit/provider';
-import {
+import { type LanguageModelV3Prompt, UnsupportedFunctionalityError } from '@ai-toolkit/provider';
+import { convertToBase64 } from '@ai-toolkit/provider-utils';
+import type {
   GoogleGenerativeAIContent,
   GoogleGenerativeAIContentPart,
   GoogleGenerativeAIPrompt,
 } from './google-generative-ai-prompt';
-import { convertToBase64 } from '@ai-toolkit/provider-utils';
 
 export function convertToGoogleGenerativeAIMessages(
   prompt: LanguageModelV3Prompt,
@@ -47,8 +44,7 @@ export function convertToGoogleGenerativeAIMessages(
 
             case 'file': {
               // default to image/jpeg for unknown image/* types
-              const mediaType =
-                part.mediaType === 'image/*' ? 'image/jpeg' : part.mediaType;
+              const mediaType = part.mediaType === 'image/*' ? 'image/jpeg' : part.mediaType;
 
               parts.push(
                 part.data instanceof URL
@@ -111,8 +107,7 @@ export function convertToGoogleGenerativeAIMessages(
                 case 'file': {
                   if (part.data instanceof URL) {
                     throw new UnsupportedFunctionalityError({
-                      functionality:
-                        'File data URLs in assistant messages are not supported',
+                      functionality: 'File data URLs in assistant messages are not supported',
                     });
                   }
 
@@ -215,11 +210,9 @@ export function convertToGoogleGenerativeAIMessages(
     contents.length > 0 &&
     contents[0].role === 'user'
   ) {
-    const systemText = systemInstructionParts
-      .map(part => part.text)
-      .join('\n\n');
+    const systemText = systemInstructionParts.map(part => part.text).join('\n\n');
 
-    contents[0].parts.unshift({ text: systemText + '\n\n' });
+    contents[0].parts.unshift({ text: `${systemText}\n\n` });
   }
 
   return {

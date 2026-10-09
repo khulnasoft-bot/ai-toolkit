@@ -1,5 +1,5 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { delay } from './delay';
-import { describe, beforeEach, afterEach, expect, it, vi } from 'vitest';
 
 describe('delay', () => {
   beforeEach(() => {
@@ -96,29 +96,17 @@ describe('delay', () => {
 
     it('should clean up event listener when delay completes normally', async () => {
       const controller = new AbortController();
-      const addEventListenerSpy = vi.spyOn(
-        controller.signal,
-        'addEventListener',
-      );
-      const removeEventListenerSpy = vi.spyOn(
-        controller.signal,
-        'removeEventListener',
-      );
+      const addEventListenerSpy = vi.spyOn(controller.signal, 'addEventListener');
+      const removeEventListenerSpy = vi.spyOn(controller.signal, 'removeEventListener');
 
       const delayPromise = delay(1000, { abortSignal: controller.signal });
 
-      expect(addEventListenerSpy).toHaveBeenCalledWith(
-        'abort',
-        expect.any(Function),
-      );
+      expect(addEventListenerSpy).toHaveBeenCalledWith('abort', expect.any(Function));
 
       await vi.advanceTimersByTimeAsync(1000);
       await delayPromise;
 
-      expect(removeEventListenerSpy).toHaveBeenCalledWith(
-        'abort',
-        expect.any(Function),
-      );
+      expect(removeEventListenerSpy).toHaveBeenCalledWith('abort', expect.any(Function));
     });
 
     it('should work without signal option', async () => {

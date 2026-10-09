@@ -1,4 +1,4 @@
-import { TypeValidationError } from '@ai-toolkit/provider';
+import type { TypeValidationError } from '@ai-toolkit/provider';
 import { GatewayError } from './gateway-error';
 
 const name = 'GatewayResponseError';
@@ -9,8 +9,6 @@ const symbol = Symbol.for(marker);
  * Gateway response parsing error
  */
 export class GatewayResponseError extends GatewayError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly name = name;
   readonly type = 'response_error';
   readonly response?: unknown;

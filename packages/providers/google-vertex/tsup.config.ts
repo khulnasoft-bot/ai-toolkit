@@ -8,8 +8,7 @@ export default defineConfig([
     sourcemap: true,
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
     outDir: 'dist',
@@ -21,8 +20,7 @@ export default defineConfig([
     sourcemap: true,
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
     outDir: 'dist/edge',
@@ -34,8 +32,7 @@ export default defineConfig([
     sourcemap: true,
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
     outDir: 'dist/anthropic',
@@ -47,8 +44,7 @@ export default defineConfig([
     sourcemap: true,
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
     outDir: 'dist/anthropic/edge',

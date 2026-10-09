@@ -1,6 +1,6 @@
-import * as openaiCompatible from './openai-compatible.js';
-import * as harnessAcp from './harness-acp.js';
 import * as fullCustom from './full-custom.js';
+import * as harnessAcp from './harness-acp.js';
+import * as openaiCompatible from './openai-compatible.js';
 
 const registry = {
   [openaiCompatible.name]: openaiCompatible,

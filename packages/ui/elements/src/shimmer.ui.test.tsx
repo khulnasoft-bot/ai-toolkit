@@ -20,15 +20,11 @@ describe('shimmer', () => {
 
   it('renders as heading', () => {
     render(<Shimmer as="h1">Heading</Shimmer>);
-    expect(
-      screen.getByRole('heading', { level: 1, name: 'Heading' }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'Heading' })).toBeInTheDocument();
   });
 
   it('applies custom className', () => {
-    const { container } = render(
-      <Shimmer className="custom-class">Text</Shimmer>,
-    );
+    const { container } = render(<Shimmer className="custom-class">Text</Shimmer>);
     expect(container.firstChild).toHaveClass('custom-class');
   });
 

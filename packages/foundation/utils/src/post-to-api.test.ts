@@ -36,9 +36,7 @@ describe('postJsonToApi', () => {
       await postJsonToApi({
         url: 'https://api.example.com/v1/generate',
         body: { prompt: 'test' },
-        successfulResponseHandler: createJsonResponseHandler(
-          z.object({ value: z.string() }),
-        ),
+        successfulResponseHandler: createJsonResponseHandler(z.object({ value: z.string() })),
         failedResponseHandler: createStatusCodeErrorResponseHandler(),
         fetch,
       });

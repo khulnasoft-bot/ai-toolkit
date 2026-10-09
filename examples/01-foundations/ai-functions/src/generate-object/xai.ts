@@ -1,5 +1,5 @@
-import { xai } from '@ai-toolkit/xai';
 import { generateObject } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

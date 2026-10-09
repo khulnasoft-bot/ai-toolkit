@@ -1,5 +1,5 @@
-import { cohere } from '@ai-toolkit/cohere';
 import { embed } from '@ai-toolkit/ai';
+import { cohere } from '@ai-toolkit/cohere';
 import { run } from '../lib/run';
 
 run(async () => {

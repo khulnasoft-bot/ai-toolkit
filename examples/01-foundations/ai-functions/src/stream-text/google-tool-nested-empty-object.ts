@@ -1,5 +1,5 @@
-import { google } from '@ai-toolkit/google';
 import { streamText, tool } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -11,9 +11,7 @@ run(async () => {
         description: 'Navigate to a URL',
         inputSchema: z.object({
           url: z.string().describe('URL to navigate to'),
-          launchOptions: z
-            .object({})
-            .describe('Browser launch options as key-value pairs'),
+          launchOptions: z.object({}).describe('Browser launch options as key-value pairs'),
         }),
       }),
     },

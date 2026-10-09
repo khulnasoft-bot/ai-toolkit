@@ -1,6 +1,6 @@
 import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 import { validateTypes } from '@ai-toolkit/provider-utils';
@@ -10,7 +10,7 @@ import { imageGenerationArgsSchema } from '../tool/image-generation';
 import { mcpArgsSchema } from '../tool/mcp';
 import { webSearchArgsSchema } from '../tool/web-search';
 import { webSearchPreviewArgsSchema } from '../tool/web-search-preview';
-import { OpenAIResponsesTool } from './openai-responses-api';
+import type { OpenAIResponsesTool } from './openai-responses-api';
 
 export async function prepareResponsesTools({
   tools,
@@ -117,9 +117,7 @@ export async function prepareResponsesTools({
             openaiTools.push({
               type: 'web_search',
               filters:
-                args.filters != null
-                  ? { allowed_domains: args.filters.allowedDomains }
-                  : undefined,
+                args.filters != null ? { allowed_domains: args.filters.allowedDomains } : undefined,
               external_web_access: args.externalWebAccess,
               search_context_size: args.searchContextSize,
               user_location: args.userLocation,

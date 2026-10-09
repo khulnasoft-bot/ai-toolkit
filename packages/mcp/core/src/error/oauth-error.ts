@@ -2,14 +2,12 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_MCPClientOAuthError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * An error occurred with the MCP client within the OAuth flow.
  */
 export class MCPClientOAuthError extends AITOOLKITError {
-  private readonly [symbol] = true;
-
   constructor({
     name = 'MCPClientOAuthError',
     message,

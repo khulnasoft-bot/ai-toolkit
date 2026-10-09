@@ -1,5 +1,5 @@
-import { ProviderV3 } from '@ai-toolkit/provider';
-import { LogWarningsFunction } from './logger/log-warnings';
+import type { ProviderV3 } from '@ai-toolkit/provider';
+import type { LogWarningsFunction } from './logger/log-warnings';
 
 // add AI TOOLKIT default provider to the globalThis object
 declare global {

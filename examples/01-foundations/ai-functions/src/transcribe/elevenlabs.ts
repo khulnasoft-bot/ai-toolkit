@@ -1,6 +1,6 @@
-import { elevenlabs } from '@ai-toolkit/elevenlabs';
+import { readFile } from 'node:fs/promises';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
-import { readFile } from 'fs/promises';
+import { elevenlabs } from '@ai-toolkit/elevenlabs';
 import { run } from '../lib/run';
 
 run(async () => {

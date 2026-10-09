@@ -1,5 +1,5 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { generateText, Output } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { type } from 'arktype';
 import { run } from '../lib/run';
 

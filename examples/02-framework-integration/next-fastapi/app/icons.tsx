@@ -1,5 +1,12 @@
+const PYTHON_GRADIENT_0_ID = 'paint0_linear_872_3163';
+const PYTHON_GRADIENT_1_ID = 'paint1_linear_872_3163';
+const NEXT_GRADIENT_0_ID = 'paint0_linear_53_1080o22379mo';
+const NEXT_GRADIENT_1_ID = 'paint1_linear_53_1080o22379mo';
+const NEXT_CLIP_ID = 'clip0_53_108';
+
 export const LogoPython = () => (
   <svg
+    aria-hidden="true"
     height={20}
     strokeLinejoin="round"
     viewBox="0 0 16 16"
@@ -16,7 +23,7 @@ export const LogoPython = () => (
     ></path>
     <defs>
       <linearGradient
-        id="paint0_linear_872_3163"
+        id={PYTHON_GRADIENT_0_ID}
         x1="-4.80577e-08"
         y1="-4.12903e-08"
         x2="8.81665"
@@ -27,7 +34,7 @@ export const LogoPython = () => (
         <stop offset="1" stopColor="#306998"></stop>
       </linearGradient>
       <linearGradient
-        id="paint1_linear_872_3163"
+        id={PYTHON_GRADIENT_1_ID}
         x1="10.0654"
         y1="13.8872"
         x2="6.91907"
@@ -43,6 +50,7 @@ export const LogoPython = () => (
 
 export const LogoNext = () => (
   <svg
+    aria-hidden="true"
     height={20}
     strokeLinejoin="round"
     viewBox="0 0 16 16"
@@ -75,7 +83,7 @@ export const LogoNext = () => (
     </g>
     <defs>
       <linearGradient
-        id="paint0_linear_53_1080o22379mo"
+        id={NEXT_GRADIENT_0_ID}
         x1="11.13"
         y1="5"
         x2="11.13"
@@ -88,7 +96,7 @@ export const LogoNext = () => (
         <stop offset="1" stopColor="white" stopOpacity="0"></stop>
       </linearGradient>
       <linearGradient
-        id="paint1_linear_53_1080o22379mo"
+        id={NEXT_GRADIENT_1_ID}
         x1="9.9375"
         y1="9.0625"
         x2="13.5574"
@@ -98,7 +106,7 @@ export const LogoNext = () => (
         <stop stopColor="white"></stop>
         <stop offset="1" stopColor="white" stopOpacity="0"></stop>
       </linearGradient>
-      <clipPath id="clip0_53_108">
+      <clipPath id={NEXT_CLIP_ID}>
         <rect width="16" height="16" fill="red"></rect>
       </clipPath>
     </defs>

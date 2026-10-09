@@ -15,22 +15,18 @@ export interface Harness {
 
 const name = 'AI_HarnessCapabilityUnsupportedError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * Thrown when a harness does not support a requested capability
  * (e.g. permission mode, structured output, sandbox feature).
  */
 export class HarnessCapabilityUnsupportedError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   constructor({ message, cause }: { message: string; cause?: unknown }) {
     super({ name, message, cause });
   }
 
-  static isInstance(
-    error: unknown,
-  ): error is HarnessCapabilityUnsupportedError {
+  static isInstance(error: unknown): error is HarnessCapabilityUnsupportedError {
     return AITOOLKITError.hasMarker(error, marker);
   }
 }

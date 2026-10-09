@@ -25,7 +25,7 @@ export function createScorersEngine(): ScorersEngine {
   return {
     registerScorer: (name, scorer) => scorers.set(name, scorer),
     getScorer: name => scorers.get(name),
-    score: async (data, config) => ({
+    score: async (_data, config) => ({
       metric: config.metric,
       value: Math.random(),
       passed: Math.random() > config.threshold,

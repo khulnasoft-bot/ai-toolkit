@@ -2,8 +2,8 @@ import {
   convertArrayToReadableStream,
   convertReadableStreamToArray,
 } from '@ai-toolkit/provider-utils/test';
+import { describe, expect, it } from 'vitest';
 import { createTextStreamResponse } from './create-text-stream-response';
-import { describe, it, expect } from 'vitest';
 
 describe('createTextStreamResponse', () => {
   it('should create a Response with correct headers and encoded stream', async () => {
@@ -22,9 +22,7 @@ describe('createTextStreamResponse', () => {
     expect(response.statusText).toBe('OK');
 
     // Verify headers
-    expect(response.headers.get('Content-Type')).toBe(
-      'text/plain; charset=utf-8',
-    );
+    expect(response.headers.get('Content-Type')).toBe('text/plain; charset=utf-8');
     expect(response.headers.get('Custom-Header')).toBe('test');
 
     // Verify encoded stream content

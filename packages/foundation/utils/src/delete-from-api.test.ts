@@ -1,11 +1,11 @@
 import { APICallError } from '@ai-toolkit/provider';
 import { describe, expect, it, vi } from 'vitest';
+import { z } from 'zod/v4';
 import { deleteFromApi } from './delete-from-api';
 import {
   createJsonResponseHandler,
   createStatusCodeErrorResponseHandler,
 } from './response-handler';
-import { z } from 'zod/v4';
 
 const responseSchema = z.object({ id: z.string(), deleted: z.boolean() });
 
@@ -37,9 +37,7 @@ describe('deleteFromApi', () => {
   it('throws an APICallError for a failed response', async () => {
     const mockFetch = vi
       .fn()
-      .mockResolvedValue(
-        new Response('not found', { status: 404, statusText: 'Not Found' }),
-      );
+      .mockResolvedValue(new Response('not found', { status: 404, statusText: 'Not Found' }));
 
     await expect(
       deleteFromApi({

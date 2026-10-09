@@ -1,11 +1,8 @@
-import { ChildProcess, spawn } from 'node:child_process';
+import { type ChildProcess, spawn } from 'node:child_process';
 import { getEnvironment } from './get-environment';
-import { StdioConfig } from './mcp-stdio-transport';
+import type { StdioConfig } from './mcp-stdio-transport';
 
-export function createChildProcess(
-  config: StdioConfig,
-  signal: AbortSignal,
-): ChildProcess {
+export function createChildProcess(config: StdioConfig, signal: AbortSignal): ChildProcess {
   return spawn(config.command, config.args ?? [], {
     env: getEnvironment(config.env),
     stdio: ['pipe', 'pipe', config.stderr ?? 'inherit'],

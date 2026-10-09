@@ -1,8 +1,8 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import { ModelMessage, generateText, stepCountIs } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
-import { weatherTool } from '../tools/weather-tool';
+import { generateText, type ModelMessage, stepCountIs } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 const terminal = readline.createInterface({
   input: process.stdin,
@@ -41,10 +41,7 @@ run(async () => {
 
       if (step.toolCalls) {
         for (const toolCall of step.toolCalls) {
-          console.log(
-            `\x1b[33m${toolCall.toolName}\x1b[0m` +
-              JSON.stringify(toolCall.input),
-          );
+          console.log(`\x1b[33m${toolCall.toolName}\x1b[0m${JSON.stringify(toolCall.input)}`);
         }
       }
     }

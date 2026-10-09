@@ -170,9 +170,7 @@ describe('convertToXaiResponsesInput', () => {
   describe('assistant messages', () => {
     it('should convert text content', async () => {
       const result = await convertToXaiResponsesInput({
-        prompt: [
-          { role: 'assistant', content: [{ type: 'text', text: 'hi there' }] },
-        ],
+        prompt: [{ role: 'assistant', content: [{ type: 'text', text: 'hi there' }] }],
       });
 
       expect(result.input).toMatchInlineSnapshot(`
@@ -237,7 +235,7 @@ describe('convertToXaiResponsesInput', () => {
       expect(result.input).toMatchInlineSnapshot(`
         [
           {
-            "arguments": "{\"query\":\"latest news\"}",
+            "arguments": "{"query":"latest news"}",
             "call_id": "call_ws",
             "id": "call_ws",
             "name": "web_search",

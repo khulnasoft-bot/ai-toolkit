@@ -6,8 +6,6 @@
  * so the SDK has a single, consistent definition of "browser". Server runtimes
  * (Node.js, Deno, Bun, edge/workers) do not define `window`.
  */
-export function isBrowserRuntime(
-  globalThisAny: any = globalThis as any,
-): boolean {
+export function isBrowserRuntime(globalThisAny: any = globalThis as any): boolean {
   return globalThisAny.window != null;
 }

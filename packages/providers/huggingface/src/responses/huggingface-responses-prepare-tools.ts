@@ -1,7 +1,4 @@
-import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
-} from '@ai-toolkit/provider';
+import type { LanguageModelV3CallOptions, SharedV3Warning } from '@ai-toolkit/provider';
 
 export type HuggingFaceResponsesTool = {
   type: 'function';
@@ -61,7 +58,7 @@ export function prepareResponsesTools({
   }
 
   // prepare tool choice:
-  let mappedToolChoice: HuggingFaceResponsesToolChoice | undefined = undefined;
+  let mappedToolChoice: HuggingFaceResponsesToolChoice | undefined;
   if (toolChoice) {
     switch (toolChoice.type) {
       case 'auto':

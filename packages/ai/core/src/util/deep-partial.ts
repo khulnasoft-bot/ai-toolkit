@@ -19,7 +19,7 @@
 // CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
 // IN THE SOFTWARE.
 
-import { FlexibleSchema, InferSchema } from '@ai-toolkit/provider-utils';
+import type { FlexibleSchema, InferSchema } from '@ai-toolkit/provider-utils';
 
 /**
 Create a type from an object with all keys and nested keys set to optional.
@@ -41,11 +41,13 @@ type DeepPartialInternal<T> = T extends
   | boolean
   | symbol
   | bigint
-  | void
+  | undefined
   | Date
   | RegExp
   | ((...arguments_: any[]) => unknown)
-  | (new (...arguments_: any[]) => unknown)
+  | (new (
+      ...arguments_: any[]
+    ) => unknown)
   ? T
   : T extends Map<infer KeyType, infer ValueType>
     ? PartialMap<KeyType, ValueType>

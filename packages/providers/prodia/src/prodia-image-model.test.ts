@@ -276,9 +276,7 @@ describe('ProdiaImageModel', () => {
         providerOptions: {},
       });
 
-      expect(server.calls[0].requestHeaders.accept).toBe(
-        'multipart/form-data; image/png',
-      );
+      expect(server.calls[0].requestHeaders.accept).toBe('multipart/form-data; image/png');
     });
 
     it('merges provider and request headers', async () => {

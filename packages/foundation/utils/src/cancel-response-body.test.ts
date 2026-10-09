@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { cancelResponseBody } from './cancel-response-body';
 
 function createResponse(body: ReadableStream<Uint8Array> | null): Response {
@@ -23,9 +23,7 @@ describe('cancelResponseBody', () => {
   });
 
   it('should be a no-op when the body is null', async () => {
-    await expect(
-      cancelResponseBody(createResponse(null)),
-    ).resolves.toBeUndefined();
+    await expect(cancelResponseBody(createResponse(null))).resolves.toBeUndefined();
   });
 
   it('should swallow cancel errors so the original rejection is preserved', async () => {

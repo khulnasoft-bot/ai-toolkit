@@ -1,8 +1,8 @@
 import { createUIMessageStreamResponse } from '@ai-toolkit/ai';
-import { NextResponse } from 'next/server';
+import { toUIMessageStream } from '@ai-toolkit/langchain';
 
 import { ChatOpenAI } from '@langchain/openai';
-import { toUIMessageStream } from '@ai-toolkit/langchain';
+import { NextResponse } from 'next/server';
 
 /**
  * Allow streaming responses up to 30 seconds
@@ -39,8 +39,7 @@ export async function POST(req: Request) {
       stream: toUIMessageStream(stream),
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'An unknown error occurred';
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

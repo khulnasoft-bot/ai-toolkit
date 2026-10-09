@@ -1,4 +1,4 @@
-import { UIMessage } from '@ai-toolkit/ai';
+import type { UIMessage } from '@ai-toolkit/ai';
 
 /**
  * Progress updates during long-running operations.

@@ -1,10 +1,10 @@
 import {
   asSchema,
-  isExecutableTool,
-  safeValidateTypes,
   type Context,
   type InferToolSetContext,
+  isExecutableTool,
   type ModelMessage,
+  safeValidateTypes,
   type ToolSet,
 } from '@ai-toolkit/provider-utils';
 import { InvalidToolApprovalSignatureError } from '../error/invalid-tool-approval-signature-error';
@@ -12,8 +12,8 @@ import { InvalidToolInputError } from '../error/invalid-tool-input-error';
 import { getOwn } from '../util/get-own';
 import type { CollectedToolApprovals } from './collect-tool-approvals';
 import { resolveToolApproval } from './resolve-tool-approval';
-import { verifyToolApprovalSignature } from './tool-approval-signature';
 import type { ToolApprovalConfiguration } from './tool-approval-configuration';
+import { verifyToolApprovalSignature } from './tool-approval-signature';
 
 /**
  * Re-validates approved tool approvals reconstructed from client-supplied
@@ -42,15 +42,11 @@ export async function validateApprovedToolApprovals<
 }): Promise<{
   approvedToolApprovals: Array<CollectedToolApprovals<TOOLS>>;
   deniedToolApprovals: Array<CollectedToolApprovals<TOOLS>>;
-  invalidToolApprovals: Array<
-    CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }
-  >;
+  invalidToolApprovals: Array<CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }>;
 }> {
   const approved: Array<CollectedToolApprovals<TOOLS>> = [];
   const denied: Array<CollectedToolApprovals<TOOLS>> = [];
-  const invalid: Array<
-    CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }
-  > = [];
+  const invalid: Array<CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }> = [];
 
   for (const approval of approvedToolApprovals) {
     const { toolCall, approvalRequest } = approval;

@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it } from 'vitest';
 import { z } from 'zod/v4';
 import type { InferToolSetContext } from './infer-tool-set-context';
-import { tool, type Tool } from './tool';
+import { type Tool, tool } from './tool';
 
 describe('InferToolSetContext', () => {
   it('maps tool names to required context types across a tool set', () => {
@@ -89,11 +89,7 @@ describe('InferToolSetContext', () => {
 
   it('keeps tools with optional-only context properties', () => {
     type Tools = {
-      weather: Tool<
-        { city: string },
-        never,
-        { userId?: string; role?: string }
-      >;
+      weather: Tool<{ city: string }, never, { userId?: string; role?: string }>;
     };
 
     expectTypeOf<InferToolSetContext<Tools>>().toEqualTypeOf<{

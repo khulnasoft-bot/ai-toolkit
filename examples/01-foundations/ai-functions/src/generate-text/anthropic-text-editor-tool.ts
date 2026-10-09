@@ -1,5 +1,5 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { generateText, stepCountIs } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {

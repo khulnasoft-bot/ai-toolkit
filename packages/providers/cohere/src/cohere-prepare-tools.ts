@@ -1,9 +1,9 @@
 import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
-import { CohereToolChoice } from './cohere-chat-prompt';
+import type { CohereToolChoice } from './cohere-chat-prompt';
 
 export function prepareTools({
   tools,
@@ -79,9 +79,7 @@ export function prepareTools({
 
     case 'tool':
       return {
-        tools: cohereTools.filter(
-          tool => tool.function.name === toolChoice.toolName,
-        ),
+        tools: cohereTools.filter(tool => tool.function.name === toolChoice.toolName),
         toolChoice: 'REQUIRED',
         toolWarnings,
       };

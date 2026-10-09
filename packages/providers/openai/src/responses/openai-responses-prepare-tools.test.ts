@@ -1,6 +1,5 @@
-import { ToolNameMapping } from '@ai-toolkit/provider-utils';
+import { describe, expect, it } from 'vitest';
 import { prepareResponsesTools } from './openai-responses-prepare-tools';
-import { describe, it, expect } from 'vitest';
 
 describe('prepareResponsesTools', () => {
   describe('function tools strict mode', () => {

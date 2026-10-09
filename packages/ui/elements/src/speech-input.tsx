@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Spinner, cn } from '@ai-toolkit/shadcn-ui';
+import { Button, cn, Spinner } from '@ai-toolkit/shadcn-ui';
 import { MicIcon, SquareIcon } from 'lucide-react';
 import type { ComponentProps } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -13,12 +13,8 @@ interface SpeechRecognition extends EventTarget {
   stop(): void;
   onstart: ((this: SpeechRecognition, ev: Event) => void) | null;
   onend: ((this: SpeechRecognition, ev: Event) => void) | null;
-  onresult:
-    | ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void)
-    | null;
-  onerror:
-    | ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void)
-    | null;
+  onresult: ((this: SpeechRecognition, ev: SpeechRecognitionEvent) => void) | null;
+  onerror: ((this: SpeechRecognition, ev: SpeechRecognitionErrorEvent) => void) | null;
 }
 
 interface SpeechRecognitionEvent extends Event {
@@ -100,11 +96,9 @@ export const SpeechInput = ({
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const onTranscriptionChangeRef = useRef<
-    SpeechInputProps['onTranscriptionChange']
-  >(onTranscriptionChange);
-  const onAudioRecordedRef =
-    useRef<SpeechInputProps['onAudioRecorded']>(onAudioRecorded);
+  const onTranscriptionChangeRef =
+    useRef<SpeechInputProps['onTranscriptionChange']>(onTranscriptionChange);
+  const onAudioRecordedRef = useRef<SpeechInputProps['onAudioRecorded']>(onAudioRecorded);
 
   // Keep refs in sync
   onTranscriptionChangeRef.current = onTranscriptionChange;
@@ -116,8 +110,7 @@ export const SpeechInput = ({
       return;
     }
 
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const speechRecognition = new SpeechRecognition();
 
     speechRecognition.continuous = true;
@@ -136,11 +129,7 @@ export const SpeechInput = ({
       const speechEvent = event as SpeechRecognitionEvent;
       let finalTranscript = '';
 
-      for (
-        let i = speechEvent.resultIndex;
-        i < speechEvent.results.length;
-        i += 1
-      ) {
+      for (let i = speechEvent.resultIndex; i < speechEvent.results.length; i += 1) {
         const result = speechEvent.results[i];
         if (result.isFinal) {
           finalTranscript += result[0]?.transcript ?? '';

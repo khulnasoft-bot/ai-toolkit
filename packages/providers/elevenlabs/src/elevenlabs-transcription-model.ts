@@ -1,4 +1,4 @@
-import { TranscriptionModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { SharedV3Warning, TranscriptionModelV3 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   convertBase64ToUint8Array,
@@ -8,27 +8,22 @@ import {
   postFormDataToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { ElevenLabsConfig } from './elevenlabs-config';
+import type { ElevenLabsTranscriptionAPITypes } from './elevenlabs-api-types';
+import type { ElevenLabsConfig } from './elevenlabs-config';
 import { elevenlabsFailedResponseHandler } from './elevenlabs-error';
-import { ElevenLabsTranscriptionModelId } from './elevenlabs-transcription-options';
-import { ElevenLabsTranscriptionAPITypes } from './elevenlabs-api-types';
+import type { ElevenLabsTranscriptionModelId } from './elevenlabs-transcription-options';
 
 // https://elevenlabs.io/docs/api-reference/speech-to-text/convert
 const elevenLabsProviderOptionsSchema = z.object({
   languageCode: z.string().nullish(),
   tagAudioEvents: z.boolean().nullish().default(true),
   numSpeakers: z.number().int().min(1).max(32).nullish(),
-  timestampsGranularity: z
-    .enum(['none', 'word', 'character'])
-    .nullish()
-    .default('word'),
+  timestampsGranularity: z.enum(['none', 'word', 'character']).nullish().default('word'),
   diarize: z.boolean().nullish().default(false),
   fileFormat: z.enum(['pcm_s16le_16', 'other']).nullish().default('other'),
 });
 
-export type ElevenLabsTranscriptionCallOptions = z.infer<
-  typeof elevenLabsProviderOptionsSchema
->;
+export type ElevenLabsTranscriptionCallOptions = z.infer<typeof elevenLabsProviderOptionsSchema>;
 
 interface ElevenLabsTranscriptionModelConfig extends ElevenLabsConfig {
   _internal?: {
@@ -84,8 +79,7 @@ export class ElevenLabsTranscriptionModel implements TranscriptionModelV3 {
         language_code: elevenlabsOptions.languageCode ?? undefined,
         tag_audio_events: elevenlabsOptions.tagAudioEvents ?? undefined,
         num_speakers: elevenlabsOptions.numSpeakers ?? undefined,
-        timestamps_granularity:
-          elevenlabsOptions.timestampsGranularity ?? undefined,
+        timestamps_granularity: elevenlabsOptions.timestampsGranularity ?? undefined,
         file_format: elevenlabsOptions.fileFormat ?? undefined,
       };
 
@@ -94,10 +88,7 @@ export class ElevenLabsTranscriptionModel implements TranscriptionModelV3 {
       }
 
       for (const key in transcriptionModelOptions) {
-        const value =
-          transcriptionModelOptions[
-            key as keyof ElevenLabsTranscriptionAPITypes
-          ];
+        const value = transcriptionModelOptions[key as keyof ElevenLabsTranscriptionAPITypes];
         if (value !== undefined) {
           formData.append(key, String(value));
         }
@@ -128,9 +119,7 @@ export class ElevenLabsTranscriptionModel implements TranscriptionModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       formData,
       failedResponseHandler: elevenlabsFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        elevenlabsTranscriptionResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(elevenlabsTranscriptionResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });

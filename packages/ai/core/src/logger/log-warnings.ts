@@ -1,5 +1,5 @@
 import type { SharedV4Warning } from '@ai-toolkit/provider';
-import { Warning } from '../types';
+import type { Warning } from '../types';
 
 /**
  * A function for logging warnings.

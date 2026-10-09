@@ -1,5 +1,5 @@
-import { baseten } from '@ai-toolkit/baseten';
 import { generateText } from '@ai-toolkit/ai';
+import { baseten } from '@ai-toolkit/baseten';
 import { run } from '../lib/run';
 
 run(async () => {

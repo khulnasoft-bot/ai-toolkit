@@ -1,9 +1,10 @@
 // @ts-nocheck
-import { useChat } from 'ai';
+
 import { useChat as useReactChat } from '@ai-toolkit/react';
+import { useChat } from 'ai';
 
 // Test 1: Destructuring from useChat hook
-function ChatComponent1() {
+function _ChatComponent1() {
   const { messages, sendMessage, addToolOutput } = useChat();
 
   return (
@@ -22,7 +23,7 @@ function ChatComponent1() {
 }
 
 // Test 2: Destructuring with alias
-function ChatComponent2() {
+function _ChatComponent2() {
   const { addToolOutput: submitToolResult } = useReactChat();
 
   return (
@@ -33,7 +34,7 @@ function ChatComponent2() {
 }
 
 // Test 3: Using chat object directly
-function ChatComponent3() {
+function _ChatComponent3() {
   const chat = useChat();
 
   return (
@@ -44,7 +45,7 @@ function ChatComponent3() {
 }
 
 // Test 4: Object property shorthand
-function ChatComponent4() {
+function _ChatComponent4() {
   const { addToolOutput, sendMessage } = useChat();
 
   const handlers = {
@@ -56,7 +57,7 @@ function ChatComponent4() {
 }
 
 // Test 5: Object property non-shorthand
-const config = {
+const _config = {
   addToolOutput: (data: any) => console.log(data),
   other: 'value',
 };
@@ -83,7 +84,7 @@ function processChat(callback: any) {
   callback();
 }
 
-function ChatComponent5() {
+function _ChatComponent5() {
   const chat = useChat();
 
   processChat(() => {
@@ -105,7 +106,7 @@ interface IChatHandlers {
 // Test 10: Should NOT transform - different package
 import { addToolOutput as otherToolResult } from 'other-package';
 
-function OtherComponent() {
+function _OtherComponent() {
   otherToolResult({ tool: 'other', toolCallId: 'id', output: 'data' });
   return null;
 }

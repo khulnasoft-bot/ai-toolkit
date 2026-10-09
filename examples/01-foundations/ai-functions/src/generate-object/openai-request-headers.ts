@@ -1,10 +1,10 @@
-import { createOpenAI } from '@ai-toolkit/openai';
 import { generateObject } from '@ai-toolkit/ai';
+import { createOpenAI } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
 run(async () => {
-  let headers;
+  let headers: HeadersInit | undefined;
   const openai = createOpenAI({
     fetch: (url, init) => {
       headers = {

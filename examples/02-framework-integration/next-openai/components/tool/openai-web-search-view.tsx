@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
-import { UIToolInvocation } from '@ai-toolkit/ai';
+import type { UIToolInvocation } from '@ai-toolkit/ai';
+import type { openai } from '@ai-toolkit/openai';
 
 export default function OpenAIWebSearchView({
   invocation,
@@ -42,8 +42,8 @@ export default function OpenAIWebSearchView({
                 <div className="pl-5 text-sm text-blue-800">
                   <span className="font-semibold">Sources:</span>
                   <ul className="mt-1 list-disc pl-5 break-all">
-                    {output.sources.map((s, i) => (
-                      <li key={i}>
+                    {output.sources.map(s => (
+                      <li key={s.type === 'url' ? s.url : s.name}>
                         {s.type === 'url' ? (
                           <a
                             href={s.url}

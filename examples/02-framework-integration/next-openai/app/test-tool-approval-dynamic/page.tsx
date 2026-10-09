@@ -1,13 +1,13 @@
 'use client';
 
-import { DynamicWeatherWithApprovalAgentUIMessage } from '@/agent/dynamic-weather-with-approval-agent';
-import ChatInput from '@/components/chat-input';
-import DynamicToolWithApprovalView from '@/components/tool/dynamic-tool-with-approval-view';
-import { useChat } from '@ai-toolkit/react';
 import {
   DefaultChatTransport,
   lastAssistantMessageIsCompleteWithApprovalResponses,
 } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { DynamicWeatherWithApprovalAgentUIMessage } from '@/agent/dynamic-weather-with-approval-agent';
+import ChatInput from '@/components/chat-input';
+import DynamicToolWithApprovalView from '@/components/tool/dynamic-tool-with-approval-view';
 
 export default function TestToolApproval() {
   const { status, sendMessage, messages, addToolApprovalResponse } =
@@ -15,8 +15,7 @@ export default function TestToolApproval() {
       transport: new DefaultChatTransport({
         api: '/api/chat-tool-approval-dynamic',
       }),
-      sendAutomaticallyWhen:
-        lastAssistantMessageIsCompleteWithApprovalResponses,
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
     });
 
   console.log(structuredClone(messages));
@@ -31,15 +30,17 @@ export default function TestToolApproval() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
               case 'dynamic-tool':
                 return (
                   <DynamicToolWithApprovalView
-                    key={index}
+                    key={`${part.type}-${index}`}
                     invocation={part}
                     addToolApprovalResponse={addToolApprovalResponse}
                   />
                 );
+              default:
+                return null;
             }
           })}
         </div>

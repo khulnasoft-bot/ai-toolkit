@@ -1,4 +1,4 @@
-import {
+import type {
   LanguageModelV3,
   LanguageModelV3CallOptions,
   LanguageModelV3FinishReason,
@@ -12,26 +12,26 @@ import {
   combineHeaders,
   createEventSourceResponseHandler,
   createJsonResponseHandler,
-  FetchFunction,
+  type FetchFunction,
+  type ParseResult,
   parseProviderOptions,
-  ParseResult,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { openaiFailedResponseHandler } from '../openai-error';
 import {
   convertOpenAICompletionUsage,
-  OpenAICompletionUsage,
+  type OpenAICompletionUsage,
 } from './convert-openai-completion-usage';
 import { convertToOpenAICompletionPrompt } from './convert-to-openai-completion-prompt';
 import { getResponseMetadata } from './get-response-metadata';
 import { mapOpenAIFinishReason } from './map-openai-finish-reason';
 import {
-  OpenAICompletionChunk,
+  type OpenAICompletionChunk,
   openaiCompletionChunkSchema,
   openaiCompletionResponseSchema,
 } from './openai-completion-api';
 import {
-  OpenAICompletionModelId,
+  type OpenAICompletionModelId,
   openaiCompletionProviderOptions,
 } from './openai-completion-options';
 
@@ -53,10 +53,7 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
     return this.config.provider.split('.')[0].trim();
   }
 
-  constructor(
-    modelId: OpenAICompletionModelId,
-    config: OpenAICompletionConfig,
-  ) {
+  constructor(modelId: OpenAICompletionModelId, config: OpenAICompletionConfig) {
     this.modelId = modelId;
     this.config = config;
   }
@@ -120,8 +117,7 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
       });
     }
 
-    const { prompt: completionPrompt, stopSequences } =
-      convertToOpenAICompletionPrompt({ prompt });
+    const { prompt: completionPrompt, stopSequences } = convertToOpenAICompletionPrompt({ prompt });
 
     const stop = [...(stopSequences ?? []), ...(userStopSequences ?? [])];
 
@@ -160,9 +156,7 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const { args, warnings } = await this.getArgs(options);
 
     const {
@@ -177,9 +171,7 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body: args,
       failedResponseHandler: openaiFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        openaiCompletionResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(openaiCompletionResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -210,9 +202,7 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs(options);
 
     const body = {
@@ -232,9 +222,7 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
       failedResponseHandler: openaiFailedResponseHandler,
-      successfulResponseHandler: createEventSourceResponseHandler(
-        openaiCompletionChunkSchema,
-      ),
+      successfulResponseHandler: createEventSourceResponseHandler(openaiCompletionChunkSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -244,15 +232,12 @@ export class OpenAICompletionLanguageModel implements LanguageModelV3 {
       raw: undefined,
     };
     const providerMetadata: SharedV3ProviderMetadata = { openai: {} };
-    let usage: OpenAICompletionUsage | undefined = undefined;
+    let usage: OpenAICompletionUsage | undefined;
     let isFirstChunk = true;
 
     return {
       stream: response.pipeThrough(
-        new TransformStream<
-          ParseResult<OpenAICompletionChunk>,
-          LanguageModelV3StreamPart
-        >({
+        new TransformStream<ParseResult<OpenAICompletionChunk>, LanguageModelV3StreamPart>({
           start(controller) {
             controller.enqueue({ type: 'stream-start', warnings });
           },

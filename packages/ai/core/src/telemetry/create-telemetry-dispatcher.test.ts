@@ -38,16 +38,16 @@ describe('createTelemetryDispatcher', () => {
     expect(telemetry.executeLanguageModelCall).toBeDefined();
     expect(telemetry.executeTool).toBeDefined();
 
-    await expect(telemetry.onStart!(dummyEvent)).resolves.toBeUndefined();
-    await expect(telemetry.onError!(dummyEvent)).resolves.toBeUndefined();
+    await expect(telemetry.onStart?.(dummyEvent)).resolves.toBeUndefined();
+    await expect(telemetry.onError?.(dummyEvent)).resolves.toBeUndefined();
     await expect(
-      telemetry.executeLanguageModelCall!({
+      telemetry.executeLanguageModelCall?.({
         callId: 'call-1',
         execute: async () => 'result',
       }),
     ).resolves.toBe('result');
     await expect(
-      telemetry.executeTool!({
+      telemetry.executeTool?.({
         callId: 'call-1',
         toolCallId: 'tool-1',
         execute: async () => 'result',
@@ -64,7 +64,7 @@ describe('createTelemetryDispatcher', () => {
       telemetry: { integrations: integration },
     });
 
-    await telemetry.onStart!(dummyEvent);
+    await telemetry.onStart?.(dummyEvent);
 
     expect(integration.onStart).toHaveBeenCalledWith(augmentedDummyEvent);
   });
@@ -85,10 +85,8 @@ describe('createTelemetryDispatcher', () => {
       telemetry: { integrations: [{ onStart: vi.fn() }] },
     });
 
-    await expect(
-      telemetry.onToolExecutionStart!(dummyEvent),
-    ).resolves.toBeUndefined();
-    await expect(telemetry.onEmbedEnd!(dummyEvent)).resolves.toBeUndefined();
+    await expect(telemetry.onToolExecutionStart?.(dummyEvent)).resolves.toBeUndefined();
+    await expect(telemetry.onEmbedEnd?.(dummyEvent)).resolves.toBeUndefined();
   });
 
   it('broadcasts an event to all integrations that implement the method', async () => {
@@ -101,7 +99,7 @@ describe('createTelemetryDispatcher', () => {
       },
     });
 
-    await telemetry.onStart!(dummyEvent);
+    await telemetry.onStart?.(dummyEvent);
 
     expect(onStart1).toHaveBeenCalledWith(augmentedDummyEvent);
     expect(onStart2).toHaveBeenCalledWith(augmentedDummyEvent);
@@ -117,7 +115,7 @@ describe('createTelemetryDispatcher', () => {
       },
     });
 
-    await telemetry.onStepEnd!(dummyEvent);
+    await telemetry.onStepEnd?.(dummyEvent);
 
     expect(onStepEnd).toHaveBeenCalledWith(augmentedDummyEvent);
     expect(onStepFinish).toHaveBeenCalledWith(augmentedDummyEvent);
@@ -130,7 +128,7 @@ describe('createTelemetryDispatcher', () => {
       telemetry: { integrations: [{ onStart }, {}] },
     });
 
-    await telemetry.onStart!(dummyEvent);
+    await telemetry.onStart?.(dummyEvent);
 
     expect(onStart).toHaveBeenCalledOnce();
   });
@@ -145,7 +143,7 @@ describe('createTelemetryDispatcher', () => {
       },
     });
 
-    await telemetry.onStart!(dummyEvent);
+    await telemetry.onStart?.(dummyEvent);
 
     expect(onStart1).toHaveBeenCalledWith(augmentedDummyEvent);
     expect(onStart2).toHaveBeenCalledWith(augmentedDummyEvent);
@@ -164,7 +162,7 @@ describe('createTelemetryDispatcher', () => {
       },
     });
 
-    await expect(telemetry.onStart!(dummyEvent)).resolves.toBeUndefined();
+    await expect(telemetry.onStart?.(dummyEvent)).resolves.toBeUndefined();
   });
 
   it('works with all lifecycle methods', async () => {
@@ -191,22 +189,22 @@ describe('createTelemetryDispatcher', () => {
       telemetry: { integrations: integration },
     });
 
-    await telemetry.onStart!(dummyEvent);
-    await telemetry.onStepStart!(dummyEvent);
-    await telemetry.onLanguageModelCallStart!(dummyEvent);
-    await telemetry.onLanguageModelCallEnd!(dummyEvent);
-    await telemetry.onToolExecutionStart!(dummyEvent);
-    await telemetry.onToolExecutionEnd!(dummyEvent);
-    await telemetry.onStepEnd!(dummyEvent);
-    await telemetry.onObjectStepStart!(dummyEvent);
-    await telemetry.onObjectStepEnd!(dummyEvent);
-    await telemetry.onEmbedStart!(dummyEvent);
-    await telemetry.onEmbedEnd!(dummyEvent);
-    await telemetry.onRerankStart!(dummyEvent);
-    await telemetry.onRerankEnd!(dummyEvent);
-    await telemetry.onEnd!(dummyEvent);
-    await telemetry.onAbort!(dummyEvent);
-    await telemetry.onError!(dummyEvent);
+    await telemetry.onStart?.(dummyEvent);
+    await telemetry.onStepStart?.(dummyEvent);
+    await telemetry.onLanguageModelCallStart?.(dummyEvent);
+    await telemetry.onLanguageModelCallEnd?.(dummyEvent);
+    await telemetry.onToolExecutionStart?.(dummyEvent);
+    await telemetry.onToolExecutionEnd?.(dummyEvent);
+    await telemetry.onStepEnd?.(dummyEvent);
+    await telemetry.onObjectStepStart?.(dummyEvent);
+    await telemetry.onObjectStepEnd?.(dummyEvent);
+    await telemetry.onEmbedStart?.(dummyEvent);
+    await telemetry.onEmbedEnd?.(dummyEvent);
+    await telemetry.onRerankStart?.(dummyEvent);
+    await telemetry.onRerankEnd?.(dummyEvent);
+    await telemetry.onEnd?.(dummyEvent);
+    await telemetry.onAbort?.(dummyEvent);
+    await telemetry.onError?.(dummyEvent);
 
     expect(integration.onStart).toHaveBeenCalledOnce();
     expect(integration.onStepStart).toHaveBeenCalledOnce();
@@ -234,7 +232,7 @@ describe('createTelemetryDispatcher', () => {
     expect(telemetry.onStart).toBeDefined();
     expect(telemetry.onEnd).toBeDefined();
 
-    await expect(telemetry.onStart!(dummyEvent)).resolves.toBeUndefined();
+    await expect(telemetry.onStart?.(dummyEvent)).resolves.toBeUndefined();
   });
 
   describe('isEnabled filter', () => {
@@ -302,7 +300,7 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { isEnabled: true, integrations: { onStart } },
       });
 
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(onStart).toHaveBeenCalledWith(augmentedDummyEvent);
     });
@@ -313,7 +311,7 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { integrations: { onStart } },
       });
 
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(onStart).toHaveBeenCalledWith(augmentedDummyEvent);
     });
@@ -324,9 +322,9 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { isEnabled: true, integrations: { onStart } },
       });
 
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
-      const receivedEvent = onStart.mock.calls[0]![0];
+      const receivedEvent = onStart.mock.calls[0]?.[0];
       expect(receivedEvent).not.toHaveProperty('isEnabled');
     });
   });
@@ -337,7 +335,7 @@ describe('createTelemetryDispatcher', () => {
       registerTelemetry({ onStart });
 
       const telemetry = createTelemetryDispatcher({});
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(onStart).toHaveBeenCalledWith(augmentedDummyEvent);
     });
@@ -351,7 +349,7 @@ describe('createTelemetryDispatcher', () => {
       const telemetry = createTelemetryDispatcher({
         telemetry: { integrations: { onStart: localOnStart } },
       });
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(globalOnStart).not.toHaveBeenCalled();
       expect(localOnStart).toHaveBeenCalledWith(augmentedDummyEvent);
@@ -366,13 +364,10 @@ describe('createTelemetryDispatcher', () => {
 
       const telemetry = createTelemetryDispatcher({
         telemetry: {
-          integrations: [
-            { onStart: localOnStart1 },
-            { onStart: localOnStart2 },
-          ],
+          integrations: [{ onStart: localOnStart1 }, { onStart: localOnStart2 }],
         },
       });
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(globalOnStart).not.toHaveBeenCalled();
       expect(localOnStart1).toHaveBeenCalledWith(augmentedDummyEvent);
@@ -390,8 +385,8 @@ describe('createTelemetryDispatcher', () => {
       });
       const withoutLocal = createTelemetryDispatcher({});
 
-      await withLocal.onStart!(dummyEvent);
-      await withoutLocal.onStart!(dummyEvent);
+      await withLocal.onStart?.(dummyEvent);
+      await withoutLocal.onStart?.(dummyEvent);
 
       expect(localOnStart).toHaveBeenCalledOnce();
       expect(globalOnStart).toHaveBeenCalledOnce();
@@ -410,7 +405,7 @@ describe('createTelemetryDispatcher', () => {
       registerTelemetry(integration);
 
       const telemetry = createTelemetryDispatcher({});
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(integration.calls).toBe(1);
     });
@@ -431,7 +426,7 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { integrations: instance },
       });
 
-      await telemetry.onStart!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
 
       expect(instance.value).toBe('called');
     });
@@ -454,8 +449,8 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { integrations: [instance] },
       });
 
-      await telemetry.onStart!(dummyEvent);
-      await telemetry.onEnd!(dummyEvent);
+      await telemetry.onStart?.(dummyEvent);
+      await telemetry.onEnd?.(dummyEvent);
 
       expect(instance.calls).toEqual(['start', 'end']);
     });
@@ -468,7 +463,7 @@ describe('createTelemetryDispatcher', () => {
       });
 
       await expect(
-        telemetry.executeLanguageModelCall!({
+        telemetry.executeLanguageModelCall?.({
           callId: 'call-1',
           execute: async () => 'result',
         }),
@@ -478,9 +473,7 @@ describe('createTelemetryDispatcher', () => {
     it('wraps execute with a single integration', async () => {
       const execute = vi.fn().mockResolvedValue('result');
       let wrapperCalls = 0;
-      const wrapper: Telemetry['executeLanguageModelCall'] = async ({
-        execute,
-      }) => {
+      const wrapper: Telemetry['executeLanguageModelCall'] = async ({ execute }) => {
         wrapperCalls += 1;
         return `wrapped:${await execute()}` as any;
       };
@@ -490,7 +483,7 @@ describe('createTelemetryDispatcher', () => {
       });
 
       await expect(
-        telemetry.executeLanguageModelCall!({
+        telemetry.executeLanguageModelCall?.({
           callId: 'call-1',
           execute,
         }),
@@ -504,11 +497,7 @@ describe('createTelemetryDispatcher', () => {
       class ExecuteLanguageModelCallIntegration implements Telemetry {
         calls = 0;
 
-        async executeLanguageModelCall<T>({
-          execute,
-        }: {
-          execute: () => PromiseLike<T>;
-        }) {
+        async executeLanguageModelCall<T>({ execute }: { execute: () => PromiseLike<T> }) {
           this.calls += 1;
           return execute();
         }
@@ -519,7 +508,7 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { integrations: integration },
       });
 
-      await telemetry.executeLanguageModelCall!({
+      await telemetry.executeLanguageModelCall?.({
         callId: 'call-1',
         execute: async () => 'done',
       });
@@ -535,7 +524,7 @@ describe('createTelemetryDispatcher', () => {
       });
 
       await expect(
-        telemetry.executeTool!({
+        telemetry.executeTool?.({
           callId: 'call-1',
           toolCallId: 'tool-1',
           execute: async () => 'result',
@@ -556,7 +545,7 @@ describe('createTelemetryDispatcher', () => {
       });
 
       await expect(
-        telemetry.executeTool!({
+        telemetry.executeTool?.({
           callId: 'call-1',
           toolCallId: 'tool-1',
           execute,
@@ -592,7 +581,7 @@ describe('createTelemetryDispatcher', () => {
         },
       });
 
-      const result = await telemetry.executeTool!({
+      const result = await telemetry.executeTool?.({
         callId: 'call-1',
         toolCallId: 'tool-1',
         execute: async () => {
@@ -619,7 +608,7 @@ describe('createTelemetryDispatcher', () => {
 
       const telemetry = createTelemetryDispatcher({});
 
-      const result = await telemetry.executeTool!({
+      const result = await telemetry.executeTool?.({
         callId: 'call-1',
         toolCallId: 'tool-1',
         execute: async () => {
@@ -647,7 +636,7 @@ describe('createTelemetryDispatcher', () => {
         telemetry: { integrations: integration },
       });
 
-      await telemetry.executeTool!({
+      await telemetry.executeTool?.({
         callId: 'call-1',
         toolCallId: 'tool-1',
         execute: async () => 'done',

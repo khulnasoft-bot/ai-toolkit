@@ -1,5 +1,5 @@
-import { groq } from '@ai-toolkit/groq';
 import { streamText } from '@ai-toolkit/ai';
+import { groq } from '@ai-toolkit/groq';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -18,12 +18,7 @@ run(async () => {
       console.log('Text chunk', textChunkCount, ':', chunk.text);
     } else if (chunk.type === 'raw') {
       rawChunkCount++;
-      console.log(
-        'Raw chunk',
-        rawChunkCount,
-        ':',
-        JSON.stringify(chunk.rawValue),
-      );
+      console.log('Raw chunk', rawChunkCount, ':', JSON.stringify(chunk.rawValue));
     }
   }
 

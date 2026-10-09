@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Find member expressions that match: delta.file.mediaType or delta.file.data
@@ -17,18 +17,12 @@ export default createTransformer((fileInfo, api, options, context) => {
       const outerObject = node.object;
 
       // Check if the middle property is 'file'
-      if (
-        !j.Identifier.check(outerObject.property) ||
-        outerObject.property.name !== 'file'
-      ) {
+      if (!j.Identifier.check(outerObject.property) || outerObject.property.name !== 'file') {
         return false;
       }
 
       // Check if the outermost object is 'delta'
-      if (
-        !j.Identifier.check(outerObject.object) ||
-        outerObject.object.name !== 'delta'
-      ) {
+      if (!j.Identifier.check(outerObject.object) || outerObject.object.name !== 'delta') {
         return false;
       }
 

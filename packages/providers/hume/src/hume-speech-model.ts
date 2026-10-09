@@ -1,4 +1,4 @@
-import { SpeechModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { SharedV3Warning, SpeechModelV3 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createBinaryResponseHandler,
@@ -6,9 +6,9 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { HumeConfig } from './hume-config';
+import type { HumeSpeechAPITypes } from './hume-api-types';
+import type { HumeConfig } from './hume-config';
 import { humeFailedResponseHandler } from './hume-error';
-import { HumeSpeechAPITypes } from './hume-api-types';
 
 // https://dev.hume.ai/reference/text-to-speech-tts/synthesize-file
 const humeSpeechCallOptionsSchema = z.object({
@@ -150,10 +150,7 @@ export class HumeSpeechModel implements SpeechModelV3 {
 
     // Add provider-specific options
     if (humeOptions) {
-      const speechModelOptions: Omit<
-        HumeSpeechAPITypes,
-        'utterances' | 'format'
-      > = {};
+      const speechModelOptions: Omit<HumeSpeechAPITypes, 'utterances' | 'format'> = {};
 
       if (humeOptions.context) {
         if ('generationId' in humeOptions.context) {
@@ -175,9 +172,7 @@ export class HumeSpeechModel implements SpeechModelV3 {
 
       for (const key in speechModelOptions) {
         const value =
-          speechModelOptions[
-            key as keyof Omit<HumeSpeechAPITypes, 'utterances' | 'format'>
-          ];
+          speechModelOptions[key as keyof Omit<HumeSpeechAPITypes, 'utterances' | 'format'>];
         if (value !== undefined) {
           (requestBody as Record<string, unknown>)[key] = value;
         }

@@ -1,16 +1,15 @@
 import { TypeValidationError } from '@ai-toolkit/provider';
 import {
-  FlexibleSchema,
+  type FlexibleSchema,
   lazySchema,
-  StandardSchemaV1,
-  Tool,
+  type Tool,
   validateTypes,
   zodSchema,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { InvalidArgumentError } from '../error';
 import { providerMetadataSchema } from '../types/provider-metadata';
-import {
+import type {
   DataUIPart,
   InferUIMessageData,
   InferUIMessageTools,
@@ -356,9 +355,9 @@ export async function safeValidateUIMessages<UI_MESSAGE extends UIMessage>({
 
     if (dataSchemas) {
       for (const message of validatedMessages) {
-        const dataParts = message.parts.filter(part =>
-          part.type.startsWith('data-'),
-        ) as DataUIPart<InferUIMessageData<UI_MESSAGE>>[];
+        const dataParts = message.parts.filter(part => part.type.startsWith('data-')) as DataUIPart<
+          InferUIMessageData<UI_MESSAGE>
+        >[];
 
         for (const dataPart of dataParts) {
           const dataName = dataPart.type.slice(5);
@@ -384,9 +383,9 @@ export async function safeValidateUIMessages<UI_MESSAGE extends UIMessage>({
 
     if (tools) {
       for (const message of validatedMessages) {
-        const toolParts = message.parts.filter(part =>
-          part.type.startsWith('tool-'),
-        ) as ToolUIPart<InferUIMessageTools<UI_MESSAGE>>[];
+        const toolParts = message.parts.filter(part => part.type.startsWith('tool-')) as ToolUIPart<
+          InferUIMessageTools<UI_MESSAGE>
+        >[];
 
         for (const toolPart of toolParts) {
           const toolName = toolPart.type.slice(5);

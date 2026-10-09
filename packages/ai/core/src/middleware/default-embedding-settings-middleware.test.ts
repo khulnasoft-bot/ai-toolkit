@@ -1,7 +1,7 @@
-import { EmbeddingModelV3CallOptions } from '@ai-toolkit/provider';
-import { defaultEmbeddingSettingsMiddleware } from './default-embedding-settings-middleware';
+import type { EmbeddingModelV3CallOptions } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
-import { describe, it, expect } from 'vitest';
+import { defaultEmbeddingSettingsMiddleware } from './default-embedding-settings-middleware';
 
 const params: EmbeddingModelV3CallOptions = {
   values: ['hello world'],
@@ -16,7 +16,7 @@ describe('headers', () => {
         headers: { 'X-Custom-Header': 'test', 'X-Another-Header': 'test2' },
       },
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: {
         ...params,
         headers: { 'X-Custom-Header': 'test2' },
@@ -33,7 +33,7 @@ describe('headers', () => {
     const middleware = defaultEmbeddingSettingsMiddleware({
       settings: { headers: {} },
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: { ...params, headers: { 'X-Param-Header': 'param' } },
       model: mockModel,
     });
@@ -44,7 +44,7 @@ describe('headers', () => {
     const middleware = defaultEmbeddingSettingsMiddleware({
       settings: { headers: { 'X-Default-Header': 'default' } },
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: { ...params, headers: {} },
       model: mockModel,
     });
@@ -55,7 +55,7 @@ describe('headers', () => {
     const middleware = defaultEmbeddingSettingsMiddleware({
       settings: {},
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: { ...params },
       model: mockModel,
     });
@@ -70,7 +70,7 @@ describe('providerOptions', () => {
         providerOptions: {},
       },
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: {
         ...params,
         providerOptions: {
@@ -101,7 +101,7 @@ describe('providerOptions', () => {
         },
       },
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: { ...params, providerOptions: {} },
       model: mockModel,
     });
@@ -117,7 +117,7 @@ describe('providerOptions', () => {
     const middleware = defaultEmbeddingSettingsMiddleware({
       settings: {},
     });
-    const result = await middleware.transformParams!({
+    const result = await middleware.transformParams?.({
       params: { ...params },
       model: mockModel,
     });

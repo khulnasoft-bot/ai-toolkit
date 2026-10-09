@@ -1,8 +1,8 @@
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
-import { createCohere } from '../cohere-provider';
-import { describe, it, expect, beforeEach } from 'vitest';
 import fs from 'node:fs';
-import { CohereRerankingOptions } from './cohere-reranking-options';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { createCohere } from '../cohere-provider';
+import type { CohereRerankingOptions } from './cohere-reranking-options';
 
 const provider = createCohere({ apiKey: 'test-api-key' });
 const model = provider.rerankingModel('rerank-english-v3.0');
@@ -15,9 +15,7 @@ describe('doRerank', () => {
   function prepareJsonFixtureResponse(filename: string) {
     server.urls['https://api.cohere.com/v2/rerank'].response = {
       type: 'json-value',
-      body: JSON.parse(
-        fs.readFileSync(`src/reranking/__fixtures__/${filename}.json`, 'utf8'),
-      ),
+      body: JSON.parse(fs.readFileSync(`src/reranking/__fixtures__/${filename}.json`, 'utf8')),
     };
     return;
   }
@@ -31,10 +29,7 @@ describe('doRerank', () => {
       result = await model.doRerank({
         documents: {
           type: 'object',
-          values: [
-            { example: 'sunny day at the beach' },
-            { example: 'rainy day in the city' },
-          ],
+          values: [{ example: 'sunny day at the beach' }, { example: 'rainy day in the city' }],
         },
         query: 'rainy day',
         topN: 2,

@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { ModelMessage, streamText } from 'ai';
+import type { ModelMessage } from 'ai';
 
 // Type annotation in variable declaration
-const messages: ModelMessage[] = [];
+const _messages: ModelMessage[] = [];
 
 // Type annotation in function parameter
-function processMessages(msgs: ModelMessage[]) {
+function _processMessages(msgs: ModelMessage[]) {
   return msgs;
 }
 
 // Function return type
-function getMessages(): ModelMessage[] {
+function _getMessages(): ModelMessage[] {
   return [];
 }
 
@@ -26,9 +26,9 @@ type MessageStore = {
 };
 
 // Generic constraint
-function filterMessages<T extends ModelMessage>(msgs: T[]): T[] {
+function _filterMessages<T extends ModelMessage>(msgs: T[]): T[] {
   return msgs;
 }
 
 // Type assertion
-const msg = {} as ModelMessage;
+const _msg = {} as ModelMessage;

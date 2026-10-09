@@ -1,19 +1,18 @@
 'use client';
 
-import { OpenAIBasicMessage } from '@/agent/openai-basic-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { OpenAIBasicMessage } from '@/agent/openai-basic-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestOpenAISmoothStream() {
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<OpenAIBasicMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-openai-smooth-stream',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate } = useChat<OpenAIBasicMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-openai-smooth-stream',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -22,13 +21,16 @@ export default function TestOpenAISmoothStream() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={index} />;
+                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+              }
+              default: {
+                return null;
               }
             }
           })}

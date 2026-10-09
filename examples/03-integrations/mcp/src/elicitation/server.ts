@@ -1,7 +1,6 @@
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import express from 'express';
-import { z } from 'zod';
 
 const app = express();
 
@@ -150,7 +149,5 @@ app.post('/messages', async (req, res) => {
 });
 
 app.listen(8083, () => {
-  console.log(
-    'MCP elicitation example server listening on http://localhost:8083',
-  );
+  console.log('MCP elicitation example server listening on http://localhost:8083');
 });

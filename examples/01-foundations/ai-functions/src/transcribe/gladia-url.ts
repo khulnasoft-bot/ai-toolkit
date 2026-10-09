@@ -1,5 +1,5 @@
-import { gladia } from '@ai-toolkit/gladia';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
+import { gladia } from '@ai-toolkit/gladia';
 import { run } from '../lib/run';
 
 run(async () => {

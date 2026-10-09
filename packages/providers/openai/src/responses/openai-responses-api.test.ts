@@ -1,6 +1,6 @@
-import { InferSchema } from '@ai-toolkit/provider-utils';
+import type { InferSchema } from '@ai-toolkit/provider-utils';
 import { describe, expectTypeOf, it } from 'vitest';
-import {
+import type {
   openaiResponsesChunkSchema,
   openaiResponsesResponseSchema,
 } from './openai-responses-api';
@@ -71,16 +71,10 @@ describe('openaiResponses schema alignment', () => {
   });
 
   it('aligns output_text logprobs', () => {
-    type ChunkLogprobs = Extract<
-      Chunk,
-      { type: 'response.output_text.delta' }
-    >['logprobs'];
+    type ChunkLogprobs = Extract<Chunk, { type: 'response.output_text.delta' }>['logprobs'];
 
     type ResponseLogprobs = Extract<
-      Extract<
-        NonNullable<Response['output']>[number],
-        { type: 'message' }
-      >['content'][number],
+      Extract<NonNullable<Response['output']>[number], { type: 'message' }>['content'][number],
       { type: 'output_text' }
     >['logprobs'];
 

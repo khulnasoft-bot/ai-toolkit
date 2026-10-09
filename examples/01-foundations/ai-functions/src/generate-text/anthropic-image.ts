@@ -1,6 +1,6 @@
-import { anthropic } from '@ai-toolkit/anthropic';
-import { generateText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {

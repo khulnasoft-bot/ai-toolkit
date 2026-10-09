@@ -1,10 +1,10 @@
-import { LanguageModelV3Prompt } from '@ai-toolkit/provider';
+import fs from 'node:fs';
+import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { convertReadableStreamToArray } from '@ai-toolkit/provider-utils/test';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
-import fs from 'node:fs';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { createDeepSeek } from '../deepseek-provider';
-import { DeepSeekChatOptions } from './deepseek-chat-options';
+import type { DeepSeekChatOptions } from './deepseek-chat-options';
 
 const TEST_PROMPT: LanguageModelV3Prompt = [
   { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
@@ -23,9 +23,7 @@ describe('DeepSeekChatLanguageModel', () => {
     function prepareJsonFixtureResponse(filename: string) {
       server.urls['https://api.deepseek.com/chat/completions'].response = {
         type: 'json-value',
-        body: JSON.parse(
-          fs.readFileSync(`src/chat/__fixtures__/${filename}.json`, 'utf8'),
-        ),
+        body: JSON.parse(fs.readFileSync(`src/chat/__fixtures__/${filename}.json`, 'utf8')),
       };
       return;
     }
@@ -465,9 +463,7 @@ describe('DeepSeekChatLanguageModel', () => {
           prompt: TEST_PROMPT,
         });
 
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
@@ -481,9 +477,7 @@ describe('DeepSeekChatLanguageModel', () => {
           prompt: TEST_PROMPT,
         });
 
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
@@ -515,9 +509,7 @@ describe('DeepSeekChatLanguageModel', () => {
           },
         });
 
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
   });

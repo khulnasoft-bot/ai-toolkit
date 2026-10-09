@@ -19,7 +19,7 @@ export async function streamableUI() {
     await sleep();
     streamable.update(
       <ClientInfo>
-        <button>I am a button</button>
+        <button type="button">I am a button</button>
       </ClientInfo>,
     );
     await sleep();

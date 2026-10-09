@@ -1,4 +1,4 @@
-import { LanguageModelV3ProviderTool } from '@ai-toolkit/provider';
+import type { LanguageModelV3ProviderTool } from '@ai-toolkit/provider';
 import { expect, it } from 'vitest';
 import { prepareTools } from './google-prepare-tools';
 

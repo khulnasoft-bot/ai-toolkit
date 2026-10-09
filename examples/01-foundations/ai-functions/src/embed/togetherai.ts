@@ -1,5 +1,5 @@
-import { togetherai } from '@ai-toolkit/togetherai';
 import { embed } from '@ai-toolkit/ai';
+import { togetherai } from '@ai-toolkit/togetherai';
 import { run } from '../lib/run';
 
 run(async () => {

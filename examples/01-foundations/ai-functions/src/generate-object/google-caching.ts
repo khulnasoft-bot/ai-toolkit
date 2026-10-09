@@ -1,6 +1,6 @@
-import { google } from '@ai-toolkit/google';
-import { generateObject } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateObject } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

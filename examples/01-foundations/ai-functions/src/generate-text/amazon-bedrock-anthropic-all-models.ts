@@ -1,5 +1,5 @@
-import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { generateText } from '@ai-toolkit/ai';
+import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
 import { run } from '../lib/run';
 
@@ -30,9 +30,7 @@ run(async () => {
       const duration = Date.now() - start;
 
       console.log(`Response: ${result.text}`);
-      console.log(
-        `Tokens: ${result.usage.inputTokens} in / ${result.usage.outputTokens} out`,
-      );
+      console.log(`Tokens: ${result.usage.inputTokens} in / ${result.usage.outputTokens} out`);
       console.log(`Duration: ${duration}ms`);
       console.log(`Status: PASS`);
     } catch (error) {

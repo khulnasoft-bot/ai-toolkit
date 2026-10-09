@@ -1,6 +1,6 @@
-import { anthropic } from '@ai-toolkit/anthropic';
-import { generateText, stepCountIs } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { generateText, stepCountIs } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -18,9 +18,7 @@ run(async () => {
               // multipart result:
               return {
                 type: 'image',
-                data: fs
-                  .readFileSync('./data/screenshot-editor.png')
-                  .toString('base64'),
+                data: fs.readFileSync('./data/screenshot-editor.png').toString('base64'),
               };
             }
             default: {
@@ -49,8 +47,7 @@ run(async () => {
         },
       }),
     },
-    prompt:
-      'How can I switch to dark mode? Take a look at the screen and tell me.',
+    prompt: 'How can I switch to dark mode? Take a look at the screen and tell me.',
     stopWhen: stepCountIs(5),
   });
 

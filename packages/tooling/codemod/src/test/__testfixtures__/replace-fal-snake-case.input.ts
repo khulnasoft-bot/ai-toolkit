@@ -3,7 +3,7 @@ import { fal } from '@ai-toolkit/fal';
 import { generateImage } from 'ai';
 
 // Test 1: Basic snake_case conversion
-const result1 = await generateImage({
+const _result1 = await generateImage({
   model: fal.image('fal-ai/flux/dev'),
   prompt: 'A cute baby sea otter',
   providerOptions: {
@@ -16,7 +16,7 @@ const result1 = await generateImage({
 });
 
 // Test 2: Image-to-image with image_url
-const result2 = await generateImage({
+const _result2 = await generateImage({
   model: fal.image('fal-ai/flux/dev/image-to-image'),
   prompt: 'Transform this',
   providerOptions: {
@@ -29,7 +29,7 @@ const result2 = await generateImage({
 });
 
 // Test 3: Mixed snake_case options
-const result3 = await generateImage({
+const _result3 = await generateImage({
   model: fal.image('fal-ai/flux/dev'),
   prompt: 'Abstract art',
   providerOptions: {
@@ -42,7 +42,7 @@ const result3 = await generateImage({
 });
 
 // Test 4: Already camelCase (should not change)
-const result4 = await generateImage({
+const _result4 = await generateImage({
   model: fal.image('fal-ai/flux/dev'),
   prompt: 'Landscape',
   providerOptions: {
@@ -54,7 +54,7 @@ const result4 = await generateImage({
 });
 
 // Test 5: Nested objects
-const config = {
+const _config = {
   providerOptions: {
     fal: {
       guidance_scale: 8.0,

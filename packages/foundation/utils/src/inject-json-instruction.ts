@@ -1,4 +1,4 @@
-import {
+import type {
   JSONSchema7,
   LanguageModelV3Message,
   LanguageModelV3Prompt,
@@ -13,9 +13,7 @@ export function injectJsonInstruction({
   prompt,
   schema,
   schemaPrefix = schema != null ? DEFAULT_SCHEMA_PREFIX : undefined,
-  schemaSuffix = schema != null
-    ? DEFAULT_SCHEMA_SUFFIX
-    : DEFAULT_GENERIC_SUFFIX,
+  schemaSuffix = schema != null ? DEFAULT_SCHEMA_SUFFIX : DEFAULT_GENERIC_SUFFIX,
 }: {
   prompt?: string;
   schema?: JSONSchema7;
@@ -45,9 +43,7 @@ export function injectJsonInstructionIntoMessages({
   schemaSuffix?: string;
 }): LanguageModelV3Prompt {
   const systemMessage: LanguageModelV3Message =
-    messages[0]?.role === 'system'
-      ? { ...messages[0] }
-      : { role: 'system', content: '' };
+    messages[0]?.role === 'system' ? { ...messages[0] } : { role: 'system', content: '' };
 
   systemMessage.content = injectJsonInstruction({
     prompt: systemMessage.content,
@@ -56,8 +52,5 @@ export function injectJsonInstructionIntoMessages({
     schemaSuffix,
   });
 
-  return [
-    systemMessage,
-    ...(messages[0]?.role === 'system' ? messages.slice(1) : messages),
-  ];
+  return [systemMessage, ...(messages[0]?.role === 'system' ? messages.slice(1) : messages)];
 }

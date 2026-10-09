@@ -2,14 +2,12 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_StreamProviderError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * Error reported by a provider after a model response stream has started.
  */
 export class StreamProviderError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   /**
    * Provider-defined error type, when supplied by the provider.
    */
@@ -70,9 +68,6 @@ export class StreamProviderError extends AITOOLKITError {
 function isRetryableStatusCode(statusCode: number | undefined): boolean {
   return (
     statusCode != null &&
-    (statusCode === 408 ||
-      statusCode === 409 ||
-      statusCode === 429 ||
-      statusCode >= 500)
+    (statusCode === 408 || statusCode === 409 || statusCode === 429 || statusCode >= 500)
   );
 }

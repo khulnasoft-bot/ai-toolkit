@@ -1,5 +1,5 @@
+import { type LanguageModelUsage, streamObject } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import { streamObject, LanguageModelUsage } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -32,6 +32,6 @@ run(async () => {
   recordUsage(await result.usage);
 
   // note: the stream needs to be consumed because of backpressure
-  for await (const partialObject of result.partialObjectStream) {
+  for await (const _partialObject of result.partialObjectStream) {
   }
 });

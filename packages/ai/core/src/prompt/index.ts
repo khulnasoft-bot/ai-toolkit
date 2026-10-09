@@ -1,13 +1,3 @@
-export type { CallSettings, TimeoutConfiguration } from './call-settings';
-export {
-  assistantModelMessageSchema,
-  modelMessageSchema,
-  systemModelMessageSchema,
-  toolModelMessageSchema,
-  userModelMessageSchema,
-} from './message';
-export type { Prompt } from './prompt';
-
 // re-export types from provider-utils
 export type {
   AssistantContent,
@@ -25,3 +15,12 @@ export type {
   UserContent,
   UserModelMessage,
 } from '@ai-toolkit/provider-utils';
+export type { CallSettings, TimeoutConfiguration } from './call-settings';
+export {
+  assistantModelMessageSchema,
+  modelMessageSchema,
+  systemModelMessageSchema,
+  toolModelMessageSchema,
+  userModelMessageSchema,
+} from './message';
+export type { Prompt } from './prompt';

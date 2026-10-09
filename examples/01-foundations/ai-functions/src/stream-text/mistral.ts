@@ -1,5 +1,5 @@
-import { mistral } from '@ai-toolkit/mistral';
 import { streamText } from '@ai-toolkit/ai';
+import { mistral } from '@ai-toolkit/mistral';
 import { run } from '../lib/run';
 
 run(async () => {

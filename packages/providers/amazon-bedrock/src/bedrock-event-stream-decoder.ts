@@ -1,5 +1,5 @@
 import { EventStreamCodec } from '@smithy/eventstream-codec';
-import { toUtf8, fromUtf8 } from '@smithy/util-utf8';
+import { fromUtf8, toUtf8 } from '@smithy/util-utf8';
 
 export interface DecodedEvent {
   messageType: string;
@@ -43,8 +43,7 @@ export function createBedrockEventStreamDecoder<T>(
 
             buffer = buffer.slice(totalLength);
 
-            const messageType = decoded.headers[':message-type']
-              ?.value as string;
+            const messageType = decoded.headers[':message-type']?.value as string;
             const eventType = decoded.headers[':event-type']?.value as string;
             const data = textDecoder.decode(decoded.body);
 

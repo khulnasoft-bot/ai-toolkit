@@ -1,5 +1,5 @@
+import { describe, expect, it } from 'vitest';
 import { convertXaiChatUsage } from './convert-xai-chat-usage';
-import { describe, it, expect } from 'vitest';
 
 describe('convertXaiChatUsage', () => {
   it('should convert basic usage without reasoning tokens', () => {

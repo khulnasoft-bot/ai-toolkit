@@ -1,24 +1,24 @@
 import {
   OpenAICompatibleChatLanguageModel,
   OpenAICompatibleEmbeddingModel,
-  ProviderErrorStructure,
+  type ProviderErrorStructure,
 } from '@ai-toolkit/openai-compatible';
 import {
-  EmbeddingModelV3,
-  LanguageModelV3,
+  type EmbeddingModelV3,
+  type LanguageModelV3,
   NoSuchModelError,
-  ProviderV3,
+  type ProviderV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
-import { z } from 'zod/v4';
-import { BasetenChatModelId } from './baseten-chat-options';
-import { BasetenEmbeddingModelId } from './baseten-embedding-options';
 import { PerformanceClient } from '@basetenlabs/performance-client';
+import { z } from 'zod/v4';
+import type { BasetenChatModelId } from './baseten-chat-options';
+import type { BasetenEmbeddingModelId } from './baseten-embedding-options';
 import { VERSION } from './version';
 
 export type BasetenErrorData = z.infer<typeof basetenErrorSchema>;
@@ -91,9 +91,7 @@ Creates a embedding model for text generation.
 // by default, we use the Model APIs
 const defaultBaseURL = 'https://inference.baseten.co/v1';
 
-export function createBaseten(
-  options: BasetenProviderSettings = {},
-): BasetenProvider {
+export function createBaseten(options: BasetenProviderSettings = {}): BasetenProvider {
   const baseURL = withoutTrailingSlash(options.baseURL ?? defaultBaseURL);
   const getHeaders = () =>
     withUserAgentSuffix(
@@ -115,10 +113,7 @@ export function createBaseten(
     fetch?: FetchFunction;
   }
 
-  const getCommonModelConfig = (
-    modelType: string,
-    customURL?: string,
-  ): CommonModelConfig => ({
+  const getCommonModelConfig = (modelType: string, customURL?: string): CommonModelConfig => ({
     provider: `baseten.${modelType}`,
     url: ({ path }) => {
       // For embeddings with /sync URLs (but not /sync/v1), we need to add /v1
@@ -150,9 +145,7 @@ export function createBaseten(
           errorStructure: basetenErrorStructure,
         });
       } else if (customURL.includes('/predict')) {
-        throw new Error(
-          'Not supported. You must use a /sync/v1 endpoint for chat models.',
-        );
+        throw new Error('Not supported. You must use a /sync/v1 endpoint for chat models.');
       }
     }
 
@@ -178,13 +171,10 @@ export function createBaseten(
 
     if (isOpenAICompatible) {
       // Create the model using OpenAICompatibleEmbeddingModel and override doEmbed
-      const model = new OpenAICompatibleEmbeddingModel(
-        modelId ?? 'embeddings',
-        {
-          ...getCommonModelConfig('embedding', customURL),
-          errorStructure: basetenErrorStructure,
-        },
-      );
+      const model = new OpenAICompatibleEmbeddingModel(modelId ?? 'embeddings', {
+        ...getCommonModelConfig('embedding', customURL),
+        errorStructure: basetenErrorStructure,
+      });
 
       // Strip /v1 from URL if present before passing to Performance Client to avoid double /v1
       const performanceClientURL = customURL.replace('/sync/v1', '/sync');
@@ -215,9 +205,7 @@ export function createBaseten(
 
         return {
           embeddings,
-          usage: response.usage
-            ? { tokens: response.usage.total_tokens }
-            : undefined,
+          usage: response.usage ? { tokens: response.usage.total_tokens } : undefined,
           response: { headers: {}, body: response },
           warnings: [],
         };
@@ -225,9 +213,7 @@ export function createBaseten(
 
       return model;
     } else {
-      throw new Error(
-        'Not supported. You must use a /sync or /sync/v1 endpoint for embeddings.',
-      );
+      throw new Error('Not supported. You must use a /sync or /sync/v1 endpoint for embeddings.');
     }
   };
 

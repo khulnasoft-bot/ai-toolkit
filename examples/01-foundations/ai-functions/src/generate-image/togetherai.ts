@@ -1,5 +1,5 @@
-import { togetherai } from '@ai-toolkit/togetherai';
 import { generateImage } from '@ai-toolkit/ai';
+import { togetherai } from '@ai-toolkit/togetherai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

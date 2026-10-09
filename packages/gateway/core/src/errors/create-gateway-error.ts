@@ -1,21 +1,20 @@
+import {
+  type InferSchema,
+  lazySchema,
+  safeValidateTypes,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import type { GatewayError } from './gateway-error';
 import { GatewayAuthenticationError } from './gateway-authentication-error';
+import type { GatewayError } from './gateway-error';
+import { GatewayInternalServerError } from './gateway-internal-server-error';
 import { GatewayInvalidRequestError } from './gateway-invalid-request-error';
-import { GatewayRateLimitError } from './gateway-rate-limit-error';
 import {
   GatewayModelNotFoundError,
   modelNotFoundParamSchema,
 } from './gateway-model-not-found-error';
-import { GatewayInternalServerError } from './gateway-internal-server-error';
+import { GatewayRateLimitError } from './gateway-rate-limit-error';
 import { GatewayResponseError } from './gateway-response-error';
-import {
-  InferSchema,
-  lazySchema,
-  safeValidateTypes,
-  validateTypes,
-  zodSchema,
-} from '@ai-toolkit/provider-utils';
 
 export async function createGatewayErrorFromResponse({
   response,
@@ -38,9 +37,7 @@ export async function createGatewayErrorFromResponse({
   if (!parseResult.success) {
     // Try to extract generationId even if validation failed
     const rawGenerationId =
-      typeof response === 'object' &&
-      response !== null &&
-      'generationId' in response
+      typeof response === 'object' && response !== null && 'generationId' in response
         ? (response as { generationId?: string }).generationId
         : undefined;
 
@@ -127,6 +124,4 @@ const gatewayErrorResponseSchema = lazySchema(() =>
   ),
 );
 
-export type GatewayErrorResponse = InferSchema<
-  typeof gatewayErrorResponseSchema
->;
+export type GatewayErrorResponse = InferSchema<typeof gatewayErrorResponseSchema>;

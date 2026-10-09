@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Track variable names that were renamed from addToolResult to addToolOutput
@@ -88,14 +88,8 @@ export default createTransformer((fileInfo, api, options, context) => {
         return (
           renamedVariables.has(path.node.name) &&
           // Don't modify the variable declaration itself
-          !(
-            path.parent.node.type === 'Property' &&
-            path.parent.node.value === path.node
-          ) &&
-          !(
-            path.parent.node.type === 'ObjectProperty' &&
-            path.parent.node.value === path.node
-          )
+          !(path.parent.node.type === 'Property' && path.parent.node.value === path.node) &&
+          !(path.parent.node.type === 'ObjectProperty' && path.parent.node.value === path.node)
         );
       })
       .forEach(path => {

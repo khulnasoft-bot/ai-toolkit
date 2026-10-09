@@ -1,18 +1,15 @@
-import { describe, it, expect } from 'vitest';
-import type { LanguageModelV3 } from '../language-model/v3/language-model-v3';
-import type { EmbeddingModelV3 } from '../embedding-model/v3/embedding-model-v3';
-import type { ImageModelV3 } from '../image-model/v3/image-model-v3';
+import { describe, expect, it } from 'vitest';
 import type {
-  ConformanceTestSet,
   ConformanceContext,
-  LanguageModelConformanceConfig,
+  ConformanceTestSet,
   EmbeddingModelConformanceConfig,
   ImageModelConformanceConfig,
+  LanguageModelConformanceConfig,
 } from './types';
 
 export function runLanguageModelConformanceTests(
   cfg: LanguageModelConformanceConfig,
-  ctx: ConformanceContext,
+  _ctx: ConformanceContext,
 ): void {
   const model = cfg.model();
   const testPrompt = [
@@ -88,7 +85,7 @@ export function runLanguageModelConformanceTests(
 
 export function runEmbeddingModelConformanceTests(
   cfg: EmbeddingModelConformanceConfig,
-  ctx: ConformanceContext,
+  _ctx: ConformanceContext,
 ): void {
   const model = cfg.model();
 
@@ -119,7 +116,7 @@ export function runEmbeddingModelConformanceTests(
 
 export function runImageModelConformanceTests(
   cfg: ImageModelConformanceConfig,
-  ctx: ConformanceContext,
+  _ctx: ConformanceContext,
 ): void {
   const model = cfg.model();
 
@@ -138,10 +135,7 @@ export function runImageModelConformanceTests(
   });
 }
 
-export function runConformanceTests(
-  config: ConformanceTestSet,
-  ctx: ConformanceContext,
-): void {
+export function runConformanceTests(config: ConformanceTestSet, ctx: ConformanceContext): void {
   if (config.languageModel) {
     runLanguageModelConformanceTests(config.languageModel, ctx);
   }

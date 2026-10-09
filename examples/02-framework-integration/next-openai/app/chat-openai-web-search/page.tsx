@@ -1,21 +1,20 @@
 'use client';
 
-import { OpenAIWebSearchMessage } from '@/agent/openai-web-search-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { OpenAIWebSearchMessage } from '@/agent/openai-web-search-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import SourcesView from '@/components/sources-view';
 import OpenAIWebSearchView from '@/components/tool/openai-web-search-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestOpenAIWebSearch() {
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<OpenAIWebSearchMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-openai-web-search',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate } = useChat<OpenAIWebSearchMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-openai-web-search',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -24,23 +23,24 @@ export default function TestOpenAIWebSearch() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={index} />;
+                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
               }
               case 'tool-webSearch': {
-                return <OpenAIWebSearchView invocation={part} key={index} />;
+                return <OpenAIWebSearchView invocation={part} key={part.toolCallId} />;
+              }
+              default: {
+                return null;
               }
             }
           })}
 
-          <SourcesView
-            sources={message.parts.filter(part => part.type === 'source-url')}
-          />
+          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
         </div>
       ))}
 

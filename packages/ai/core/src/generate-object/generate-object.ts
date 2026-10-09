@@ -1,9 +1,9 @@
-import { JSONValue } from '@ai-toolkit/provider';
+import type { JSONValue } from '@ai-toolkit/provider';
 import {
   createIdGenerator,
-  FlexibleSchema,
-  InferSchema,
-  ProviderOptions,
+  type FlexibleSchema,
+  type InferSchema,
+  type ProviderOptions,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { NoObjectGeneratedError } from '../error/no-object-generated-error';
@@ -11,10 +11,10 @@ import { extractReasoningContent } from '../generate-text/extract-reasoning-cont
 import { extractTextContent } from '../generate-text/extract-text-content';
 import { logWarnings } from '../logger/log-warnings';
 import { resolveLanguageModel } from '../model/resolve-model';
-import { CallSettings } from '../prompt/call-settings';
+import type { CallSettings } from '../prompt/call-settings';
 import { convertToLanguageModelPrompt } from '../prompt/convert-to-language-model-prompt';
 import { prepareCallSettings } from '../prompt/prepare-call-settings';
-import { Prompt } from '../prompt/prompt';
+import type { Prompt } from '../prompt/prompt';
 import { standardizePrompt } from '../prompt/standardize-prompt';
 import { wrapGatewayError } from '../prompt/wrap-gateway-error';
 import { assembleOperationName } from '../telemetry/assemble-operation-name';
@@ -23,24 +23,20 @@ import { getTracer } from '../telemetry/get-tracer';
 import { recordSpan } from '../telemetry/record-span';
 import { selectTelemetryAttributes } from '../telemetry/select-telemetry-attributes';
 import { stringifyForTelemetry } from '../telemetry/stringify-for-telemetry';
-import { TelemetrySettings } from '../telemetry/telemetry-settings';
-import {
-  CallWarning,
-  FinishReason,
-  LanguageModel,
-} from '../types/language-model';
-import { LanguageModelRequestMetadata } from '../types/language-model-request-metadata';
-import { LanguageModelResponseMetadata } from '../types/language-model-response-metadata';
-import { ProviderMetadata } from '../types/provider-metadata';
-import { asLanguageModelUsage, LanguageModelUsage } from '../types/usage';
-import { DownloadFunction } from '../util/download/download-function';
+import type { TelemetrySettings } from '../telemetry/telemetry-settings';
+import type { CallWarning, FinishReason, LanguageModel } from '../types/language-model';
+import type { LanguageModelRequestMetadata } from '../types/language-model-request-metadata';
+import type { LanguageModelResponseMetadata } from '../types/language-model-response-metadata';
+import type { ProviderMetadata } from '../types/provider-metadata';
+import { asLanguageModelUsage, type LanguageModelUsage } from '../types/usage';
+import type { DownloadFunction } from '../util/download/download-function';
 import { prepareHeaders } from '../util/prepare-headers';
 import { prepareRetries } from '../util/prepare-retries';
 import { VERSION } from '../version';
-import { GenerateObjectResult } from './generate-object-result';
+import type { GenerateObjectResult } from './generate-object-result';
 import { getOutputStrategy } from './output-strategy';
 import { parseAndValidateObjectResultWithRepair } from './parse-and-validate-object-result';
-import { RepairTextFunction } from './repair-text';
+import type { RepairTextFunction } from './repair-text';
 import { validateObjectGenerationInput } from './validate-object-generation-input';
 
 const originalGenerateId = createIdGenerator({ prefix: 'aiobj', size: 24 });
@@ -113,14 +109,10 @@ A result object that contains the generated object, the finish reason, the token
  */
 export async function generateObject<
   SCHEMA extends FlexibleSchema<unknown> = FlexibleSchema<JSONValue>,
-  OUTPUT extends
-    | 'object'
-    | 'array'
-    | 'enum'
-    | 'no-schema' = InferSchema<SCHEMA> extends string ? 'enum' : 'object',
-  RESULT = OUTPUT extends 'array'
-    ? Array<InferSchema<SCHEMA>>
-    : InferSchema<SCHEMA>,
+  OUTPUT extends 'object' | 'array' | 'enum' | 'no-schema' = InferSchema<SCHEMA> extends string
+    ? 'enum'
+    : 'object',
+  RESULT = OUTPUT extends 'array' ? Array<InferSchema<SCHEMA>> : InferSchema<SCHEMA>,
 >(
   options: Omit<CallSettings, 'stopSequences'> &
     Prompt &
@@ -208,21 +200,14 @@ via tool or schema description.
     experimental_telemetry: telemetry,
     experimental_download: download,
     providerOptions,
-    _internal: {
-      generateId = originalGenerateId,
-      currentDate = () => new Date(),
-    } = {},
+    _internal: { generateId = originalGenerateId, currentDate = () => new Date() } = {},
     ...settings
   } = options;
 
   const model = resolveLanguageModel(modelArg);
 
   const enumValues = 'enum' in options ? options.enum : undefined;
-  const {
-    schema: inputSchema,
-    schemaDescription,
-    schemaName,
-  } = 'schema' in options ? options : {};
+  const { schema: inputSchema, schemaDescription, schemaName } = 'schema' in options ? options : {};
 
   validateObjectGenerationInput({
     output,
@@ -245,10 +230,7 @@ via tool or schema description.
 
   const callSettings = prepareCallSettings(settings);
 
-  const headersWithUserAgent = withUserAgentSuffix(
-    headers ?? {},
-    `ai/${VERSION}`,
-  );
+  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
 
   const baseTelemetryAttributes = getBaseTelemetryAttributes({
     model,
@@ -275,10 +257,7 @@ via tool or schema description.
           'ai.prompt': {
             input: () => JSON.stringify({ system, prompt, messages }),
           },
-          'ai.schema':
-            jsonSchema != null
-              ? { input: () => JSON.stringify(jsonSchema) }
-              : undefined,
+          'ai.schema': jsonSchema != null ? { input: () => JSON.stringify(jsonSchema) } : undefined,
           'ai.schema.name': schemaName,
           'ai.schema.description': schemaDescription,
           'ai.settings.output': outputStrategy.type,
@@ -325,8 +304,7 @@ via tool or schema description.
                 // standardized gen-ai llm span attributes:
                 'gen_ai.system': model.provider,
                 'gen_ai.request.model': model.modelId,
-                'gen_ai.request.frequency_penalty':
-                  callSettings.frequencyPenalty,
+                'gen_ai.request.frequency_penalty': callSettings.frequencyPenalty,
                 'gen_ai.request.max_tokens': callSettings.maxOutputTokens,
                 'gen_ai.request.presence_penalty': callSettings.presencePenalty,
                 'gen_ai.request.temperature': callSettings.temperature,
@@ -363,8 +341,7 @@ via tool or schema description.
 
               if (text === undefined) {
                 throw new NoObjectGeneratedError({
-                  message:
-                    'No object generated: the model did not return a response.',
+                  message: 'No object generated: the model did not return a response.',
                   response: responseData,
                   usage: asLanguageModelUsage(result.usage),
                   finishReason: result.finishReason.unified,
@@ -380,26 +357,19 @@ via tool or schema description.
                     'ai.response.object': { output: () => text },
                     'ai.response.id': responseData.id,
                     'ai.response.model': responseData.modelId,
-                    'ai.response.timestamp':
-                      responseData.timestamp.toISOString(),
-                    'ai.response.providerMetadata': JSON.stringify(
-                      result.providerMetadata,
-                    ),
+                    'ai.response.timestamp': responseData.timestamp.toISOString(),
+                    'ai.response.providerMetadata': JSON.stringify(result.providerMetadata),
 
                     // TODO rename telemetry attributes to inputTokens and outputTokens
                     'ai.usage.promptTokens': result.usage.inputTokens.total,
-                    'ai.usage.completionTokens':
-                      result.usage.outputTokens.total,
+                    'ai.usage.completionTokens': result.usage.outputTokens.total,
 
                     // standardized gen-ai llm span attributes:
-                    'gen_ai.response.finish_reasons': [
-                      result.finishReason.unified,
-                    ],
+                    'gen_ai.response.finish_reasons': [result.finishReason.unified],
                     'gen_ai.response.id': responseData.id,
                     'gen_ai.response.model': responseData.modelId,
                     'gen_ai.usage.input_tokens': result.usage.inputTokens.total,
-                    'gen_ai.usage.output_tokens':
-                      result.usage.outputTokens.total,
+                    'gen_ai.usage.output_tokens': result.usage.outputTokens.total,
                   },
                 }),
               );
@@ -449,9 +419,7 @@ via tool or schema description.
               'ai.response.object': {
                 output: () => JSON.stringify(object),
               },
-              'ai.response.providerMetadata': JSON.stringify(
-                resultProviderMetadata,
-              ),
+              'ai.response.providerMetadata': JSON.stringify(resultProviderMetadata),
 
               // TODO rename telemetry attributes to inputTokens and outputTokens
               'ai.usage.promptTokens': usage.inputTokens,

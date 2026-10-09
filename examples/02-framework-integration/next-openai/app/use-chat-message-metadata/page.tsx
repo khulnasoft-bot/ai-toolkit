@@ -1,19 +1,18 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
+import { DefaultChatTransport, type UIMessage } from '@ai-toolkit/ai';
 import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport, UIMessage } from '@ai-toolkit/ai';
-import { ExampleMetadata } from '@/agent/openai-metadata-agent';
+import type { ExampleMetadata } from '@/agent/openai-metadata-agent';
+import ChatInput from '@/components/chat-input';
 
 type MyMessage = UIMessage<ExampleMetadata>;
 
 export default function Chat() {
-  const { error, status, sendMessage, messages, regenerate, stop } =
-    useChat<MyMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/use-chat-message-metadata',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate, stop } = useChat<MyMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/use-chat-message-metadata',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -21,20 +20,11 @@ export default function Chat() {
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
           {message.metadata?.createdAt && (
-            <div>
-              Created at:{' '}
-              {new Date(message.metadata.createdAt).toLocaleString()}
-            </div>
+            <div>Created at: {new Date(message.metadata.createdAt).toLocaleString()}</div>
           )}
-          {message.metadata?.duration && (
-            <div>Duration: {message.metadata.duration}ms</div>
-          )}
-          {message.metadata?.model && (
-            <div>Model: {message.metadata.model}</div>
-          )}
-          {message.metadata?.totalTokens && (
-            <div>Total tokens: {message.metadata.totalTokens}</div>
-          )}
+          {message.metadata?.duration && <div>Duration: {message.metadata.duration}ms</div>}
+          {message.metadata?.model && <div>Model: {message.metadata.model}</div>}
+          {message.metadata?.totalTokens && <div>Total tokens: {message.metadata.totalTokens}</div>}
           {message.metadata?.finishReason && (
             <div>Finish reason: {message.metadata.finishReason}</div>
           )}

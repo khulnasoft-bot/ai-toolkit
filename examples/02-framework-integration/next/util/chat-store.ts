@@ -1,8 +1,8 @@
+import { existsSync, mkdirSync } from 'node:fs';
+import { readdir, readFile, writeFile } from 'node:fs/promises';
+import path from 'node:path';
 import { generateId } from '@ai-toolkit/ai';
-import { existsSync, mkdirSync } from 'fs';
-import { readdir, readFile, writeFile } from 'fs/promises';
-import path from 'path';
-import { ChatData, MyUIMessage } from './chat-schema';
+import type { ChatData, MyUIMessage } from './chat-schema';
 
 // example implementation for demo purposes
 // in a real app, you would save the chat to a database
@@ -67,9 +67,7 @@ export async function readAllChats(): Promise<ChatData[]> {
   const chatDir = path.join(process.cwd(), '.chats');
   const files = await readdir(chatDir, { withFileTypes: true });
   return Promise.all(
-    files
-      .filter(file => file.isFile())
-      .map(async file => readChat(file.name.replace('.json', ''))),
+    files.filter(file => file.isFile()).map(async file => readChat(file.name.replace('.json', ''))),
   );
 }
 

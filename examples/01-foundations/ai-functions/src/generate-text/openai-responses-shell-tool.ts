@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, stepCountIs } from '@ai-toolkit/ai';
-import { executeShellCommand } from '../lib/shell-executor';
+import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
+import { executeShellCommand } from '../lib/shell-executor';
 
 run(async () => {
   const result = await generateText({
@@ -10,17 +10,14 @@ run(async () => {
       shell: openai.tools.shell({
         execute: async ({ action }) => {
           const outputs = await Promise.all(
-            action.commands.map(command =>
-              executeShellCommand(command, action.timeoutMs),
-            ),
+            action.commands.map(command => executeShellCommand(command, action.timeoutMs)),
           );
 
           return { output: outputs };
         },
       }),
     },
-    prompt:
-      'Create a file in my ~/Desktop directory called dec1.txt with the text: THIS WORKS!',
+    prompt: 'Create a file in my ~/Desktop directory called dec1.txt with the text: THIS WORKS!',
     stopWhen: stepCountIs(5),
   });
 

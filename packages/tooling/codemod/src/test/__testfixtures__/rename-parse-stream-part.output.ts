@@ -1,4 +1,4 @@
 // @ts-nocheck
 import { parseDataStreamPart } from 'ai';
 
-const result = parseDataStreamPart(data);
+const _result = parseDataStreamPart(data);

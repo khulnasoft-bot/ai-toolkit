@@ -36,7 +36,7 @@ const filteredToolsContext = {
   stocks: { symbol: 'AI' },
 };
 
-const tools = {
+const _tools = {
   weather: {},
   stocks: {},
 } as any;

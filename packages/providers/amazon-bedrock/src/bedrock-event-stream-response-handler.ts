@@ -1,18 +1,16 @@
 import { EmptyResponseBodyError } from '@ai-toolkit/provider';
 import {
-  ParseResult,
-  safeParseJSON,
   extractResponseHeaders,
-  ResponseHandler,
+  type ParseResult,
+  type ResponseHandler,
+  safeParseJSON,
   safeValidateTypes,
 } from '@ai-toolkit/provider-utils';
-import { ZodType } from 'zod/v4';
+import type { ZodType } from 'zod/v4';
 import { createBedrockEventStreamDecoder } from './bedrock-event-stream-decoder';
 
 export const createBedrockEventStreamResponseHandler =
-  <T>(
-    chunkSchema: ZodType<T, any>,
-  ): ResponseHandler<ReadableStream<ParseResult<T>>> =>
+  <T>(chunkSchema: ZodType<T, any>): ResponseHandler<ReadableStream<ParseResult<T>>> =>
   async ({ response }: { response: Response }) => {
     const responseHeaders = extractResponseHeaders(response);
 

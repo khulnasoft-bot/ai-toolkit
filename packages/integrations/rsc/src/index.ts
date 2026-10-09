@@ -1,20 +1,19 @@
 export {
-  getAIState,
-  getMutableAIState,
+  readStreamableValue,
+  useActions,
+  useAIState,
+  useStreamableValue,
+  useSyncUIState,
+  useUIState,
+} from './rsc-client';
+export {
+  createAI,
   createStreamableUI,
   createStreamableValue,
+  getAIState,
+  getMutableAIState,
   streamUI,
-  createAI,
 } from './rsc-server';
-
-export {
-  readStreamableValue,
-  useStreamableValue,
-  useUIState,
-  useAIState,
-  useActions,
-  useSyncUIState,
-} from './rsc-client';
 
 export type { StreamableValue } from './streamable-value/streamable-value';
 export * from './types';

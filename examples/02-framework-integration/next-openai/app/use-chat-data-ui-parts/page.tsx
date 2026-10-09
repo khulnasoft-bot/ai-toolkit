@@ -1,13 +1,9 @@
 'use client';
 
-import ChatInput from '@/components/chat-input';
+import { DefaultChatTransport, type FinishReason, type UIMessage } from '@ai-toolkit/ai';
 import { useChat } from '@ai-toolkit/react';
-import {
-  DefaultChatTransport,
-  UIMessage,
-  type FinishReason,
-} from '@ai-toolkit/ai';
 import { useState } from 'react';
+import ChatInput from '@/components/chat-input';
 
 type MyMessage = UIMessage<
   never,
@@ -21,21 +17,18 @@ type MyMessage = UIMessage<
 >;
 
 export default function Chat() {
-  const [lastFinishReason, setLastFinishReason] = useState<
-    FinishReason | undefined
-  >(undefined);
-  const { error, status, sendMessage, messages, regenerate, stop } =
-    useChat<MyMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/use-chat-data-ui-parts',
-      }),
-      onData: dataPart => {
-        console.log('dataPart', JSON.stringify(dataPart, null, 2));
-      },
-      onFinish: ({ finishReason }) => {
-        setLastFinishReason(finishReason);
-      },
-    });
+  const [lastFinishReason, setLastFinishReason] = useState<FinishReason | undefined>(undefined);
+  const { error, status, sendMessage, messages, regenerate, stop } = useChat<MyMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/use-chat-data-ui-parts',
+    }),
+    onData: dataPart => {
+      console.log('dataPart', JSON.stringify(dataPart, null, 2));
+    },
+    onFinish: ({ finishReason }) => {
+      setLastFinishReason(finishReason);
+    },
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -46,7 +39,7 @@ export default function Chat() {
             .filter(part => part.type === 'data-weather')
             .map((part, index) => (
               <span
-                key={index}
+                key={`${part.type}-${index}`}
                 style={{
                   border: '2px solid red',
                   padding: '2px',
@@ -61,11 +54,10 @@ export default function Chat() {
                   </>
                 ) : part.data.status === 'success' ? (
                   <>
-                    Weather in <b>{part.data.city}</b>:{' '}
-                    <b>{part.data.weather}</b>
+                    Weather in <b>{part.data.city}</b>: <b>{part.data.weather}</b>
                   </>
                 ) : (
-                  <>Unknown weather state</>
+                  'Unknown weather state'
                 )}
               </span>
             ))}
@@ -73,8 +65,9 @@ export default function Chat() {
             .filter(part => part.type !== 'data-weather')
             .map((part, index) => {
               if (part.type === 'text') {
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
               }
+              return null;
             })}
         </div>
       ))}
@@ -106,9 +99,7 @@ export default function Chat() {
       )}
 
       {messages.length > 0 && (
-        <div className="mt-4 text-gray-500">
-          Finish reason: {String(lastFinishReason)}
-        </div>
+        <div className="mt-4 text-gray-500">Finish reason: {String(lastFinishReason)}</div>
       )}
 
       <ChatInput status={status} onSubmit={text => sendMessage({ text })} />

@@ -10,7 +10,7 @@ const sourceMapping: Record<string, string> = {
  * Codemod to rename imports from 'ai' to 'ai-toolkit'.
  * Handles static imports, re-exports, dynamic import() and require() calls.
  */
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   const renameSource = (value: unknown): value is string =>
@@ -71,8 +71,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         (arg.type === 'StringLiteral' || arg.type === 'Literal') &&
         renameSource((arg as { value?: unknown }).value)
       ) {
-        (arg as { value: string }).value =
-          sourceMapping[(arg as { value: string }).value];
+        (arg as { value: string }).value = sourceMapping[(arg as { value: string }).value];
         context.hasChanges = true;
       }
     });

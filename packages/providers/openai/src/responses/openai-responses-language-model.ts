@@ -1,18 +1,18 @@
 import {
   APICallError,
-  JSONValue,
-  LanguageModelV3,
-  LanguageModelV3Prompt,
-  LanguageModelV3CallOptions,
-  LanguageModelV3Content,
-  LanguageModelV3FinishReason,
-  LanguageModelV3GenerateResult,
-  LanguageModelV3ProviderTool,
-  LanguageModelV3StreamPart,
-  LanguageModelV3StreamResult,
-  LanguageModelV3ToolApprovalRequest,
-  SharedV3ProviderMetadata,
-  SharedV3Warning,
+  type JSONValue,
+  type LanguageModelV3,
+  type LanguageModelV3CallOptions,
+  type LanguageModelV3Content,
+  type LanguageModelV3FinishReason,
+  type LanguageModelV3GenerateResult,
+  type LanguageModelV3Prompt,
+  type LanguageModelV3ProviderTool,
+  type LanguageModelV3StreamPart,
+  type LanguageModelV3StreamResult,
+  type LanguageModelV3ToolApprovalRequest,
+  type SharedV3ProviderMetadata,
+  type SharedV3Warning,
 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
@@ -20,49 +20,49 @@ import {
   createJsonResponseHandler,
   createToolNameMapping,
   generateId,
-  InferSchema,
+  type InferSchema,
+  type ParseResult,
   parseProviderOptions,
-  ParseResult,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
-import { OpenAIConfig } from '../openai-config';
+import type { OpenAIConfig } from '../openai-config';
 import { openaiFailedResponseHandler } from '../openai-error';
 import { getOpenAILanguageModelCapabilities } from '../openai-language-model-capabilities';
-import { applyPatchInputSchema } from '../tool/apply-patch';
-import {
+import type { applyPatchInputSchema } from '../tool/apply-patch';
+import type {
   codeInterpreterInputSchema,
   codeInterpreterOutputSchema,
 } from '../tool/code-interpreter';
-import { fileSearchOutputSchema } from '../tool/file-search';
-import { imageGenerationOutputSchema } from '../tool/image-generation';
-import { localShellInputSchema } from '../tool/local-shell';
-import { mcpOutputSchema } from '../tool/mcp';
-import { shellInputSchema } from '../tool/shell';
-import { webSearchOutputSchema } from '../tool/web-search';
+import type { fileSearchOutputSchema } from '../tool/file-search';
+import type { imageGenerationOutputSchema } from '../tool/image-generation';
+import type { localShellInputSchema } from '../tool/local-shell';
+import type { mcpOutputSchema } from '../tool/mcp';
+import type { shellInputSchema } from '../tool/shell';
+import type { webSearchOutputSchema } from '../tool/web-search';
 import {
   convertOpenAIResponsesUsage,
-  OpenAIResponsesUsage,
+  type OpenAIResponsesUsage,
 } from './convert-openai-responses-usage';
 import { convertToOpenAIResponsesInput } from './convert-to-openai-responses-input';
 import { mapOpenAIResponseFinishReason } from './map-openai-responses-finish-reason';
 import {
-  OpenAIResponsesChunk,
+  type OpenAIResponsesApplyPatchOperationDiffDeltaChunk,
+  type OpenAIResponsesApplyPatchOperationDiffDoneChunk,
+  type OpenAIResponsesChunk,
+  type OpenAIResponsesIncludeOptions,
+  type OpenAIResponsesIncludeValue,
+  type OpenAIResponsesLogprobs,
+  type OpenAIResponsesWebSearchAction,
   openaiResponsesChunkSchema,
-  OpenAIResponsesIncludeOptions,
-  OpenAIResponsesIncludeValue,
-  OpenAIResponsesLogprobs,
   openaiResponsesResponseSchema,
-  OpenAIResponsesWebSearchAction,
-  OpenAIResponsesApplyPatchOperationDiffDeltaChunk,
-  OpenAIResponsesApplyPatchOperationDiffDoneChunk,
 } from './openai-responses-api';
 import {
-  OpenAIResponsesModelId,
+  type OpenAIResponsesModelId,
   openaiResponsesProviderOptionsSchema,
   TOP_LOGPROBS_MAX,
 } from './openai-responses-options';
 import { prepareResponsesTools } from './openai-responses-prepare-tools';
-import {
+import type {
   ResponsesSourceDocumentProviderMetadata,
   ResponsesTextProviderMetadata,
 } from './openai-responses-provider-metadata';
@@ -82,8 +82,9 @@ function extractApprovalRequestIdToToolCallIdMapping(
     if (message.role !== 'assistant') continue;
     for (const part of message.content) {
       if (part.type !== 'tool-call') continue;
-      const approvalRequestId = part.providerOptions?.openai
-        ?.approvalRequestId as string | undefined;
+      const approvalRequestId = part.providerOptions?.openai?.approvalRequestId as
+        | string
+        | undefined;
       if (approvalRequestId != null) {
         mapping[approvalRequestId] = part.toolCallId;
       }
@@ -151,9 +152,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       warnings.push({ type: 'unsupported', feature: 'stopSequences' });
     }
 
-    const providerOptionsName = this.config.provider.includes('azure')
-      ? 'azure'
-      : 'openai';
+    const providerOptionsName = this.config.provider.includes('azure') ? 'azure' : 'openai';
     let openaiOptions = await parseProviderOptions({
       provider: providerOptionsName,
       providerOptions,
@@ -168,8 +167,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       });
     }
 
-    const isReasoningModel =
-      openaiOptions?.forceReasoning ?? modelCapabilities.isReasoningModel;
+    const isReasoningModel = openaiOptions?.forceReasoning ?? modelCapabilities.isReasoningModel;
 
     if (openaiOptions?.conversation && openaiOptions?.previousResponseId) {
       warnings.push({
@@ -194,23 +192,20 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       },
     });
 
-    const { input, warnings: inputWarnings } =
-      await convertToOpenAIResponsesInput({
-        prompt,
-        toolNameMapping,
-        systemMessageMode:
-          openaiOptions?.systemMessageMode ??
-          (isReasoningModel
-            ? 'developer'
-            : modelCapabilities.systemMessageMode),
-        providerOptionsName,
-        fileIdPrefixes: this.config.fileIdPrefixes,
-        store: openaiOptions?.store ?? true,
-        hasConversation: openaiOptions?.conversation != null,
-        hasLocalShellTool: hasOpenAITool('openai.local_shell'),
-        hasShellTool: hasOpenAITool('openai.shell'),
-        hasApplyPatchTool: hasOpenAITool('openai.apply_patch'),
-      });
+    const { input, warnings: inputWarnings } = await convertToOpenAIResponsesInput({
+      prompt,
+      toolNameMapping,
+      systemMessageMode:
+        openaiOptions?.systemMessageMode ??
+        (isReasoningModel ? 'developer' : modelCapabilities.systemMessageMode),
+      providerOptionsName,
+      fileIdPrefixes: this.config.fileIdPrefixes,
+      store: openaiOptions?.store ?? true,
+      hasConversation: openaiOptions?.conversation != null,
+      hasLocalShellTool: hasOpenAITool('openai.local_shell'),
+      hasShellTool: hasOpenAITool('openai.shell'),
+      hasApplyPatchTool: hasOpenAITool('openai.apply_patch'),
+    });
 
     warnings.push(...inputWarnings);
 
@@ -227,9 +222,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     }
 
     function hasOpenAITool(id: string) {
-      return (
-        tools?.find(tool => tool.type === 'provider' && tool.id === id) != null
-      );
+      return tools?.find(tool => tool.type === 'provider' && tool.id === id) != null;
     }
 
     // when logprobs are requested, automatically include them:
@@ -249,8 +242,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       tools?.find(
         tool =>
           tool.type === 'provider' &&
-          (tool.id === 'openai.web_search' ||
-            tool.id === 'openai.web_search_preview'),
+          (tool.id === 'openai.web_search' || tool.id === 'openai.web_search_preview'),
       ) as LanguageModelV3ProviderTool | undefined
     )?.name;
 
@@ -316,8 +308,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
 
       // model-specific settings:
       ...(isReasoningModel &&
-        (openaiOptions?.reasoningEffort != null ||
-          openaiOptions?.reasoningSummary != null) && {
+        (openaiOptions?.reasoningEffort != null || openaiOptions?.reasoningSummary != null) && {
           reasoning: {
             ...(openaiOptions?.reasoningEffort != null && {
               effort: openaiOptions.reasoningEffort,
@@ -377,15 +368,11 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     }
 
     // Validate flex processing support
-    if (
-      openaiOptions?.serviceTier === 'flex' &&
-      !modelCapabilities.supportsFlexProcessing
-    ) {
+    if (openaiOptions?.serviceTier === 'flex' && !modelCapabilities.supportsFlexProcessing) {
       warnings.push({
         type: 'unsupported',
         feature: 'serviceTier',
-        details:
-          'flex processing is only available for o3, o4-mini, and gpt-5 models',
+        details: 'flex processing is only available for o3, o4-mini, and gpt-5 models',
       });
       // Remove from args if not supported
       delete (baseArgs as any).service_tier;
@@ -429,9 +416,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const {
       args: body,
       warnings,
@@ -456,9 +441,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
       failedResponseHandler: openaiFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        openaiResponsesResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(openaiResponsesResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -566,10 +549,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
 
         case 'message': {
           for (const contentPart of part.content) {
-            if (
-              options.providerOptions?.[providerOptionsName]?.logprobs &&
-              contentPart.logprobs
-            ) {
+            if (options.providerOptions?.[providerOptionsName]?.logprobs && contentPart.logprobs) {
               logprobs.push(contentPart.logprobs);
             }
 
@@ -682,9 +662,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
           content.push({
             type: 'tool-call',
             toolCallId: part.id,
-            toolName: toolNameMapping.toCustomToolName(
-              webSearchToolName ?? 'web_search',
-            ),
+            toolName: toolNameMapping.toCustomToolName(webSearchToolName ?? 'web_search'),
             input: JSON.stringify({}),
             providerExecuted: true,
           });
@@ -692,9 +670,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
           content.push({
             type: 'tool-result',
             toolCallId: part.id,
-            toolName: toolNameMapping.toCustomToolName(
-              webSearchToolName ?? 'web_search',
-            ),
+            toolName: toolNameMapping.toCustomToolName(webSearchToolName ?? 'web_search'),
             result: mapWebSearchOutput(part.action),
           });
 
@@ -704,9 +680,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
         case 'mcp_call': {
           const toolCallId =
             part.approval_request_id != null
-              ? (approvalRequestIdToDummyToolCallIdFromPrompt[
-                  part.approval_request_id
-                ] ?? part.id)
+              ? (approvalRequestIdToDummyToolCallIdFromPrompt[part.approval_request_id] ?? part.id)
               : part.id;
 
           const toolName = `mcp.${part.name}`;
@@ -730,9 +704,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
               name: part.name,
               arguments: part.arguments,
               ...(part.output != null ? { output: part.output } : {}),
-              ...(part.error != null
-                ? { error: part.error as unknown as JSONValue }
-                : {}),
+              ...(part.error != null ? { error: part.error as unknown as JSONValue } : {}),
             } satisfies InferSchema<typeof mcpOutputSchema>,
             providerMetadata: {
               [providerOptionsName]: {
@@ -900,9 +872,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const {
       args: body,
       warnings,
@@ -923,9 +893,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
         stream: true,
       },
       failedResponseHandler: openaiFailedResponseHandler,
-      successfulResponseHandler: createEventSourceResponseHandler(
-        openaiResponsesChunkSchema,
-      ),
+      successfulResponseHandler: createEventSourceResponseHandler(openaiResponsesChunkSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -935,16 +903,13 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
     const approvalRequestIdToDummyToolCallIdFromPrompt =
       extractApprovalRequestIdToToolCallIdMapping(options.prompt);
 
-    const approvalRequestIdToDummyToolCallIdFromStream = new Map<
-      string,
-      string
-    >();
+    const approvalRequestIdToDummyToolCallIdFromStream = new Map<string, string>();
 
     let finishReason: LanguageModelV3FinishReason = {
       unified: 'other',
       raw: undefined,
     };
-    let usage: OpenAIResponsesUsage | undefined = undefined;
+    let usage: OpenAIResponsesUsage | undefined;
     const logprobs: Array<OpenAIResponsesLogprobs> = [];
     let responseId: string | null = null;
 
@@ -966,10 +931,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
 
     // set annotations in 'text-end' part providerMetadata.
     const ongoingAnnotations: Array<
-      Extract<
-        OpenAIResponsesChunk,
-        { type: 'response.output_text.annotation.added' }
-      >['annotation']
+      Extract<OpenAIResponsesChunk, { type: 'response.output_text.annotation.added' }>['annotation']
     > = [];
 
     // flag that checks if there have been client-side tool calls (not executed by openai)
@@ -988,10 +950,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
 
     return {
       stream: response.pipeThrough(
-        new TransformStream<
-          ParseResult<OpenAIResponsesChunk>,
-          LanguageModelV3StreamPart
-        >({
+        new TransformStream<ParseResult<OpenAIResponsesChunk>, LanguageModelV3StreamPart>({
           start(controller) {
             controller.enqueue({ type: 'stream-start', warnings });
           },
@@ -1024,18 +983,14 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 });
               } else if (value.item.type === 'web_search_call') {
                 ongoingToolCalls[value.output_index] = {
-                  toolName: toolNameMapping.toCustomToolName(
-                    webSearchToolName ?? 'web_search',
-                  ),
+                  toolName: toolNameMapping.toCustomToolName(webSearchToolName ?? 'web_search'),
                   toolCallId: value.item.id,
                 };
 
                 controller.enqueue({
                   type: 'tool-input-start',
                   id: value.item.id,
-                  toolName: toolNameMapping.toCustomToolName(
-                    webSearchToolName ?? 'web_search',
-                  ),
+                  toolName: toolNameMapping.toCustomToolName(webSearchToolName ?? 'web_search'),
                   providerExecuted: true,
                 });
 
@@ -1047,9 +1002,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-call',
                   toolCallId: value.item.id,
-                  toolName: toolNameMapping.toCustomToolName(
-                    webSearchToolName ?? 'web_search',
-                  ),
+                  toolName: toolNameMapping.toCustomToolName(webSearchToolName ?? 'web_search'),
                   input: JSON.stringify({}),
                   providerExecuted: true,
                 });
@@ -1067,8 +1020,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 });
               } else if (value.item.type === 'code_interpreter_call') {
                 ongoingToolCalls[value.output_index] = {
-                  toolName:
-                    toolNameMapping.toCustomToolName('code_interpreter'),
+                  toolName: toolNameMapping.toCustomToolName('code_interpreter'),
                   toolCallId: value.item.id,
                   codeInterpreter: {
                     containerId: value.item.container_id,
@@ -1078,8 +1030,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-input-start',
                   id: value.item.id,
-                  toolName:
-                    toolNameMapping.toCustomToolName('code_interpreter'),
+                  toolName: toolNameMapping.toCustomToolName('code_interpreter'),
                   providerExecuted: true,
                 });
 
@@ -1100,8 +1051,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-call',
                   toolCallId: value.item.id,
-                  toolName:
-                    toolNameMapping.toCustomToolName('image_generation'),
+                  toolName: toolNameMapping.toCustomToolName('image_generation'),
                   input: '{}',
                   providerExecuted: true,
                 });
@@ -1171,10 +1121,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                     },
                   },
                 });
-              } else if (
-                isResponseOutputItemAddedChunk(value) &&
-                value.item.type === 'reasoning'
-              ) {
+              } else if (isResponseOutputItemAddedChunk(value) && value.item.type === 'reasoning') {
                 activeReasoning[value.item.id] = {
                   encryptedContent: value.item.encrypted_content,
                   summaryParts: { 0: 'active' },
@@ -1186,8 +1133,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                   providerMetadata: {
                     [providerOptionsName]: {
                       itemId: value.item.id,
-                      reasoningEncryptedContent:
-                        value.item.encrypted_content ?? null,
+                      reasoningEncryptedContent: value.item.encrypted_content ?? null,
                     },
                   },
                 });
@@ -1232,9 +1178,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-result',
                   toolCallId: value.item.id,
-                  toolName: toolNameMapping.toCustomToolName(
-                    webSearchToolName ?? 'web_search',
-                  ),
+                  toolName: toolNameMapping.toCustomToolName(webSearchToolName ?? 'web_search'),
                   result: mapWebSearchOutput(value.item.action),
                 });
               } else if (value.item.type === 'computer_call') {
@@ -1287,8 +1231,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-result',
                   toolCallId: value.item.id,
-                  toolName:
-                    toolNameMapping.toCustomToolName('code_interpreter'),
+                  toolName: toolNameMapping.toCustomToolName('code_interpreter'),
                   result: {
                     outputs: value.item.outputs,
                   } satisfies InferSchema<typeof codeInterpreterOutputSchema>,
@@ -1297,8 +1240,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-result',
                   toolCallId: value.item.id,
-                  toolName:
-                    toolNameMapping.toCustomToolName('image_generation'),
+                  toolName: toolNameMapping.toCustomToolName('image_generation'),
                   result: {
                     result: value.item.result,
                   } satisfies InferSchema<typeof imageGenerationOutputSchema>,
@@ -1306,19 +1248,14 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
               } else if (value.item.type === 'mcp_call') {
                 ongoingToolCalls[value.output_index] = undefined;
 
-                const approvalRequestId =
-                  value.item.approval_request_id ?? undefined;
+                const approvalRequestId = value.item.approval_request_id ?? undefined;
 
                 // when MCP tools require approval, we track them with our own
                 // tool call IDs and then map OpenAI's approval_request_id back to our ID so results match.
                 const aliasedToolCallId =
                   approvalRequestId != null
-                    ? (approvalRequestIdToDummyToolCallIdFromStream.get(
-                        approvalRequestId,
-                      ) ??
-                      approvalRequestIdToDummyToolCallIdFromPrompt[
-                        approvalRequestId
-                      ] ??
+                    ? (approvalRequestIdToDummyToolCallIdFromStream.get(approvalRequestId) ??
+                      approvalRequestIdToDummyToolCallIdFromPrompt[approvalRequestId] ??
                       value.item.id)
                     : value.item.id;
 
@@ -1342,9 +1279,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                     serverLabel: value.item.server_label,
                     name: value.item.name,
                     arguments: value.item.arguments,
-                    ...(value.item.output != null
-                      ? { output: value.item.output }
-                      : {}),
+                    ...(value.item.output != null ? { output: value.item.output } : {}),
                     ...(value.item.error != null
                       ? { error: value.item.error as unknown as JSONValue }
                       : {}),
@@ -1411,10 +1346,8 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
               } else if (value.item.type === 'mcp_approval_request') {
                 ongoingToolCalls[value.output_index] = undefined;
 
-                const dummyToolCallId =
-                  self.config.generateId?.() ?? generateId();
-                const approvalRequestId =
-                  value.item.approval_request_id ?? value.item.id;
+                const dummyToolCallId = self.config.generateId?.() ?? generateId();
+                const approvalRequestId = value.item.approval_request_id ?? value.item.id;
                 approvalRequestIdToDummyToolCallIdFromStream.set(
                   approvalRequestId,
                   dummyToolCallId,
@@ -1478,13 +1411,8 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
 
                 // get all active or can-conclude summary parts' ids
                 // to conclude ongoing reasoning parts:
-                const summaryPartIndices = Object.entries(
-                  activeReasoningPart.summaryParts,
-                )
-                  .filter(
-                    ([_, status]) =>
-                      status === 'active' || status === 'can-conclude',
-                  )
+                const summaryPartIndices = Object.entries(activeReasoningPart.summaryParts)
+                  .filter(([_, status]) => status === 'active' || status === 'can-conclude')
                   .map(([summaryIndex]) => summaryIndex);
 
                 for (const summaryIndex of summaryPartIndices) {
@@ -1494,8 +1422,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                     providerMetadata: {
                       [providerOptionsName]: {
                         itemId: value.item.id,
-                        reasoningEncryptedContent:
-                          value.item.encrypted_content ?? null,
+                        reasoningEncryptedContent: value.item.encrypted_content ?? null,
                       },
                     },
                   });
@@ -1591,11 +1518,10 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 controller.enqueue({
                   type: 'tool-call',
                   toolCallId: toolCall.toolCallId,
-                  toolName:
-                    toolNameMapping.toCustomToolName('code_interpreter'),
+                  toolName: toolNameMapping.toCustomToolName('code_interpreter'),
                   input: JSON.stringify({
                     code: value.code,
-                    containerId: toolCall.codeInterpreter!.containerId,
+                    containerId: toolCall.codeInterpreter?.containerId,
                   } satisfies InferSchema<typeof codeInterpreterInputSchema>),
                   providerExecuted: true,
                 });
@@ -1615,10 +1541,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 delta: value.delta,
               });
 
-              if (
-                options.providerOptions?.[providerOptionsName]?.logprobs &&
-                value.logprobs
-              ) {
+              if (options.providerOptions?.[providerOptionsName]?.logprobs && value.logprobs) {
                 logprobs.push(value.logprobs);
               }
             } else if (value.type === 'response.reasoning_summary_part.added') {
@@ -1626,17 +1549,11 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
               if (value.summary_index > 0) {
                 const activeReasoningPart = activeReasoning[value.item_id]!;
 
-                activeReasoningPart.summaryParts[value.summary_index] =
-                  'active';
+                activeReasoningPart.summaryParts[value.summary_index] = 'active';
 
                 // since there is a new active summary part, we can conclude all can-conclude summary parts
-                for (const summaryIndex of Object.keys(
-                  activeReasoningPart.summaryParts,
-                )) {
-                  if (
-                    activeReasoningPart.summaryParts[summaryIndex] ===
-                    'can-conclude'
-                  ) {
+                for (const summaryIndex of Object.keys(activeReasoningPart.summaryParts)) {
+                  if (activeReasoningPart.summaryParts[summaryIndex] === 'can-conclude') {
                     controller.enqueue({
                       type: 'reasoning-end',
                       id: `${value.item_id}:${summaryIndex}`,
@@ -1644,8 +1561,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                         [providerOptionsName]: { itemId: value.item_id },
                       },
                     });
-                    activeReasoningPart.summaryParts[summaryIndex] =
-                      'concluded';
+                    activeReasoningPart.summaryParts[summaryIndex] = 'concluded';
                   }
                 }
 
@@ -1656,8 +1572,7 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                     [providerOptionsName]: {
                       itemId: value.item_id,
                       reasoningEncryptedContent:
-                        activeReasoning[value.item_id]?.encryptedContent ??
-                        null,
+                        activeReasoning[value.item_id]?.encryptedContent ?? null,
                     },
                   },
                 });
@@ -1686,15 +1601,11 @@ export class OpenAIResponsesLanguageModel implements LanguageModelV3 {
                 });
 
                 // mark the summary part as concluded
-                activeReasoning[value.item_id]!.summaryParts[
-                  value.summary_index
-                ] = 'concluded';
+                activeReasoning[value.item_id]?.summaryParts[value.summary_index] = 'concluded';
               } else {
                 // mark the summary part as can-conclude only
                 // because we need to have a final summary part with the encrypted content
-                activeReasoning[value.item_id]!.summaryParts[
-                  value.summary_index
-                ] = 'can-conclude';
+                activeReasoning[value.item_id]?.summaryParts[value.summary_index] = 'can-conclude';
               }
             } else if (isResponseFinishedChunk(value)) {
               finishReason = {
@@ -1823,14 +1734,10 @@ function isResponseOutputItemDoneChunk(
   return chunk.type === 'response.output_item.done';
 }
 
-function isResponseFinishedChunk(
-  chunk: OpenAIResponsesChunk,
-): chunk is OpenAIResponsesChunk & {
+function isResponseFinishedChunk(chunk: OpenAIResponsesChunk): chunk is OpenAIResponsesChunk & {
   type: 'response.completed' | 'response.incomplete';
 } {
-  return (
-    chunk.type === 'response.completed' || chunk.type === 'response.incomplete'
-  );
+  return chunk.type === 'response.completed' || chunk.type === 'response.incomplete';
 }
 
 function isResponseCreatedChunk(

@@ -1,13 +1,9 @@
 'use client';
 
-import { UIMessage, useChat } from '@ai-toolkit/react';
-import ChatInput from '@/components/chat-input';
-import {
-  ChatTransport,
-  convertToModelMessages,
-  streamText,
-} from '@ai-toolkit/ai';
+import { type ChatTransport, convertToModelMessages, streamText } from '@ai-toolkit/ai';
 import { createOpenAI } from '@ai-toolkit/openai';
+import { type UIMessage, useChat } from '@ai-toolkit/react';
+import ChatInput from '@/components/chat-input';
 
 // Note: this needs a client-side OpenAI API key to work.
 // DO NOT USE THIS IN ENVIRONMENTS WHERE THE API KEY IS CONFIDENTIAL.
@@ -43,6 +39,7 @@ export default function Chat() {
             if (part.type === 'text') {
               return part.text;
             }
+            return null;
           })}
         </div>
       ))}

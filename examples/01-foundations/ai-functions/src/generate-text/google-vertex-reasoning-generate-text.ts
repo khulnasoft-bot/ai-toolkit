@@ -1,5 +1,5 @@
-import { vertex } from '@ai-toolkit/google-vertex';
 import { generateText } from '@ai-toolkit/ai';
+import { vertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -17,7 +17,7 @@ run(async () => {
     },
   });
 
-  process.stdout.write('\x1b[34m' + result.reasoning + '\x1b[0m');
+  process.stdout.write(`\x1b[34m${result.reasoning}\x1b[0m`);
   console.log(result.text);
   console.log();
   console.log('Token usage:', result.usage);

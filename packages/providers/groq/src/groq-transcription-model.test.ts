@@ -1,9 +1,9 @@
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
-import { GroqTranscriptionModel } from './groq-transcription-model';
-import { createGroq } from './groq-provider';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { describe, it, expect, vi } from 'vitest';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
+import { createGroq } from './groq-provider';
+import { GroqTranscriptionModel } from './groq-transcription-model';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
@@ -18,12 +18,8 @@ const server = createTestServer({
 });
 
 describe('doGenerate', () => {
-  function prepareJsonResponse({
-    headers,
-  }: { headers?: Record<string, string> } = {}) {
-    server.urls[
-      'https://api.groq.com/openai/v1/audio/transcriptions'
-    ].response = {
+  function prepareJsonResponse({ headers }: { headers?: Record<string, string> } = {}) {
+    server.urls['https://api.groq.com/openai/v1/audio/transcriptions'].response = {
       type: 'json-value',
       headers,
       body: {
@@ -89,9 +85,7 @@ describe('doGenerate', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/groq/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/groq/0.0.0-test`);
   });
 
   it('should extract the transcription text', async () => {

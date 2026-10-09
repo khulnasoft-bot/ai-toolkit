@@ -1,10 +1,10 @@
-import { EmbeddingModelV3 } from '@ai-toolkit/provider';
 import assert from 'node:assert';
+import type { EmbeddingModelV3 } from '@ai-toolkit/provider';
 import { beforeEach, describe, expect, it, vi, vitest } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
 import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
 import { MockTracer } from '../test/mock-tracer';
-import { Embedding, EmbeddingModelUsage, Warning } from '../types';
+import type { Embedding, EmbeddingModelUsage, Warning } from '../types';
 import { embed } from './embed';
 
 const dummyEmbedding = [0.1, 0.2, 0.3];
@@ -287,9 +287,7 @@ function mockEmbed(
     headers: {},
     body: {},
   },
-  providerMetadata?: Awaited<
-    ReturnType<EmbeddingModelV3['doEmbed']>
-  >['providerMetadata'],
+  providerMetadata?: Awaited<ReturnType<EmbeddingModelV3['doEmbed']>>['providerMetadata'],
 ): EmbeddingModelV3['doEmbed'] {
   return async ({ values }) => {
     assert.deepStrictEqual(expectedValues, values);

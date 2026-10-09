@@ -1,4 +1,4 @@
-import {
+import type {
   ResponsesSourceDocumentProviderMetadata,
   ResponsesTextProviderMetadata,
 } from '@ai-toolkit/openai/internal';

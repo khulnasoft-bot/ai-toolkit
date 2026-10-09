@@ -116,9 +116,7 @@ describe('webPreviewUrl', () => {
       </WebPreview>,
     );
 
-    const input = screen.getByPlaceholderText(
-      'Enter URL...',
-    ) as HTMLInputElement;
+    const input = screen.getByPlaceholderText('Enter URL...') as HTMLInputElement;
     await user.type(input, 'https://example.com{Enter}');
 
     // Wait for the state to update
@@ -167,9 +165,7 @@ describe('webPreviewConsole', () => {
         <WebPreviewConsole />
       </WebPreview>,
     );
-    expect(
-      screen.getByRole('button', { name: CONSOLE_REGEX }),
-    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: CONSOLE_REGEX })).toBeInTheDocument();
   });
 
   it('displays no output message', async () => {

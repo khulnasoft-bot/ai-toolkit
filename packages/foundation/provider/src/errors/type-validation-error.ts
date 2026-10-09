@@ -3,7 +3,7 @@ import { getErrorMessage } from './get-error-message';
 
 const name = 'AI_TypeValidationError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 export interface TypeValidationContext {
   /**
@@ -23,8 +23,6 @@ export interface TypeValidationContext {
 }
 
 export class TypeValidationError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly value: unknown;
   readonly context?: TypeValidationContext;
 

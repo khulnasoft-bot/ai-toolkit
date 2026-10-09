@@ -8,8 +8,7 @@
  * Keeps everything else unchanged (scheme, domain, port, path, query).
  */
 export function resourceUrlFromServerUrl(url: URL | string): URL {
-  const resourceURL =
-    typeof url === 'string' ? new URL(url) : new URL(url.href);
+  const resourceURL = typeof url === 'string' ? new URL(url) : new URL(url.href);
   resourceURL.hash = ''; // Remove fragment
   return resourceURL;
 }
@@ -57,10 +56,10 @@ export function checkResourceAllowed({
   // where paths like "/api123" would incorrectly match "/api"
   const requestedPath = requested.pathname.endsWith('/')
     ? requested.pathname
-    : requested.pathname + '/';
+    : `${requested.pathname}/`;
   const configuredPath = configured.pathname.endsWith('/')
     ? configured.pathname
-    : configured.pathname + '/';
+    : `${configured.pathname}/`;
 
   return requestedPath.startsWith(configuredPath);
 }

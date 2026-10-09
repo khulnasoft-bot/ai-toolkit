@@ -1,19 +1,13 @@
-import {
-  EmbeddingModelV3,
-  TooManyEmbeddingValuesForCallError,
-} from '@ai-toolkit/provider';
+import { type EmbeddingModelV3, TooManyEmbeddingValuesForCallError } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
-  FetchFunction,
+  type FetchFunction,
   parseProviderOptions,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import {
-  CohereEmbeddingModelId,
-  cohereEmbeddingOptions,
-} from './cohere-embedding-options';
+import { type CohereEmbeddingModelId, cohereEmbeddingOptions } from './cohere-embedding-options';
 import { cohereFailedResponseHandler } from './cohere-error';
 
 type CohereEmbeddingConfig = {
@@ -82,9 +76,7 @@ export class CohereEmbeddingModel implements EmbeddingModelV3 {
         truncate: embeddingOptions?.truncate,
       },
       failedResponseHandler: cohereFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        cohereTextEmbeddingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(cohereTextEmbeddingResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });

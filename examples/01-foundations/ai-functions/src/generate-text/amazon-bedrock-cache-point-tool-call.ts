@@ -1,6 +1,6 @@
 import { generateText, tool } from '@ai-toolkit/ai';
-import { z } from 'zod';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { z } from 'zod';
 import { run } from '../lib/run';
 
 const weatherTool = tool({

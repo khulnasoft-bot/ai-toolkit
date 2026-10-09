@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   root
@@ -21,10 +21,7 @@ export default createTransformer((fileInfo, api, options, context) => {
           return spec;
         }) || [];
 
-      const newImport = j.importDeclaration(
-        newSpecifiers,
-        j.stringLiteral('zod/v3'),
-      );
+      const newImport = j.importDeclaration(newSpecifiers, j.stringLiteral('zod/v3'));
 
       newImport.comments = importDeclaration.comments;
 

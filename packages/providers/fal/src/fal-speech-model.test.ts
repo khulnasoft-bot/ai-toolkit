@@ -1,7 +1,7 @@
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it } from 'vitest';
 import { createFal } from './fal-provider';
 import { FalSpeechModel } from './fal-speech-model';
-import { describe, it, expect } from 'vitest';
 
 const provider = createFal({ apiKey: 'test-api-key' });
 const model = provider.speech('fal-ai/minimax/speech-02-hd');

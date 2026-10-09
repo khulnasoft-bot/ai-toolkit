@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { convertImageModelFileToDataUri } from './convert-image-model-file-to-data-uri';
 
 describe('convertImageModelFileToDataUri()', () => {

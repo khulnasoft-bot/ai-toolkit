@@ -1,12 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { MockProviderV3 } from '../test/mock-provider-v3';
-import { MockProviderV4 } from '../test/mock-provider-v4';
+import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
+import { MockImageModelV3 } from '../test/mock-image-model-v3';
 import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
 import { MockLanguageModelV4 } from '../test/mock-language-model-v4';
-import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
-import { MockEmbeddingModelV4 } from '../test/mock-embedding-model-v4';
-import { MockImageModelV3 } from '../test/mock-image-model-v3';
-import { MockImageModelV4 } from '../test/mock-image-model-v4';
+import { MockProviderV3 } from '../test/mock-provider-v3';
+import { MockProviderV4 } from '../test/mock-provider-v4';
 import { MockRerankingModelV3 } from '../test/mock-reranking-model-v3';
 import { asProviderV4 } from './as-provider-v4';
 
@@ -119,7 +117,7 @@ describe('asProviderV4', () => {
       });
 
       const result = asProviderV4(v3Provider);
-      const model = result.rerankingModel!('test-reranking');
+      const model = result.rerankingModel?.('test-reranking');
 
       expect(model.specificationVersion).toBe('v4');
       expect(model.provider).toBe('test-provider');

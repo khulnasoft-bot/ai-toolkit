@@ -1,5 +1,5 @@
-import { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
-import { LanguageModelMiddleware } from '../types';
+import type { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
+import type { LanguageModelMiddleware } from '../types';
 import { mergeObjects } from '../util/merge-objects';
 
 /**

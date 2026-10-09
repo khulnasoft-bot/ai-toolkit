@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import * as z4 from 'zod/v4';
 import { safeParseJSON } from './parse-json';
-import { asSchema, StandardSchema, zodSchema } from './schema';
+import { asSchema, type StandardSchema, zodSchema } from './schema';
 
 describe('zodSchema', () => {
   describe('zod/v4', () => {
@@ -390,7 +390,7 @@ describe('StandardSchema (StandardJSONSchemaV1)', () => {
       });
 
       const schema = asSchema(standardSchema);
-      const result = await schema.validate!({ name: 'John', age: 30 });
+      const result = await schema.validate?.({ name: 'John', age: 30 });
 
       expect(result).toStrictEqual({
         success: true,
@@ -425,7 +425,7 @@ describe('StandardSchema (StandardJSONSchemaV1)', () => {
       });
 
       const schema = asSchema(standardSchema);
-      const result = await schema.validate!({
+      const result = await schema.validate?.({
         name: 'John',
         age: 'not a number',
       });
@@ -438,30 +438,28 @@ describe('StandardSchema (StandardJSONSchemaV1)', () => {
     });
 
     it('should support transform in validation', async () => {
-      const standardSchema = createStandardSchema<{ id: number; name: string }>(
-        {
-          jsonSchema: {
-            type: 'object',
-            properties: {
-              id: { type: 'string' }, // Input is string
-              name: { type: 'string' },
-            },
-          },
-          validate: async value => {
-            const obj = value as any;
-            // Transform string id to number
-            return {
-              value: {
-                id: parseInt(obj.id, 10),
-                name: obj.name,
-              },
-            };
+      const standardSchema = createStandardSchema<{ id: number; name: string }>({
+        jsonSchema: {
+          type: 'object',
+          properties: {
+            id: { type: 'string' }, // Input is string
+            name: { type: 'string' },
           },
         },
-      );
+        validate: async value => {
+          const obj = value as any;
+          // Transform string id to number
+          return {
+            value: {
+              id: parseInt(obj.id, 10),
+              name: obj.name,
+            },
+          };
+        },
+      });
 
       const schema = asSchema(standardSchema);
-      const result = await schema.validate!({ id: '123', name: 'John' });
+      const result = await schema.validate?.({ id: '123', name: 'John' });
 
       expect(result).toStrictEqual({
         success: true,

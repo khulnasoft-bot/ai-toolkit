@@ -1,4 +1,4 @@
-import { SpeechModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { SharedV3Warning, SpeechModelV3 } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createBinaryResponseHandler,
@@ -6,9 +6,9 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { DeepgramConfig } from './deepgram-config';
+import type { DeepgramConfig } from './deepgram-config';
 import { deepgramFailedResponseHandler } from './deepgram-error';
-import { DeepgramSpeechModelId } from './deepgram-speech-options';
+import type { DeepgramSpeechModelId } from './deepgram-speech-options';
 
 // https://developers.deepgram.com/reference/text-to-speech/speak-request
 const deepgramSpeechProviderOptionsSchema = z.object({
@@ -30,9 +30,7 @@ const deepgramSpeechProviderOptionsSchema = z.object({
   tag: z.union([z.string(), z.array(z.string())]).nullish(),
 });
 
-export type DeepgramSpeechCallOptions = z.infer<
-  typeof deepgramSpeechProviderOptionsSchema
->;
+export type DeepgramSpeechCallOptions = z.infer<typeof deepgramSpeechProviderOptionsSchema>;
 
 interface DeepgramSpeechModelConfig extends DeepgramConfig {
   _internal?: {
@@ -141,17 +139,7 @@ export class DeepgramSpeechModel implements SpeechModelV3 {
           const sampleRate = parseInt(secondPart, 10);
 
           // Check if first part is an encoding
-          if (
-            [
-              'linear16',
-              'mulaw',
-              'alaw',
-              'mp3',
-              'opus',
-              'flac',
-              'aac',
-            ].includes(firstPart)
-          ) {
+          if (['linear16', 'mulaw', 'alaw', 'mp3', 'opus', 'flac', 'aac'].includes(firstPart)) {
             queryParams.encoding = firstPart;
 
             // Set container based on encoding
@@ -164,21 +152,15 @@ export class DeepgramSpeechModel implements SpeechModelV3 {
             // mp3, flac, aac don't use container
 
             // Set sample rate if valid for encoding
-            if (!isNaN(sampleRate)) {
+            if (!Number.isNaN(sampleRate)) {
               if (
                 firstPart === 'linear16' &&
                 [8000, 16000, 24000, 32000, 48000].includes(sampleRate)
               ) {
                 queryParams.sample_rate = String(sampleRate);
-              } else if (
-                firstPart === 'mulaw' &&
-                [8000, 16000].includes(sampleRate)
-              ) {
+              } else if (firstPart === 'mulaw' && [8000, 16000].includes(sampleRate)) {
                 queryParams.sample_rate = String(sampleRate);
-              } else if (
-                firstPart === 'alaw' &&
-                [8000, 16000].includes(sampleRate)
-              ) {
+              } else if (firstPart === 'alaw' && [8000, 16000].includes(sampleRate)) {
                 queryParams.sample_rate = String(sampleRate);
               } else if (
                 firstPart === 'flac' &&
@@ -197,7 +179,7 @@ export class DeepgramSpeechModel implements SpeechModelV3 {
               queryParams.container = 'ogg';
               queryParams.encoding = 'opus'; // Default encoding for ogg
             }
-            if (!isNaN(sampleRate)) {
+            if (!Number.isNaN(sampleRate)) {
               queryParams.sample_rate = String(sampleRate);
             }
           }
@@ -218,9 +200,7 @@ export class DeepgramSpeechModel implements SpeechModelV3 {
         if (deepgramOptions.container) {
           // Validate container is valid for this encoding
           if (['linear16', 'mulaw', 'alaw'].includes(newEncoding)) {
-            if (
-              !['wav', 'none'].includes(deepgramOptions.container.toLowerCase())
-            ) {
+            if (!['wav', 'none'].includes(deepgramOptions.container.toLowerCase())) {
               warnings.push({
                 type: 'unsupported',
                 feature: 'providerOptions',

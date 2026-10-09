@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { createFal } from './fal-provider';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { FalImageModel } from './fal-image-model';
+import { createFal } from './fal-provider';
 
 vi.mock('./fal-image-model', () => ({
   FalImageModel: vi.fn(),

@@ -1,10 +1,10 @@
-import fs from 'fs';
-import path from 'path';
-import readline from 'readline';
-import { fileURLToPath } from 'url';
-import { getArchetype, getAllArchetypes } from './templates/index.js';
-import { toPascalCase, toCamelCase, toEnvPrefix } from './templates/common.js';
-import { ui, logger, chalk } from './logger.js';
+import fs from 'node:fs';
+import path from 'node:path';
+import readline from 'node:readline';
+import { fileURLToPath } from 'node:url';
+import { chalk, logger, ui } from './logger.js';
+import { toCamelCase, toEnvPrefix, toPascalCase } from './templates/common.js';
+import { getAllArchetypes, getArchetype } from './templates/index.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // src/ -> tool root -> tools/ -> repo root
@@ -36,14 +36,11 @@ async function promptForChoice(rl, label, choices, defaultChoice) {
   });
 
   while (true) {
-    const answer = await askQuestion(
-      rl,
-      chalk.dim('│') + '  ' + 'Type a number or name to select: ',
-    );
+    const answer = await askQuestion(rl, `${chalk.dim('│')}  Type a number or name to select: `);
     const trimmed = answer.trim().toLowerCase();
 
     const num = parseInt(trimmed, 10);
-    if (!isNaN(num) && num >= 1 && num <= choices.length) {
+    if (!Number.isNaN(num) && num >= 1 && num <= choices.length) {
       return choices[num - 1].name;
     }
 
@@ -83,20 +80,18 @@ function addRootTsconfigReference(packageDirName) {
   if (!tsconfig.references.some(r => r.path === entry.path)) {
     // Keep provider entries grouped: insert after harness entries when
     // present, otherwise append before the adapters section.
-    const idx = tsconfig.references.findIndex(
-      r => r.path === 'packages/providers/harness-pi',
-    );
+    const idx = tsconfig.references.findIndex(r => r.path === 'packages/providers/harness-pi');
     if (idx !== -1) tsconfig.references.splice(idx + 1, 0, entry);
     else tsconfig.references.push(entry);
-    fs.writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2) + '\n');
+    fs.writeFileSync(tsconfigPath, `${JSON.stringify(tsconfig, null, 2)}\n`);
     return true;
   }
   return false;
 }
 
 async function runCommand(cmd, cwd) {
-  const { exec } = await import('child_process');
-  const { promisify } = await import('util');
+  const { exec } = await import('node:child_process');
+  const { promisify } = await import('node:util');
   return promisify(exec)(cmd, { cwd });
 }
 
@@ -128,10 +123,7 @@ TODO: document the \`@ai-toolkit/${ctx.name}\` provider.
 npm i @ai-toolkit/${ctx.name}
 \`\`\`
 `;
-  const siteDir = path.join(
-    REPO_ROOT,
-    'apps/docs/content/providers/ai-toolkit-providers',
-  );
+  const siteDir = path.join(REPO_ROOT, 'apps/docs/content/providers/ai-toolkit-providers');
   const canonPath = path.join(
     REPO_ROOT,
     `content/providers/01-ai-toolkit-providers/${num}-${ctx.name}.mdx`,
@@ -144,7 +136,7 @@ npm i @ai-toolkit/${ctx.name}
   const meta = JSON.parse(fs.readFileSync(metaPath, 'utf8'));
   if (!meta.pages.includes(ctx.name)) {
     meta.pages.push(ctx.name);
-    fs.writeFileSync(metaPath, JSON.stringify(meta, null, 2) + '\n');
+    fs.writeFileSync(metaPath, `${JSON.stringify(meta, null, 2)}\n`);
   }
   return { canonPath, sitePath };
 }
@@ -162,13 +154,10 @@ export function emitExampleStub(ctx) {
     tags: [ctx.name],
   };
   fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
-  fs.writeFileSync(
-    path.join(dir, 'example.json'),
-    JSON.stringify(exampleJson, null, 2) + '\n',
-  );
+  fs.writeFileSync(path.join(dir, 'example.json'), `${JSON.stringify(exampleJson, null, 2)}\n`);
   fs.writeFileSync(
     path.join(dir, 'package.json'),
-    JSON.stringify(
+    `${JSON.stringify(
       {
         name: `@example/${ctx.name}`,
         version: '0.0.0',
@@ -180,11 +169,11 @@ export function emitExampleStub(ctx) {
       },
       null,
       2,
-    ) + '\n',
+    )}\n`,
   );
   fs.writeFileSync(
     path.join(dir, 'tsconfig.json'),
-    JSON.stringify(
+    `${JSON.stringify(
       {
         compilerOptions: {
           strict: true,
@@ -205,7 +194,7 @@ export function emitExampleStub(ctx) {
       },
       null,
       2,
-    ) + '\n',
+    )}\n`,
   );
   fs.writeFileSync(
     path.join(dir, 'src', 'index.ts'),
@@ -229,9 +218,7 @@ export async function createProviderPackage(options) {
 
   const targetDir = path.join(repoRoot, 'packages/providers', name);
   if (fs.existsSync(targetDir)) {
-    throw new Error(
-      `Provider "${name}" already exists at packages/providers/${name}`,
-    );
+    throw new Error(`Provider "${name}" already exists at packages/providers/${name}`);
   }
 
   ui.boxStart('create-ai-provider');
@@ -250,9 +237,7 @@ export async function createProviderPackage(options) {
       if (archetype === 'openai-compatible' && !models) {
         const answer = await askQuestion(
           rl,
-          chalk.dim('│') +
-            '  ' +
-            'Model ids (comma-separated, blank for placeholder): ',
+          `${chalk.dim('│')}  Model ids (comma-separated, blank for placeholder): `,
         );
         models = answer
           .split(',')
@@ -262,7 +247,7 @@ export async function createProviderPackage(options) {
       if (archetype === 'harness-acp' && !executable) {
         const answer = await askQuestion(
           rl,
-          chalk.dim('│') + '  ' + 'Agent command (e.g. "my-agent --acp"): ',
+          `${chalk.dim('│')}  Agent command (e.g. "my-agent --acp"): `,
         );
         executable = answer.trim() || undefined;
       }
@@ -287,10 +272,7 @@ export async function createProviderPackage(options) {
     // Normalize formatting (line wrapping depends on the package name
     // length, so templates can't be prettier-clean for every name).
     try {
-      await runCommand(
-        `pnpm --silent prettier --write "${targetDir}"`,
-        REPO_ROOT,
-      );
+      await runCommand(`pnpm --silent prettier --write "${targetDir}"`, REPO_ROOT);
     } catch {
       logger.warn('Could not format scaffolded files automatically');
     }

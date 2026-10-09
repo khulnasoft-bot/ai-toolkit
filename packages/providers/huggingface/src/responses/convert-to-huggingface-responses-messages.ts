@@ -1,6 +1,6 @@
 import {
-  SharedV3Warning,
-  LanguageModelV3Prompt,
+  type LanguageModelV3Prompt,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 
@@ -32,10 +32,7 @@ export async function convertToHuggingFaceResponsesMessages({
               }
               case 'file': {
                 if (part.mediaType.startsWith('image/')) {
-                  const mediaType =
-                    part.mediaType === 'image/*'
-                      ? 'image/jpeg'
-                      : part.mediaType;
+                  const mediaType = part.mediaType === 'image/*' ? 'image/jpeg' : part.mediaType;
 
                   return {
                     type: 'input_image',

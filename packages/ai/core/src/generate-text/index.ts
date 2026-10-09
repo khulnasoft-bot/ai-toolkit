@@ -1,9 +1,9 @@
+export type { ContentPart } from './content-part';
 export {
-  generateText,
   type GenerateTextOnFinishCallback,
   type GenerateTextOnStepFinishCallback,
+  generateText,
 } from './generate-text';
-export type { ContentPart } from './content-part';
 export type { GenerateTextResult } from './generate-text-result';
 export type {
   GeneratedFile as Experimental_GeneratedImage, // Image for backwards compatibility, TODO remove in v5
@@ -17,16 +17,16 @@ export type {
 export type { PrepareStepFunction, PrepareStepResult } from './prepare-step';
 export { pruneMessages } from './prune-messages';
 export type { ReasoningOutput } from './reasoning-output';
-export { smoothStream, type ChunkDetector } from './smooth-stream';
+export { type ChunkDetector, smoothStream } from './smooth-stream';
 export type { StepResult } from './step-result';
-export { hasToolCall, stepCountIs, type StopCondition } from './stop-condition';
+export { hasToolCall, type StopCondition, stepCountIs } from './stop-condition';
 export {
-  streamText,
   type StreamTextOnChunkCallback,
   type StreamTextOnErrorCallback,
   type StreamTextOnFinishCallback,
   type StreamTextOnStepFinishCallback,
   type StreamTextTransform,
+  streamText,
 } from './stream-text';
 export type {
   StreamTextResult,

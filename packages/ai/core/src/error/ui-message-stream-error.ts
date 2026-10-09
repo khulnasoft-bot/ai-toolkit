@@ -2,7 +2,7 @@ import { AITOOLKITError } from '@ai-toolkit/provider';
 
 const name = 'AI_UIMessageStreamError';
 const marker = `vercel.ai.error.${name}`;
-const symbol = Symbol.for(marker);
+const _symbol = Symbol.for(marker);
 
 /**
  * Error thrown when a UI message stream contains invalid or out-of-sequence chunks.
@@ -15,8 +15,6 @@ const symbol = Symbol.for(marker);
  * @see https://studio.khulnasoft.com/docs/reference/ai-toolkit-errors/ai-ui-message-stream-error
  */
 export class UIMessageStreamError extends AITOOLKITError {
-  private readonly [symbol] = true; // used in isInstance
-
   /**
    * The type of chunk that caused the error (e.g., 'text-delta', 'reasoning-end').
    */

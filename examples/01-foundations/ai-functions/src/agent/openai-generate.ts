@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { ToolLoopAgent } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
+import { openai } from '@ai-toolkit/openai';
 import { print } from '../lib/print';
+import { run } from '../lib/run';
 
 const agent = new ToolLoopAgent({
   model: openai('gpt-4o'),

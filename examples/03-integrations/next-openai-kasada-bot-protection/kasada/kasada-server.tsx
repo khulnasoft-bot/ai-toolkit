@@ -1,5 +1,5 @@
-import { NextFetchEvent, NextRequest, NextResponse } from 'next/server';
 import { ipAddress } from '@vercel/functions';
+import { type NextFetchEvent, type NextRequest, NextResponse } from 'next/server';
 
 // You can get this endpoint name from the application details on the Kasada Portal.
 const kasadaAPIHostname = 'vercel-endpoint.kasadapolyform.io';
@@ -140,10 +140,7 @@ function addKasadaCORSHeaders(response: Response): void {
   response.headers.append('access-control-allow-headers', kasadaHeaders);
 }
 
-export async function kasadaHandler(
-  request: NextRequest,
-  ev: NextFetchEvent,
-): Promise<Response> {
+export async function kasadaHandler(request: NextRequest, _ev: NextFetchEvent): Promise<Response> {
   // If the request is an OPTIONS request we don't send it to Kasada
   // but we do add the necessary CORS headers.
   if (request.method === 'OPTIONS') {
@@ -168,10 +165,7 @@ export async function kasadaHandler(
 
   // If the request is a Bad Bot and we're in Protect mode, we'll block this request
   // and add the Kasada headers to the response for the Client-side SDKs
-  if (
-    metadata.classification === 'BAD-BOT' &&
-    metadata.application.mode === 'PROTECT'
-  ) {
+  if (metadata.classification === 'BAD-BOT' && metadata.application.mode === 'PROTECT') {
     const blockResponse = new Response(undefined, {
       status: 429,
     });

@@ -29,9 +29,7 @@ export type TranscriptionModelV4 = {
   /**
    * Generates a transcript.
    */
-  doGenerate(
-    options: TranscriptionModelV4CallOptions,
-  ): PromiseLike<TranscriptionModelV4Result>;
+  doGenerate(options: TranscriptionModelV4CallOptions): PromiseLike<TranscriptionModelV4Result>;
 
   /**
    * Streams a transcript for live audio.

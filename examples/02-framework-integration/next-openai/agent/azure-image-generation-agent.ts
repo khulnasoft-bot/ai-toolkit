@@ -1,5 +1,5 @@
-import { createAzure, azure } from '@ai-toolkit/azure';
-import { InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
+import { azure, createAzure } from '@ai-toolkit/azure';
 
 export const azureImageGenerationAgent = new ToolLoopAgent({
   model: createAzure({
@@ -19,6 +19,4 @@ export const azureImageGenerationAgent = new ToolLoopAgent({
   },
 });
 
-export type AzureImageGenerationMessage = InferAgentUIMessage<
-  typeof azureImageGenerationAgent
->;
+export type AzureImageGenerationMessage = InferAgentUIMessage<typeof azureImageGenerationAgent>;

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { measureMemory, textReport, jsonReport } from './index.js';
+import { jsonReport, measureMemory, textReport } from './index.js';
 
 async function main() {
   const args = process.argv.slice(2);

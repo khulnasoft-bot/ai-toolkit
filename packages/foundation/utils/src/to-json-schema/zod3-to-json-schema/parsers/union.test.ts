@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
+import { describe, expect, it } from 'vitest';
 import { z } from 'zod/v3';
-import { parseUnionDef } from './union';
 import { getRefs } from '../refs';
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import { parseUnionDef } from './union';
 
 describe('union', () => {
   it('Should be possible to get a simple type array from a union of only unvalidated primitives', () => {
@@ -40,7 +40,7 @@ describe('union', () => {
         z.literal(undefined),
         z.literal(Symbol('abc')),
         // @ts-expect-error Ok
-        z.literal(function () {}),
+        z.literal(() => {}),
       ])._def,
       getRefs(),
     );
@@ -197,10 +197,7 @@ describe('union', () => {
 
   it('should not ignore descriptions in literal unions', () => {
     expect(
-      parseUnionDef(
-        z.union([z.literal(true), z.literal('herp'), z.literal(3)])._def,
-        getRefs(),
-      ),
+      parseUnionDef(z.union([z.literal(true), z.literal('herp'), z.literal(3)])._def, getRefs()),
     ).toStrictEqual({
       type: ['boolean', 'string', 'number'],
       enum: [true, 'herp', 3],
@@ -208,11 +205,7 @@ describe('union', () => {
 
     expect(
       parseUnionDef(
-        z.union([
-          z.literal(true),
-          z.literal('herp').describe('derp'),
-          z.literal(3),
-        ])._def,
+        z.union([z.literal(true), z.literal('herp').describe('derp'), z.literal(3)])._def,
         getRefs(),
       ),
     ).toStrictEqual({

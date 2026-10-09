@@ -1,5 +1,5 @@
-import { openai } from '@ai-toolkit/openai';
 import { streamObject } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -28,6 +28,6 @@ run(async () => {
     });
 
   // note: the stream needs to be consumed because of backpressure
-  for await (const partialObject of result.partialObjectStream) {
+  for await (const _partialObject of result.partialObjectStream) {
   }
 });

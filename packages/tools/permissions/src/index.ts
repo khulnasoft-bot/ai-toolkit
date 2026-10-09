@@ -28,11 +28,7 @@ export function createPermissionEngine(): PermissionEngine {
   return {
     check: permission => {
       const policy = policies.find(p =>
-        p.rules.some(
-          r =>
-            r.resource === permission.resource &&
-            r.action === permission.action,
-        ),
+        p.rules.some(r => r.resource === permission.resource && r.action === permission.action),
       );
       return policy?.effect === 'allow';
     },

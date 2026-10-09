@@ -1,6 +1,6 @@
-import { revai } from '@ai-toolkit/revai';
+import { readFile } from 'node:fs/promises';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
-import { readFile } from 'fs/promises';
+import { revai } from '@ai-toolkit/revai';
 import { run } from '../lib/run';
 
 run(async () => {

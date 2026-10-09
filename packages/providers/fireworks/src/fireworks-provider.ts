@@ -2,26 +2,26 @@ import {
   OpenAICompatibleChatLanguageModel,
   OpenAICompatibleCompletionLanguageModel,
   OpenAICompatibleEmbeddingModel,
-  ProviderErrorStructure,
+  type ProviderErrorStructure,
 } from '@ai-toolkit/openai-compatible';
-import {
+import type {
   EmbeddingModelV3,
   ImageModelV3,
   LanguageModelV3,
   ProviderV3,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
+  type FetchFunction,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { FireworksChatModelId } from './fireworks-chat-options';
-import { FireworksCompletionModelId } from './fireworks-completion-options';
-import { FireworksEmbeddingModelId } from './fireworks-embedding-options';
+import type { FireworksChatModelId } from './fireworks-chat-options';
+import type { FireworksCompletionModelId } from './fireworks-completion-options';
+import type { FireworksEmbeddingModelId } from './fireworks-embedding-options';
 import { FireworksImageModel } from './fireworks-image-model';
-import { FireworksImageModelId } from './fireworks-image-options';
+import type { FireworksImageModelId } from './fireworks-image-options';
 import { VERSION } from './version';
 
 export type FireworksErrorData = z.infer<typeof fireworksErrorSchema>;
@@ -100,9 +100,7 @@ Creates a model for image generation.
 
 const defaultBaseURL = 'https://api.fireworks.ai/inference/v1';
 
-export function createFireworks(
-  options: FireworksProviderSettings = {},
-): FireworksProvider {
+export function createFireworks(options: FireworksProviderSettings = {}): FireworksProvider {
   const baseURL = withoutTrailingSlash(options.baseURL ?? defaultBaseURL);
   const getHeaders = () =>
     withUserAgentSuffix(

@@ -1,19 +1,16 @@
-import { beforeAll, beforeEach, afterAll } from 'vitest';
+import { afterAll, beforeAll, beforeEach } from 'vitest';
 import {
   createTestServer as createCoreTestServer,
   TestResponseController,
-  type UrlResponse,
   type UrlHandler,
   type UrlHandlers,
+  type UrlResponse,
 } from './index';
 
 export function createTestServer<
   URLS extends {
     [url: string]: {
-      response?:
-        | UrlResponse
-        | UrlResponse[]
-        | ((options: { callNumber: number }) => UrlResponse);
+      response?: UrlResponse | UrlResponse[] | ((options: { callNumber: number }) => UrlResponse);
     };
   },
 >(

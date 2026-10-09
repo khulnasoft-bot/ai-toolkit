@@ -1,11 +1,9 @@
-import { xai } from '@ai-toolkit/xai';
 import { generateText } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
 import 'dotenv/config';
 
 async function main() {
-  console.log(
-    'Testing xai.responses() with image in multiturn conversation...\n',
-  );
+  console.log('Testing xai.responses() with image in multiturn conversation...\n');
 
   const imageUrl =
     'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Cat03.jpg/1200px-Cat03.jpg';

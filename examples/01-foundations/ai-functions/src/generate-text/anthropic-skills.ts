@@ -1,9 +1,9 @@
-import {
-  anthropic,
-  AnthropicMessageMetadata,
-  AnthropicProviderOptions,
-} from '@ai-toolkit/anthropic';
 import { generateText } from '@ai-toolkit/ai';
+import {
+  type AnthropicMessageMetadata,
+  type AnthropicProviderOptions,
+  anthropic,
+} from '@ai-toolkit/anthropic';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 

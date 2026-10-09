@@ -1,9 +1,9 @@
 // @ts-nocheck
-import { createDataStreamResponse, createDataStream, DataStreamWriter } from 'ai';
+import { createDataStream, createDataStreamResponse, type DataStreamWriter } from 'ai';
 
-async function handler() {
+async function _handler() {
   const stream = await createDataStream();
-  const writer: DataStreamWriter = stream.writer;
+  const _writer: DataStreamWriter = stream.writer;
 
   const response = await createDataStreamResponse({
     stream,

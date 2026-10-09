@@ -1,6 +1,6 @@
-import { anthropic } from '@ai-toolkit/anthropic';
-import { streamText } from '@ai-toolkit/ai';
 import fs from 'node:fs';
+import { streamText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -22,8 +22,7 @@ run(async () => {
               anthropic: {
                 citations: { enabled: true },
                 title: 'AI Handbook',
-                context:
-                  'Technical documentation about AI models and embeddings',
+                context: 'Technical documentation about AI models and embeddings',
               },
             },
           },

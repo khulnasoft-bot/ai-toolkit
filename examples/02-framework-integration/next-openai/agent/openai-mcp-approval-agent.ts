@@ -1,5 +1,5 @@
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import { ToolLoopAgent, InferAgentUIMessage } from '@ai-toolkit/ai';
 
 export const openaiMCPApprovalAgent = new ToolLoopAgent({
   model: openai.responses('gpt-5'),
@@ -18,6 +18,4 @@ export const openaiMCPApprovalAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAIMCPApprovalAgentUIMessage = InferAgentUIMessage<
-  typeof openaiMCPApprovalAgent
->;
+export type OpenAIMCPApprovalAgentUIMessage = InferAgentUIMessage<typeof openaiMCPApprovalAgent>;

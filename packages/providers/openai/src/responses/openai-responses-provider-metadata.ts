@@ -1,5 +1,5 @@
-import { openaiResponsesChunkSchema } from './openai-responses-api';
-import { InferSchema } from '@ai-toolkit/provider-utils';
+import type { InferSchema } from '@ai-toolkit/provider-utils';
+import type { openaiResponsesChunkSchema } from './openai-responses-api';
 
 type OpenaiResponsesChunk = InferSchema<typeof openaiResponsesChunkSchema>;
 

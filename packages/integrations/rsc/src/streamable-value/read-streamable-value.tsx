@@ -1,5 +1,5 @@
 import { isStreamableValue } from './is-streamable-value';
-import { StreamableValue } from './streamable-value';
+import type { StreamableValue } from './streamable-value';
 
 /**
  * `readStreamableValue` takes a streamable value created via the `createStreamableValue().value` API,
@@ -42,8 +42,7 @@ export function readStreamableValue<T = unknown>(
 
   return {
     [Symbol.asyncIterator]() {
-      let row: StreamableValue<T> | Promise<StreamableValue<T>> =
-        streamableValue;
+      let row: StreamableValue<T> | Promise<StreamableValue<T>> = streamableValue;
       let value = row.curr; // the current value
       let isDone = false;
       let isFirstIteration = true;

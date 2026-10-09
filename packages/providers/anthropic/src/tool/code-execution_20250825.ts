@@ -274,8 +274,6 @@ const factory = createProviderToolFactoryWithOutputSchema<
   supportsDeferredResults: true,
 });
 
-export const codeExecution_20250825 = (
-  args: Parameters<typeof factory>[0] = {},
-) => {
+export const codeExecution_20250825 = (args: Parameters<typeof factory>[0] = {}) => {
   return factory(args);
 };

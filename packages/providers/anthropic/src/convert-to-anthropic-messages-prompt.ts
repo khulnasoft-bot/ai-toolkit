@@ -1,25 +1,25 @@
 import {
-  SharedV3Warning,
-  LanguageModelV3DataContent,
-  LanguageModelV3Message,
-  LanguageModelV3Prompt,
-  SharedV3ProviderMetadata,
+  type LanguageModelV3DataContent,
+  type LanguageModelV3Message,
+  type LanguageModelV3Prompt,
+  type SharedV3ProviderMetadata,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 import {
   convertToBase64,
-  parseProviderOptions,
-  validateTypes,
   isNonNullable,
-  ToolNameMapping,
+  parseProviderOptions,
+  type ToolNameMapping,
+  validateTypes,
 } from '@ai-toolkit/provider-utils';
 import {
-  AnthropicAssistantMessage,
-  AnthropicMessagesPrompt,
+  type AnthropicAssistantMessage,
+  type AnthropicMessagesPrompt,
+  type AnthropicToolResultContent,
+  type AnthropicUserMessage,
+  type AnthropicWebFetchToolResultContent,
   anthropicReasoningMetadataSchema,
-  AnthropicToolResultContent,
-  AnthropicUserMessage,
-  AnthropicWebFetchToolResultContent,
 } from './anthropic-messages-api';
 import { anthropicFilePartProviderOptions } from './anthropic-messages-options';
 import { CacheControlValidator } from './get-cache-control';
@@ -86,7 +86,7 @@ export async function convertToAnthropicMessagesPrompt({
   const blocks = groupIntoBlocks(prompt);
   const validator = cacheControlValidator || new CacheControlValidator();
 
-  let system: AnthropicMessagesPrompt['system'] = undefined;
+  let system: AnthropicMessagesPrompt['system'];
   const messages: AnthropicMessagesPrompt['messages'] = [];
 
   async function shouldEnableCitations(
@@ -125,8 +125,7 @@ export async function convertToAnthropicMessagesPrompt({
       case 'system': {
         if (system != null) {
           throw new UnsupportedFunctionalityError({
-            functionality:
-              'Multiple system messages that are separated by user/assistant messages',
+            functionality: 'Multiple system messages that are separated by user/assistant messages',
           });
         }
 
@@ -192,9 +191,7 @@ export async function convertToAnthropicMessagesPrompt({
                           : {
                               type: 'base64',
                               media_type:
-                                part.mediaType === 'image/*'
-                                  ? 'image/jpeg'
-                                  : part.mediaType,
+                                part.mediaType === 'image/*' ? 'image/jpeg' : part.mediaType,
                               data: convertToBase64(part.data),
                             },
                         cache_control: cacheControl,
@@ -202,13 +199,9 @@ export async function convertToAnthropicMessagesPrompt({
                     } else if (part.mediaType === 'application/pdf') {
                       betas.add('pdfs-2024-09-25');
 
-                      const enableCitations = await shouldEnableCitations(
-                        part.providerOptions,
-                      );
+                      const enableCitations = await shouldEnableCitations(part.providerOptions);
 
-                      const metadata = await getDocumentMetadata(
-                        part.providerOptions,
-                      );
+                      const metadata = await getDocumentMetadata(part.providerOptions);
 
                       anthropicContent.push({
                         type: 'document',
@@ -230,13 +223,9 @@ export async function convertToAnthropicMessagesPrompt({
                         cache_control: cacheControl,
                       });
                     } else if (part.mediaType === 'text/plain') {
-                      const enableCitations = await shouldEnableCitations(
-                        part.providerOptions,
-                      );
+                      const enableCitations = await shouldEnableCitations(part.providerOptions);
 
-                      const metadata = await getDocumentMetadata(
-                        part.providerOptions,
-                      );
+                      const metadata = await getDocumentMetadata(part.providerOptions);
 
                       anthropicContent.push({
                         type: 'document',
@@ -374,8 +363,6 @@ export async function convertToAnthropicMessagesPrompt({
                   case 'execution-denied':
                     contentValue = output.reason ?? 'Tool execution denied.';
                     break;
-                  case 'json':
-                  case 'error-json':
                   default:
                     contentValue = JSON.stringify(output.value);
                     break;
@@ -386,9 +373,7 @@ export async function convertToAnthropicMessagesPrompt({
                   tool_use_id: part.toolCallId,
                   content: contentValue,
                   is_error:
-                    output.type === 'error-text' || output.type === 'error-json'
-                      ? true
-                      : undefined,
+                    output.type === 'error-text' || output.type === 'error-json' ? true : undefined,
                   cache_control: cacheControl,
                 });
               }
@@ -503,8 +488,7 @@ export async function convertToAnthropicMessagesPrompt({
                 } else {
                   warnings.push({
                     type: 'other',
-                    message:
-                      'sending reasoning content is disabled for this model',
+                    message: 'sending reasoning content is disabled for this model',
                   });
                 }
                 break;
@@ -512,23 +496,18 @@ export async function convertToAnthropicMessagesPrompt({
 
               case 'tool-call': {
                 if (part.providerExecuted) {
-                  const providerToolName = toolNameMapping.toProviderToolName(
-                    part.toolName,
-                  );
-                  const isMcpToolUse =
-                    part.providerOptions?.anthropic?.type === 'mcp-tool-use';
+                  const providerToolName = toolNameMapping.toProviderToolName(part.toolName);
+                  const isMcpToolUse = part.providerOptions?.anthropic?.type === 'mcp-tool-use';
 
                   if (isMcpToolUse) {
                     mcpToolUseIds.add(part.toolCallId);
 
-                    const serverName =
-                      part.providerOptions?.anthropic?.serverName;
+                    const serverName = part.providerOptions?.anthropic?.serverName;
 
                     if (serverName == null || typeof serverName !== 'string') {
                       warnings.push({
                         type: 'other',
-                        message:
-                          'mcp tool use server name is required and must be a string',
+                        message: 'mcp tool use server name is required and must be a string',
                       });
                       break;
                     }
@@ -641,9 +620,7 @@ export async function convertToAnthropicMessagesPrompt({
               }
 
               case 'tool-result': {
-                const providerToolName = toolNameMapping.toProviderToolName(
-                  part.toolName,
-                );
+                const providerToolName = toolNameMapping.toProviderToolName(part.toolName);
 
                 if (mcpToolUseIds.has(part.toolCallId)) {
                   const output = part.output;
@@ -670,18 +647,12 @@ export async function convertToAnthropicMessagesPrompt({
                   const output = part.output;
 
                   // Handle error types for code_execution tools (e.g., from programmatic tool calling)
-                  if (
-                    output.type === 'error-text' ||
-                    output.type === 'error-json'
-                  ) {
+                  if (output.type === 'error-text' || output.type === 'error-json') {
                     let errorInfo: { type?: string; errorCode?: string } = {};
                     try {
                       if (typeof output.value === 'string') {
                         errorInfo = JSON.parse(output.value);
-                      } else if (
-                        typeof output.value === 'object' &&
-                        output.value !== null
-                      ) {
+                      } else if (typeof output.value === 'object' && output.value !== null) {
                         errorInfo = output.value as typeof errorInfo;
                       }
                     } catch {}
@@ -775,10 +746,8 @@ export async function convertToAnthropicMessagesPrompt({
                         cache_control: cacheControl,
                       });
                     } else if (
-                      codeExecutionOutput.type ===
-                        'bash_code_execution_result' ||
-                      codeExecutionOutput.type ===
-                        'bash_code_execution_tool_result_error'
+                      codeExecutionOutput.type === 'bash_code_execution_result' ||
+                      codeExecutionOutput.type === 'bash_code_execution_tool_result_error'
                     ) {
                       anthropicContent.push({
                         type: 'bash_code_execution_tool_result',
@@ -806,22 +775,16 @@ export async function convertToAnthropicMessagesPrompt({
                     try {
                       if (typeof output.value === 'string') {
                         errorValue = JSON.parse(output.value);
-                      } else if (
-                        typeof output.value === 'object' &&
-                        output.value !== null
-                      ) {
+                      } else if (typeof output.value === 'object' && output.value !== null) {
                         errorValue = output.value as typeof errorValue;
                       }
                     } catch {
                       // If parsing fails, treat the value as-is
-                      const extractedErrorCode = (
-                        output.value as Record<string, unknown>
-                      )?.errorCode;
+                      const extractedErrorCode = (output.value as Record<string, unknown>)
+                        ?.errorCode;
                       errorValue = {
                         errorCode:
-                          typeof extractedErrorCode === 'string'
-                            ? extractedErrorCode
-                            : 'unknown',
+                          typeof extractedErrorCode === 'string' ? extractedErrorCode : 'unknown',
                       };
                     }
 
@@ -997,8 +960,7 @@ function groupIntoBlocks(
   prompt: LanguageModelV3Prompt,
 ): Array<SystemBlock | AssistantBlock | UserBlock> {
   const blocks: Array<SystemBlock | AssistantBlock | UserBlock> = [];
-  let currentBlock: SystemBlock | AssistantBlock | UserBlock | undefined =
-    undefined;
+  let currentBlock: SystemBlock | AssistantBlock | UserBlock | undefined;
 
   for (const message of prompt) {
     const { role } = message;

@@ -1,7 +1,7 @@
-import { cohere, CohereRerankingOptions } from '@ai-toolkit/cohere';
 import { rerank } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
+import { type CohereRerankingOptions, cohere } from '@ai-toolkit/cohere';
 import { print } from '../lib/print';
+import { run } from '../lib/run';
 
 run(async () => {
   const result = await rerank({

@@ -1,13 +1,13 @@
-import { openai } from '@ai-toolkit/openai';
+import * as readline from 'node:readline/promises';
 import {
   dynamicTool,
   generateText,
-  ModelMessage,
+  type ModelMessage,
   stepCountIs,
-  ToolApprovalResponse,
-  ToolSet,
+  type ToolApprovalResponse,
+  type ToolSet,
 } from '@ai-toolkit/ai';
-import * as readline from 'node:readline/promises';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod/v4';
 import { run } from '../lib/run';
 
@@ -71,8 +71,7 @@ run(async () => {
         approvals.push({
           type: 'tool-approval-response',
           approvalId: part.approvalId,
-          approved:
-            answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes',
+          approved: answer.toLowerCase() === 'y' || answer.toLowerCase() === 'yes',
         });
       }
     }

@@ -5,9 +5,9 @@ import { computed, ref } from 'vue';
 const chat = new Chat({});
 const input = ref('');
 
-const disabled = computed(() => chat.status !== 'ready');
+const _disabled = computed(() => chat.status !== 'ready');
 
-const handleSubmit = (e: Event) => {
+const _handleSubmit = (e: Event) => {
   e.preventDefault();
   chat.sendMessage({ text: input.value });
   input.value = '';

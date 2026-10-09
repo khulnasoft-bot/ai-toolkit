@@ -1,14 +1,14 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import {
   extractReasoningMiddleware,
   stepCountIs,
   streamText,
-  ToolCallPart,
-  ToolResultPart,
+  type ToolCallPart,
+  type ToolResultPart,
   wrapLanguageModel,
 } from '@ai-toolkit/ai';
-import { weatherTool } from '../tools/weather-tool';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({
@@ -60,9 +60,7 @@ run(async () => {
       case 'tool-call': {
         toolCalls.push(part);
 
-        process.stdout.write(
-          `\nTool call: '${part.toolName}' ${JSON.stringify(part.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${part.toolName}' ${JSON.stringify(part.input)}`);
         break;
       }
 
@@ -77,9 +75,7 @@ run(async () => {
         };
         toolResponses.push(transformedPart);
 
-        process.stdout.write(
-          `\nTool response: '${part.toolName}' ${JSON.stringify(part.output)}`,
-        );
+        process.stdout.write(`\nTool response: '${part.toolName}' ${JSON.stringify(part.output)}`);
         break;
       }
     }

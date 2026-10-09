@@ -2,8 +2,8 @@ import {
   convertArrayToReadableStream,
   convertReadableStreamToArray,
 } from '@ai-toolkit/provider-utils/test';
+import { describe, expect, it } from 'vitest';
 import { transformTextToUiMessageStream } from './transform-text-to-ui-message-stream';
-import { describe, it, expect } from 'vitest';
 
 describe('transformTextToUiMessageStream', () => {
   it('should transform text stream into UI message stream with correct sequence', async () => {
@@ -11,8 +11,7 @@ describe('transformTextToUiMessageStream', () => {
       stream: convertArrayToReadableStream(['Hello', ' ', 'World']),
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "type": "start",
@@ -58,8 +57,7 @@ describe('transformTextToUiMessageStream', () => {
       stream: convertArrayToReadableStream<string>([]),
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "type": "start",
@@ -90,8 +88,7 @@ describe('transformTextToUiMessageStream', () => {
       stream: convertArrayToReadableStream(['Complete message']),
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
       [
         {
           "type": "start",

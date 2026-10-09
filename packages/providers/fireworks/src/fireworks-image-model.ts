@@ -1,13 +1,13 @@
-import { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   convertImageModelFileToDataUri,
   createBinaryResponseHandler,
   createStatusCodeErrorResponseHandler,
-  FetchFunction,
+  type FetchFunction,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
-import { FireworksImageModelId } from './fireworks-image-options';
+import type { FireworksImageModelId } from './fireworks-image-options';
 
 interface FireworksImageModelBackendConfig {
   urlFormat: 'workflows' | 'workflows_edit' | 'image_generation';
@@ -67,7 +67,6 @@ function getUrlForModel(
     case 'workflows_edit':
       // Kontext models: use base URL for editing (no suffix)
       return `${baseUrl}/workflows/${modelId}`;
-    case 'workflows':
     default:
       // Standard FLUX models: use text_to_image for generation,
       // but if input_image provided, some models may support editing
@@ -122,8 +121,7 @@ export class FireworksImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'size',
-        details:
-          'This model does not support the `size` option. Use `aspectRatio` instead.',
+        details: 'This model does not support the `size` option. Use `aspectRatio` instead.',
       });
     }
 
@@ -147,8 +145,7 @@ export class FireworksImageModel implements ImageModelV3 {
       if (files.length > 1) {
         warnings.push({
           type: 'other',
-          message:
-            'Fireworks only supports a single input image. Additional images are ignored.',
+          message: 'Fireworks only supports a single input image. Additional images are ignored.',
         });
       }
     }

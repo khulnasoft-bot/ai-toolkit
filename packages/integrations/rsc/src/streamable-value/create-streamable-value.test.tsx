@@ -1,8 +1,8 @@
 import { delay } from '@ai-toolkit/provider-utils';
 import { convertArrayToReadableStream } from '@ai-toolkit/provider-utils/test';
+import { expect, it } from 'vitest';
 import { createStreamableValue } from './create-streamable-value';
-import { STREAMABLE_VALUE_TYPE, StreamableValue } from './streamable-value';
-import { it, expect } from 'vitest';
+import { STREAMABLE_VALUE_TYPE, type StreamableValue } from './streamable-value';
 
 async function getRawChunks(streamableValue: StreamableValue<any, any>) {
   const chunks = [];
@@ -133,9 +133,7 @@ it('should behave like .update() with .append() and .done()', async () => {
 });
 
 it('should be able to accept readableStream as the source', async () => {
-  const streamable = createStreamableValue(
-    convertArrayToReadableStream(['hello', ' world', '!']),
-  );
+  const streamable = createStreamableValue(convertArrayToReadableStream(['hello', ' world', '!']));
   const value = streamable.value;
 
   expect(await getRawChunks(value)).toStrictEqual([

@@ -1,4 +1,4 @@
-import { FetchFunction } from '@ai-toolkit/provider-utils';
+import type { FetchFunction } from '@ai-toolkit/provider-utils';
 
 export type OpenAIConfig = {
   provider: string;

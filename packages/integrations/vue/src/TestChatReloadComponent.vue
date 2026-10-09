@@ -3,7 +3,7 @@ import { generateId } from 'ai-toolkit';
 import { mockId } from 'ai-toolkit/test';
 import { Chat } from './chat.vue';
 
-const chat = new Chat({
+const _chat = new Chat({
   id: generateId(),
   generateId: mockId(),
 });

@@ -1,6 +1,7 @@
 // @ts-nocheck
-import OpenAI from 'openai';
-import { createOpenAI } from '@ai-toolkit/openai';
 
-const client1 = new OpenAI();
-const client2 = createOpenAI();
+import { createOpenAI } from '@ai-toolkit/openai';
+import OpenAI from 'openai';
+
+const _client1 = new OpenAI();
+const _client2 = createOpenAI();

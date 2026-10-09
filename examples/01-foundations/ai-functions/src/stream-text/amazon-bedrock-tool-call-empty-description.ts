@@ -1,5 +1,5 @@
-import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { streamText, tool } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -31,9 +31,7 @@ run(async () => {
         break;
       }
       case 'tool-call': {
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
     }

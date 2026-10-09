@@ -1,7 +1,7 @@
-import { tool, Tool } from '@ai-toolkit/provider-utils';
-import { createToolModelOutput } from './create-tool-model-output';
+import { type Tool, tool } from '@ai-toolkit/provider-utils';
+import { describe, expect, it } from 'vitest';
 import z from 'zod/v4';
-import { describe, it, expect } from 'vitest';
+import { createToolModelOutput } from './create-tool-model-output';
 
 describe('createToolModelOutput', () => {
   describe('error cases', () => {

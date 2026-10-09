@@ -1,10 +1,10 @@
-import { openai } from '@ai-toolkit/openai';
 import {
   convertToModelMessages,
   streamText,
-  UIDataTypes,
-  UIMessage,
+  type UIDataTypes,
+  type UIMessage,
 } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 
 // Allow streaming responses up to 30 seconds
@@ -40,11 +40,10 @@ export async function POST(req: Request) {
       getWeatherInformation: {
         description: 'show the weather in a given city to the user',
         inputSchema: z.object({ city: z.string() }),
-        execute: async ({}: { city: string }) => {
+        execute: async () => {
           const weatherOptions = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy'];
           return {
-            weather:
-              weatherOptions[Math.floor(Math.random() * weatherOptions.length)],
+            weather: weatherOptions[Math.floor(Math.random() * weatherOptions.length)],
             temperature: Math.floor(Math.random() * 50 - 10),
           };
         },
@@ -59,9 +58,7 @@ export async function POST(req: Request) {
           temperature: z.number(),
           typicalWeather: z
             .string()
-            .describe(
-              '2-3 sentences about the typical weather in the city during spring.',
-            ),
+            .describe('2-3 sentences about the typical weather in the city during spring.'),
         }),
       },
     },

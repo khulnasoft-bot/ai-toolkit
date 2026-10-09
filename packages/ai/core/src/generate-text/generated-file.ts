@@ -1,7 +1,4 @@
-import {
-  convertBase64ToUint8Array,
-  convertUint8ArrayToBase64,
-} from '@ai-toolkit/provider-utils';
+import { convertBase64ToUint8Array, convertUint8ArrayToBase64 } from '@ai-toolkit/provider-utils';
 
 /**
  * A generated file.
@@ -63,8 +60,4 @@ export class DefaultGeneratedFile implements GeneratedFile {
 
 export class DefaultGeneratedFileWithType extends DefaultGeneratedFile {
   readonly type = 'file';
-
-  constructor(options: { data: string | Uint8Array; mediaType: string }) {
-    super(options);
-  }
 }

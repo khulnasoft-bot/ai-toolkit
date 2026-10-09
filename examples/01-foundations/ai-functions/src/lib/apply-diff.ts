@@ -35,12 +35,7 @@ const END_SECTION_MARKERS = [
   END_FILE,
 ];
 
-const SECTION_TERMINATORS = [
-  END_PATCH,
-  '*** Update File:',
-  '*** Delete File:',
-  '*** Add File:',
-];
+const SECTION_TERMINATORS = [END_PATCH, '*** Update File:', '*** Delete File:', '*** Add File:'];
 
 function normalizeDiffLines(diff: string): string[] {
   return diff
@@ -84,10 +79,7 @@ function parseCreateDiff(lines: string[]): string {
   return output.join('\n');
 }
 
-function parseUpdateDiff(
-  lines: string[],
-  input: string,
-): { chunks: Chunk[]; fuzz: number } {
+function parseUpdateDiff(lines: string[], input: string): { chunks: Chunk[]; fuzz: number } {
   const parser: ParserState = {
     lines: [...lines, END_PATCH],
     index: 0,
@@ -110,17 +102,9 @@ function parseUpdateDiff(
       cursor = advanceCursorToAnchor(anchor, inputLines, cursor, parser);
     }
 
-    const { nextContext, sectionChunks, endIndex, eof } = readSection(
-      parser.lines,
-      parser.index,
-    );
+    const { nextContext, sectionChunks, endIndex, eof } = readSection(parser.lines, parser.index);
     const nextContextText = nextContext.join('\n');
-    const { newIndex, fuzz } = findContext(
-      inputLines,
-      nextContext,
-      cursor,
-      eof,
-    );
+    const { newIndex, fuzz } = findContext(inputLines, nextContext, cursor, eof);
 
     if (newIndex === -1) {
       if (eof) {
@@ -159,10 +143,7 @@ function advanceCursorToAnchor(
     }
   }
 
-  if (
-    !found &&
-    !inputLines.slice(0, cursor).some(s => s.trim() === anchor.trim())
-  ) {
+  if (!found && !inputLines.slice(0, cursor).some(s => s.trim() === anchor.trim())) {
     for (let i = cursor; i < inputLines.length; i += 1) {
       if (inputLines[i].trim() === anchor.trim()) {
         cursor = i + 1;
@@ -299,12 +280,10 @@ function findContextCore(
     if (equalsSlice(lines, context, i, s => s)) return { newIndex: i, fuzz: 0 };
   }
   for (let i = start; i < lines.length; i += 1) {
-    if (equalsSlice(lines, context, i, s => s.trimEnd()))
-      return { newIndex: i, fuzz: 1 };
+    if (equalsSlice(lines, context, i, s => s.trimEnd())) return { newIndex: i, fuzz: 1 };
   }
   for (let i = start; i < lines.length; i += 1) {
-    if (equalsSlice(lines, context, i, s => s.trim()))
-      return { newIndex: i, fuzz: 100 };
+    if (equalsSlice(lines, context, i, s => s.trim())) return { newIndex: i, fuzz: 100 };
   }
 
   return { newIndex: -1, fuzz: 0 };
@@ -335,9 +314,7 @@ function applyChunks(input: string, chunks: Chunk[]): string {
       );
     }
     if (origIndex > chunk.origIndex) {
-      throw new Error(
-        `applyDiff: overlapping chunk at ${chunk.origIndex} (cursor ${origIndex})`,
-      );
+      throw new Error(`applyDiff: overlapping chunk at ${chunk.origIndex} (cursor ${origIndex})`);
     }
 
     destLines.push(...origLines.slice(origIndex, chunk.origIndex));

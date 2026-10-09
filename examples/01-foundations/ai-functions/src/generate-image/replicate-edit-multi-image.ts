@@ -1,9 +1,6 @@
 import { readFileSync } from 'node:fs';
-import {
-  replicate,
-  ReplicateImageProviderOptions,
-} from '@ai-toolkit/replicate';
 import { generateImage } from '@ai-toolkit/ai';
+import { type ReplicateImageProviderOptions, replicate } from '@ai-toolkit/replicate';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

@@ -1,17 +1,13 @@
+import { type LanguageModelV3, NoSuchModelError, type ProviderV3 } from '@ai-toolkit/provider';
 import {
-  LanguageModelV3,
-  NoSuchModelError,
-  ProviderV3,
-} from '@ai-toolkit/provider';
-import {
-  FetchFunction,
+  type FetchFunction,
   generateId,
   loadApiKey,
   withoutTrailingSlash,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { PerplexityLanguageModel } from './perplexity-language-model';
-import { PerplexityLanguageModelId } from './perplexity-language-model-options';
+import type { PerplexityLanguageModelId } from './perplexity-language-model-options';
 import { VERSION } from './version';
 
 export interface PerplexityProvider extends ProviderV3 {
@@ -54,9 +50,7 @@ or to provide a custom fetch implementation for e.g. testing.
   fetch?: FetchFunction;
 }
 
-export function createPerplexity(
-  options: PerplexityProviderSettings = {},
-): PerplexityProvider {
+export function createPerplexity(options: PerplexityProviderSettings = {}): PerplexityProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {
@@ -72,17 +66,14 @@ export function createPerplexity(
 
   const createLanguageModel = (modelId: PerplexityLanguageModelId) => {
     return new PerplexityLanguageModel(modelId, {
-      baseURL: withoutTrailingSlash(
-        options.baseURL ?? 'https://api.perplexity.ai',
-      )!,
+      baseURL: withoutTrailingSlash(options.baseURL ?? 'https://api.perplexity.ai')!,
       headers: getHeaders,
       generateId,
       fetch: options.fetch,
     });
   };
 
-  const provider = (modelId: PerplexityLanguageModelId) =>
-    createLanguageModel(modelId);
+  const provider = (modelId: PerplexityLanguageModelId) => createLanguageModel(modelId);
 
   provider.specificationVersion = 'v3' as const;
   provider.languageModel = createLanguageModel;

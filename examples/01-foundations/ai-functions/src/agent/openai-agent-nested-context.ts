@@ -1,8 +1,8 @@
+import { stepCountIs, ToolLoopAgent, tool } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
 import { NodeSDK } from '@opentelemetry/sdk-node';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
-import { ToolLoopAgent, tool, stepCountIs } from '@ai-toolkit/ai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -71,8 +71,7 @@ run(async () => {
   });
 
   const result = await parentAgent.stream({
-    prompt:
-      'Please ask the child agent to process some data and call the simple_tool a few times.',
+    prompt: 'Please ask the child agent to process some data and call the simple_tool a few times.',
   });
 
   console.log(await result.text);

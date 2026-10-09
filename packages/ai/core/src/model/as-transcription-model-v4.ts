@@ -13,8 +13,7 @@ export function asTranscriptionModelV4(
   }
 
   // first convert v2 to v3, then proxy v3 as v4:
-  const v3Model =
-    model.specificationVersion === 'v2' ? asTranscriptionModelV3(model) : model;
+  const v3Model = model.specificationVersion === 'v2' ? asTranscriptionModelV3(model) : model;
 
   return new Proxy(v3Model, {
     get(target, prop: keyof TranscriptionModelV3) {

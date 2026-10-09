@@ -1,8 +1,8 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, stepCountIs, tool } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const { text } = await generateText({
@@ -15,8 +15,7 @@ run(async () => {
     },
     activeTools: [], // disable all tools
     stopWhen: stepCountIs(5),
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
+    prompt: 'What is the weather in San Francisco and what attractions should I visit?',
   });
 
   console.log(text);

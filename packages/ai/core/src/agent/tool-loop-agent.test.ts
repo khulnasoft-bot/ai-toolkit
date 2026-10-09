@@ -1,4 +1,4 @@
-import { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
+import type { LanguageModelV3CallOptions } from '@ai-toolkit/provider';
 import { convertArrayToReadableStream } from '@ai-toolkit/provider-utils/test';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
@@ -92,9 +92,7 @@ describe('ToolLoopAgent', () => {
     it('should pass experimental_download to generateText', async () => {
       const downloadFunction = vi
         .fn()
-        .mockResolvedValue([
-          { data: new Uint8Array([1, 2, 3]), mediaType: 'image/png' },
-        ]);
+        .mockResolvedValue([{ data: new Uint8Array([1, 2, 3]), mediaType: 'image/png' }]);
 
       const agent = new ToolLoopAgent({
         model: mockModel,

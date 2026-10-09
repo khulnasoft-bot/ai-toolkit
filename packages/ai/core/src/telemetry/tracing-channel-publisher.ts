@@ -1,10 +1,10 @@
-import type * as diagnosticsChannelModule from 'node:diagnostics_channel';
 import type * as asyncHooksModule from 'node:async_hooks';
+import type * as diagnosticsChannelModule from 'node:diagnostics_channel';
+import { isNodeRuntime } from '../util/is-node-runtime';
 import {
   AI_SDK_TELEMETRY_TRACING_CHANNEL,
   type TelemetryTracingChannelMessage,
 } from './tracing-channel';
-import { isNodeRuntime } from '../util/is-node-runtime';
 
 type DiagnosticsChannel = typeof diagnosticsChannelModule;
 type AsyncHooks = typeof asyncHooksModule;
@@ -14,18 +14,14 @@ export type TracingChannelContext = {
   run<T>(execute: () => T): T;
 };
 
-let diagnosticsChannelPromise:
-  | Promise<DiagnosticsChannel | undefined>
-  | undefined;
+let diagnosticsChannelPromise: Promise<DiagnosticsChannel | undefined> | undefined;
 
 /**
  * Loads Node's diagnostics channel module only when the current runtime supports
  * it. Unsupported runtimes and failed imports intentionally resolve to
  * undefined so telemetry tracing never crashes user code.
  */
-async function loadDiagnosticsChannel(): Promise<
-  DiagnosticsChannel | undefined
-> {
+async function loadDiagnosticsChannel(): Promise<DiagnosticsChannel | undefined> {
   if (!isNodeRuntime()) {
     return undefined;
   }
@@ -68,9 +64,7 @@ export async function runWithTracingChannelSpan<T>(
   execute: () => PromiseLike<T>,
 ): Promise<T> {
   const diagnosticsChannel = await loadDiagnosticsChannel();
-  const tracingChannel = diagnosticsChannel?.tracingChannel?.(
-    AI_SDK_TELEMETRY_TRACING_CHANNEL,
-  );
+  const tracingChannel = diagnosticsChannel?.tracingChannel?.(AI_SDK_TELEMETRY_TRACING_CHANNEL);
 
   if (tracingChannel == null || tracingChannel.hasSubscribers === false) {
     return await execute();
@@ -139,19 +133,11 @@ export function openTelemetryChannelSpanContext({
     return undefined;
   }
 
-  const diagnosticsChannel = loadBuiltinModule<DiagnosticsChannel>(
-    'node:diagnostics_channel',
-  );
+  const diagnosticsChannel = loadBuiltinModule<DiagnosticsChannel>('node:diagnostics_channel');
   const asyncHooks = loadBuiltinModule<AsyncHooks>('node:async_hooks');
-  const tracingChannel = diagnosticsChannel?.tracingChannel?.(
-    AI_SDK_TELEMETRY_TRACING_CHANNEL,
-  );
+  const tracingChannel = diagnosticsChannel?.tracingChannel?.(AI_SDK_TELEMETRY_TRACING_CHANNEL);
 
-  if (
-    tracingChannel == null ||
-    tracingChannel.hasSubscribers === false ||
-    asyncHooks == null
-  ) {
+  if (tracingChannel == null || tracingChannel.hasSubscribers === false || asyncHooks == null) {
     Promise.resolve(completion).catch(() => {});
     return undefined;
   }
@@ -171,13 +157,7 @@ export function openTelemetryChannelSpanContext({
     }
   };
 
-  const publishAsyncEnd = ({
-    result,
-    error,
-  }: {
-    result?: unknown;
-    error?: unknown;
-  }) => {
+  const publishAsyncEnd = ({ result, error }: { result?: unknown; error?: unknown }) => {
     if (asyncEndPublished) {
       return;
     }
@@ -209,9 +189,6 @@ export function openTelemetryChannelSpanContext({
   );
 
   return {
-    run: execute =>
-      asyncResource == null
-        ? execute()
-        : asyncResource.runInAsyncScope(execute),
+    run: execute => (asyncResource == null ? execute() : asyncResource.runInAsyncScope(execute)),
   };
 }

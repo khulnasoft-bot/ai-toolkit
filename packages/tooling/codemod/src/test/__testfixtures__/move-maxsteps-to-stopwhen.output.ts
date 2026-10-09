@@ -1,8 +1,9 @@
 // @ts-nocheck
-import { generateText, stepCountIs } from 'ai';
-import { useChat } from '@ai-toolkit/react';
 
-async function foo() {
+import { useChat } from '@ai-toolkit/react';
+import { generateText, stepCountIs } from 'ai';
+
+async function _foo() {
   const result = await generateText({
     model: 'gpt-4',
     messages: [],
@@ -37,7 +38,7 @@ async function foo() {
 
   await generateText(obj);
 
-  const obj2 = {
+  const _obj2 = {
     model: 'gpt-4',
     messages: [],
     maxSteps: maxSteps + 5,
@@ -54,7 +55,7 @@ export function ChatComponent() {
   });
 }
 
-const config = {
+const _config = {
   maxSteps: 10,
   foo: 'bar',
 };

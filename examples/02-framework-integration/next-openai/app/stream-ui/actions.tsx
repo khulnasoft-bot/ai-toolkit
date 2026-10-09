@@ -1,20 +1,20 @@
+import { generateId, type ModelMessage } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import { ModelMessage, generateId } from '@ai-toolkit/ai';
 import {
-  createAI,
-  createStreamableValue,
   getMutableAIState as $getMutableAIState,
+  type createAI,
+  createStreamableValue,
   streamUI,
 } from '@ai-toolkit/rsc';
-import { Message, BotMessage } from './message';
 import { z } from 'zod';
+import { BotMessage, Message } from './message';
 
 type AIProviderNoActions = ReturnType<typeof createAI<AIState, UIState>>;
 // typed wrapper *without* actions defined to avoid circular dependencies
 const getMutableAIState = $getMutableAIState<AIProviderNoActions>;
 
 // mock function to fetch weather data
-const fetchWeatherData = async (location: string) => {
+const fetchWeatherData = async (_location: string) => {
   await new Promise(resolve => setTimeout(resolve, 1000));
   return { temperature: '72°F' };
 };
@@ -26,10 +26,7 @@ export async function submitUserMessage(content: string) {
 
   aiState.update({
     ...aiState.get(),
-    messages: [
-      ...aiState.get().messages,
-      { id: generateId(), role: 'user', content },
-    ],
+    messages: [...aiState.get().messages, { id: generateId(), role: 'user', content }],
   });
 
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>;
@@ -37,7 +34,7 @@ export async function submitUserMessage(content: string) {
 
   const result = await streamUI({
     model: openai('gpt-4-turbo'),
-    initial: <Message role="assistant">Working on that...</Message>,
+    initial: <Message>Working on that...</Message>,
     system: 'You are a weather assistant.',
     messages: aiState
       .get()
@@ -53,10 +50,7 @@ export async function submitUserMessage(content: string) {
         textStream.done();
         aiState.update({
           ...aiState.get(),
-          messages: [
-            ...aiState.get().messages,
-            { id: generateId(), role: 'assistant', content },
-          ],
+          messages: [...aiState.get().messages, { id: generateId(), role: 'assistant', content }],
         });
       } else {
         textStream.append(delta);
@@ -71,12 +65,10 @@ export async function submitUserMessage(content: string) {
           location: z.string(),
         }),
         generate: async function* ({ location }) {
-          yield (
-            <Message role="assistant">Loading weather for {location}</Message>
-          );
+          yield <Message>Loading weather for {location}</Message>;
           const { temperature } = await fetchWeatherData(location);
           return (
-            <Message role="assistant">
+            <Message>
               <span>
                 The temperature in {location} is{' '}
                 <span className="font-semibold">{temperature}</span>

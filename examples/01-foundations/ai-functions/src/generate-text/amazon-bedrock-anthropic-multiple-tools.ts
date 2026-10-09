@@ -1,5 +1,5 @@
-import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { generateText, tool } from '@ai-toolkit/ai';
+import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -37,6 +37,7 @@ run(async () => {
         }),
         execute: async ({ expression }) => ({
           expression,
+          // biome-ignore lint/security/noGlobalEval: example calculator intentionally evaluates a math expression
           result: eval(expression),
         }),
       }),

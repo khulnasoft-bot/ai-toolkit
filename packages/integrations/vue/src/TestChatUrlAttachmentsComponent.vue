@@ -8,8 +8,8 @@ const chat = new Chat({
   id: generateId(),
   generateId: mockId(),
 });
-const isLoading = computed(() => chat.status !== 'ready');
-const input = ref('');
+const _isLoading = computed(() => chat.status !== 'ready');
+const _input = ref('');
 </script>
 
 <template>

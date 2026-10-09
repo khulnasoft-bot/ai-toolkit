@@ -1,6 +1,6 @@
-import { google } from '@ai-toolkit/google';
-import { ModelMessage, generateText } from '@ai-toolkit/ai';
 import * as readline from 'node:readline/promises';
+import { generateText, type ModelMessage } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

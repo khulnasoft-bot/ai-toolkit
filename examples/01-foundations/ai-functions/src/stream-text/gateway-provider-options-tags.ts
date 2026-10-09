@@ -1,5 +1,5 @@
-import type { GatewayProviderOptions } from '@ai-toolkit/gateway';
 import { streamText } from '@ai-toolkit/ai';
+import type { GatewayProviderOptions } from '@ai-toolkit/gateway';
 import { run } from '../lib/run';
 
 run(async () => {

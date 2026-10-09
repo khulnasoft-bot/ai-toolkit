@@ -1,5 +1,5 @@
-import { deepgram } from '@ai-toolkit/deepgram';
 import { experimental_transcribe as transcribe } from '@ai-toolkit/ai';
+import { deepgram } from '@ai-toolkit/deepgram';
 import { run } from '../lib/run';
 
 run(async () => {

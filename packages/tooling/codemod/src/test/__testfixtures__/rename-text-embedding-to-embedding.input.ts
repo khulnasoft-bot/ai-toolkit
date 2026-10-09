@@ -1,17 +1,18 @@
 // @ts-nocheck
-import { openai } from '@ai-toolkit/openai';
+
 import { anthropic } from '@ai-toolkit/anthropic';
+import { openai } from '@ai-toolkit/openai';
 import { embed, embedMany } from 'ai';
 
 // Using the full method name
-const model1 = openai.textEmbeddingModel('text-embedding-3-small');
+const _model1 = openai.textEmbeddingModel('text-embedding-3-small');
 
 // Using the shorthand
-const model2 = openai.textEmbedding('text-embedding-3-small');
+const _model2 = openai.textEmbedding('text-embedding-3-small');
 
 // With other providers
-const model3 = anthropic.textEmbeddingModel('some-model');
-const model4 = anthropic.textEmbedding('some-model');
+const _model3 = anthropic.textEmbeddingModel('some-model');
+const _model4 = anthropic.textEmbedding('some-model');
 
 // In embed function
 const { embedding } = await embed({
@@ -26,11 +27,11 @@ const { embeddings } = await embedMany({
 });
 
 // Assigned to variable without immediate call
-const embeddingFn = openai.textEmbedding;
-const embeddingModelFn = openai.textEmbeddingModel;
+const _embeddingFn = openai.textEmbedding;
+const _embeddingModelFn = openai.textEmbeddingModel;
 
 // Chained usage
-async function getEmbedding(text: string) {
+async function _getEmbedding(text: string) {
   return embed({
     model: openai.textEmbedding('text-embedding-3-small'),
     value: text,

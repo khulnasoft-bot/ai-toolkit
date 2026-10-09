@@ -77,7 +77,7 @@ export default function Page() {
         ) : (
           imageSrc && (
             <img
-              alt="Generated Image"
+              alt="Generated result"
               className="object-cover overflow-hidden rounded-lg"
               src={imageSrc}
             />

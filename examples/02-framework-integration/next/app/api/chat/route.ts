@@ -1,9 +1,9 @@
-import type { MyUIMessage } from '@/util/chat-schema';
-import { readChat, saveChat } from '@util/chat-store';
 import { convertToModelMessages, generateId, streamText } from '@ai-toolkit/ai';
+import { readChat, saveChat } from '@util/chat-store';
 import { after } from 'next/server';
 import { createResumableStreamContext } from 'resumable-stream';
 import throttle from 'throttleit';
+import type { MyUIMessage } from '@/util/chat-schema';
 
 export async function POST(req: Request) {
   const {
@@ -47,9 +47,7 @@ export async function POST(req: Request) {
     // set the messages to the message before the assistant message
     messages = messages.slice(
       0,
-      messages[messageIndex].role === 'assistant'
-        ? messageIndex
-        : messageIndex + 1,
+      messages[messageIndex].role === 'assistant' ? messageIndex : messageIndex + 1,
     );
   }
 

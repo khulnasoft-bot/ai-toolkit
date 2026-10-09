@@ -1,34 +1,36 @@
 'use client';
 
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { OpenAIFetchPdfCustomToolMessage } from '@/agent/openai-fetch-pdf-custom-tool-agent';
 import ChatInput from '@/components/chat-input';
 import FetchPDFView from '@/components/tool/fetch-pdf-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { OpenAIFetchPdfCustomToolMessage } from '@/agent/openai-fetch-pdf-custom-tool-agent';
 
 export default function TestOpenAIFileGenerationPDF() {
-  const { status, sendMessage, messages } =
-    useChat<OpenAIFetchPdfCustomToolMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-openai-fetch-pdf-custom-tool',
-      }),
-    });
+  const { status, sendMessage, messages } = useChat<OpenAIFetchPdfCustomToolMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-openai-fetch-pdf-custom-tool',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        OpenAI Fetch PDF Custom Tool Test
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">OpenAI Fetch PDF Custom Tool Test</h1>
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
-              case 'text':
-                return <div key={index}>{part.text}</div>;
-              case 'tool-fetchPdf':
-                return <FetchPDFView key={index} invocation={part} />;
+              case 'text': {
+                return <div key={`${part.type}-${part.text}`}>{part.text}</div>;
+              }
+              case 'tool-fetchPdf': {
+                return <FetchPDFView key={part.toolCallId} invocation={part} />;
+              }
+              default: {
+                return null;
+              }
             }
           })}
         </div>

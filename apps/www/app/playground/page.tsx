@@ -1,10 +1,8 @@
 'use client';
-import { useState } from 'react';
 import Link from 'next/link';
+import { useState } from 'react';
 export default function Playground() {
-  const [prompt, setPrompt] = useState(
-    'Explain how streaming AI responses work in one paragraph.',
-  );
+  const [prompt, setPrompt] = useState('Explain how streaming AI responses work in one paragraph.');
   const [ran, setRan] = useState(false);
   return (
     <main className="shell" style={{ paddingTop: 48 }}>
@@ -53,8 +51,9 @@ export default function Playground() {
         }}
       >
         <aside style={{ borderRight: '1px solid var(--line)', padding: 18 }}>
-          <label style={{ fontSize: 12, color: 'var(--muted)' }}>MODEL</label>
+          <span style={{ fontSize: 12, color: 'var(--muted)' }}>MODEL</span>
           <button
+            type="button"
             className="panel"
             style={{
               width: '100%',
@@ -66,7 +65,7 @@ export default function Playground() {
           >
             OpenAI / GPT-4o <span style={{ float: 'right' }}>⌄</span>
           </button>
-          <label
+          <span
             style={{
               display: 'block',
               fontSize: 12,
@@ -75,22 +74,20 @@ export default function Playground() {
             }}
           >
             SETTINGS
-          </label>
-          {['Temperature 0.7', 'Max tokens 1024', 'Streaming on'].map(
-            setting => (
-              <div
-                key={setting}
-                style={{
-                  padding: '14px 0',
-                  borderBottom: '1px solid var(--line)',
-                  fontSize: 13,
-                  color: 'var(--muted)',
-                }}
-              >
-                {setting}
-              </div>
-            ),
-          )}
+          </span>
+          {['Temperature 0.7', 'Max tokens 1024', 'Streaming on'].map(setting => (
+            <div
+              key={setting}
+              style={{
+                padding: '14px 0',
+                borderBottom: '1px solid var(--line)',
+                fontSize: 13,
+                color: 'var(--muted)',
+              }}
+            >
+              {setting}
+            </div>
+          ))}
         </aside>
         <section style={{ display: 'flex', flexDirection: 'column' }}>
           <div
@@ -103,6 +100,7 @@ export default function Playground() {
           >
             <span style={{ fontSize: 13, color: 'var(--muted)' }}>Prompt</span>
             <button
+              type="button"
               onClick={() => setPrompt('')}
               style={{
                 background: 'none',
@@ -139,10 +137,9 @@ export default function Playground() {
               alignItems: 'center',
             }}
           >
-            <span style={{ fontSize: 12, color: 'var(--muted)' }}>
-              {prompt.length} characters
-            </span>
+            <span style={{ fontSize: 12, color: 'var(--muted)' }}>{prompt.length} characters</span>
             <button
+              type="button"
               onClick={() => setRan(true)}
               style={{
                 background: '#f4f4f5',
@@ -168,17 +165,13 @@ export default function Playground() {
                 color: '#d4d4d8',
               }}
             >
-              <span
-                className="mono"
-                style={{ fontSize: 11, color: 'var(--accent)' }}
-              >
+              <span className="mono" style={{ fontSize: 11, color: 'var(--accent)' }}>
                 RESPONSE · 1.2s
               </span>
               <p>
-                Streaming lets an AI application show tokens as they are
-                generated, rather than waiting for the complete response. This
-                makes interfaces feel faster and gives users immediate feedback
-                while the model continues working.
+                Streaming lets an AI application show tokens as they are generated, rather than
+                waiting for the complete response. This makes interfaces feel faster and gives users
+                immediate feedback while the model continues working.
               </p>
             </div>
           )}

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 // Capture transport instances and outgoing events. The transport is created
 // inside the session constructor, so we replace it with a controllable fake
@@ -34,7 +34,6 @@ vi.mock('./browser-realtime-transport', () => ({
 
 vi.mock('./browser-realtime-audio', () => ({
   BrowserRealtimeAudio: class {
-    constructor(_options: unknown) {}
     ensurePlaybackContext = vi.fn();
     startCapture = vi.fn();
     stopCapture = vi.fn();
@@ -105,9 +104,7 @@ describe('AbstractRealtimeSession', () => {
     await flush();
 
     expect(onError).toHaveBeenCalledOnce();
-    expect(onError.mock.calls[0][0].message).toContain(
-      'No handler provided for tool',
-    );
+    expect(onError.mock.calls[0][0].message).toContain('No handler provided for tool');
   });
 
   it('requests a single response after all tool outputs are submitted', async () => {
@@ -123,9 +120,7 @@ describe('AbstractRealtimeSession', () => {
     await transport.emitServerEvent(responseDone());
     await flush();
 
-    const responseCreates = sentEvents.filter(
-      e => e.type === 'response-create',
-    );
+    const responseCreates = sentEvents.filter(e => e.type === 'response-create');
     expect(responseCreates).toHaveLength(1);
 
     const outputs = sentEvents.filter(
@@ -147,14 +142,10 @@ describe('AbstractRealtimeSession', () => {
     // Output submitted before response-done arrives.
     await transport.emitServerEvent(functionCallDone('call-1', 'a'));
     await flush();
-    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(
-      0,
-    );
+    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(0);
 
     await transport.emitServerEvent(responseDone());
     await flush();
-    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(
-      1,
-    );
+    expect(sentEvents.filter(e => e.type === 'response-create')).toHaveLength(1);
   });
 });

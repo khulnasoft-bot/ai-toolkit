@@ -17,15 +17,15 @@
  * Package npm names stay unchanged; only physical directory changes.
  */
 
-import fs from 'fs';
-import path from 'path';
-import { execSync } from 'child_process';
-import { fileURLToPath } from 'url';
+import { execSync } from 'node:child_process';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
 const PACKAGES = path.join(ROOT, 'packages');
-const PRUNE = new Set(['node_modules', 'dist', '.git', 'build', '.turbo', 'coverage']);
+const _PRUNE = new Set(['node_modules', 'dist', '.git', 'build', '.turbo', 'coverage']);
 
 // Map of package directory name -> target domain
 const DOMAIN_MAP = {
@@ -136,7 +136,7 @@ function readJson(file) {
 }
 
 function writeJson(file, data) {
-  fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n');
+  fs.writeFileSync(file, `${JSON.stringify(data, null, 2)}\n`);
 }
 
 function readAllPackageDirs() {
@@ -149,7 +149,7 @@ function readAllPackageDirs() {
     const dir = path.join(PACKAGES, entry.name);
     if (!fs.existsSync(path.join(dir, 'package.json'))) continue;
     const manifest = readJson(path.join(dir, 'package.json'));
-    if (manifest && manifest.name) {
+    if (manifest?.name) {
       dirs.set(entry.name, {
         dir: path.relative(ROOT, dir).split(path.sep).join('/'),
         name: manifest.name,
@@ -177,7 +177,7 @@ function readAllPackageDirs() {
       const dir = path.join(domainDir, entry.name);
       if (fs.existsSync(path.join(dir, 'package.json'))) {
         const manifest = readJson(path.join(dir, 'package.json'));
-        if (manifest && manifest.name) {
+        if (manifest?.name) {
           dirs.set(entry.name, {
             dir: path.relative(ROOT, dir).split(path.sep).join('/'),
             name: manifest.name,
@@ -193,7 +193,7 @@ function readAllPackageDirs() {
           const subDir = path.join(dir, sub.name);
           if (fs.existsSync(path.join(subDir, 'package.json'))) {
             const manifest = readJson(path.join(subDir, 'package.json'));
-            if (manifest && manifest.name) {
+            if (manifest?.name) {
               dirs.set(sub.name, {
                 dir: path.relative(ROOT, subDir).split(path.sep).join('/'),
                 name: manifest.name,
@@ -215,7 +215,7 @@ function updateExtendsPath(tsconfig, pkgDirRel) {
   const oldExtends = tsconfig.extends;
   const depth = pkgDirRel.split('/').length;
   const prefix = '../'.repeat(depth);
-  tsconfig.extends = prefix + 'tools/tsconfig/' + oldExtends.split('@khulnasoft/ai-tsconfig/')[1];
+  tsconfig.extends = `${prefix}tools/tsconfig/${oldExtends.split('@khulnasoft/ai-tsconfig/')[1]}`;
   return oldExtends !== tsconfig.extends;
 }
 
@@ -234,14 +234,14 @@ function updateReferences(tsconfig, fromDir, pkgName, allDirs, newPkgDirRel) {
       // Check if this reference points to the package being migrated
       if (refDirName === pkgName) {
         const relPath = path.relative(fromDir, newPkgDirRel);
-        ref.path = relPath.startsWith('.') ? relPath : './' + relPath;
+        ref.path = relPath.startsWith('.') ? relPath : `./${relPath}`;
         changed = true;
       } else {
         // Check if this reference points to a package that has ALREADY been migrated
         const refPkg = allDirs.get(refDirName);
         if (refPkg && refPkg.domain !== 'legacy') {
           const relPath = path.relative(fromDir, refPkg.dir);
-          ref.path = relPath.startsWith('.') ? relPath : './' + relPath;
+          ref.path = relPath.startsWith('.') ? relPath : `./${relPath}`;
           changed = true;
         }
       }
@@ -255,7 +255,7 @@ function updateReferences(tsconfig, fromDir, pkgName, allDirs, newPkgDirRel) {
         const refDirName = resolveRefDir(p, fromDir);
         if (refDirName === pkgName) {
           const relPath = path.relative(fromDir, newPkgDirRel);
-          return relPath.startsWith('.') ? relPath : './' + relPath;
+          return relPath.startsWith('.') ? relPath : `./${relPath}`;
         }
         return p;
       });
@@ -271,7 +271,7 @@ function updateReferences(tsconfig, fromDir, pkgName, allDirs, newPkgDirRel) {
 
 function findReferencingTsconfigs(pkgName, allDirs) {
   const referencing = [];
-  for (const [dirName, info] of allDirs) {
+  for (const [_dirName, info] of allDirs) {
     const tsconfigPath = path.join(ROOT, info.dir, 'tsconfig.json');
     if (!fs.existsSync(tsconfigPath)) continue;
     const tsconfig = readJson(tsconfigPath);
@@ -353,7 +353,7 @@ function main() {
     execSync(`git mv "${pkg.dir}" "${newRel}"`, { cwd: ROOT, stdio: 'pipe' });
     console.log('  Moved directory');
   } else {
-    console.log('  [DRY RUN] Would move: ' + oldRel + ' -> ' + newRel);
+    console.log(`  [DRY RUN] Would move: ${oldRel} -> ${newRel}`);
   }
 
   const movedPkgDirRel = newRel;
@@ -388,7 +388,7 @@ function main() {
   const rootTsconfigPath = path.join(ROOT, 'tsconfig.json');
   if (fs.existsSync(rootTsconfigPath)) {
     const rootTsconfig = readJson(rootTsconfigPath);
-    if (rootTsconfig && rootTsconfig.references) {
+    if (rootTsconfig?.references) {
       let changed = false;
       for (const ref of rootTsconfig.references) {
         if (ref.path === oldRel) {
@@ -406,7 +406,7 @@ function main() {
   // Step 4: Update ALL packages that reference this package
   const referencing = findReferencingTsconfigs(pkgName, allDirs);
   if (referencing.length > 0) {
-    console.log('  Found ' + referencing.length + ' package(s) referencing "' + pkgName + '"');
+    console.log(`  Found ${referencing.length} package(s) referencing "${pkgName}"`);
     for (const { tsconfigPath, dir, tsconfig } of referencing) {
       // Skip the moved package itself
       if (dir === newRel) continue;
@@ -416,7 +416,7 @@ function main() {
 
       if (JSON.stringify(tsconfig) !== JSON.stringify(original)) {
         if (!dryRun) writeJson(tsconfigPath, tsconfig);
-        console.log('  Updated ' + path.relative(ROOT, tsconfigPath));
+        console.log(`  Updated ${path.relative(ROOT, tsconfigPath)}`);
       }
     }
   } else {
@@ -449,7 +449,7 @@ function main() {
   // Step 6: Report scripts with potential relative paths
   if (fs.existsSync(movedPkgJson)) {
     const manifest = readJson(movedPkgJson);
-    if (manifest && manifest.scripts) {
+    if (manifest?.scripts) {
       const pathScripts = {};
       for (const [name, script] of Object.entries(manifest.scripts)) {
         if (
@@ -462,7 +462,7 @@ function main() {
       if (Object.keys(pathScripts).length > 0) {
         console.log('  Scripts with potential relative paths (manual review needed):');
         for (const [name, script] of Object.entries(pathScripts)) {
-          console.log('    ' + name + ': ' + script);
+          console.log(`    ${name}: ${script}`);
         }
       }
     }

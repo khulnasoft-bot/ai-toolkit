@@ -1,11 +1,11 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Helper function to convert snake_case to camelCase
   function snakeToCamel(str: string): string {
-    return str.replace(/_([a-z])/g, (match, letter) => letter.toUpperCase());
+    return str.replace(/_([a-z])/g, (_match, letter) => letter.toUpperCase());
   }
 
   // Helper function to recursively transform snake_case properties in an object
@@ -47,8 +47,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         // Found providerOptions, now look for bedrock property
         prop.value.properties.forEach((providerProp: any) => {
           if (
-            (providerProp.type === 'ObjectProperty' ||
-              providerProp.type === 'Property') &&
+            (providerProp.type === 'ObjectProperty' || providerProp.type === 'Property') &&
             providerProp.key.type === 'Identifier' &&
             providerProp.key.name === 'bedrock' &&
             providerProp.value.type === 'ObjectExpression'

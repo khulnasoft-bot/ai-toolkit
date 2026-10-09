@@ -1,7 +1,7 @@
 import { startTransition, useLayoutEffect, useState } from 'react';
-import { readStreamableValue } from './read-streamable-value';
-import { StreamableValue } from './streamable-value';
 import { isStreamableValue } from './is-streamable-value';
+import { readStreamableValue } from './read-streamable-value';
+import type { StreamableValue } from './streamable-value';
 
 function checkStreamableValue(value: unknown): value is StreamableValue {
   const hasSignature = isStreamableValue(value);
@@ -74,11 +74,12 @@ export function useStreamableValue<T = unknown, Error = unknown>(
           setError(e as Error);
         });
       } finally {
-        if (cancelled) return;
-        startTransition(() => {
-          if (cancelled) return;
-          setPending(false);
-        });
+        if (!cancelled) {
+          startTransition(() => {
+            if (cancelled) return;
+            setPending(false);
+          });
+        }
       }
     })();
 

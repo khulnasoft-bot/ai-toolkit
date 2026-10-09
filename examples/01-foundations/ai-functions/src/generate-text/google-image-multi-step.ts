@@ -1,5 +1,5 @@
-import { google } from '@ai-toolkit/google';
 import { generateText } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
 
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
@@ -19,8 +19,7 @@ run(async () => {
       ...step1.response.messages,
       {
         role: 'user',
-        content:
-          'Now create a variation of the image, but in the style of a watercolor painting.',
+        content: 'Now create a variation of the image, but in the style of a watercolor painting.',
       },
     ],
   });

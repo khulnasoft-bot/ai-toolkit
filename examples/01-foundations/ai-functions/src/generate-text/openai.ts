@@ -1,7 +1,7 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
-import { run } from '../lib/run';
+import { openai } from '@ai-toolkit/openai';
 import { print } from '../lib/print';
+import { run } from '../lib/run';
 
 run(async () => {
   const result = await generateText({

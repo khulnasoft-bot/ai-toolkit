@@ -1,5 +1,5 @@
 import { EventEmitter } from 'node:events';
-import { ServerResponse } from 'node:http';
+import type { ServerResponse } from 'node:http';
 
 class MockServerResponse extends EventEmitter {
   writtenChunks: any[] = [];
@@ -63,7 +63,6 @@ class MockServerResponse extends EventEmitter {
   }
 }
 
-export function createMockServerResponse(): ServerResponse &
-  MockServerResponse {
+export function createMockServerResponse(): ServerResponse & MockServerResponse {
   return new MockServerResponse() as ServerResponse & MockServerResponse;
 }

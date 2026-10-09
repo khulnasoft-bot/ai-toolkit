@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   let hasChanges = false;
@@ -24,18 +24,13 @@ export default createTransformer((fileInfo, api, options, context) => {
     const { callee, arguments: args } = path.node;
 
     // Check if this is an AI method call
-    if (
-      callee.type === 'Identifier' &&
-      aiMethods.includes(callee.name) &&
-      args.length > 0
-    ) {
+    if (callee.type === 'Identifier' && aiMethods.includes(callee.name) && args.length > 0) {
       const firstArg = args[0];
 
       // The first argument should be an object with properties
       if (firstArg.type === 'ObjectExpression') {
         firstArg.properties.forEach(prop => {
-          const isPropertyType =
-            prop.type === 'Property' || prop.type === 'ObjectProperty';
+          const isPropertyType = prop.type === 'Property' || prop.type === 'ObjectProperty';
 
           if (isPropertyType && prop.key && prop.key.type === 'Identifier') {
             if (prop.key.name === 'experimental_providerMetadata') {

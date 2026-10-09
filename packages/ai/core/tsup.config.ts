@@ -12,8 +12,7 @@ export default defineConfig([
     platform: 'node',
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
   },
@@ -29,8 +28,7 @@ export default defineConfig([
     platform: 'node',
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
   },
@@ -57,8 +55,7 @@ export default defineConfig([
     platform: 'node',
     define: {
       __PACKAGE_VERSION__: JSON.stringify(
-        (await import('./package.json', { with: { type: 'json' } })).default
-          .version,
+        (await import('./package.json', { with: { type: 'json' } })).default.version,
       ),
     },
   },

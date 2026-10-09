@@ -1,5 +1,5 @@
-import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
+import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -13,8 +13,7 @@ run(async () => {
     prompt: 'Summarize in 2 sentences',
     providerOptions: {
       openai: {
-        previousResponseId: result1.providerMetadata?.openai
-          .responseId as string,
+        previousResponseId: result1.providerMetadata?.openai.responseId as string,
       } satisfies OpenAIResponsesProviderOptions,
     },
   });

@@ -1,4 +1,4 @@
-import { InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 export type OpenAITranscriptionModelId =

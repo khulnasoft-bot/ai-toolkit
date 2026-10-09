@@ -1,8 +1,8 @@
-import { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
+import type { EmbeddingModelV3Embedding } from '@ai-toolkit/provider';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { GoogleGenerativeAIEmbeddingModel } from './google-generative-ai-embedding-model';
 import { createGoogleGenerativeAI } from './google-provider';
-import { describe, it, expect, vi } from 'vitest';
 
 vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
@@ -157,9 +157,7 @@ describe('GoogleGenerativeAIEmbeddingModel', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/google/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/google/0.0.0-test`);
   });
 
   it('should throw an error if too many values are provided', async () => {

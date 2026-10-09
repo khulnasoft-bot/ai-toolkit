@@ -1,8 +1,8 @@
-import { azure } from '@ai-toolkit/azure';
 import { streamText } from '@ai-toolkit/ai';
+import { azure } from '@ai-toolkit/azure';
 import { z } from 'zod';
-import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 run(async () => {
   const result = streamText({

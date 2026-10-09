@@ -1,8 +1,8 @@
-import { createAzure } from '@ai-toolkit/azure';
 import { streamText } from '@ai-toolkit/ai';
+import { createAzure } from '@ai-toolkit/azure';
+import { convertBase64ToUint8Array } from '../lib/convert-base64';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
-import { convertBase64ToUint8Array } from '../lib/convert-base64';
 
 run(async () => {
   const azure = createAzure({
@@ -24,7 +24,7 @@ run(async () => {
   });
 
   for await (const part of result.fullStream) {
-    if (part.type == 'tool-result' && !part.dynamic) {
+    if (part.type === 'tool-result' && !part.dynamic) {
       await presentImages([
         {
           mediaType: 'image/png',

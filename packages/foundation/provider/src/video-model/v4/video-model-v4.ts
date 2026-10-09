@@ -1,9 +1,9 @@
 import type { JSONValue } from '../../json-value/json-value';
 import type { VideoModelV4CallOptions } from './video-model-v4-call-options';
-import type { VideoModelV4Result } from './video-model-v4-result';
 import type { VideoModelV4OperationStartResult } from './video-model-v4-operation-start-result';
 import type { VideoModelV4OperationStatusResult } from './video-model-v4-operation-status-result';
 import type { VideoModelV4OperationWebhook } from './video-model-v4-operation-webhook';
+import type { VideoModelV4Result } from './video-model-v4-result';
 
 type GetMaxVideosPerCallFunction = (options: {
   modelId: string;
@@ -49,9 +49,7 @@ export type VideoModelV4 = {
    * Optional when `doStart` and `doStatus` are provided to support
    * the asynchronous start/status flow.
    */
-  doGenerate?(
-    options: VideoModelV4CallOptions,
-  ): PromiseLike<VideoModelV4Result>;
+  doGenerate?(options: VideoModelV4CallOptions): PromiseLike<VideoModelV4Result>;
 
   /**
    * Optional method that handles the user's `webhook` option for the

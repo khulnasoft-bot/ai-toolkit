@@ -2,37 +2,34 @@ import type {
   Experimental_VideoModelV4,
   Experimental_VideoModelV4CallOptions,
   Experimental_VideoModelV4File,
-  Experimental_VideoModelV4Result,
-  Experimental_VideoModelV4OperationWebhook,
   Experimental_VideoModelV4FrameImage,
   Experimental_VideoModelV4FrameType,
+  Experimental_VideoModelV4OperationWebhook,
+  Experimental_VideoModelV4Result,
   SharedV4ProviderMetadata,
   SharedV4Warning,
 } from '@ai-toolkit/provider';
 import {
   convertBase64ToUint8Array,
-  delay as defaultDelay,
-  generateId,
-  withUserAgentSuffix,
   type DataContent,
+  delay as defaultDelay,
   detectMediaType,
+  generateId,
   type ProviderOptions,
+  withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
 import { NoVideoGeneratedError } from '../error/no-video-generated-error';
-import {
-  DefaultGeneratedFile,
-  type GeneratedFile,
-} from '../generate-text/generated-file';
+import { DefaultGeneratedFile, type GeneratedFile } from '../generate-text/generated-file';
 import { logWarnings } from '../logger/log-warnings';
-import { mergeAbortSignals } from '../util/merge-abort-signals';
 import { resolveVideoModel } from '../model/resolve-model';
+import { splitDataUrl } from '../prompt/split-data-url';
 import type { VideoModel } from '../types/video-model';
 import type { VideoModelResponseMetadata } from '../types/video-model-response-metadata';
 import { createDownload } from '../util/download/create-download';
+import { mergeAbortSignals } from '../util/merge-abort-signals';
 import { prepareRetries } from '../util/prepare-retries';
 import { VERSION } from '../version';
 import type { GenerateVideoResult } from './generate-video-result';
-import { splitDataUrl } from '../prompt/split-data-url';
 
 export type GenerateVideoPrompt =
   | string
@@ -70,10 +67,7 @@ export type GenerateVideoPollOptions = {
    *
    * @default the built-in timer-based delay
    */
-  delay?: (
-    delayInMs: number,
-    options?: { abortSignal?: AbortSignal },
-  ) => PromiseLike<void>;
+  delay?: (delayInMs: number, options?: { abortSignal?: AbortSignal }) => PromiseLike<void>;
 };
 
 /**
@@ -282,23 +276,15 @@ export async function experimental_generateVideo({
 }): Promise<GenerateVideoResult> {
   const model = resolveVideoModel(modelArg);
 
-  const headersWithUserAgent = withUserAgentSuffix(
-    headers ?? {},
-    `ai/${VERSION}`,
-  );
+  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
 
   const { retry } = prepareRetries({
     maxRetries: maxRetriesArg,
     abortSignal,
   });
 
-  const {
-    prompt,
-    resolvedImage,
-    normalizedFrameImages,
-    effectiveInputReferences,
-    warnings,
-  } = normalizeVideoCallInputs({ promptArg, frameImages, inputReferences });
+  const { prompt, resolvedImage, normalizedFrameImages, effectiveInputReferences, warnings } =
+    normalizeVideoCallInputs({ promptArg, frameImages, inputReferences });
 
   const maxVideosPerCallWithDefault =
     maxVideosPerCall ?? (await invokeModelMaxVideosPerCall(model)) ?? 1;
@@ -306,8 +292,7 @@ export async function experimental_generateVideo({
   // Determine whether to use the start/status flow:
   const hasStartStatus = model.doStart != null && model.doStatus != null;
   const useStartStatus =
-    hasStartStatus &&
-    (poll != null || webhook != null || model.doGenerate == null);
+    hasStartStatus && (poll != null || webhook != null || model.doGenerate == null);
 
   // Validate model capabilities
   if (model.doGenerate == null && !hasStartStatus) {
@@ -367,7 +352,7 @@ export async function experimental_generateVideo({
         });
       }
 
-      return retry(() => model.doGenerate!(callOptions));
+      return retry(() => model.doGenerate?.(callOptions));
     }),
   );
 
@@ -488,9 +473,7 @@ async function executeStartStatusFlow({
   // 1. If webhook and provider supports it, set up the webhook
   const earlyWarnings: Experimental_VideoModelV4Result['warnings'] = [];
   let webhookUrl: string | undefined;
-  let webhookReceived:
-    | PromiseLike<Experimental_VideoModelV4OperationWebhook>
-    | undefined;
+  let webhookReceived: PromiseLike<Experimental_VideoModelV4OperationWebhook> | undefined;
 
   if (webhookFactory != null) {
     if (model.handleWebhookOption != null) {
@@ -503,8 +486,7 @@ async function executeStartStatusFlow({
       earlyWarnings.push({
         type: 'unsupported',
         feature: 'webhook',
-        details:
-          'This model does not support webhooks. Falling back to polling.',
+        details: 'This model does not support webhooks. Falling back to polling.',
       });
     }
   }
@@ -512,26 +494,21 @@ async function executeStartStatusFlow({
   // 2. Start the generation. `doStart` is billable: mint one idempotency token
   // per logical start, outside the retry closure; a caller-supplied key wins.
   const callerIdempotencyKey = Object.entries(callOptions.headers ?? {}).find(
-    ([key, value]) =>
-      key.toLowerCase() === 'idempotency-key' && value !== undefined,
+    ([key, value]) => key.toLowerCase() === 'idempotency-key' && value !== undefined,
   );
   const startCallOptions = {
     ...callOptions,
     headers: {
       ...callOptions.headers,
-      ...(callerIdempotencyKey
-        ? {}
-        : { 'idempotency-key': `aisdk_vid_${generateId()}` }),
+      ...(callerIdempotencyKey ? {} : { 'idempotency-key': `aisdk_vid_${generateId()}` }),
     },
     webhookUrl,
   };
-  const startResult = await retry(() => model.doStart!(startCallOptions));
+  const startResult = await retry(() => model.doStart?.(startCallOptions));
 
   const allWarnings = [...earlyWarnings, ...startResult.warnings];
   let operationProviderMetadata =
-    startResult.providerMetadata == null
-      ? undefined
-      : { ...startResult.providerMetadata };
+    startResult.providerMetadata == null ? undefined : { ...startResult.providerMetadata };
   const intervalMs = pollConfig?.intervalMs ?? 5000;
   const timeoutMs = pollConfig?.timeoutMs ?? 600_000;
   const delay = pollConfig?.delay ?? defaultDelay;
@@ -563,7 +540,7 @@ async function executeStartStatusFlow({
     }
 
     const statusResult = await retry(() =>
-      model.doStatus!({
+      model.doStatus?.({
         operation: startResult.operation,
         abortSignal: callOptions.abortSignal,
         headers: callOptions.headers,
@@ -579,10 +556,7 @@ async function executeStartStatusFlow({
     }
     if (statusResult.providerMetadata != null) {
       operationProviderMetadata ??= {};
-      mergeProviderMetadata(
-        operationProviderMetadata,
-        statusResult.providerMetadata,
-      );
+      mergeProviderMetadata(operationProviderMetadata, statusResult.providerMetadata);
     }
 
     if (statusResult.status === 'completed') {
@@ -595,9 +569,7 @@ async function executeStartStatusFlow({
     }
 
     if (webhookReceived != null) {
-      throw new Error(
-        'Video generation did not complete after webhook notification.',
-      );
+      throw new Error('Video generation did not complete after webhook notification.');
     }
   }
 }
@@ -611,17 +583,12 @@ async function waitForWebhook({
   received: PromiseLike<Experimental_VideoModelV4OperationWebhook>;
   timeoutMs: number;
   abortSignal?: AbortSignal;
-  delay: (
-    delayInMs: number,
-    options?: { abortSignal?: AbortSignal },
-  ) => PromiseLike<void>;
+  delay: (delayInMs: number, options?: { abortSignal?: AbortSignal }) => PromiseLike<void>;
 }) {
   // Cancel the timeout delay once the webhook arrives (or we abort/time out),
   // so its timer does not keep the event loop alive on the success path.
   const timeoutController =
-    typeof globalThis.AbortController === 'function'
-      ? new globalThis.AbortController()
-      : undefined;
+    typeof globalThis.AbortController === 'function' ? new globalThis.AbortController() : undefined;
   try {
     await Promise.race([
       received,
@@ -686,8 +653,7 @@ function normalizePrompt(promptArg: GenerateVideoPrompt): {
 
   return {
     prompt: promptArg.text,
-    image:
-      promptArg.image != null ? normalizeImageData(promptArg.image) : undefined,
+    image: promptArg.image != null ? normalizeImageData(promptArg.image) : undefined,
   };
 }
 
@@ -706,9 +672,7 @@ export function normalizeVideoCallInputs({
     image: DataContent;
     frameType: Experimental_VideoModelV4FrameType;
   }>;
-  inputReferences?: Array<
-    DataContent | { data: DataContent; mediaType?: string }
-  >;
+  inputReferences?: Array<DataContent | { data: DataContent; mediaType?: string }>;
 }): {
   prompt: string | undefined;
   resolvedImage: Experimental_VideoModelV4File | undefined;
@@ -718,21 +682,19 @@ export function normalizeVideoCallInputs({
 } {
   const { prompt, image } = normalizePrompt(promptArg);
 
-  const normalizedFrameImages:
-    | Array<Experimental_VideoModelV4FrameImage>
-    | undefined = frameImages?.flatMap(frame => {
-    const normalizedImage = normalizeImageData(frame.image);
-    return normalizedImage != null
-      ? [{ image: normalizedImage, frameType: frame.frameType }]
-      : [];
-  });
+  const normalizedFrameImages: Array<Experimental_VideoModelV4FrameImage> | undefined =
+    frameImages?.flatMap(frame => {
+      const normalizedImage = normalizeImageData(frame.image);
+      return normalizedImage != null
+        ? [{ image: normalizedImage, frameType: frame.frameType }]
+        : [];
+    });
 
-  const normalizedInputReferences:
-    | Array<Experimental_VideoModelV4File>
-    | undefined = inputReferences?.flatMap(reference => {
-    const normalized = normalizeReferenceData(reference);
-    return normalized != null ? [normalized] : [];
-  });
+  const normalizedInputReferences: Array<Experimental_VideoModelV4File> | undefined =
+    inputReferences?.flatMap(reference => {
+      const normalized = normalizeReferenceData(reference);
+      return normalized != null ? [normalized] : [];
+    });
 
   const effectiveInputReferences =
     normalizedFrameImages != null && normalizedFrameImages.length > 0
@@ -779,10 +741,7 @@ export function normalizeVideoCallInputs({
   };
 }
 
-function detectFileMediaType(
-  data: Uint8Array,
-  restrictToImages: boolean,
-): string {
+function detectFileMediaType(data: Uint8Array, restrictToImages: boolean): string {
   const detected = restrictToImages
     ? detectMediaType({ data, topLevelType: 'image' })
     : detectMediaType({ data });
@@ -798,10 +757,7 @@ function normalizeImageData(
   { restrictToImages = true }: { restrictToImages?: boolean } = {},
 ): Experimental_VideoModelV4File | undefined {
   if (typeof dataContent === 'string') {
-    if (
-      dataContent.startsWith('http://') ||
-      dataContent.startsWith('https://')
-    ) {
+    if (dataContent.startsWith('http://') || dataContent.startsWith('https://')) {
       return {
         type: 'url',
         url: dataContent,
@@ -827,10 +783,7 @@ function normalizeImageData(
   }
 
   if (dataContent instanceof Uint8Array || dataContent instanceof ArrayBuffer) {
-    const bytes =
-      dataContent instanceof Uint8Array
-        ? dataContent
-        : new Uint8Array(dataContent);
+    const bytes = dataContent instanceof Uint8Array ? dataContent : new Uint8Array(dataContent);
     return {
       type: 'file',
       mediaType: detectFileMediaType(bytes, restrictToImages),

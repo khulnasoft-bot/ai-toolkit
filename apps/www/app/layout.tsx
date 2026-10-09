@@ -11,16 +11,11 @@ const nav = [
   ['Providers', '/providers'],
   ['Resources', '/resources/recipes'],
 ];
-export default function RootLayout({
-  children,
-}: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body>
-        <header
-          className="shell"
-          style={{ borderBottom: '1px solid var(--line)' }}
-        >
+        <header className="shell" style={{ borderBottom: '1px solid var(--line)' }}>
           <nav
             style={{
               height: 68,
@@ -29,10 +24,7 @@ export default function RootLayout({
               gap: 30,
             }}
           >
-            <Link
-              href="/"
-              style={{ fontWeight: 700, letterSpacing: '-.04em', fontSize: 18 }}
-            >
+            <Link href="/" style={{ fontWeight: 700, letterSpacing: '-.04em', fontSize: 18 }}>
               ai<span style={{ color: 'var(--accent)' }}>-toolkit</span>
             </Link>
             <div

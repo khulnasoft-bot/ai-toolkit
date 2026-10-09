@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { experimental_useObject } from './use-object';
+import { reactive, ref } from 'vue';
 import { z } from 'zod/v4';
-import { ref, reactive } from 'vue';
+import { experimental_useObject } from './use-object';
 
 const onFinishCalls: Array<{
   object: { content: string } | undefined;

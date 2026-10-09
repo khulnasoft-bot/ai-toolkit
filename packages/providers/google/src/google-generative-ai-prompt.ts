@@ -1,8 +1,8 @@
-import {
+import type {
   GroundingMetadataSchema,
+  SafetyRatingSchema,
   UrlContextMetadataSchema,
 } from './google-generative-ai-language-model';
-import { type SafetyRatingSchema } from './google-generative-ai-language-model';
 
 export type GoogleGenerativeAIPrompt = {
   systemInstruction?: GoogleGenerativeAISystemInstruction;

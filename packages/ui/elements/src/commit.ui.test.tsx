@@ -60,9 +60,7 @@ describe('commit', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(
-      <Commit className="custom-class">Test</Commit>,
-    );
+    const { container } = render(<Commit className="custom-class">Test</Commit>);
     expect(container.firstChild).toHaveClass('custom-class');
   });
 });
@@ -193,9 +191,7 @@ describe('commitFiles', () => {
     );
 
     // Expand collapsible to show files
-    const trigger = container.querySelector(
-      "[data-slot='collapsible-trigger']",
-    );
+    const trigger = container.querySelector("[data-slot='collapsible-trigger']");
     expect(trigger).toBeInTheDocument();
     await user.click(trigger as Element);
 

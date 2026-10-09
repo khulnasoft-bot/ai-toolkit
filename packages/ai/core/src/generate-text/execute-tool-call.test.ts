@@ -1,19 +1,16 @@
 import {
-  tool,
   type Experimental_SandboxSession as SandboxSession,
+  tool,
 } from '@ai-toolkit/provider-utils';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { mockSandboxSessionFileStubs } from '../test/mock-sandbox';
 import * as z from 'zod/v4';
 import { TypeValidationError } from '../error';
+import { mockSandboxSessionFileStubs } from '../test/mock-sandbox';
 import { now } from '../util/now';
 import { executeToolCall } from './execute-tool-call';
 import type { TypedToolCall } from './tool-call';
+import type { ToolExecutionEndEvent, ToolExecutionStartEvent } from './tool-execution-events';
 import type { TypedToolResult } from './tool-result';
-import type {
-  ToolExecutionEndEvent,
-  ToolExecutionStartEvent,
-} from './tool-execution-events';
 
 // mock now function
 vi.mock('../util/now', () => ({
@@ -28,9 +25,7 @@ describe('executeToolCall', () => {
     mockNow.mockReturnValue(0);
   });
 
-  const createToolCall = (
-    overrides: Partial<TypedToolCall<any>> = {},
-  ): TypedToolCall<any> =>
+  const createToolCall = (overrides: Partial<TypedToolCall<any>> = {}): TypedToolCall<any> =>
     ({
       type: 'tool-call',
       toolCallId: 'call-1',
@@ -97,7 +92,7 @@ describe('executeToolCall', () => {
       } satisfies SandboxSession;
       let receivedSandbox: SandboxSession | undefined;
 
-      const result = await executeToolCall({
+      const _result = await executeToolCall({
         toolCall: createToolCall(),
         tools: {
           testTool: tool({
@@ -304,7 +299,7 @@ describe('executeToolCall', () => {
       const toolExecutionStartEvents: ToolExecutionStartEvent<any>[] = [];
       const executionOrder: string[] = [];
 
-      const result = await executeToolCall({
+      const _result = await executeToolCall({
         toolCall: createToolCall(),
         tools: {
           testTool: tool({
@@ -385,7 +380,7 @@ describe('executeToolCall', () => {
 
       mockNow.mockReturnValueOnce(1000).mockReturnValueOnce(1050);
 
-      const result = await executeToolCall({
+      const _result = await executeToolCall({
         toolCall: createToolCall(),
         tools: {
           testTool: tool({
@@ -975,7 +970,7 @@ describe('executeToolCall', () => {
       });
 
       expect(receivedSignal).toBeDefined();
-      expect(receivedSignal!.aborted).toBe(false);
+      expect(receivedSignal?.aborted).toBe(false);
     });
 
     it('should not create abort signal when no timeout', async () => {
@@ -1025,7 +1020,7 @@ describe('executeToolCall', () => {
 
       expect(receivedSignal).toBeDefined();
       expect(receivedSignal).not.toBe(controller.signal);
-      expect(receivedSignal!.aborted).toBe(false);
+      expect(receivedSignal?.aborted).toBe(false);
     });
 
     it('should use per-tool timeout over generic toolMs', async () => {
@@ -1050,7 +1045,7 @@ describe('executeToolCall', () => {
       });
 
       expect(receivedSignal).toBeDefined();
-      expect(receivedSignal!.aborted).toBe(false);
+      expect(receivedSignal?.aborted).toBe(false);
     });
 
     it('should fall back to toolMs when tool not in tools', async () => {
@@ -1075,7 +1070,7 @@ describe('executeToolCall', () => {
       });
 
       expect(receivedSignal).toBeDefined();
-      expect(receivedSignal!.aborted).toBe(false);
+      expect(receivedSignal?.aborted).toBe(false);
     });
 
     it('should not create abort signal when tool not in tools and no toolMs', async () => {

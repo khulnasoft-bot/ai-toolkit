@@ -1,16 +1,16 @@
 // @ts-nocheck
-import { CoreMessage, streamText } from 'ai';
+import type { CoreMessage } from 'ai';
 
 // Type annotation in variable declaration
-const messages: CoreMessage[] = [];
+const _messages: CoreMessage[] = [];
 
 // Type annotation in function parameter
-function processMessages(msgs: CoreMessage[]) {
+function _processMessages(msgs: CoreMessage[]) {
   return msgs;
 }
 
 // Function return type
-function getMessages(): CoreMessage[] {
+function _getMessages(): CoreMessage[] {
   return [];
 }
 
@@ -26,9 +26,9 @@ type MessageStore = {
 };
 
 // Generic constraint
-function filterMessages<T extends CoreMessage>(msgs: T[]): T[] {
+function _filterMessages<T extends CoreMessage>(msgs: T[]): T[] {
   return msgs;
 }
 
 // Type assertion
-const msg = {} as CoreMessage;
+const _msg = {} as CoreMessage;

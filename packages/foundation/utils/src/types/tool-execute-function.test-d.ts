@@ -2,10 +2,7 @@ import { describe, expectTypeOf, it } from 'vitest';
 import type { Context } from './context';
 import type { ModelMessage } from './model-message';
 import type { SandboxSession } from './sandbox';
-import type {
-  ToolExecuteFunction,
-  ToolExecutionOptions,
-} from './tool-execute-function';
+import type { ToolExecuteFunction, ToolExecutionOptions } from './tool-execute-function';
 
 describe('tool execute function types', () => {
   it('should include execution metadata and typed context', () => {

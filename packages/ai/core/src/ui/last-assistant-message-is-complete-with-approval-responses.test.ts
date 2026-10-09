@@ -3,9 +3,7 @@ import { lastAssistantMessageIsCompleteWithApprovalResponses } from './last-assi
 
 describe('lastAssistantMessageIsCompleteWithApprovalResponses', () => {
   it('should return false if messages is empty', () => {
-    expect(
-      lastAssistantMessageIsCompleteWithApprovalResponses({ messages: [] }),
-    ).toBe(false);
+    expect(lastAssistantMessageIsCompleteWithApprovalResponses({ messages: [] })).toBe(false);
   });
 
   it('should return false if last message is a user message', () => {
@@ -23,10 +21,7 @@ describe('lastAssistantMessageIsCompleteWithApprovalResponses', () => {
           {
             id: '1',
             role: 'assistant',
-            parts: [
-              { type: 'step-start' },
-              { type: 'text', text: 'Hello', state: 'done' },
-            ],
+            parts: [{ type: 'step-start' }, { type: 'text', text: 'Hello', state: 'done' }],
           },
         ],
       }),

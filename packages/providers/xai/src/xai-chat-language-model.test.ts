@@ -1,7 +1,7 @@
-import { LanguageModelV3Prompt } from '@ai-toolkit/provider';
-import { describe, it, expect, vi } from 'vitest';
-import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { convertReadableStreamToArray } from '@ai-toolkit/provider-utils/test';
+import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { XaiChatLanguageModel } from './xai-chat-language-model';
 import { createXai } from './xai-provider';
 
@@ -378,9 +378,7 @@ describe('XaiChatLanguageModel', () => {
         headers: { 'Custom-Request-Header': 'request-header-value' },
       });
 
-      expect(server.calls[0].requestUserAgent).toContain(
-        `ai-toolkit/xai/0.0.0-test`,
-      );
+      expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/xai/0.0.0-test`);
     });
 
     it('should send request body', async () => {
@@ -572,10 +570,7 @@ describe('XaiChatLanguageModel', () => {
             },
           ],
           usage: { prompt_tokens: 4, total_tokens: 34, completion_tokens: 30 },
-          citations: [
-            'https://example.com/article1',
-            'https://example.com/article2',
-          ],
+          citations: ['https://example.com/article1', 'https://example.com/article2'],
         },
       };
 

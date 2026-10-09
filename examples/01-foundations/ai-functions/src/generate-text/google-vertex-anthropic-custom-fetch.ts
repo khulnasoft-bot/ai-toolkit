@@ -1,5 +1,5 @@
-import { createVertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { generateText } from '@ai-toolkit/ai';
+import { createVertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { run } from '../lib/run';
 
 const vertexAnthropic = createVertexAnthropic({

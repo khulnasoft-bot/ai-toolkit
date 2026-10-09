@@ -1,5 +1,5 @@
-import { EmbeddingModelV3CallOptions } from '@ai-toolkit/provider';
-import { EmbeddingModelMiddleware } from '../types';
+import type { EmbeddingModelV3CallOptions } from '@ai-toolkit/provider';
+import type { EmbeddingModelMiddleware } from '../types';
 import { mergeObjects } from '../util/merge-objects';
 
 /**

@@ -1,5 +1,5 @@
-import { anthropic, AnthropicProviderOptions } from '@ai-toolkit/anthropic';
 import { generateText, tool } from '@ai-toolkit/ai';
+import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
 import { z } from 'zod';
 import { run } from '../lib/run';
 

@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
 import { StructuredObject } from '@ai-toolkit/angular';
-import { z } from 'zod';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { z } from 'zod';
 
 const schema = z.object({
   title: z.string(),

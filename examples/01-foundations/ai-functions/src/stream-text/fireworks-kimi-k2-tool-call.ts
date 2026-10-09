@@ -1,17 +1,17 @@
-import { fireworks } from '@ai-toolkit/fireworks';
 import {
+  type ModelMessage,
   streamText,
-  ModelMessage,
-  ToolCallPart,
-  ToolResultPart,
+  type ToolCallPart,
+  type ToolResultPart,
 } from '@ai-toolkit/ai';
-import { weatherTool } from '../tools/weather-tool';
+import { fireworks } from '@ai-toolkit/fireworks';
 import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
 
 const messages: ModelMessage[] = [];
 
 run(async () => {
-  let toolResponseAvailable = false;
+  let _toolResponseAvailable = false;
 
   const result = streamText({
     model: fireworks('accounts/fireworks/models/kimi-k2-instruct'),
@@ -37,9 +37,7 @@ run(async () => {
 
       case 'tool-call': {
         toolCalls.push(delta);
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
 
@@ -57,7 +55,7 @@ run(async () => {
         process.stdout.write(
           `\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`,
         );
-        toolResponseAvailable = true;
+        _toolResponseAvailable = true;
         break;
       }
 
@@ -77,7 +75,7 @@ run(async () => {
     messages.push({ role: 'tool', content: toolResponses });
   }
 
-  toolResponseAvailable = toolCalls.length > 0;
+  _toolResponseAvailable = toolCalls.length > 0;
   console.log('Messages:', messages[0].content);
 
   console.log();

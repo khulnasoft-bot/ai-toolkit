@@ -1,4 +1,4 @@
-import { LanguageModelV3Usage } from '@ai-toolkit/provider';
+import type { LanguageModelV3Usage } from '@ai-toolkit/provider';
 
 export type MistralUsage = {
   prompt_tokens: number;
@@ -6,9 +6,7 @@ export type MistralUsage = {
   total_tokens: number;
 };
 
-export function convertMistralUsage(
-  usage: MistralUsage | undefined | null,
-): LanguageModelV3Usage {
+export function convertMistralUsage(usage: MistralUsage | undefined | null): LanguageModelV3Usage {
   if (usage == null) {
     return {
       inputTokens: {

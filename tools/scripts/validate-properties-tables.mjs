@@ -14,9 +14,9 @@
  * Run with: pnpm verify-properties-tables
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '../..');
@@ -25,7 +25,7 @@ const CONTENT_DIR = path.join(ROOT, 'content', 'docs');
 const errors = [];
 const warnings = [];
 
-function readJson(file) {
+function _readJson(file) {
   try {
     return JSON.parse(fs.readFileSync(file, 'utf8'));
   } catch {
@@ -247,11 +247,15 @@ function main() {
 
   if (errors.length) {
     console.log('Errors:');
-    errors.forEach(e => console.log(`  - ${e}`));
+    errors.forEach(e => {
+      console.log(`  - ${e}`);
+    });
   }
   if (warnings.length) {
     console.log('\nWarnings:');
-    warnings.forEach(w => console.log(`  - ${w}`));
+    warnings.forEach(w => {
+      console.log(`  - ${w}`);
+    });
   }
 
   if (errors.length) {

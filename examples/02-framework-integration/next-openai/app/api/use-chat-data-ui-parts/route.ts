@@ -1,5 +1,3 @@
-import { openai } from '@ai-toolkit/openai';
-import { delay } from '@ai-toolkit/provider-utils';
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -7,6 +5,8 @@ import {
   stepCountIs,
   streamText,
 } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { delay } from '@ai-toolkit/provider-utils';
 import { z } from 'zod';
 
 export async function POST(req: Request) {

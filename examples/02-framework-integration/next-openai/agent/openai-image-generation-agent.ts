@@ -1,5 +1,5 @@
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import { InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 
 export const openaiImageGenerationAgent = new ToolLoopAgent({
   model: openai('gpt-5-nano'),
@@ -15,6 +15,4 @@ export const openaiImageGenerationAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAIImageGenerationMessage = InferAgentUIMessage<
-  typeof openaiImageGenerationAgent
->;
+export type OpenAIImageGenerationMessage = InferAgentUIMessage<typeof openaiImageGenerationAgent>;

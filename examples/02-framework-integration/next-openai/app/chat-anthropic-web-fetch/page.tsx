@@ -1,21 +1,20 @@
 'use client';
 
-import { AnthropicWebFetchMessage } from '@/agent/anthropic-web-fetch-agent';
+import { DefaultChatTransport } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { AnthropicWebFetchMessage } from '@/agent/anthropic-web-fetch-agent';
 import { Response } from '@/components/ai-elements/response';
 import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 import SourcesView from '@/components/sources-view';
 import AnthropicWebFetchView from '@/components/tool/anthropic-web-fetch-view';
-import { useChat } from '@ai-toolkit/react';
-import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestAnthropicWebFetch() {
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<AnthropicWebFetchMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-anthropic-web-fetch',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate } = useChat<AnthropicWebFetchMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-anthropic-web-fetch',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -24,23 +23,24 @@ export default function TestAnthropicWebFetch() {
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
           {message.role === 'user' ? 'User: ' : 'AI: '}
-          {message.parts.map((part, index) => {
+          {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={index}>{part.text}</Response>;
+                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={index} />;
+                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
               }
               case 'tool-web_fetch': {
-                return <AnthropicWebFetchView invocation={part} key={index} />;
+                return <AnthropicWebFetchView invocation={part} key={part.toolCallId} />;
+              }
+              default: {
+                return null;
               }
             }
           })}
 
-          <SourcesView
-            sources={message.parts.filter(part => part.type === 'source-url')}
-          />
+          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
         </div>
       ))}
 

@@ -1,5 +1,5 @@
+import { convertToModelMessages, streamText } from '@ai-toolkit/ai';
 import { google } from '@ai-toolkit/google';
-import { streamText, convertToModelMessages } from '@ai-toolkit/ai';
 
 export const maxDuration = 30;
 

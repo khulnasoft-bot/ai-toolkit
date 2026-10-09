@@ -1,11 +1,11 @@
-import { delay, DelayedPromise } from '@ai-toolkit/provider-utils';
+import { DelayedPromise, delay } from '@ai-toolkit/provider-utils';
 import { convertReadableStreamToArray } from '@ai-toolkit/provider-utils/test';
 import { describe, expect, it } from 'vitest';
-import { UIMessage } from '../ui/ui-messages';
+import type { UIMessage } from '../ui/ui-messages';
 import { consumeStream } from '../util/consume-stream';
 import { createUIMessageStream } from './create-ui-message-stream';
-import { UIMessageChunk } from './ui-message-chunks';
-import { UIMessageStreamWriter } from './ui-message-stream-writer';
+import type { UIMessageChunk } from './ui-message-chunks';
+import type { UIMessageStreamWriter } from './ui-message-stream-writer';
 
 describe('createUIMessageStream', () => {
   it('should send data stream part and close the stream', async () => {
@@ -106,9 +106,9 @@ describe('createUIMessageStream', () => {
           }),
         );
 
-        controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1a' });
+        controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1a' });
         writer.write({ type: 'text-delta', id: '1', delta: 'data-part-2' });
-        controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1b' });
+        controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1b' });
 
         writer.merge(
           new ReadableStream({
@@ -122,13 +122,13 @@ describe('createUIMessageStream', () => {
       },
     });
 
-    controller2!.enqueue({ type: 'text-delta', id: '2', delta: '2a' });
-    controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1c' });
-    controller2!.enqueue({ type: 'text-delta', id: '2', delta: '2b' });
-    controller2!.close();
-    controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1d' });
-    controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1e' });
-    controller1!.close();
+    controller2?.enqueue({ type: 'text-delta', id: '2', delta: '2a' });
+    controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1c' });
+    controller2?.enqueue({ type: 'text-delta', id: '2', delta: '2b' });
+    controller2?.close();
+    controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1d' });
+    controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1e' });
+    controller1?.close();
 
     expect(await convertReadableStreamToArray(stream)).toMatchInlineSnapshot(`
       [
@@ -210,11 +210,11 @@ describe('createUIMessageStream', () => {
       onError: () => 'error-message',
     });
 
-    controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1a' });
-    controller1!.error(new Error('1-error'));
-    controller2!.enqueue({ type: 'text-delta', id: '2', delta: '2a' });
-    controller2!.enqueue({ type: 'text-delta', id: '2', delta: '2b' });
-    controller2!.close();
+    controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1a' });
+    controller1?.error(new Error('1-error'));
+    controller2?.enqueue({ type: 'text-delta', id: '2', delta: '2a' });
+    controller2?.enqueue({ type: 'text-delta', id: '2', delta: '2b' });
+    controller2?.close();
 
     expect(await convertReadableStreamToArray(stream)).toMatchInlineSnapshot(`
       [
@@ -298,7 +298,7 @@ describe('createUIMessageStream', () => {
     `);
 
     expect(() =>
-      uiMessageStreamWriter!.write({
+      uiMessageStreamWriter?.write({
         type: 'text-delta',
         id: '1',
         delta: '1b',
@@ -337,11 +337,11 @@ describe('createUIMessageStream', () => {
     // function is finished
     expect(done).toBe(true);
 
-    controller1!.enqueue({ type: 'text-delta', id: '1', delta: '1a' });
+    controller1?.enqueue({ type: 'text-delta', id: '1', delta: '1a' });
     await pull();
 
     // controller1 is still open, create 2nd stream
-    uiMessageStreamWriter!.merge(
+    uiMessageStreamWriter?.merge(
       new ReadableStream({
         start(controllerArg) {
           controller2 = controllerArg;
@@ -350,13 +350,13 @@ describe('createUIMessageStream', () => {
     );
 
     // close controller1
-    controller1!.close();
+    controller1?.close();
 
     await delay(); // relinquish control
 
     // it should still be able to write to controller2
-    controller2!.enqueue({ type: 'text-delta', id: '2', delta: '2a' });
-    controller2!.close();
+    controller2?.enqueue({ type: 'text-delta', id: '2', delta: '2a' });
+    controller2?.close();
 
     await pull();
 

@@ -1,5 +1,5 @@
-import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { streamText } from '@ai-toolkit/ai';
+import { vertexAnthropic } from '@ai-toolkit/google-vertex/anthropic';
 import { run } from '../lib/run';
 
 run(async () => {

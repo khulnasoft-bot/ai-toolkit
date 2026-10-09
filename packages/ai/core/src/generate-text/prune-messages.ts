@@ -1,4 +1,4 @@
-import {
+import type {
   AssistantModelMessage,
   ModelMessage,
   ToolModelMessage,
@@ -39,8 +39,7 @@ export function pruneMessages({
       if (
         message.role !== 'assistant' ||
         typeof message.content === 'string' ||
-        (reasoning === 'before-last-message' &&
-          messageIndex === messages.length - 1)
+        (reasoning === 'before-last-message' && messageIndex === messages.length - 1)
       ) {
         return message;
       }
@@ -70,11 +69,7 @@ export function pruneMessages({
         ? undefined
         : toolCall.type === 'before-last-message'
           ? 1
-          : Number(
-              toolCall.type
-                .slice('before-last-'.length)
-                .slice(0, -'-messages'.length),
-            );
+          : Number(toolCall.type.slice('before-last-'.length).slice(0, -'-messages'.length));
 
     // scan kept messages to identify tool calls and approvals that need to be kept:
     const keptToolCallIds: Set<string> = new Set();
@@ -104,8 +99,7 @@ export function pruneMessages({
       if (
         (message.role !== 'assistant' && message.role !== 'tool') ||
         typeof message.content === 'string' ||
-        (keepLastMessagesCount &&
-          messageIndex >= messages.length - keepLastMessagesCount)
+        (keepLastMessagesCount && messageIndex >= messages.length - keepLastMessagesCount)
       ) {
         return message;
       }
@@ -130,16 +124,14 @@ export function pruneMessages({
           if (part.type === 'tool-call') {
             toolCallIdToToolName[part.toolCallId] = part.toolName;
           } else if (part.type === 'tool-approval-request') {
-            approvalIdToToolName[part.approvalId] =
-              toolCallIdToToolName[part.toolCallId];
+            approvalIdToToolName[part.approvalId] = toolCallIdToToolName[part.toolCallId];
           }
 
           // keep parts that are associated with a tool call or approval that needs to be kept:
           if (
             ((part.type === 'tool-call' || part.type === 'tool-result') &&
               keptToolCallIds.has(part.toolCallId)) ||
-            ((part.type === 'tool-approval-request' ||
-              part.type === 'tool-approval-response') &&
+            ((part.type === 'tool-approval-request' || part.type === 'tool-approval-response') &&
               keptApprovalIds.has(part.approvalId))
           ) {
             return true;

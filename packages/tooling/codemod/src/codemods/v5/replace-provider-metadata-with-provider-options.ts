@@ -1,6 +1,6 @@
 import { createTransformer } from '../lib/create-transformer';
 
-export default createTransformer((fileInfo, api, options, context) => {
+export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;
 
   // Replace object property keys from providerMetadata to providerOptions
@@ -49,10 +49,8 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       const property = path.node.property;
       return (
-        (property.type === 'Identifier' &&
-          property.name === 'providerMetadata') ||
-        (property.type === 'StringLiteral' &&
-          property.value === 'providerMetadata')
+        (property.type === 'Identifier' && property.name === 'providerMetadata') ||
+        (property.type === 'StringLiteral' && property.value === 'providerMetadata')
       );
     })
     .forEach(path => {

@@ -1,9 +1,9 @@
-import { EmbeddingModelV2 } from '@ai-toolkit/provider';
-import { asEmbeddingModelV3 } from './as-embedding-model-v3';
-import { MockEmbeddingModelV2 } from '../test/mock-embedding-model-v2';
-import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
+import type { EmbeddingModelV2 } from '@ai-toolkit/provider';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
+import { MockEmbeddingModelV2 } from '../test/mock-embedding-model-v2';
+import { MockEmbeddingModelV3 } from '../test/mock-embedding-model-v3';
+import { asEmbeddingModelV3 } from './as-embedding-model-v3';
 
 describe('asEmbeddingModelV3', () => {
   let logWarningSpy: ReturnType<typeof vi.spyOn>;
@@ -84,9 +84,7 @@ describe('asEmbeddingModelV3', () => {
           {
             type: 'compatibility',
             feature: 'specificationVersion',
-            details: expect.stringContaining(
-              'Using v2 specification compatibility',
-            ),
+            details: expect.stringContaining('Using v2 specification compatibility'),
           },
         ],
         provider: 'test-provider',

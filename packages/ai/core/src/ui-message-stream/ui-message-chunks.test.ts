@@ -1,11 +1,8 @@
 import { TypeValidationError } from '@ai-toolkit/provider';
-import {
-  parseJsonEventStream,
-  validateTypes,
-} from '@ai-toolkit/provider-utils';
+import { parseJsonEventStream, validateTypes } from '@ai-toolkit/provider-utils';
 import { convertReadableStreamToArray } from '@ai-toolkit/provider-utils/test';
 import { describe, expect, expectTypeOf, it } from 'vitest';
-import { uiMessageChunkSchema, type UIMessageChunk } from './ui-message-chunks';
+import { type UIMessageChunk, uiMessageChunkSchema } from './ui-message-chunks';
 
 function createEventStream(value: unknown): ReadableStream<Uint8Array> {
   const encoder = new TextEncoder();

@@ -1,12 +1,12 @@
 import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
+  type LanguageModelV3CallOptions,
+  type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 import { validateTypes } from '@ai-toolkit/provider-utils';
 import { webSearchArgsSchema } from '../tool/web-search';
 import { xSearchArgsSchema } from '../tool/x-search';
-import { XaiResponsesTool } from './xai-responses-api';
+import type { XaiResponsesTool } from './xai-responses-api';
 
 type XaiResponsesToolChoice =
   | 'auto'

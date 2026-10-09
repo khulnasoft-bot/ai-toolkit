@@ -1,21 +1,19 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import {
   DefaultChatTransport,
   lastAssistantMessageIsCompleteWithApprovalResponses,
 } from '@ai-toolkit/ai';
+import { useChat } from '@ai-toolkit/react';
+import type { WeatherValibotAgentUIMessage } from '@/agent/weather-valibot-agent';
 import ChatInput from '@/components/chat-input';
-import { WeatherValibotAgentUIMessage } from '@/agent/weather-valibot-agent';
 import WeatherValibotView from '@/components/tool/weather-valibot-view';
 
 export default function TestWeatherValibot() {
-  const { status, sendMessage, messages } =
-    useChat<WeatherValibotAgentUIMessage>({
-      transport: new DefaultChatTransport({ api: '/api/chat-weather-valibot' }),
-      sendAutomaticallyWhen:
-        lastAssistantMessageIsCompleteWithApprovalResponses,
-    });
+  const { status, sendMessage, messages } = useChat<WeatherValibotAgentUIMessage>({
+    transport: new DefaultChatTransport({ api: '/api/chat-weather-valibot' }),
+    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
+  });
 
   console.log(structuredClone(messages));
 
@@ -29,9 +27,11 @@ export default function TestWeatherValibot() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text':
-                return <div key={index}>{part.text}</div>;
+                return <div key={`${part.type}-${index}`}>{part.text}</div>;
               case 'tool-weather':
-                return <WeatherValibotView key={index} invocation={part} />;
+                return <WeatherValibotView key={`${part.type}-${index}`} invocation={part} />;
+              default:
+                return null;
             }
           })}
         </div>

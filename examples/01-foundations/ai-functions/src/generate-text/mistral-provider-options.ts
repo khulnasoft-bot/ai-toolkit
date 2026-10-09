@@ -1,5 +1,5 @@
-import { mistral, type MistralLanguageModelOptions } from '@ai-toolkit/mistral';
 import { generateText } from '@ai-toolkit/ai';
+import { type MistralLanguageModelOptions, mistral } from '@ai-toolkit/mistral';
 import { run } from '../lib/run';
 
 run(async () => {

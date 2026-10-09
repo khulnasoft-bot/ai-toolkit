@@ -119,9 +119,7 @@ describe('taskItemFile', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(
-      <TaskItemFile className="custom">file.txt</TaskItemFile>,
-    );
+    const { container } = render(<TaskItemFile className="custom">file.txt</TaskItemFile>);
     expect(container.firstChild).toHaveClass('custom');
   });
 });

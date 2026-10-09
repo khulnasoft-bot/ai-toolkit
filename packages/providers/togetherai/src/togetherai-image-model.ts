@@ -1,18 +1,18 @@
-import { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
+import type { ImageModelV3, SharedV3Warning } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   convertImageModelFileToDataUri,
-  createJsonResponseHandler,
   createJsonErrorResponseHandler,
-  FetchFunction,
-  InferSchema,
+  createJsonResponseHandler,
+  type FetchFunction,
+  type InferSchema,
   lazySchema,
   parseProviderOptions,
   postJsonToApi,
   zodSchema,
 } from '@ai-toolkit/provider-utils';
-import { TogetherAIImageModelId } from './togetherai-image-settings';
 import { z } from 'zod/v4';
+import type { TogetherAIImageModelId } from './togetherai-image-settings';
 
 interface TogetherAIImageModelConfig {
   provider: string;
@@ -64,8 +64,7 @@ export class TogetherAIImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'aspectRatio',
-        details:
-          'This model does not support the `aspectRatio` option. Use `size` instead.',
+        details: 'This model does not support the `aspectRatio` option. Use `size` instead.',
       });
     }
 
@@ -85,8 +84,7 @@ export class TogetherAIImageModel implements ImageModelV3 {
       if (files.length > 1) {
         warnings.push({
           type: 'other',
-          message:
-            'Together AI only supports a single input image. Additional images are ignored.',
+          message: 'Together AI only supports a single input image. Additional images are ignored.',
         });
       }
     }
@@ -102,8 +100,8 @@ export class TogetherAIImageModel implements ImageModelV3 {
         seed,
         ...(n > 1 ? { n } : {}),
         ...(splitSize && {
-          width: parseInt(splitSize[0]),
-          height: parseInt(splitSize[1]),
+          width: parseInt(splitSize[0], 10),
+          height: parseInt(splitSize[1], 10),
         }),
         ...(imageUrl != null ? { image_url: imageUrl } : {}),
         response_format: 'base64',
@@ -113,9 +111,7 @@ export class TogetherAIImageModel implements ImageModelV3 {
         errorSchema: togetheraiErrorSchema,
         errorToMessage: data => data.error.message,
       }),
-      successfulResponseHandler: createJsonResponseHandler(
-        togetheraiImageResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(togetheraiImageResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });

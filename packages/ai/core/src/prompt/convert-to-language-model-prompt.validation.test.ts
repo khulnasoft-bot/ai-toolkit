@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { convertToLanguageModelPrompt } from './convert-to-language-model-prompt';
 import { MissingToolResultsError } from '../error/missing-tool-result-error';
+import { convertToLanguageModelPrompt } from './convert-to-language-model-prompt';
 
 describe('tool validation', () => {
   it('should pass validation for provider-executed tools (deferred results)', async () => {

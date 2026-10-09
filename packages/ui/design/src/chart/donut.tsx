@@ -1,13 +1,6 @@
 import { cn } from '../utils';
 
-const palette = [
-  '#22d3ee',
-  '#a78bfa',
-  '#f59e0b',
-  '#34d399',
-  '#f472b6',
-  '#60a5fa',
-];
+const palette = ['#22d3ee', '#a78bfa', '#f59e0b', '#34d399', '#f472b6', '#60a5fa'];
 
 export interface DonutDatum {
   label: string;
@@ -17,13 +10,7 @@ export interface DonutDatum {
 
 const radius = 15.915;
 
-export function Donut({
-  data,
-  className,
-}: {
-  data: DonutDatum[];
-  className?: string;
-}) {
+export function Donut({ data, className }: { data: DonutDatum[]; className?: string }) {
   const total = data.reduce((sum, datum) => sum + datum.value, 0) || 1;
   const views = data.length === 0 ? [] : data;
 
@@ -42,9 +29,7 @@ export function Donut({
   });
 
   return (
-    <div
-      className={cn('flex flex-col items-center gap-5 sm:flex-row', className)}
-    >
+    <div className={cn('flex flex-col items-center gap-5 sm:flex-row', className)}>
       <svg
         viewBox="0 0 42 42"
         className="size-36 shrink-0 -rotate-90"
@@ -76,10 +61,7 @@ export function Donut({
       </svg>
       <ul className="w-full space-y-1.5">
         {views.map((datum, index) => (
-          <li
-            key={datum.label}
-            className="flex items-center gap-2 text-sm text-muted-foreground"
-          >
+          <li key={datum.label} className="flex items-center gap-2 text-sm text-muted-foreground">
             <span
               className="size-2 shrink-0 rounded-full"
               style={{
@@ -87,14 +69,10 @@ export function Donut({
               }}
             />
             <span className="truncate">{datum.label}</span>
-            <span className="ml-auto font-mono text-[11px] text-foreground">
-              {datum.value}
-            </span>
+            <span className="ml-auto font-mono text-[11px] text-foreground">{datum.value}</span>
           </li>
         ))}
-        {views.length === 0 && (
-          <li className="text-sm text-muted-foreground">No data yet.</li>
-        )}
+        {views.length === 0 && <li className="text-sm text-muted-foreground">No data yet.</li>}
       </ul>
     </div>
   );

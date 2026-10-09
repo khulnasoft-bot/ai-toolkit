@@ -1,23 +1,23 @@
 import {
   InvalidResponseDataError,
-  LanguageModelV3,
-  LanguageModelV3CallOptions,
-  LanguageModelV3Content,
-  LanguageModelV3FinishReason,
-  LanguageModelV3GenerateResult,
-  LanguageModelV3StreamPart,
-  LanguageModelV3StreamResult,
-  SharedV3ProviderMetadata,
-  SharedV3Warning,
+  type LanguageModelV3,
+  type LanguageModelV3CallOptions,
+  type LanguageModelV3Content,
+  type LanguageModelV3FinishReason,
+  type LanguageModelV3GenerateResult,
+  type LanguageModelV3StreamPart,
+  type LanguageModelV3StreamResult,
+  type SharedV3ProviderMetadata,
+  type SharedV3Warning,
 } from '@ai-toolkit/provider';
 import {
-  FetchFunction,
-  ParseResult,
   combineHeaders,
   createEventSourceResponseHandler,
   createJsonResponseHandler,
+  type FetchFunction,
   generateId,
   isParsableJson,
+  type ParseResult,
   parseProviderOptions,
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
@@ -25,7 +25,7 @@ import { z } from 'zod/v4';
 import { convertGroqUsage } from './convert-groq-usage';
 import { convertToGroqChatMessages } from './convert-to-groq-chat-messages';
 import { getResponseMetadata } from './get-response-metadata';
-import { GroqChatModelId, groqProviderOptions } from './groq-chat-options';
+import { type GroqChatModelId, groqProviderOptions } from './groq-chat-options';
 import { groqErrorDataSchema, groqFailedResponseHandler } from './groq-error';
 import { prepareTools } from './groq-prepare-tools';
 import { mapGroqFinishReason } from './map-groq-finish-reason';
@@ -90,16 +90,11 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
       warnings.push({ type: 'unsupported', feature: 'topK' });
     }
 
-    if (
-      responseFormat?.type === 'json' &&
-      responseFormat.schema != null &&
-      !structuredOutputs
-    ) {
+    if (responseFormat?.type === 'json' && responseFormat.schema != null && !structuredOutputs) {
       warnings.push({
         type: 'unsupported',
         feature: 'responseFormat',
-        details:
-          'JSON response format schema is only supported with structuredOutputs',
+        details: 'JSON response format schema is only supported with structuredOutputs',
       });
     }
 
@@ -159,9 +154,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const { args, warnings } = await this.getArgs({
       ...options,
       stream: false,
@@ -181,9 +174,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body: args,
       failedResponseHandler: groqFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        groqChatResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(groqChatResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -235,9 +226,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs({ ...options, stream: true });
 
     const body = JSON.stringify({ ...args, stream: true });
@@ -253,8 +242,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
         stream: true,
       },
       failedResponseHandler: groqFailedResponseHandler,
-      successfulResponseHandler:
-        createEventSourceResponseHandler(groqChatChunkSchema),
+      successfulResponseHandler: createEventSourceResponseHandler(groqChatChunkSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -290,7 +278,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
             | null
             | undefined;
         }
-      | undefined = undefined;
+      | undefined;
     let isFirstChunk = true;
     let isActiveText = false;
     let isActiveReasoning = false;
@@ -453,10 +441,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
 
                   const toolCall = toolCalls[index];
 
-                  if (
-                    toolCall.function?.name != null &&
-                    toolCall.function?.arguments != null
-                  ) {
+                  if (toolCall.function?.name != null && toolCall.function?.arguments != null) {
                     // send delta if the argument text has already started:
                     if (toolCall.function.arguments.length > 0) {
                       controller.enqueue({
@@ -495,8 +480,7 @@ export class GroqChatLanguageModel implements LanguageModelV3 {
                 }
 
                 if (toolCallDelta.function?.arguments != null) {
-                  toolCall.function!.arguments +=
-                    toolCallDelta.function?.arguments ?? '';
+                  toolCall.function!.arguments += toolCallDelta.function?.arguments ?? '';
                 }
 
                 // send delta

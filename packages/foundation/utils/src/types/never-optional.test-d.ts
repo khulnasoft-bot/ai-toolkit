@@ -9,21 +9,13 @@ describe('NeverOptional', () => {
   };
 
   it('preserves the original properties for known types', () => {
-    expectTypeOf<
-      NeverOptional<string, Properties>
-    >().toEqualTypeOf<Properties>();
-    expectTypeOf<
-      NeverOptional<unknown, Properties>
-    >().toEqualTypeOf<Properties>();
-    expectTypeOf<
-      NeverOptional<string | undefined, Properties>
-    >().toEqualTypeOf<Properties>();
+    expectTypeOf<NeverOptional<string, Properties>>().toEqualTypeOf<Properties>();
+    expectTypeOf<NeverOptional<unknown, Properties>>().toEqualTypeOf<Properties>();
+    expectTypeOf<NeverOptional<string | undefined, Properties>>().toEqualTypeOf<Properties>();
   });
 
   it('makes the properties optional when the condition type is any', () => {
-    expectTypeOf<NeverOptional<any, Properties>>().toEqualTypeOf<
-      Partial<Properties>
-    >();
+    expectTypeOf<NeverOptional<any, Properties>>().toEqualTypeOf<Partial<Properties>>();
 
     expectTypeOf<NeverOptional<any, Properties>>().toMatchTypeOf<{
       required?: string;
@@ -40,19 +32,11 @@ describe('NeverOptional', () => {
     }>();
 
     expectTypeOf<{}>().toMatchTypeOf<NeverOptional<never, Properties>>();
-    expectTypeOf<{ required: undefined }>().toMatchTypeOf<
-      NeverOptional<never, Properties>
-    >();
-    expectTypeOf<{ optional: undefined }>().toMatchTypeOf<
-      NeverOptional<never, Properties>
-    >();
+    expectTypeOf<{ required: undefined }>().toMatchTypeOf<NeverOptional<never, Properties>>();
+    expectTypeOf<{ optional: undefined }>().toMatchTypeOf<NeverOptional<never, Properties>>();
 
-    expectTypeOf<{ required: string }>().not.toMatchTypeOf<
-      NeverOptional<never, Properties>
-    >();
-    expectTypeOf<{ optional: number }>().not.toMatchTypeOf<
-      NeverOptional<never, Properties>
-    >();
+    expectTypeOf<{ required: string }>().not.toMatchTypeOf<NeverOptional<never, Properties>>();
+    expectTypeOf<{ optional: number }>().not.toMatchTypeOf<NeverOptional<never, Properties>>();
     expectTypeOf<{ readonlyProperty: boolean }>().not.toMatchTypeOf<
       NeverOptional<never, Properties>
     >();

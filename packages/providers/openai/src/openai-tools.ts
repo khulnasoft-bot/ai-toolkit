@@ -3,10 +3,10 @@ import { codeInterpreter } from './tool/code-interpreter';
 import { fileSearch } from './tool/file-search';
 import { imageGeneration } from './tool/image-generation';
 import { localShell } from './tool/local-shell';
+import { mcp } from './tool/mcp';
 import { shell } from './tool/shell';
 import { webSearch } from './tool/web-search';
 import { webSearchPreview } from './tool/web-search-preview';
-import { mcp } from './tool/mcp';
 
 export const openaiTools = {
   /**

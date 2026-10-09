@@ -1,8 +1,5 @@
-import {
-  azure,
-  type AzureResponsesSourceDocumentProviderMetadata,
-} from '@ai-toolkit/azure';
 import { generateText } from '@ai-toolkit/ai';
+import { type AzureResponsesSourceDocumentProviderMetadata, azure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -42,9 +39,7 @@ run(async () => {
             break;
           default: {
             const _exhaustiveCheck: never = annotation;
-            throw new Error(
-              `Unhandled annotation: ${JSON.stringify(_exhaustiveCheck)}`,
-            );
+            throw new Error(`Unhandled annotation: ${JSON.stringify(_exhaustiveCheck)}`);
           }
         }
       }

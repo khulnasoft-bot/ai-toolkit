@@ -1,6 +1,6 @@
-import { openai } from '@ai-toolkit/openai';
 import { generateText, tool } from '@ai-toolkit/ai';
 import { MockLanguageModelV3 } from '@ai-toolkit/ai/test';
+import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -42,13 +42,7 @@ run(async () => {
     },
     prompt: 'What are the tourist attractions in San Francisco?',
 
-    experimental_repairToolCall: async ({
-      toolCall,
-      tools,
-      error,
-      messages,
-      system,
-    }) => {
+    experimental_repairToolCall: async ({ toolCall, tools, error, messages, system }) => {
       const result = await generateText({
         model: openai('gpt-4o'),
         system,

@@ -1,9 +1,9 @@
-import { anthropic } from '@ai-toolkit/anthropic';
 import { streamText, tool } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
+import z from 'zod';
+import { print } from '../lib/print';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';
-import { print } from '../lib/print';
-import z from 'zod';
 
 run(async () => {
   const result = streamText({
@@ -11,9 +11,7 @@ run(async () => {
     messages: [
       {
         role: 'user',
-        content: [
-          { type: 'text', text: 'weather for berlin, london and paris' },
-        ],
+        content: [{ type: 'text', text: 'weather for berlin, london and paris' }],
       },
       {
         role: 'assistant',

@@ -40,7 +40,7 @@ export async function readResponseWithSizeLimit({
   const contentLength = response.headers.get('content-length');
   if (contentLength != null) {
     const length = parseInt(contentLength, 10);
-    if (!isNaN(length) && length > maxBytes) {
+    if (!Number.isNaN(length) && length > maxBytes) {
       // Cancel the body so the underlying connection is released back to the
       // pool instead of being left open until the socket is exhausted.
       await cancelResponseBody(response);

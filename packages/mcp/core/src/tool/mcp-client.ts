@@ -1,18 +1,18 @@
-import { JSONSchema7 } from '@ai-toolkit/provider';
+import type { JSONSchema7 } from '@ai-toolkit/provider';
 import {
   asSchema,
   dynamicTool,
-  FlexibleSchema,
+  type FlexibleSchema,
   jsonSchema,
   safeParseJSON,
   safeValidateTypes,
-  Tool,
+  type Tool,
+  type ToolExecutionOptions,
   tool,
-  ToolExecutionOptions,
 } from '@ai-toolkit/provider-utils';
-import { z } from 'zod/v4';
+import type { z } from 'zod/v4';
 import { MCPClientError } from '../error/mcp-client-error';
-import {
+import type {
   JSONRPCError,
   JSONRPCNotification,
   JSONRPCRequest,
@@ -21,41 +21,41 @@ import {
 import {
   createMcpTransport,
   isCustomMcpTransport,
-  MCPTransport,
-  MCPTransportConfig,
+  type MCPTransport,
+  type MCPTransportConfig,
 } from './mcp-transport';
 import {
-  CallToolResult,
+  type CallToolResult,
   CallToolResultSchema,
-  ClientCapabilities,
-  Configuration as ClientConfiguration,
-  ElicitationRequest,
+  type ClientCapabilities,
+  type Configuration as ClientConfiguration,
+  type ElicitationRequest,
   ElicitationRequestSchema,
-  ElicitResult,
+  type ElicitResult,
   ElicitResultSchema,
+  type GetPromptResult,
+  GetPromptResultSchema,
   InitializeResultSchema,
   LATEST_PROTOCOL_VERSION,
-  ListResourceTemplatesResult,
-  ListResourceTemplatesResultSchema,
-  ListResourcesResult,
-  ListResourcesResultSchema,
-  ListPromptsResult,
+  type ListPromptsResult,
   ListPromptsResultSchema,
-  ListToolsResult,
+  type ListResourcesResult,
+  ListResourcesResultSchema,
+  type ListResourceTemplatesResult,
+  ListResourceTemplatesResultSchema,
+  type ListToolsResult,
   ListToolsResultSchema,
-  McpToolSet,
-  Notification,
-  PaginatedRequest,
-  ReadResourceResult,
+  type McpToolSet,
+  type Notification,
+  type PaginatedRequest,
+  type ReadResourceResult,
   ReadResourceResultSchema,
-  GetPromptResult,
-  GetPromptResultSchema,
-  Request,
-  RequestOptions,
-  ServerCapabilities,
+  type Request,
+  type RequestOptions,
+  type ServerCapabilities,
   SUPPORTED_PROTOCOL_VERSIONS,
-  ToolSchemas,
-  ToolMeta,
+  type ToolMeta,
+  type ToolSchemas,
 } from './types';
 
 const CLIENT_VERSION = '1.0.0';
@@ -77,9 +77,7 @@ export interface MCPClientConfig {
   capabilities?: ClientCapabilities;
 }
 
-export async function createMCPClient(
-  config: MCPClientConfig,
-): Promise<MCPClient> {
+export async function createMCPClient(config: MCPClientConfig): Promise<MCPClient> {
   const client = new DefaultMCPClient(config);
   await client.init();
   return client;
@@ -95,10 +93,7 @@ export interface MCPClient {
     options?: RequestOptions;
   }): Promise<ListResourcesResult>;
 
-  readResource(args: {
-    uri: string;
-    options?: RequestOptions;
-  }): Promise<ReadResourceResult>;
+  readResource(args: { uri: string; options?: RequestOptions }): Promise<ReadResourceResult>;
 
   listResourceTemplates(options?: {
     options?: RequestOptions;
@@ -117,9 +112,7 @@ export interface MCPClient {
 
   onElicitationRequest(
     schema: typeof ElicitationRequestSchema,
-    handler: (
-      request: ElicitationRequest,
-    ) => Promise<ElicitResult> | ElicitResult,
+    handler: (request: ElicitationRequest) => Promise<ElicitResult> | ElicitResult,
   ): void;
 
   close: () => Promise<void>;
@@ -147,10 +140,7 @@ class DefaultMCPClient implements MCPClient {
   private clientInfo: ClientConfiguration;
   private clientCapabilities: ClientCapabilities;
   private requestMessageId = 0;
-  private responseHandlers: Map<
-    number,
-    (response: JSONRPCResponse | Error) => void
-  > = new Map();
+  private responseHandlers: Map<number, (response: JSONRPCResponse | Error) => void> = new Map();
   private serverCapabilities: ServerCapabilities = {};
   private isClosed = true;
   private elicitationRequestHandler?: (
@@ -357,15 +347,11 @@ class DefaultMCPClient implements MCPClient {
     params?: PaginatedRequest['params'];
     options?: RequestOptions;
   } = {}): Promise<ListToolsResult> {
-    try {
-      return this.request({
-        request: { method: 'tools/list', params },
-        resultSchema: ListToolsResultSchema,
-        options,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'tools/list', params },
+      resultSchema: ListToolsResultSchema,
+      options,
+    });
   }
 
   private async callTool({
@@ -377,17 +363,13 @@ class DefaultMCPClient implements MCPClient {
     args: Record<string, unknown>;
     options?: ToolExecutionOptions;
   }): Promise<CallToolResult> {
-    try {
-      return this.request({
-        request: { method: 'tools/call', params: { name, arguments: args } },
-        resultSchema: CallToolResultSchema,
-        options: {
-          signal: options?.abortSignal,
-        },
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'tools/call', params: { name, arguments: args } },
+      resultSchema: CallToolResultSchema,
+      options: {
+        signal: options?.abortSignal,
+      },
+    });
   }
 
   private async listResourcesInternal({
@@ -397,15 +379,11 @@ class DefaultMCPClient implements MCPClient {
     params?: PaginatedRequest['params'];
     options?: RequestOptions;
   } = {}): Promise<ListResourcesResult> {
-    try {
-      return this.request({
-        request: { method: 'resources/list', params },
-        resultSchema: ListResourcesResultSchema,
-        options,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'resources/list', params },
+      resultSchema: ListResourcesResultSchema,
+      options,
+    });
   }
 
   private async readResourceInternal({
@@ -415,15 +393,11 @@ class DefaultMCPClient implements MCPClient {
     uri: string;
     options?: RequestOptions;
   }): Promise<ReadResourceResult> {
-    try {
-      return this.request({
-        request: { method: 'resources/read', params: { uri } },
-        resultSchema: ReadResourceResultSchema,
-        options,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'resources/read', params: { uri } },
+      resultSchema: ReadResourceResultSchema,
+      options,
+    });
   }
 
   private async listResourceTemplatesInternal({
@@ -431,15 +405,11 @@ class DefaultMCPClient implements MCPClient {
   }: {
     options?: RequestOptions;
   } = {}): Promise<ListResourceTemplatesResult> {
-    try {
-      return this.request({
-        request: { method: 'resources/templates/list' },
-        resultSchema: ListResourceTemplatesResultSchema,
-        options,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'resources/templates/list' },
+      resultSchema: ListResourceTemplatesResultSchema,
+      options,
+    });
   }
 
   private async listPromptsInternal({
@@ -449,15 +419,11 @@ class DefaultMCPClient implements MCPClient {
     params?: PaginatedRequest['params'];
     options?: RequestOptions;
   } = {}): Promise<ListPromptsResult> {
-    try {
-      return this.request({
-        request: { method: 'prompts/list', params },
-        resultSchema: ListPromptsResultSchema,
-        options,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'prompts/list', params },
+      resultSchema: ListPromptsResultSchema,
+      options,
+    });
   }
 
   private async getPromptInternal({
@@ -469,15 +435,11 @@ class DefaultMCPClient implements MCPClient {
     args?: Record<string, unknown>;
     options?: RequestOptions;
   }): Promise<GetPromptResult> {
-    try {
-      return this.request({
-        request: { method: 'prompts/get', params: { name, arguments: args } },
-        resultSchema: GetPromptResultSchema,
-        options,
-      });
-    } catch (error) {
-      throw error;
-    }
+    return this.request({
+      request: { method: 'prompts/get', params: { name, arguments: args } },
+      resultSchema: GetPromptResultSchema,
+      options,
+    });
   }
 
   private async notification(notification: Notification): Promise<void> {
@@ -498,67 +460,56 @@ class DefaultMCPClient implements MCPClient {
     schemas?: TOOL_SCHEMAS;
   } = {}): Promise<McpToolSet<TOOL_SCHEMAS>> {
     const tools: Record<string, Tool & { _meta?: ToolMeta }> = {};
+    const listToolsResult = await this.listTools();
+    for (const {
+      name,
+      title,
+      description,
+      inputSchema,
+      annotations,
+      _meta,
+    } of listToolsResult.tools) {
+      const resolvedTitle = title ?? annotations?.title;
+      if (schemas !== 'automatic' && !(name in schemas)) {
+        continue;
+      }
+      const outputSchema = schemas !== 'automatic' ? schemas[name]?.outputSchema : undefined;
 
-    try {
-      const listToolsResult = await this.listTools();
-      for (const {
-        name,
-        title,
-        description,
-        inputSchema,
-        annotations,
-        _meta,
-      } of listToolsResult.tools) {
-        const resolvedTitle = title ?? annotations?.title;
-        if (schemas !== 'automatic' && !(name in schemas)) {
-          continue;
+      const execute = async (args: any, options: ToolExecutionOptions): Promise<unknown> => {
+        options?.abortSignal?.throwIfAborted();
+        const result = await this.callTool({ name, args, options });
+
+        if (outputSchema != null) {
+          return this.extractStructuredContent(result, outputSchema, name);
         }
 
-        const self = this;
-        const outputSchema =
-          schemas !== 'automatic' ? schemas[name]?.outputSchema : undefined;
+        return result;
+      };
 
-        const execute = async (
-          args: any,
-          options: ToolExecutionOptions,
-        ): Promise<unknown> => {
-          options?.abortSignal?.throwIfAborted();
-          const result = await self.callTool({ name, args, options });
+      const toolWithExecute =
+        schemas === 'automatic'
+          ? dynamicTool({
+              description,
+              title: resolvedTitle,
+              inputSchema: jsonSchema({
+                ...inputSchema,
+                properties: inputSchema.properties ?? {},
+                additionalProperties: false,
+              } as JSONSchema7),
+              execute,
+            })
+          : tool({
+              description,
+              title: resolvedTitle,
+              inputSchema: schemas[name].inputSchema,
+              ...(outputSchema != null ? { outputSchema } : {}),
+              execute,
+            });
 
-          if (outputSchema != null) {
-            return self.extractStructuredContent(result, outputSchema, name);
-          }
-
-          return result;
-        };
-
-        const toolWithExecute =
-          schemas === 'automatic'
-            ? dynamicTool({
-                description,
-                title: resolvedTitle,
-                inputSchema: jsonSchema({
-                  ...inputSchema,
-                  properties: inputSchema.properties ?? {},
-                  additionalProperties: false,
-                } as JSONSchema7),
-                execute,
-              })
-            : tool({
-                description,
-                title: resolvedTitle,
-                inputSchema: schemas[name].inputSchema,
-                ...(outputSchema != null ? { outputSchema } : {}),
-                execute,
-              });
-
-        tools[name] = { ...toolWithExecute, _meta };
-      }
-
-      return tools as McpToolSet<TOOL_SCHEMAS>;
-    } catch (error) {
-      throw error;
+      tools[name] = { ...toolWithExecute, _meta };
     }
+
+    return tools as McpToolSet<TOOL_SCHEMAS>;
   }
 
   /**
@@ -662,14 +613,11 @@ class DefaultMCPClient implements MCPClient {
 
   onElicitationRequest(
     schema: typeof ElicitationRequestSchema,
-    handler: (
-      request: ElicitationRequest,
-    ) => Promise<ElicitResult> | ElicitResult,
+    handler: (request: ElicitationRequest) => Promise<ElicitResult> | ElicitResult,
   ): void {
     if (schema !== ElicitationRequestSchema) {
       throw new MCPClientError({
-        message:
-          'Unsupported request schema. Only ElicitationRequestSchema is supported.',
+        message: 'Unsupported request schema. Only ElicitationRequestSchema is supported.',
       });
     }
 
@@ -736,9 +684,7 @@ class DefaultMCPClient implements MCPClient {
           error: {
             code: -32603,
             message:
-              error instanceof Error
-                ? error.message
-                : 'Failed to handle elicitation request',
+              error instanceof Error ? error.message : 'Failed to handle elicitation request',
           },
         });
         this.onError(error);

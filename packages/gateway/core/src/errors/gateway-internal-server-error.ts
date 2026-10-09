@@ -8,8 +8,6 @@ const symbol = Symbol.for(marker);
  * Internal server error from the Gateway
  */
 export class GatewayInternalServerError extends GatewayError {
-  private readonly [symbol] = true; // used in isInstance
-
   readonly name = name;
   readonly type = 'internal_server_error';
 

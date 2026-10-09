@@ -29,6 +29,4 @@ export const openaiCompatibleProviderOptions = z.object({
   strictJsonSchema: z.boolean().optional(),
 });
 
-export type OpenAICompatibleProviderOptions = z.infer<
-  typeof openaiCompatibleProviderOptions
->;
+export type OpenAICompatibleProviderOptions = z.infer<typeof openaiCompatibleProviderOptions>;

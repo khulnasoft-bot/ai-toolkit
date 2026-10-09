@@ -1,6 +1,6 @@
-import { weatherTool } from '@/tool/weather-tool';
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
-import { ToolLoopAgent, InferAgentUIMessage } from '@ai-toolkit/ai';
+import { weatherTool } from '@/tool/weather-tool';
 
 export const weatherAgent = new ToolLoopAgent({
   model: openai('gpt-4o'),

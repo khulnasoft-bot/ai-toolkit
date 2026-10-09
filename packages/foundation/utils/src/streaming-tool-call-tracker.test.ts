@@ -127,10 +127,7 @@ describe('StreamingToolCallTracker', () => {
       });
 
       // the parsable prefix must not emit tool-input-end / tool-call
-      expect(parts.map(part => part.type)).toEqual([
-        'tool-input-start',
-        'tool-input-delta',
-      ]);
+      expect(parts.map(part => part.type)).toEqual(['tool-input-start', 'tool-input-delta']);
 
       tracker.processDelta({
         index: 0,

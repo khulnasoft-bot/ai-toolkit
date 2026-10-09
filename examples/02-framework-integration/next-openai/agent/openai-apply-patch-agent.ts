@@ -1,7 +1,7 @@
-import { openai, OpenAIResponsesProviderOptions } from '@ai-toolkit/openai';
-import { ToolLoopAgent, InferAgentUIMessage } from '@ai-toolkit/ai';
-import * as path from 'node:path';
 import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
+import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
 import { createApplyPatchExecutor } from '@/lib/apply-patch-file-editor';
 
 // Create workspace directory
@@ -11,7 +11,7 @@ const workspaceRoot = path.join(process.cwd(), 'workspace');
 async function ensureWorkspaceExists() {
   try {
     await fs.mkdir(workspaceRoot, { recursive: true });
-  } catch (error) {}
+  } catch (_error) {}
 }
 
 ensureWorkspaceExists();
@@ -31,6 +31,4 @@ export const openaiApplyPatchAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAIApplyPatchMessage = InferAgentUIMessage<
-  typeof openaiApplyPatchAgent
->;
+export type OpenAIApplyPatchMessage = InferAgentUIMessage<typeof openaiApplyPatchAgent>;

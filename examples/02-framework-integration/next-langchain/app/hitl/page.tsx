@@ -1,16 +1,13 @@
 'use client';
 
-import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
-import { useEffect, useRef, useState, useMemo, useCallback } from 'react';
-import { AlertCircle, Sparkles, Shield } from 'lucide-react';
-import { ChatMessage } from '../../components/chat-message';
+import { useChat } from '@ai-toolkit/react';
+import { AlertCircle, Shield, Sparkles } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChatInput } from '../../components/chat-input';
-import {
-  ToolApprovalCard,
-  getPendingApprovals,
-} from '../../components/tool-approval-card';
-import { type CustomDataMessage } from '../types';
+import { ChatMessage } from '../../components/chat-message';
+import { getPendingApprovals, ToolApprovalCard } from '../../components/tool-approval-card';
+import type { CustomDataMessage } from '../types';
 
 /**
  * Generate a unique thread ID for HITL persistence
@@ -60,7 +57,7 @@ export default function HITLPage() {
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
+  }, []);
 
   const pendingApprovals = getPendingApprovals(messages);
 
@@ -92,10 +89,9 @@ export default function HITLPage() {
           Human-in-the-Loop Agent
         </h1>
         <div className="text-sm text-[var(--foreground-secondary)] leading-relaxed">
-          Uses LangChain&apos;s <code>humanInTheLoopMiddleware</code> to require
-          approval for sensitive actions. Try sending an email or deleting a
-          file - you&apos;ll be asked to approve the action before it executes.
-          Search operations are auto-approved.
+          Uses LangChain&apos;s <code>humanInTheLoopMiddleware</code> to require approval for
+          sensitive actions. Try sending an email or deleting a file - you&apos;ll be asked to
+          approve the action before it executes. Search operations are auto-approved.
         </div>
       </div>
 
@@ -130,9 +126,10 @@ export default function HITLPage() {
                 <span>Try an example</span>
               </div>
               <div className="flex flex-wrap justify-center gap-2">
-                {suggestions.map((suggestion, index) => (
+                {suggestions.map(suggestion => (
                   <button
-                    key={index}
+                    type="button"
+                    key={suggestion}
                     onClick={() => sendMessage({ text: suggestion })}
                     className="px-4 py-2.5 text-sm bg-[var(--background-tertiary)] border border-[var(--border-hover)] rounded-full text-[var(--foreground)] hover:border-[var(--accent)] hover:bg-[var(--accent-light)] transition-all"
                   >
@@ -151,15 +148,10 @@ export default function HITLPage() {
                 {message.role === 'assistant' &&
                   message.parts
                     .filter(
-                      part =>
-                        part.type === 'dynamic-tool' &&
-                        part.state === 'approval-requested',
+                      part => part.type === 'dynamic-tool' && part.state === 'approval-requested',
                     )
                     .map(part => {
-                      if (
-                        part.type !== 'dynamic-tool' ||
-                        part.state !== 'approval-requested'
-                      )
+                      if (part.type !== 'dynamic-tool' || part.state !== 'approval-requested')
                         return null;
                       return (
                         <ToolApprovalCard
@@ -202,11 +194,7 @@ export default function HITLPage() {
       {/* Input */}
       <ChatInput
         onSend={text => sendMessage({ text })}
-        disabled={
-          status === 'submitted' ||
-          status === 'streaming' ||
-          pendingApprovals.length > 0
-        }
+        disabled={status === 'submitted' || status === 'streaming' || pendingApprovals.length > 0}
         placeholder={
           pendingApprovals.length > 0
             ? 'Please approve or reject the pending action...'

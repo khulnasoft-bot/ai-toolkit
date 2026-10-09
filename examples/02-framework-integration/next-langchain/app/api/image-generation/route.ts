@@ -1,8 +1,8 @@
-import { createUIMessageStreamResponse, UIMessage } from '@ai-toolkit/ai';
-import { NextResponse } from 'next/server';
+import { createUIMessageStreamResponse, type UIMessage } from '@ai-toolkit/ai';
+import { toBaseMessages, toUIMessageStream } from '@ai-toolkit/langchain';
 
 import { ChatOpenAI, tools } from '@langchain/openai';
-import { toBaseMessages, toUIMessageStream } from '@ai-toolkit/langchain';
+import { NextResponse } from 'next/server';
 
 /**
  * Allow streaming responses up to 120 seconds for image generation
@@ -77,8 +77,7 @@ export async function POST(req: Request) {
       stream: toUIMessageStream(stream as unknown as ReadableStream),
     });
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : 'An unknown error occurred';
+    const message = error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

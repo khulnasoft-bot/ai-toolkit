@@ -29,20 +29,16 @@ mcpServer.tool(
 );
 
 // Another protected tool
-mcpServer.tool(
-  'list-user-resources',
-  'List all resources for the authenticated user',
-  async () => {
-    return {
-      content: [
-        {
-          type: 'text',
-          text: 'User Resources: [Resource A, Resource B, Resource C]',
-        },
-      ],
-    };
-  },
-);
+mcpServer.tool('list-user-resources', 'List all resources for the authenticated user', async () => {
+  return {
+    content: [
+      {
+        type: 'text',
+        text: 'User Resources: [Resource A, Resource B, Resource C]',
+      },
+    ],
+  };
+});
 
 // Simple in-memory token store (for demo purposes)
 const validTokens = new Set<string>(['demo-access-token-123']);
@@ -93,7 +89,7 @@ function requireAuth(
 }
 
 // OAuth 2.0 Protected Resource Metadata (RFC 9728)
-app.get('/.well-known/oauth-protected-resource', (req, res) => {
+app.get('/.well-known/oauth-protected-resource', (_req, res) => {
   res.json({
     resource: 'http://localhost:8081',
     authorization_servers: ['http://localhost:8081'],
@@ -101,7 +97,7 @@ app.get('/.well-known/oauth-protected-resource', (req, res) => {
 });
 
 // OAuth 2.0 Authorization Server Metadata (RFC 8414)
-app.get('/.well-known/oauth-authorization-server', (req, res) => {
+app.get('/.well-known/oauth-authorization-server', (_req, res) => {
   res.json({
     issuer: 'http://localhost:8081',
     authorization_endpoint: 'http://localhost:8081/authorize',
@@ -143,8 +139,7 @@ app.get('/authorize', (req, res) => {
   const authCode = `auth-code-${Date.now()}`;
 
   // Store code_challenge for PKCE verification (in production, use a database)
-  (global as any).pendingAuthorizations =
-    (global as any).pendingAuthorizations || new Map();
+  (global as any).pendingAuthorizations = (global as any).pendingAuthorizations || new Map();
   (global as any).pendingAuthorizations.set(authCode, {
     code_challenge,
     client_id: req.query.client_id,
@@ -159,8 +154,7 @@ app.get('/authorize', (req, res) => {
 
 // Token endpoint
 app.post('/token', express.urlencoded({ extended: true }), (req, res) => {
-  const { grant_type, code, code_verifier, refresh_token, client_id } =
-    req.body;
+  const { grant_type, code, code_verifier, refresh_token, client_id } = req.body;
 
   if (grant_type === 'authorization_code') {
     // Verify PKCE
@@ -199,7 +193,7 @@ app.post('/token', express.urlencoded({ extended: true }), (req, res) => {
 });
 
 // Protected MCP SSE endpoint
-app.get('/sse', requireAuth, async (req, res) => {
+app.get('/sse', requireAuth, async (_req, res) => {
   console.log('✓ SSE connection authenticated, starting MCP transport...');
   transport = new SSEServerTransport('/messages', res);
   await mcpServer.connect(transport);

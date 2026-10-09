@@ -1,7 +1,4 @@
-import {
-  ProviderOptions,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import { type ProviderOptions, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { logWarnings } from '../logger/log-warnings';
 import { resolveEmbeddingModel } from '../model/resolve-model';
 import { assembleOperationName } from '../telemetry/assemble-operation-name';
@@ -9,11 +6,11 @@ import { getBaseTelemetryAttributes } from '../telemetry/get-base-telemetry-attr
 import { getTracer } from '../telemetry/get-tracer';
 import { recordSpan } from '../telemetry/record-span';
 import { selectTelemetryAttributes } from '../telemetry/select-telemetry-attributes';
-import { TelemetrySettings } from '../telemetry/telemetry-settings';
-import { EmbeddingModel } from '../types';
+import type { TelemetrySettings } from '../telemetry/telemetry-settings';
+import type { EmbeddingModel } from '../types';
 import { prepareRetries } from '../util/prepare-retries';
-import { EmbedResult } from './embed-result';
 import { VERSION } from '../version';
+import type { EmbedResult } from './embed-result';
 
 /**
 Embed a value using an embedding model. The type of the value is defined by the embedding model.
@@ -83,10 +80,7 @@ Only applicable for HTTP-based providers.
     abortSignal,
   });
 
-  const headersWithUserAgent = withUserAgentSuffix(
-    headers ?? {},
-    `ai/${VERSION}`,
-  );
+  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
 
   const baseTelemetryAttributes = getBaseTelemetryAttributes({
     model: model,
@@ -109,60 +103,57 @@ Only applicable for HTTP-based providers.
     }),
     tracer,
     fn: async span => {
-      const { embedding, usage, warnings, response, providerMetadata } =
-        await retry(() =>
-          // nested spans to align with the embedMany telemetry data:
-          recordSpan({
-            name: 'ai.embed.doEmbed',
-            attributes: selectTelemetryAttributes({
-              telemetry,
-              attributes: {
-                ...assembleOperationName({
-                  operationId: 'ai.embed.doEmbed',
-                  telemetry,
-                }),
-                ...baseTelemetryAttributes,
-                // specific settings that only make sense on the outer level:
-                'ai.values': { input: () => [JSON.stringify(value)] },
-              },
-            }),
-            tracer,
-            fn: async doEmbedSpan => {
-              const modelResponse = await model.doEmbed({
-                values: [value],
-                abortSignal,
-                headers: headersWithUserAgent,
-                providerOptions,
-              });
-
-              const embedding = modelResponse.embeddings[0];
-              const usage = modelResponse.usage ?? { tokens: NaN };
-
-              doEmbedSpan.setAttributes(
-                await selectTelemetryAttributes({
-                  telemetry,
-                  attributes: {
-                    'ai.embeddings': {
-                      output: () =>
-                        modelResponse.embeddings.map(embedding =>
-                          JSON.stringify(embedding),
-                        ),
-                    },
-                    'ai.usage.tokens': usage.tokens,
-                  },
-                }),
-              );
-
-              return {
-                embedding,
-                usage,
-                warnings: modelResponse.warnings,
-                providerMetadata: modelResponse.providerMetadata,
-                response: modelResponse.response,
-              };
+      const { embedding, usage, warnings, response, providerMetadata } = await retry(() =>
+        // nested spans to align with the embedMany telemetry data:
+        recordSpan({
+          name: 'ai.embed.doEmbed',
+          attributes: selectTelemetryAttributes({
+            telemetry,
+            attributes: {
+              ...assembleOperationName({
+                operationId: 'ai.embed.doEmbed',
+                telemetry,
+              }),
+              ...baseTelemetryAttributes,
+              // specific settings that only make sense on the outer level:
+              'ai.values': { input: () => [JSON.stringify(value)] },
             },
           }),
-        );
+          tracer,
+          fn: async doEmbedSpan => {
+            const modelResponse = await model.doEmbed({
+              values: [value],
+              abortSignal,
+              headers: headersWithUserAgent,
+              providerOptions,
+            });
+
+            const embedding = modelResponse.embeddings[0];
+            const usage = modelResponse.usage ?? { tokens: NaN };
+
+            doEmbedSpan.setAttributes(
+              await selectTelemetryAttributes({
+                telemetry,
+                attributes: {
+                  'ai.embeddings': {
+                    output: () =>
+                      modelResponse.embeddings.map(embedding => JSON.stringify(embedding)),
+                  },
+                  'ai.usage.tokens': usage.tokens,
+                },
+              }),
+            );
+
+            return {
+              embedding,
+              usage,
+              warnings: modelResponse.warnings,
+              providerMetadata: modelResponse.providerMetadata,
+              response: modelResponse.response,
+            };
+          },
+        }),
+      );
 
       span.setAttributes(
         await selectTelemetryAttributes({

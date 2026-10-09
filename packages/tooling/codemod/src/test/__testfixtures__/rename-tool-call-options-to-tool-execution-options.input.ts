@@ -1,22 +1,22 @@
 // @ts-nocheck
-import { ToolCallOptions } from 'ai';
+import type { ToolCallOptions } from 'ai';
 
 // Type annotation in function parameter
-function executeWithOptions(options: ToolCallOptions) {
+function _executeWithOptions(options: ToolCallOptions) {
   return options;
 }
 
 // Type annotation in variable declaration
-const myOptions: ToolCallOptions = {
+const _myOptions: ToolCallOptions = {
   toolCallId: '123',
   messages: [],
 };
 
 // Using as type parameter
-const optionsList: ToolCallOptions[] = [];
+const _optionsList: ToolCallOptions[] = [];
 
 // Function return type
-function getOptions(): ToolCallOptions {
+function _getOptions(): ToolCallOptions {
   return {} as ToolCallOptions;
 }
 
@@ -31,6 +31,6 @@ type ToolOptionsWrapper = {
 };
 
 // Generic constraint
-function processOptions<T extends ToolCallOptions>(opts: T): T {
+function _processOptions<T extends ToolCallOptions>(opts: T): T {
   return opts;
 }
