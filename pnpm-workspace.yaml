@@ -34,6 +34,7 @@ packages:
   - 'tools/*'
   # Application workspaces (single package hosting the docs/www/studio sites)
   - 'apps'
+  - 'apps/www'
   # Examples are organized into categorized subdirectories (01-foundations, 02-framework-integration, 03-integrations, 04-tools)
   - 'examples/*/*'
 allowBuilds:
