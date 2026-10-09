@@ -1,7 +1,4 @@
-import {
-  createTestServer,
-  TestResponseController,
-} from '@ai-toolkit/test-server/with-vitest';
+import { createTestServer, TestResponseController } from '@ai-toolkit/test-server/with-vitest';
 import '@testing-library/jest-dom/vitest';
 import { cleanup, screen, waitFor } from '@testing-library/vue';
 import userEvent from '@testing-library/user-event';
@@ -91,9 +88,7 @@ describe('text stream', () => {
         expect(screen.getByTestId('loading')).toHaveTextContent('true');
       });
       await waitFor(() => {
-        expect(screen.getByTestId('object')).toHaveTextContent(
-          '{"content":"h"}',
-        );
+        expect(screen.getByTestId('object')).toHaveTextContent('{"content":"h"}');
       });
 
       // click stop button:
@@ -110,9 +105,7 @@ describe('text stream', () => {
 
       // should only show start of object:
       await waitFor(() => {
-        expect(screen.getByTestId('object')).toHaveTextContent(
-          '{"content":"h"}',
-        );
+        expect(screen.getByTestId('object')).toHaveTextContent('{"content":"h"}');
       });
     });
 
@@ -130,9 +123,7 @@ describe('text stream', () => {
         expect(screen.getByTestId('loading')).toHaveTextContent('true');
       });
       await waitFor(() => {
-        expect(screen.getByTestId('object')).toHaveTextContent(
-          '{"content":"h"}',
-        );
+        expect(screen.getByTestId('object')).toHaveTextContent('{"content":"h"}');
       });
 
       await userEvent.click(screen.getByTestId('clear-button'));
@@ -159,9 +150,7 @@ describe('text stream', () => {
 
         await screen.findByTestId('error');
         expect(screen.getByTestId('error')).toHaveTextContent('Not found');
-        expect(screen.getByTestId('on-error-result')).toHaveTextContent(
-          'Not found',
-        );
+        expect(screen.getByTestId('on-error-result')).toHaveTextContent('Not found');
         expect(screen.getByTestId('loading')).toHaveTextContent('false');
       });
     });
@@ -176,9 +165,7 @@ describe('text stream', () => {
         await userEvent.click(screen.getByTestId('submit-button'));
 
         expect(screen.getByTestId('on-finish-calls')).toHaveTextContent(
-          JSON.stringify([
-            { object: { content: 'Hello, world!' }, error: undefined },
-          ]),
+          JSON.stringify([{ object: { content: 'Hello, world!' }, error: undefined }]),
         );
       });
 
@@ -190,9 +177,7 @@ describe('text stream', () => {
 
         await userEvent.click(screen.getByTestId('submit-button'));
 
-        expect(screen.getByTestId('on-finish-calls')).toHaveTextContent(
-          'ZodError',
-        );
+        expect(screen.getByTestId('on-finish-calls')).toHaveTextContent('ZodError');
       });
     });
 

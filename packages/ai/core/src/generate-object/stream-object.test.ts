@@ -87,9 +87,7 @@ describe('streamObject', () => {
   let logWarningsSpy: ReturnType<typeof vitest.spyOn>;
 
   beforeEach(() => {
-    logWarningsSpy = vitest
-      .spyOn(logWarningsModule, 'logWarnings')
-      .mockImplementation(() => {});
+    logWarningsSpy = vitest.spyOn(logWarningsModule, 'logWarnings').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -106,8 +104,9 @@ describe('streamObject', () => {
           prompt: 'prompt',
         });
 
-        expect(await convertAsyncIterableToArray(result.partialObjectStream))
-          .toMatchInlineSnapshot(`
+        expect(
+          await convertAsyncIterableToArray(result.partialObjectStream),
+        ).toMatchInlineSnapshot(`
           [
             {},
             {
@@ -122,8 +121,7 @@ describe('streamObject', () => {
           ]
         `);
 
-        expect(mockModel.doStreamCalls[0].responseFormat)
-          .toMatchInlineSnapshot(`
+        expect(mockModel.doStreamCalls[0].responseFormat).toMatchInlineSnapshot(`
           {
             "description": undefined,
             "name": undefined,
@@ -156,8 +154,9 @@ describe('streamObject', () => {
           prompt: 'prompt',
         });
 
-        expect(await convertAsyncIterableToArray(result.partialObjectStream))
-          .toMatchInlineSnapshot(`
+        expect(
+          await convertAsyncIterableToArray(result.partialObjectStream),
+        ).toMatchInlineSnapshot(`
           [
             {},
             {
@@ -219,9 +218,7 @@ describe('streamObject', () => {
           onError: () => {},
         });
 
-        expect(
-          await convertAsyncIterableToArray(result.partialObjectStream),
-        ).toStrictEqual([]);
+        expect(await convertAsyncIterableToArray(result.partialObjectStream)).toStrictEqual([]);
       });
 
       it('should invoke onError callback with Error', async () => {
@@ -255,9 +252,7 @@ describe('streamObject', () => {
           prompt: 'prompt',
         });
 
-        expect(
-          await convertAsyncIterableToArray(result.fullStream),
-        ).toMatchSnapshot();
+        expect(await convertAsyncIterableToArray(result.fullStream)).toMatchSnapshot();
       });
     });
 
@@ -269,10 +264,13 @@ describe('streamObject', () => {
           prompt: 'prompt',
         });
 
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.textStream),
-          ['{ ', '"content": "Hello, ', 'world', '!"', ' }'],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.textStream), [
+          '{ ',
+          '"content": "Hello, ',
+          'world',
+          '!"',
+          ' }',
+        ]);
       });
     });
 
@@ -287,15 +285,10 @@ describe('streamObject', () => {
         const response = result.toTextStreamResponse();
 
         assert.strictEqual(response.status, 200);
-        assert.strictEqual(
-          response.headers.get('Content-Type'),
-          'text/plain; charset=utf-8',
-        );
+        assert.strictEqual(response.headers.get('Content-Type'), 'text/plain; charset=utf-8');
 
         assert.deepStrictEqual(
-          await convertReadableStreamToArray(
-            response.body!.pipeThrough(new TextDecoderStream()),
-          ),
+          await convertReadableStreamToArray(response.body!.pipeThrough(new TextDecoderStream())),
           ['{ ', '"content": "Hello, ', 'world', '!"', ' }'],
         );
       });
@@ -631,9 +624,7 @@ describe('streamObject', () => {
 
     describe('options.onFinish', () => {
       it('should be called when a valid object is generated', async () => {
-        let result: Parameters<
-          Required<Parameters<typeof streamObject>[0]>['onFinish']
-        >[0];
+        let result: Parameters<Required<Parameters<typeof streamObject>[0]>['onFinish']>[0];
 
         const { partialObjectStream } = streamObject({
           model: new MockLanguageModelV3({
@@ -677,9 +668,7 @@ describe('streamObject', () => {
       });
 
       it("should be called when object doesn't match the schema", async () => {
-        let result: Parameters<
-          Required<Parameters<typeof streamObject>[0]>['onFinish']
-        >[0];
+        let result: Parameters<Required<Parameters<typeof streamObject>[0]>['onFinish']>[0];
 
         const { partialObjectStream, object } = streamObject({
           model: new MockLanguageModelV3({
@@ -756,9 +745,9 @@ describe('streamObject', () => {
           headers: { 'custom-request-header': 'request-header-value' },
         });
 
-        expect(
-          await convertAsyncIterableToArray(result.partialObjectStream),
-        ).toStrictEqual([{ content: 'headers test' }]);
+        expect(await convertAsyncIterableToArray(result.partialObjectStream)).toStrictEqual([
+          { content: 'headers test' },
+        ]);
       });
     });
 
@@ -796,9 +785,9 @@ describe('streamObject', () => {
           },
         });
 
-        expect(
-          await convertAsyncIterableToArray(result.partialObjectStream),
-        ).toStrictEqual([{ content: 'provider metadata test' }]);
+        expect(await convertAsyncIterableToArray(result.partialObjectStream)).toStrictEqual([
+          { content: 'provider metadata test' },
+        ]);
       });
     });
 
@@ -817,8 +806,9 @@ describe('streamObject', () => {
           prompt: 'prompt',
         });
 
-        expect(await convertAsyncIterableToArray(result.partialObjectStream))
-          .toMatchInlineSnapshot(`
+        expect(
+          await convertAsyncIterableToArray(result.partialObjectStream),
+        ).toMatchInlineSnapshot(`
           [
             {},
             {
@@ -833,8 +823,7 @@ describe('streamObject', () => {
           ]
         `);
 
-        expect(mockModel.doStreamCalls[0].responseFormat)
-          .toMatchInlineSnapshot(`
+        expect(mockModel.doStreamCalls[0].responseFormat).toMatchInlineSnapshot(`
           {
             "description": undefined,
             "name": undefined,
@@ -996,9 +985,7 @@ describe('streamObject', () => {
         AsyncIterableStream<{ content: string }>
       >;
 
-      let onFinishResult: Parameters<
-        Required<Parameters<typeof streamObject>[0]>['onFinish']
-      >[0];
+      let onFinishResult: Parameters<Required<Parameters<typeof streamObject>[0]>['onFinish']>[0];
 
       beforeEach(async () => {
         result = streamObject({
@@ -1043,31 +1030,21 @@ describe('streamObject', () => {
       });
 
       it('should stream only complete objects in partialObjectStream', async () => {
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.partialObjectStream),
-          [
-            [],
-            [{ content: 'element 1' }],
-            [{ content: 'element 1' }, { content: 'element 2' }],
-            [
-              { content: 'element 1' },
-              { content: 'element 2' },
-              { content: 'element 3' },
-            ],
-          ],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.partialObjectStream), [
+          [],
+          [{ content: 'element 1' }],
+          [{ content: 'element 1' }, { content: 'element 2' }],
+          [{ content: 'element 1' }, { content: 'element 2' }, { content: 'element 3' }],
+        ]);
       });
 
       it('should stream only complete objects in textStream', async () => {
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.textStream),
-          [
-            '[',
-            '{"content":"element 1"}',
-            ',{"content":"element 2"}',
-            ',{"content":"element 3"}]',
-          ],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.textStream), [
+          '[',
+          '{"content":"element 1"}',
+          ',{"content":"element 2"}',
+          ',{"content":"element 3"}]',
+        ]);
       });
 
       it('should have the correct object result', async () => {
@@ -1090,14 +1067,11 @@ describe('streamObject', () => {
       });
 
       it('should stream elements individually in elementStream', async () => {
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.elementStream),
-          [
-            { content: 'element 1' },
-            { content: 'element 2' },
-            { content: 'element 3' },
-          ],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.elementStream), [
+          { content: 'element 1' },
+          { content: 'element 2' },
+          { content: 'element 3' },
+        ]);
       });
     });
 
@@ -1108,9 +1082,7 @@ describe('streamObject', () => {
         AsyncIterableStream<{ content: string }>
       >;
 
-      let onFinishResult: Parameters<
-        Required<Parameters<typeof streamObject>[0]>['onFinish']
-      >[0];
+      let onFinishResult: Parameters<Required<Parameters<typeof streamObject>[0]>['onFinish']>[0];
 
       beforeEach(async () => {
         result = streamObject({
@@ -1123,8 +1095,7 @@ describe('streamObject', () => {
               {
                 type: 'text-delta',
                 id: '1',
-                delta:
-                  '{"elements":[{"content":"element 1"},{"content":"element 2"}]}',
+                delta: '{"elements":[{"content":"element 1"},{"content":"element 2"}]}',
               },
               {
                 type: 'text-end',
@@ -1147,17 +1118,15 @@ describe('streamObject', () => {
       });
 
       it('should stream only complete objects in partialObjectStream', async () => {
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.partialObjectStream),
-          [[{ content: 'element 1' }, { content: 'element 2' }]],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.partialObjectStream), [
+          [{ content: 'element 1' }, { content: 'element 2' }],
+        ]);
       });
 
       it('should stream only complete objects in textStream', async () => {
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.textStream),
-          ['[{"content":"element 1"},{"content":"element 2"}]'],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.textStream), [
+          '[{"content":"element 1"},{"content":"element 2"}]',
+        ]);
       });
 
       it('should have the correct object result', async () => {
@@ -1178,10 +1147,10 @@ describe('streamObject', () => {
       });
 
       it('should stream elements individually in elementStream', async () => {
-        assert.deepStrictEqual(
-          await convertAsyncIterableToArray(result.elementStream),
-          [{ content: 'element 1' }, { content: 'element 2' }],
-        );
+        assert.deepStrictEqual(await convertAsyncIterableToArray(result.elementStream), [
+          { content: 'element 1' },
+          { content: 'element 2' },
+        ]);
       });
     });
   });
@@ -1213,8 +1182,7 @@ describe('streamObject', () => {
         prompt: 'prompt',
       });
 
-      expect(await convertAsyncIterableToArray(result.partialObjectStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.partialObjectStream)).toMatchInlineSnapshot(`
           [
             "sunny",
           ]
@@ -1275,9 +1243,9 @@ describe('streamObject', () => {
         prompt: 'prompt',
       });
 
-      expect(
-        await convertAsyncIterableToArray(result.partialObjectStream),
-      ).toMatchInlineSnapshot(`[]`);
+      expect(await convertAsyncIterableToArray(result.partialObjectStream)).toMatchInlineSnapshot(
+        `[]`,
+      );
     });
 
     it('should handle ambiguous values', async () => {
@@ -1305,8 +1273,7 @@ describe('streamObject', () => {
         prompt: 'prompt',
       });
 
-      expect(await convertAsyncIterableToArray(result.partialObjectStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.partialObjectStream)).toMatchInlineSnapshot(`
         [
           "foo",
           "foobar",
@@ -1340,8 +1307,7 @@ describe('streamObject', () => {
         prompt: 'prompt',
       });
 
-      expect(await convertAsyncIterableToArray(result.partialObjectStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.partialObjectStream)).toMatchInlineSnapshot(`
         [
           "foobar",
         ]
@@ -1375,8 +1341,7 @@ describe('streamObject', () => {
         prompt: 'prompt',
       });
 
-      expect(await convertAsyncIterableToArray(result.partialObjectStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.partialObjectStream)).toMatchInlineSnapshot(`
         [
           {},
           {
@@ -1563,10 +1528,7 @@ describe('streamObject', () => {
               supportedUrlsCalled = true;
               // Reference 'this' to verify context
               return this.modelId === 'mock-model-id'
-                ? ({ 'image/*': [/^https:\/\/.*$/] } as Record<
-                    string,
-                    RegExp[]
-                  >)
+                ? ({ 'image/*': [/^https:\/\/.*$/] } as Record<string, RegExp[]>)
                 : {};
             },
             doStream: async () => ({
@@ -1682,9 +1644,7 @@ describe('streamObject', () => {
         prompt: 'prompt',
         experimental_repairText: async ({ text, error }) => {
           expect(error).toBeInstanceOf(TypeValidationError);
-          expect(text).toStrictEqual(
-            '{ "content-a": "provider metadata test" }',
-          );
+          expect(text).toStrictEqual('{ "content-a": "provider metadata test" }');
           return `{ "content": "provider metadata test" }`;
         },
       });
@@ -1727,9 +1687,7 @@ describe('streamObject', () => {
         prompt: 'prompt',
         experimental_repairText: async ({ text, error }) => {
           expect(error).toBeInstanceOf(TypeValidationError);
-          expect(text).toStrictEqual(
-            '{ "content-a": "provider metadata test" }',
-          );
+          expect(text).toStrictEqual('{ "content-a": "provider metadata test" }');
           return null;
         },
       });
@@ -1737,9 +1695,7 @@ describe('streamObject', () => {
       // consume stream
       await convertAsyncIterableToArray(result.partialObjectStream);
 
-      expect(result.object).rejects.toThrow(
-        'No object generated: response did not match schema.',
-      );
+      expect(result.object).rejects.toThrow('No object generated: response did not match schema.');
     });
 
     it('should be able to repair JSON wrapped with markdown code blocks', async () => {
@@ -1772,14 +1728,10 @@ describe('streamObject', () => {
         prompt: 'prompt',
         experimental_repairText: async ({ text, error }) => {
           expect(error).toBeInstanceOf(JSONParseError);
-          expect(text).toStrictEqual(
-            '```json\n{ "content": "test message" }\n```',
-          );
+          expect(text).toStrictEqual('```json\n{ "content": "test message" }\n```');
 
           // Remove markdown code block wrapper
-          const cleaned = text
-            .replace(/^```json\s*/, '')
-            .replace(/\s*```$/, '');
+          const cleaned = text.replace(/^```json\s*/, '').replace(/\s*```$/, '');
           return cleaned;
         },
       });

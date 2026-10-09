@@ -64,8 +64,7 @@ export class TogetherAIImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'aspectRatio',
-        details:
-          'This model does not support the `aspectRatio` option. Use `size` instead.',
+        details: 'This model does not support the `aspectRatio` option. Use `size` instead.',
       });
     }
 
@@ -85,8 +84,7 @@ export class TogetherAIImageModel implements ImageModelV3 {
       if (files.length > 1) {
         warnings.push({
           type: 'other',
-          message:
-            'Together AI only supports a single input image. Additional images are ignored.',
+          message: 'Together AI only supports a single input image. Additional images are ignored.',
         });
       }
     }
@@ -113,9 +111,7 @@ export class TogetherAIImageModel implements ImageModelV3 {
         errorSchema: togetheraiErrorSchema,
         errorToMessage: data => data.error.message,
       }),
-      successfulResponseHandler: createJsonResponseHandler(
-        togetheraiImageResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(togetheraiImageResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });

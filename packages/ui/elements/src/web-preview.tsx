@@ -14,13 +14,7 @@ import {
 } from '@ai-toolkit/shadcn-ui';
 import { ChevronDownIcon } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 export interface WebPreviewContextValue {
   url: string;
@@ -75,10 +69,7 @@ export const WebPreview = ({
   return (
     <WebPreviewContext.Provider value={contextValue}>
       <div
-        className={cn(
-          'flex size-full flex-col rounded-lg border bg-card',
-          className,
-        )}
+        className={cn('flex size-full flex-col rounded-lg border bg-card', className)}
         {...props}
       >
         {children}
@@ -94,10 +85,7 @@ export const WebPreviewNavigation = ({
   children,
   ...props
 }: WebPreviewNavigationProps) => (
-  <div
-    className={cn('flex items-center gap-1 border-b p-2', className)}
-    {...props}
-  >
+  <div className={cn('flex items-center gap-1 border-b p-2', className)} {...props}>
     {children}
   </div>
 );
@@ -136,12 +124,7 @@ export const WebPreviewNavigationButton = ({
 
 export type WebPreviewUrlProps = ComponentProps<typeof Input>;
 
-export const WebPreviewUrl = ({
-  value,
-  onChange,
-  onKeyDown,
-  ...props
-}: WebPreviewUrlProps) => {
+export const WebPreviewUrl = ({ value, onChange, onKeyDown, ...props }: WebPreviewUrlProps) => {
   const { url, setUrl } = useWebPreview();
   const [prevUrl, setPrevUrl] = useState(url);
   const [inputValue, setInputValue] = useState(url);
@@ -184,12 +167,7 @@ export type WebPreviewBodyProps = ComponentProps<'iframe'> & {
   loading?: ReactNode;
 };
 
-export const WebPreviewBody = ({
-  className,
-  loading,
-  src,
-  ...props
-}: WebPreviewBodyProps) => {
+export const WebPreviewBody = ({ className, loading, src, ...props }: WebPreviewBodyProps) => {
   const { url } = useWebPreview();
 
   return (
@@ -237,10 +215,7 @@ export const WebPreviewConsole = ({
         >
           Console
           <ChevronDownIcon
-            className={cn(
-              'h-4 w-4 transition-transform duration-200',
-              consoleOpen && 'rotate-180',
-            )}
+            className={cn('h-4 w-4 transition-transform duration-200', consoleOpen && 'rotate-180')}
           />
         </Button>
       </CollapsibleTrigger>
@@ -264,9 +239,7 @@ export const WebPreviewConsole = ({
                 )}
                 key={`${log.timestamp.getTime()}-${log.level}-${log.message}`}
               >
-                <span className="text-muted-foreground">
-                  {log.timestamp.toLocaleTimeString()}
-                </span>{' '}
+                <span className="text-muted-foreground">{log.timestamp.toLocaleTimeString()}</span>{' '}
                 {log.message}
               </div>
             ))

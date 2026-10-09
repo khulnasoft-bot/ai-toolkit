@@ -4,9 +4,7 @@ import { LanguageModelV3StreamPart } from '@ai-toolkit/provider';
 import { run } from '../lib/run';
 
 const generateLongContent = (tokens: number, includeTools = false) => {
-  const chunks: LanguageModelV3StreamPart[] = [
-    { type: 'text-start', id: 'text-1' },
-  ];
+  const chunks: LanguageModelV3StreamPart[] = [{ type: 'text-start', id: 'text-1' }];
 
   // Generate many token chunks to simulate a long response
   for (let i = 0; i < tokens; i++) {
@@ -218,9 +216,7 @@ async function benchmarkStreamWithToolCalls() {
   console.log(`  Total data: ${(totalBytes / 1024).toFixed(2)} KB`);
   console.log(`  Throughput: ${tokensPerSecond.toFixed(0)} tokens/second`);
   console.log(`  Throughput: ${megabytesPerSecond.toFixed(2)} MB/s`);
-  console.log(
-    `  Tool chunks: 7 (input-start, 3x input-delta, input-end, tool-call, tool-result)`,
-  );
+  console.log(`  Tool chunks: 7 (input-start, 3x input-delta, input-end, tool-call, tool-result)`);
 }
 
 run(async () => {

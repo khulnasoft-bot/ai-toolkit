@@ -17,8 +17,7 @@ run(async () => {
       },
       {
         role: 'user',
-        content:
-          'What is the difference between interface and type in TypeScript?',
+        content: 'What is the difference between interface and type in TypeScript?',
       },
     ],
     maxOutputTokens: 500,

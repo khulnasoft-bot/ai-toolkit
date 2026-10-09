@@ -243,9 +243,7 @@ describe('Cross-realm instance checking', () => {
 
     // Simulate different realm by creating a new instance in different context
     const gatewayErrorMarker = Symbol.for('vercel.ai.gateway.error');
-    const authErrorMarker = Symbol.for(
-      'vercel.ai.gateway.error.GatewayAuthenticationError',
-    );
+    const authErrorMarker = Symbol.for('vercel.ai.gateway.error.GatewayAuthenticationError');
 
     // Verify the symbols are present
     expect((error as any)[gatewayErrorMarker]).toBe(true);

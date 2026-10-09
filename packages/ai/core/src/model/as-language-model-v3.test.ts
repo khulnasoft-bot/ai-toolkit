@@ -85,9 +85,7 @@ describe('asLanguageModelV3', () => {
           {
             type: 'compatibility',
             feature: 'specificationVersion',
-            details: expect.stringContaining(
-              'Using v2 specification compatibility',
-            ),
+            details: expect.stringContaining('Using v2 specification compatibility'),
           },
         ],
         provider: 'test-provider',
@@ -222,8 +220,7 @@ describe('asLanguageModelV3', () => {
           prompt: [{ role: 'user', content: [{ type: 'text', text: 'test' }] }],
         });
 
-        expect(await convertReadableStreamToArray(stream))
-          .toMatchInlineSnapshot(`
+        expect(await convertReadableStreamToArray(stream)).toMatchInlineSnapshot(`
             [
               {
                 "id": "1",
@@ -442,22 +439,8 @@ describe('asLanguageModelV3', () => {
 
     it('should handle response with different finish reasons', async () => {
       const finishReasons: Array<
-        | 'stop'
-        | 'length'
-        | 'content-filter'
-        | 'tool-calls'
-        | 'error'
-        | 'other'
-        | 'unknown'
-      > = [
-        'stop',
-        'length',
-        'content-filter',
-        'tool-calls',
-        'error',
-        'other',
-        'unknown',
-      ];
+        'stop' | 'length' | 'content-filter' | 'tool-calls' | 'error' | 'other' | 'unknown'
+      > = ['stop', 'length', 'content-filter', 'tool-calls', 'error', 'other', 'unknown'];
 
       for (const finishReason of finishReasons) {
         const v2Model = new MockLanguageModelV2({

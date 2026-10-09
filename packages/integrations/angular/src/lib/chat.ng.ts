@@ -7,9 +7,7 @@ import {
   AbstractChat,
 } from '@ai-toolkit/ai';
 
-export class Chat<
-  UI_MESSAGE extends UIMessage = UIMessage,
-> extends AbstractChat<UI_MESSAGE> {
+export class Chat<UI_MESSAGE extends UIMessage = UIMessage> extends AbstractChat<UI_MESSAGE> {
   constructor(init: ChatInit<UI_MESSAGE>) {
     super({
       ...init,
@@ -18,9 +16,7 @@ export class Chat<
   }
 }
 
-class AngularChatState<UI_MESSAGE extends UIMessage = UIMessage>
-  implements ChatState<UI_MESSAGE>
-{
+class AngularChatState<UI_MESSAGE extends UIMessage = UIMessage> implements ChatState<UI_MESSAGE> {
   readonly #messages = signal<UI_MESSAGE[]>([]);
   readonly #status = signal<ChatStatus>('ready');
   readonly #error = signal<Error | undefined>(undefined);

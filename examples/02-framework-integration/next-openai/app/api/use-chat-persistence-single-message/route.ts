@@ -3,8 +3,7 @@ import { loadChat, saveChat } from '@util/chat-store';
 import { convertToModelMessages, streamText, UIMessage } from '@ai-toolkit/ai';
 
 export async function POST(req: Request) {
-  const { message, chatId }: { message: UIMessage; chatId: string } =
-    await req.json();
+  const { message, chatId }: { message: UIMessage; chatId: string } = await req.json();
 
   const previousMessages = await loadChat(chatId);
   const messages = [...previousMessages, message];

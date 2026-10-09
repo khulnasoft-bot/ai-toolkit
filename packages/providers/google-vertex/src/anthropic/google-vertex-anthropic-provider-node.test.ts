@@ -24,8 +24,7 @@ describe('google-vertex-anthropic-provider-node', () => {
     createVertexAnthropicNode({ project: 'test-project' });
 
     expect(createVertexAnthropicOriginal).toHaveBeenCalledTimes(1);
-    const passedOptions = vi.mocked(createVertexAnthropicOriginal).mock
-      .calls[0][0];
+    const passedOptions = vi.mocked(createVertexAnthropicOriginal).mock.calls[0][0];
 
     expect(typeof passedOptions?.headers).toBe('function');
     expect(await resolve(passedOptions?.headers)).toStrictEqual({
@@ -42,8 +41,7 @@ describe('google-vertex-anthropic-provider-node', () => {
     });
 
     expect(createVertexAnthropicOriginal).toHaveBeenCalledTimes(1);
-    const passedOptions = vi.mocked(createVertexAnthropicOriginal).mock
-      .calls[0][0];
+    const passedOptions = vi.mocked(createVertexAnthropicOriginal).mock.calls[0][0];
 
     expect(await resolve(passedOptions?.headers)).toEqual({
       Authorization: 'Bearer mock-auth-token',
@@ -60,8 +58,7 @@ describe('google-vertex-anthropic-provider-node', () => {
     });
 
     expect(createVertexAnthropicOriginal).toHaveBeenCalledTimes(1);
-    const passedOptions = vi.mocked(createVertexAnthropicOriginal).mock
-      .calls[0][0];
+    const passedOptions = vi.mocked(createVertexAnthropicOriginal).mock.calls[0][0];
 
     await resolve(passedOptions?.headers); // call the headers function
 

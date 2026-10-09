@@ -1,10 +1,6 @@
 import type { DynamicToolUIPart } from '@ai-toolkit/ai';
 
-export default function WeatherWithApprovalView({
-  invocation,
-}: {
-  invocation: DynamicToolUIPart;
-}) {
+export default function WeatherWithApprovalView({ invocation }: { invocation: DynamicToolUIPart }) {
   switch (invocation.state) {
     case 'input-streaming':
     case 'input-available':
@@ -42,8 +38,7 @@ export default function WeatherWithApprovalView({
     case 'output-denied':
       return (
         <div className="text-red-500">
-          Tool {invocation.toolName} with input{' '}
-          {JSON.stringify(invocation.input)} execution denied.
+          Tool {invocation.toolName} with input {JSON.stringify(invocation.input)} execution denied.
         </div>
       );
     case 'output-error':

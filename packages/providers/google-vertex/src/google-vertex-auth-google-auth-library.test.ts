@@ -1,8 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import {
-  generateAuthToken,
-  _resetAuthInstance,
-} from './google-vertex-auth-google-auth-library';
+import { generateAuthToken, _resetAuthInstance } from './google-vertex-auth-google-auth-library';
 import { GoogleAuth } from 'google-auth-library';
 
 vi.mock('google-auth-library', () => {

@@ -76,9 +76,7 @@ describe('createAgentUIStream', () => {
           },
         ],
       }),
-    ).rejects.toThrowError(
-      'Type validation failed for messages[0].parts[0].input',
-    );
+    ).rejects.toThrowError('Type validation failed for messages[0].parts[0].input');
   });
 
   it('should expose unavailable terminal tools as dynamic parts to callbacks', async () => {

@@ -50,14 +50,9 @@ function cleanupStaleElicitations() {
 // Run cleanup every minute
 setInterval(cleanupStaleElicitations, 60 * 1000);
 
-export function createPendingElicitation(
-  id: string,
-): Promise<ElicitationResponse> {
+export function createPendingElicitation(id: string): Promise<ElicitationResponse> {
   console.log('[store] Creating pending elicitation:', id);
-  console.log(
-    '[store] Current pending IDs:',
-    Array.from(pendingElicitations.keys()),
-  );
+  console.log('[store] Current pending IDs:', Array.from(pendingElicitations.keys()));
   console.log('[store] Current pending count:', pendingElicitations.size);
 
   // Check if this ID already exists (shouldn't happen, but handle it)
@@ -90,14 +85,9 @@ export function createPendingElicitation(
   });
 }
 
-export function resolvePendingElicitation(
-  response: ElicitationResponse,
-): boolean {
+export function resolvePendingElicitation(response: ElicitationResponse): boolean {
   console.log('[store] Attempting to resolve:', response.id);
-  console.log(
-    '[store] Current pending IDs:',
-    Array.from(pendingElicitations.keys()),
-  );
+  console.log('[store] Current pending IDs:', Array.from(pendingElicitations.keys()));
 
   const pending = pendingElicitations.get(response.id);
 
@@ -110,10 +100,7 @@ export function resolvePendingElicitation(
   clearTimeout(pending.timeoutId);
   pending.resolve(response);
   pendingElicitations.delete(response.id);
-  console.log(
-    '[store] Resolved and removed. Remaining count:',
-    pendingElicitations.size,
-  );
+  console.log('[store] Resolved and removed. Remaining count:', pendingElicitations.size);
   return true;
 }
 
@@ -130,9 +117,6 @@ export function rejectPendingElicitation(id: string, error: Error): boolean {
   clearTimeout(pending.timeoutId);
   pending.reject(error);
   pendingElicitations.delete(id);
-  console.log(
-    '[store] Rejected and removed. Remaining count:',
-    pendingElicitations.size,
-  );
+  console.log('[store] Rejected and removed. Remaining count:', pendingElicitations.size);
   return true;
 }

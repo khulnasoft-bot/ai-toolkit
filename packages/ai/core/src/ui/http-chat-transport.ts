@@ -215,9 +215,7 @@ export abstract class HttpChatTransport<UI_MESSAGE extends UIMessage>
     });
 
     if (!response.ok) {
-      throw new Error(
-        (await response.text()) ?? 'Failed to fetch the chat response.',
-      );
+      throw new Error((await response.text()) ?? 'Failed to fetch the chat response.');
     }
 
     if (!response.body) {
@@ -274,9 +272,7 @@ export abstract class HttpChatTransport<UI_MESSAGE extends UIMessage>
     }
 
     if (!response.ok) {
-      throw new Error(
-        (await response.text()) ?? 'Failed to fetch the chat response.',
-      );
+      throw new Error((await response.text()) ?? 'Failed to fetch the chat response.');
     }
 
     if (!response.body) {

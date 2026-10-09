@@ -49,14 +49,8 @@ const paths = {
 // Create files
 fs.writeFileSync(paths.codemod, codemodTemplate);
 fs.writeFileSync(paths.test, testTemplate);
-fs.writeFileSync(
-  path.join(paths.fixtures, `${codemodName}.input.ts`),
-  inputTemplate,
-);
-fs.writeFileSync(
-  path.join(paths.fixtures, `${codemodName}.output.ts`),
-  outputTemplate,
-);
+fs.writeFileSync(path.join(paths.fixtures, `${codemodName}.input.ts`), inputTemplate);
+fs.writeFileSync(path.join(paths.fixtures, `${codemodName}.output.ts`), outputTemplate);
 
 // Update bundle array
 const upgradePath = path.join(process.cwd(), 'src', 'lib', 'upgrade.ts');

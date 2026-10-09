@@ -1,8 +1,4 @@
-import type {
-  SharedV4Headers,
-  SharedV4ProviderMetadata,
-  SharedV4Warning,
-} from '../../shared/v4/';
+import type { SharedV4Headers, SharedV4ProviderMetadata, SharedV4Warning } from '../../shared/v4/';
 
 /**
  * The result of a reranking model doRerank call.

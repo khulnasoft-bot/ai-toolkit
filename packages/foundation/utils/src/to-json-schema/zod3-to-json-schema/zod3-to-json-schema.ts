@@ -55,9 +55,7 @@ const zod3ToJsonSchema = (
     ) ?? (parseAnyDef() as JsonSchema7Type);
 
   const title =
-    typeof options === 'object' &&
-    options.name !== undefined &&
-    options.nameStrategy === 'title'
+    typeof options === 'object' && options.name !== undefined && options.nameStrategy === 'title'
       ? options.name
       : undefined;
 

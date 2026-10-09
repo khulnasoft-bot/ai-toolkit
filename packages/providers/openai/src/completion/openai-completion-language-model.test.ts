@@ -1,9 +1,6 @@
 import { LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
-import {
-  convertReadableStreamToArray,
-  isNodeVersion,
-} from '@ai-toolkit/provider-utils/test';
+import { convertReadableStreamToArray, isNodeVersion } from '@ai-toolkit/provider-utils/test';
 import { createOpenAI } from '../openai-provider';
 import { describe, it, expect, vi } from 'vitest';
 
@@ -17,9 +14,7 @@ const TEST_PROMPT: LanguageModelV3Prompt = [
 
 const TEST_LOGPROBS = {
   tokens: [' ever', ' after', '.\n\n', 'The', ' end', '.'],
-  token_logprobs: [
-    -0.0664508, -0.014520033, -1.3820221, -0.7890417, -0.5323165, -0.10247037,
-  ],
+  token_logprobs: [-0.0664508, -0.014520033, -1.3820221, -0.7890417, -0.5323165, -0.10247037],
   top_logprobs: [
     {
       ' ever': -0.0664508,
@@ -224,9 +219,7 @@ describe('doGenerate', () => {
         },
       },
     });
-    expect(response.providerMetadata?.openai.logprobs).toStrictEqual(
-      TEST_LOGPROBS,
-    );
+    expect(response.providerMetadata?.openai.logprobs).toStrictEqual(TEST_LOGPROBS);
   });
 
   it('should extract finish reason', async () => {
@@ -234,11 +227,9 @@ describe('doGenerate', () => {
       finish_reason: 'stop',
     });
 
-    const { finishReason } = await provider
-      .completion('gpt-3.5-turbo-instruct')
-      .doGenerate({
-        prompt: TEST_PROMPT,
-      });
+    const { finishReason } = await provider.completion('gpt-3.5-turbo-instruct').doGenerate({
+      prompt: TEST_PROMPT,
+    });
 
     expect(finishReason).toMatchInlineSnapshot(`
       {
@@ -253,11 +244,9 @@ describe('doGenerate', () => {
       finish_reason: 'eos',
     });
 
-    const { finishReason } = await provider
-      .completion('gpt-3.5-turbo-instruct')
-      .doGenerate({
-        prompt: TEST_PROMPT,
-      });
+    const { finishReason } = await provider.completion('gpt-3.5-turbo-instruct').doGenerate({
+      prompt: TEST_PROMPT,
+    });
 
     expect(finishReason).toMatchInlineSnapshot(`
       {
@@ -572,20 +561,18 @@ describe('doStream', () => {
     `);
   });
 
-  it.skipIf(isNodeVersion(20))(
-    'should handle unparsable stream parts',
-    async () => {
-      server.urls['https://api.openai.com/v1/completions'].response = {
-        type: 'stream-chunks',
-        chunks: [`data: {unparsable}\n\n`, 'data: [DONE]\n\n'],
-      };
+  it.skipIf(isNodeVersion(20))('should handle unparsable stream parts', async () => {
+    server.urls['https://api.openai.com/v1/completions'].response = {
+      type: 'stream-chunks',
+      chunks: [`data: {unparsable}\n\n`, 'data: [DONE]\n\n'],
+    };
 
-      const { stream } = await model.doStream({
-        prompt: TEST_PROMPT,
-        includeRawChunks: false,
-      });
+    const { stream } = await model.doStream({
+      prompt: TEST_PROMPT,
+      includeRawChunks: false,
+    });
 
-      expect(await convertReadableStreamToArray(stream)).toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(stream)).toMatchInlineSnapshot(`
         [
           {
             "type": "stream-start",
@@ -622,8 +609,7 @@ describe('doStream', () => {
           },
         ]
       `);
-    },
-  );
+  });
 
   it('should send request body', async () => {
     prepareStreamResponse({ content: [] });
@@ -743,8 +729,6 @@ describe('doStream', () => {
       'openai-organization': 'test-organization',
       'openai-project': 'test-project',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/openai/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/openai/0.0.0-test`);
   });
 });

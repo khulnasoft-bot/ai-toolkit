@@ -25,9 +25,7 @@ describe('isExecutableTool', () => {
     });
 
     if (isExecutableTool(weatherTool)) {
-      expectTypeOf(weatherTool).toMatchTypeOf<
-        ExecutableTool<typeof weatherTool>
-      >();
+      expectTypeOf(weatherTool).toMatchTypeOf<ExecutableTool<typeof weatherTool>>();
       expectTypeOf(weatherTool.execute).not.toEqualTypeOf<undefined>();
 
       const result = executeTool({
@@ -67,9 +65,7 @@ describe('isExecutableTool', () => {
       Math.random() > 0.5 ? weatherTool : undefined;
 
     if (isExecutableTool(maybeWeatherTool)) {
-      expectTypeOf(maybeWeatherTool).toMatchTypeOf<
-        ExecutableTool<typeof weatherTool>
-      >();
+      expectTypeOf(maybeWeatherTool).toMatchTypeOf<ExecutableTool<typeof weatherTool>>();
       expectTypeOf(maybeWeatherTool.execute).not.toEqualTypeOf<undefined>();
     }
   });

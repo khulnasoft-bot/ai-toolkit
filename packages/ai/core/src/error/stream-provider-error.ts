@@ -70,9 +70,6 @@ export class StreamProviderError extends AITOOLKITError {
 function isRetryableStatusCode(statusCode: number | undefined): boolean {
   return (
     statusCode != null &&
-    (statusCode === 408 ||
-      statusCode === 409 ||
-      statusCode === 429 ||
-      statusCode >= 500)
+    (statusCode === 408 || statusCode === 409 || statusCode === 429 || statusCode >= 500)
   );
 }

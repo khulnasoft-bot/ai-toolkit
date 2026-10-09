@@ -1,7 +1,4 @@
-import {
-  LanguageModelV3Message,
-  LanguageModelV3Prompt,
-} from '@ai-toolkit/provider';
+import { LanguageModelV3Message, LanguageModelV3Prompt } from '@ai-toolkit/provider';
 import { convertDataContentToBase64String } from '../prompt/data-content';
 
 /**

@@ -52,11 +52,7 @@ export function createProviderToolFactory<INPUT, ARGS extends object>({
     });
 }
 
-export type ProviderToolFactoryWithOutputSchema<
-  INPUT,
-  OUTPUT,
-  ARGS extends object,
-> = (
+export type ProviderToolFactoryWithOutputSchema<INPUT, OUTPUT, ARGS extends object> = (
   options: ARGS & {
     execute?: ToolExecuteFunction<INPUT, OUTPUT>;
     needsApproval?: Tool<INPUT, OUTPUT>['needsApproval'];
@@ -67,11 +63,7 @@ export type ProviderToolFactoryWithOutputSchema<
   },
 ) => Tool<INPUT, OUTPUT>;
 
-export function createProviderToolFactoryWithOutputSchema<
-  INPUT,
-  OUTPUT,
-  ARGS extends object,
->({
+export function createProviderToolFactoryWithOutputSchema<INPUT, OUTPUT, ARGS extends object>({
   id,
   inputSchema,
   outputSchema,

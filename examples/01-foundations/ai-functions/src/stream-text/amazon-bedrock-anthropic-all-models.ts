@@ -37,9 +37,7 @@ run(async () => {
       const usage = await result.usage;
       const duration = Date.now() - start;
 
-      console.log(
-        `Tokens: ${usage.inputTokens} in / ${usage.outputTokens} out`,
-      );
+      console.log(`Tokens: ${usage.inputTokens} in / ${usage.outputTokens} out`);
       console.log(`Duration: ${duration}ms`);
       console.log(`Status: PASS`);
     } catch (error) {

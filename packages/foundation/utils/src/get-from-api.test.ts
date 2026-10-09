@@ -38,10 +38,7 @@ describe('getFromApi', () => {
     const mockFetch = vi.fn().mockResolvedValue(
       new Response(JSON.stringify(mockSuccessResponse), {
         status: 200,
-        headers: withUserAgentSuffix(
-          mockHeaders,
-          getRuntimeEnvironmentUserAgent(),
-        ),
+        headers: withUserAgentSuffix(mockHeaders, getRuntimeEnvironmentUserAgent()),
       }),
     );
 
@@ -79,8 +76,7 @@ describe('getFromApi', () => {
     await expect(
       getFromApi({
         url: 'https://api.test.com/data',
-        successfulResponseHandler:
-          createJsonResponseHandler(mockResponseSchema),
+        successfulResponseHandler: createJsonResponseHandler(mockResponseSchema),
         failedResponseHandler: createStatusCodeErrorResponseHandler(),
         fetch: mockFetch,
       }),
@@ -97,8 +93,7 @@ describe('getFromApi', () => {
     await expect(
       getFromApi({
         url: 'https://api.test.com/data',
-        successfulResponseHandler:
-          createJsonResponseHandler(mockResponseSchema),
+        successfulResponseHandler: createJsonResponseHandler(mockResponseSchema),
         failedResponseHandler: createStatusCodeErrorResponseHandler(),
         fetch: mockFetch,
       }),
@@ -115,8 +110,7 @@ describe('getFromApi', () => {
     await expect(
       getFromApi({
         url: 'https://api.test.com/data',
-        successfulResponseHandler:
-          createJsonResponseHandler(mockResponseSchema),
+        successfulResponseHandler: createJsonResponseHandler(mockResponseSchema),
         failedResponseHandler: createStatusCodeErrorResponseHandler(),
         fetch: mockFetch,
         abortSignal: abortController.signal,
@@ -165,8 +159,7 @@ describe('getFromApi', () => {
     await expect(
       getFromApi({
         url: 'https://api.test.com/data',
-        successfulResponseHandler:
-          createJsonResponseHandler(mockResponseSchema),
+        successfulResponseHandler: createJsonResponseHandler(mockResponseSchema),
         failedResponseHandler: createStatusCodeErrorResponseHandler(),
         fetch: mockFetch,
       }),
@@ -186,8 +179,7 @@ describe('getFromApi', () => {
     try {
       await getFromApi({
         url: 'https://api.test.com/data',
-        successfulResponseHandler:
-          createJsonResponseHandler(mockResponseSchema),
+        successfulResponseHandler: createJsonResponseHandler(mockResponseSchema),
         failedResponseHandler: createStatusCodeErrorResponseHandler(),
       });
 

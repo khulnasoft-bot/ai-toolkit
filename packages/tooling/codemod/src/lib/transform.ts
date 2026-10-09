@@ -8,10 +8,7 @@ const log = debug('codemod:transform');
 const error = debug('codemod:transform:error');
 
 function getJscodeshift(): string {
-  const localJscodeshift = path.resolve(
-    __dirname,
-    '../../node_modules/.bin/jscodeshift',
-  );
+  const localJscodeshift = path.resolve(__dirname, '../../node_modules/.bin/jscodeshift');
   return fs.existsSync(localJscodeshift) ? localJscodeshift : 'jscodeshift';
 }
 
@@ -75,10 +72,7 @@ function parseErrors(transform: string, output: string): TransformErrors {
   return errors;
 }
 
-function parseNotImplementedErrors(
-  transform: string,
-  output: string,
-): TransformErrors {
+function parseNotImplementedErrors(transform: string, output: string): TransformErrors {
   const notImplementedErrors: TransformErrors = [];
   const notImplementedRegex = /Not Implemented (.+): (.+)/g;
 
@@ -104,12 +98,7 @@ export function transform(
   const codemodPath = path.resolve(__dirname, `../codemods/${codemod}.js`);
   const targetPath = path.resolve(source);
   const jscodeshift = getJscodeshift();
-  const command = buildCommand(
-    codemodPath,
-    targetPath,
-    jscodeshift,
-    transformOptions,
-  );
+  const command = buildCommand(codemodPath, targetPath, jscodeshift, transformOptions);
   const stdout = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
   const errors = parseErrors(codemod, stdout);
   const notImplementedErrors = parseNotImplementedErrors(codemod, stdout);
@@ -127,9 +116,7 @@ export function transform(
         `Some files require manual changes. Please search your codebase for \`FIXME(@ai-toolkit-upgrade-v5): \` comments and follow the instructions to complete the upgrade.`,
       );
       notImplementedErrors.forEach(({ transform, filename, summary }) => {
-        log(
-          `Not Implemented [codemod=${transform}, path=${filename}, summary=${summary}]`,
-        );
+        log(`Not Implemented [codemod=${transform}, path=${filename}, summary=${summary}]`);
       });
     }
   }

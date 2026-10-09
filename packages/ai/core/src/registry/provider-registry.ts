@@ -13,11 +13,7 @@ import { wrapLanguageModel } from '../middleware/wrap-language-model';
 import { ImageModelMiddleware, LanguageModelMiddleware } from '../types';
 import { NoSuchProviderError } from './no-such-provider-error';
 
-type ExtractLiteralUnion<T> = T extends string
-  ? string extends T
-    ? never
-    : T
-  : never;
+type ExtractLiteralUnion<T> = T extends string ? (string extends T ? never : T) : never;
 
 export interface ProviderRegistryProvider<
   PROVIDERS extends Record<string, ProviderV3> = Record<string, ProviderV3>,
@@ -102,9 +98,7 @@ export function createProviderRegistry<
     imageModelMiddleware,
   }: {
     separator?: SEPARATOR;
-    languageModelMiddleware?:
-      | LanguageModelMiddleware
-      | LanguageModelMiddleware[];
+    languageModelMiddleware?: LanguageModelMiddleware | LanguageModelMiddleware[];
     imageModelMiddleware?: ImageModelMiddleware | ImageModelMiddleware[];
   } = {},
 ): ProviderRegistryProvider<PROVIDERS, SEPARATOR> {
@@ -136,9 +130,7 @@ class DefaultProviderRegistry<
 {
   private providers: PROVIDERS = {} as PROVIDERS;
   private separator: SEPARATOR;
-  private languageModelMiddleware?:
-    | LanguageModelMiddleware
-    | LanguageModelMiddleware[];
+  private languageModelMiddleware?: LanguageModelMiddleware | LanguageModelMiddleware[];
   private imageModelMiddleware?: ImageModelMiddleware | ImageModelMiddleware[];
 
   constructor({
@@ -147,9 +139,7 @@ class DefaultProviderRegistry<
     imageModelMiddleware,
   }: {
     separator: SEPARATOR;
-    languageModelMiddleware?:
-      | LanguageModelMiddleware
-      | LanguageModelMiddleware[];
+    languageModelMiddleware?: LanguageModelMiddleware | LanguageModelMiddleware[];
     imageModelMiddleware?: ImageModelMiddleware | ImageModelMiddleware[];
   }) {
     this.separator = separator;
@@ -220,9 +210,7 @@ class DefaultProviderRegistry<
     id: `${KEY & string}${SEPARATOR}${string}`,
   ): LanguageModelV3 {
     const [providerId, modelId] = this.splitId(id, 'languageModel');
-    let model = this.getProvider(providerId, 'languageModel').languageModel?.(
-      modelId,
-    );
+    let model = this.getProvider(providerId, 'languageModel').languageModel?.(modelId);
 
     if (model == null) {
       throw new NoSuchModelError({ modelId: id, modelType: 'languageModel' });

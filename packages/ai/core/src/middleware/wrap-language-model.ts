@@ -30,11 +30,9 @@ export const wrapLanguageModel = ({
   modelId?: string;
   providerId?: string;
 }): LanguageModelV3 => {
-  return [...asArray(middlewareArg)]
-    .reverse()
-    .reduce((wrappedModel, middleware) => {
-      return doWrap({ model: wrappedModel, middleware, modelId, providerId });
-    }, model);
+  return [...asArray(middlewareArg)].reverse().reduce((wrappedModel, middleware) => {
+    return doWrap({ model: wrappedModel, middleware, modelId, providerId });
+  }, model);
 };
 
 const doWrap = ({
@@ -62,9 +60,7 @@ const doWrap = ({
     params: LanguageModelV3CallOptions;
     type: 'generate' | 'stream';
   }) {
-    return transformParams
-      ? await transformParams({ params, type, model })
-      : params;
+    return transformParams ? await transformParams({ params, type, model }) : params;
   }
 
   return {
@@ -74,9 +70,7 @@ const doWrap = ({
     modelId: modelId ?? overrideModelId?.({ model }) ?? model.modelId,
     supportedUrls: overrideSupportedUrls?.({ model }) ?? model.supportedUrls,
 
-    async doGenerate(
-      params: LanguageModelV3CallOptions,
-    ): Promise<LanguageModelV3GenerateResult> {
+    async doGenerate(params: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
       const transformedParams = await doTransform({ params, type: 'generate' });
       const doGenerate = async () => model.doGenerate(transformedParams);
       const doStream = async () => model.doStream(transformedParams);
@@ -90,9 +84,7 @@ const doWrap = ({
         : doGenerate();
     },
 
-    async doStream(
-      params: LanguageModelV3CallOptions,
-    ): Promise<LanguageModelV3StreamResult> {
+    async doStream(params: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
       const transformedParams = await doTransform({ params, type: 'stream' });
       const doGenerate = async () => model.doGenerate(transformedParams);
       const doStream = async () => model.doStream(transformedParams);

@@ -197,10 +197,7 @@ describe('union', () => {
 
   it('should not ignore descriptions in literal unions', () => {
     expect(
-      parseUnionDef(
-        z.union([z.literal(true), z.literal('herp'), z.literal(3)])._def,
-        getRefs(),
-      ),
+      parseUnionDef(z.union([z.literal(true), z.literal('herp'), z.literal(3)])._def, getRefs()),
     ).toStrictEqual({
       type: ['boolean', 'string', 'number'],
       enum: [true, 'herp', 3],
@@ -208,11 +205,7 @@ describe('union', () => {
 
     expect(
       parseUnionDef(
-        z.union([
-          z.literal(true),
-          z.literal('herp').describe('derp'),
-          z.literal(3),
-        ])._def,
+        z.union([z.literal(true), z.literal('herp').describe('derp'), z.literal(3)])._def,
         getRefs(),
       ),
     ).toStrictEqual({

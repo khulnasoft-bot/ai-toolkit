@@ -15,15 +15,12 @@ export function prepareStepCallSettings({
   stepSettings: LanguageModelCallOptions | undefined;
 }): LanguageModelCallOptions {
   return prepareLanguageModelCallOptions({
-    maxOutputTokens:
-      stepSettings?.maxOutputTokens ?? callSettings.maxOutputTokens,
+    maxOutputTokens: stepSettings?.maxOutputTokens ?? callSettings.maxOutputTokens,
     temperature: stepSettings?.temperature ?? callSettings.temperature,
     topP: stepSettings?.topP ?? callSettings.topP,
     topK: stepSettings?.topK ?? callSettings.topK,
-    presencePenalty:
-      stepSettings?.presencePenalty ?? callSettings.presencePenalty,
-    frequencyPenalty:
-      stepSettings?.frequencyPenalty ?? callSettings.frequencyPenalty,
+    presencePenalty: stepSettings?.presencePenalty ?? callSettings.presencePenalty,
+    frequencyPenalty: stepSettings?.frequencyPenalty ?? callSettings.frequencyPenalty,
     stopSequences: stepSettings?.stopSequences ?? callSettings.stopSequences,
     seed: stepSettings?.seed ?? callSettings.seed,
     reasoning: stepSettings?.reasoning ?? callSettings.reasoning,

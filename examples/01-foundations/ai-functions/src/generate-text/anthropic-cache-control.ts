@@ -38,8 +38,5 @@ run(async () => {
   console.log();
 
   console.log('Cache read tokens:', result.usage.cachedInputTokens);
-  console.log(
-    'Cache write tokens:',
-    result.providerMetadata?.anthropic?.cacheCreationInputTokens,
-  );
+  console.log('Cache write tokens:', result.providerMetadata?.anthropic?.cacheCreationInputTokens);
 });

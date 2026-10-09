@@ -82,9 +82,7 @@ export const createJsonErrorResponseHandler =
   };
 
 export const createEventSourceResponseHandler =
-  <T>(
-    chunkSchema: FlexibleSchema<T>,
-  ): ResponseHandler<ReadableStream<ParseResult<T>>> =>
+  <T>(chunkSchema: FlexibleSchema<T>): ResponseHandler<ReadableStream<ParseResult<T>>> =>
   async ({ response }: { response: Response }) => {
     const responseHeaders = extractResponseHeaders(response);
 

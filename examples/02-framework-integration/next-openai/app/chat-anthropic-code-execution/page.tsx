@@ -30,9 +30,7 @@ export default function TestAnthropicCodeExecution() {
                 return <Response key={index}>{part.text}</Response>;
               }
               case 'tool-code_execution': {
-                return (
-                  <AnthropicCodeExecutionView invocation={part} key={index} />
-                );
+                return <AnthropicCodeExecutionView invocation={part} key={index} />;
               }
             }
           })}

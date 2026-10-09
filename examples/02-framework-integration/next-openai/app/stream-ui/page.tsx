@@ -41,10 +41,7 @@ export default function Home() {
             }
           }}
         />
-        <button
-          className="p-2 bg-zinc-900 text-zinc-100 rounded-md"
-          onClick={handleSubmission}
-        >
+        <button className="p-2 bg-zinc-900 text-zinc-100 rounded-md" onClick={handleSubmission}>
           Send
         </button>
       </div>

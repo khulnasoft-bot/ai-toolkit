@@ -1,3 +1,3 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = { transpilePackages: [] }
-module.exports = nextConfig
+const nextConfig = { transpilePackages: [] };
+module.exports = nextConfig;

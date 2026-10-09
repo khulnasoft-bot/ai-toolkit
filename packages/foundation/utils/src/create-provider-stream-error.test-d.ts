@@ -1,9 +1,5 @@
 import { expectTypeOf, it } from 'vitest';
-import {
-  createProviderStreamError,
-  isProviderStreamError,
-  type ProviderStreamError,
-} from '.';
+import { createProviderStreamError, isProviderStreamError, type ProviderStreamError } from '.';
 
 it('exports provider stream error helpers', () => {
   const error = createProviderStreamError({

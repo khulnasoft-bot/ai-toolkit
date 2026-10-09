@@ -16,8 +16,7 @@ export function isJSONValue(value: unknown): value is JSONValue {
 
   if (typeof value === 'object') {
     return Object.entries(value).every(
-      ([key, val]) =>
-        typeof key === 'string' && (val === undefined || isJSONValue(val)),
+      ([key, val]) => typeof key === 'string' && (val === undefined || isJSONValue(val)),
     );
   }
 
@@ -33,8 +32,7 @@ export function isJSONObject(value: unknown): value is JSONObject {
     value != null &&
     typeof value === 'object' &&
     Object.entries(value).every(
-      ([key, val]) =>
-        typeof key === 'string' && (val === undefined || isJSONValue(val)),
+      ([key, val]) => typeof key === 'string' && (val === undefined || isJSONValue(val)),
     )
   );
 }

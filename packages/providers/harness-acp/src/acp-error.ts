@@ -17,9 +17,7 @@ export class HarnessACPCapabilityUnsupportedError extends AITOOLKITError {
     super({ name, message, cause });
   }
 
-  static isInstance(
-    error: unknown,
-  ): error is HarnessACPCapabilityUnsupportedError {
+  static isInstance(error: unknown): error is HarnessACPCapabilityUnsupportedError {
     return AITOOLKITError.hasMarker(error, marker);
   }
 }

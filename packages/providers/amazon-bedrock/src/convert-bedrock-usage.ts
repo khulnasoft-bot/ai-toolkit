@@ -8,9 +8,7 @@ export type BedrockUsage = {
   cacheWriteInputTokens?: number | null;
 };
 
-export function convertBedrockUsage(
-  usage: BedrockUsage | undefined | null,
-): LanguageModelV3Usage {
+export function convertBedrockUsage(usage: BedrockUsage | undefined | null): LanguageModelV3Usage {
   if (usage == null) {
     return {
       inputTokens: {

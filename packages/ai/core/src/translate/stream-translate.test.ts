@@ -6,15 +6,7 @@ import {
   convertArrayToReadableStream,
   convertAsyncIterableToArray,
 } from '@ai-toolkit/provider-utils/test';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vitest,
-  vi,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vitest, vi } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
 import { MockSpeechTranslationModelV4 } from '../test/mock-speech-translation-model-v4';
 import { streamTranslate } from './stream-translate';
@@ -45,9 +37,7 @@ describe('experimental_streamTranslate', () => {
   let logWarningsSpy: ReturnType<typeof vitest.spyOn>;
 
   beforeEach(() => {
-    logWarningsSpy = vitest
-      .spyOn(logWarningsModule, 'logWarnings')
-      .mockImplementation(() => {});
+    logWarningsSpy = vitest.spyOn(logWarningsModule, 'logWarnings').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -165,9 +155,7 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).resolves.toEqual([
+    await expect(convertAsyncIterableToArray(result.fullStream)).resolves.toEqual([
       { type: 'source-transcript-delta', id: 'item-1', delta: 'Hel' },
       {
         type: 'source-transcript-partial',
@@ -200,9 +188,7 @@ describe('experimental_streamTranslate', () => {
       inputTextTokens: 2,
       outputTextTokens: 3,
     });
-    await expect(result.warnings).resolves.toEqual([
-      { type: 'other', message: 'test warning' },
-    ]);
+    await expect(result.warnings).resolves.toEqual([{ type: 'other', message: 'test warning' }]);
     await expect(result.response).resolves.toEqual({
       timestamp: testDate,
       modelId: 'test-model-id',
@@ -238,9 +224,7 @@ describe('experimental_streamTranslate', () => {
       includeRawChunks: true,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).resolves.toEqual([
+    await expect(convertAsyncIterableToArray(result.fullStream)).resolves.toEqual([
       { type: 'raw', rawValue: { event: 'provider-event' } },
     ]);
   });
@@ -259,9 +243,7 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toMatchObject({
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toMatchObject({
       name: 'AI_NoTranslationGeneratedError',
       message: 'No translation generated.',
     });
@@ -291,16 +273,12 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toMatchObject({
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toMatchObject({
       name: 'AI_NoTranslationGeneratedError',
     });
 
     // warnings resolved at stream-start and must not flip to rejected:
-    await expect(result.warnings).resolves.toEqual([
-      { type: 'other', message: 'test warning' },
-    ]);
+    await expect(result.warnings).resolves.toEqual([{ type: 'other', message: 'test warning' }]);
     await expect(result.translationText).rejects.toMatchObject({
       name: 'AI_NoTranslationGeneratedError',
     });
@@ -325,12 +303,10 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toThrow('authentication failed');
-    await expect(result.translationText).rejects.toThrow(
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toThrow(
       'authentication failed',
     );
+    await expect(result.translationText).rejects.toThrow('authentication failed');
     await vi.waitFor(() => {
       expect(audioCancelReason).toMatchObject({
         message: 'authentication failed',
@@ -368,9 +344,7 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toThrow('connection lost');
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toThrow('connection lost');
     expect(audioReaderTaken).toBe(true);
     await expect(result.translationText).rejects.toThrow('connection lost');
   });
@@ -469,17 +443,14 @@ describe('experimental_streamTranslate', () => {
   it('should reject the result promises without consuming fullStream when no translation is produced', async () => {
     const result = streamTranslate({
       model: new MockSpeechTranslationModelV4({
-        doStream: async () =>
-          createStreamResponse([{ type: 'stream-start', warnings: [] }]),
+        doStream: async () => createStreamResponse([{ type: 'stream-start', warnings: [] }]),
       }),
       audio,
       inputAudioFormat,
       targetLanguage,
     });
 
-    await expect(result.translationText).rejects.toThrow(
-      'No translation generated.',
-    );
+    await expect(result.translationText).rejects.toThrow('No translation generated.');
   });
 
   it('should reject fullStream access after a result promise claimed the stream', async () => {
@@ -527,9 +498,7 @@ describe('experimental_streamTranslate', () => {
     });
 
     const parts = await convertAsyncIterableToArray(result.fullStream);
-    expect(parts).toEqual([
-      { type: 'output-text-delta', id: 'item-1', delta: 'Hola' },
-    ]);
+    expect(parts).toEqual([{ type: 'output-text-delta', id: 'item-1', delta: 'Hola' }]);
     expect(await result.translationText).toBe('Hola');
   });
 
@@ -596,12 +565,8 @@ describe('experimental_streamTranslate', () => {
     });
 
     const fullStream = result.fullStream;
-    const translationTextAssertion = expect(
-      result.translationText,
-    ).rejects.toThrow();
-    expect(() => result.fullStream).toThrow(
-      'fullStream can only be accessed once.',
-    );
+    const translationTextAssertion = expect(result.translationText).rejects.toThrow();
+    expect(() => result.fullStream).toThrow('fullStream can only be accessed once.');
     await fullStream.cancel();
     await translationTextAssertion;
   });
@@ -625,9 +590,7 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).resolves.toEqual([
+    await expect(convertAsyncIterableToArray(result.fullStream)).resolves.toEqual([
       { type: 'audio', id: 'item-1', audio: new Uint8Array([4, 5, 6]) },
     ]);
     await expect(result.translationText).resolves.toBe('');
@@ -649,9 +612,7 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).resolves.toEqual([
+    await expect(convertAsyncIterableToArray(result.fullStream)).resolves.toEqual([
       { type: 'output-text-delta', id: 'item-1', delta: 'Hola' },
     ]);
     await expect(result.sourceText).resolves.toBe('');
@@ -677,9 +638,9 @@ describe('experimental_streamTranslate', () => {
       targetLanguage,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).resolves.toEqual([{ type: 'error', error: new Error('provider error') }]);
+    await expect(convertAsyncIterableToArray(result.fullStream)).resolves.toEqual([
+      { type: 'error', error: new Error('provider error') },
+    ]);
     await expect(result.translationText).resolves.toBe('Hola');
   });
 
@@ -748,9 +709,7 @@ describe('experimental_streamTranslate', () => {
           inputAudioFormat,
           targetLanguage,
         }),
-      ).toThrow(
-        'The default provider does not support speech translation models.',
-      );
+      ).toThrow('The default provider does not support speech translation models.');
     } finally {
       delete globalThis.AI_SDK_DEFAULT_PROVIDER;
     }

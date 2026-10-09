@@ -40,9 +40,7 @@ export function convertToOpenAIChatMessages({
           }
           default: {
             const _exhaustiveCheck: never = systemMessageMode;
-            throw new Error(
-              `Unsupported system message mode: ${_exhaustiveCheck}`,
-            );
+            throw new Error(`Unsupported system message mode: ${_exhaustiveCheck}`);
           }
         }
         break;
@@ -63,10 +61,7 @@ export function convertToOpenAIChatMessages({
               }
               case 'file': {
                 if (part.mediaType.startsWith('image/')) {
-                  const mediaType =
-                    part.mediaType === 'image/*'
-                      ? 'image/jpeg'
-                      : part.mediaType;
+                  const mediaType = part.mediaType === 'image/*' ? 'image/jpeg' : part.mediaType;
 
                   return {
                     type: 'image_url',
@@ -124,8 +119,7 @@ export function convertToOpenAIChatMessages({
                   return {
                     type: 'file',
                     file:
-                      typeof part.data === 'string' &&
-                      part.data.startsWith('file-')
+                      typeof part.data === 'string' && part.data.startsWith('file-')
                         ? { file_id: part.data }
                         : {
                             filename: part.filename ?? `part-${index}.pdf`,

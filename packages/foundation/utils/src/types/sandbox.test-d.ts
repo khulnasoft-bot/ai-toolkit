@@ -9,23 +9,15 @@ test('SandboxSession exposes spawn returning a process handle', () => {
     env?: Record<string, string>;
     abortSignal?: AbortSignal;
   }>();
-  expectTypeOf<
-    Awaited<ReturnType<SandboxSession['spawn']>>
-  >().toEqualTypeOf<SandboxProcess>();
+  expectTypeOf<Awaited<ReturnType<SandboxSession['spawn']>>>().toEqualTypeOf<SandboxProcess>();
 });
 
 test('SandboxProcess exposes the expected handle shape', () => {
   expectTypeOf<SandboxProcess['pid']>().toEqualTypeOf<number | undefined>();
-  expectTypeOf<SandboxProcess['stdout']>().toEqualTypeOf<
-    ReadableStream<Uint8Array>
-  >();
-  expectTypeOf<SandboxProcess['stderr']>().toEqualTypeOf<
-    ReadableStream<Uint8Array>
-  >();
+  expectTypeOf<SandboxProcess['stdout']>().toEqualTypeOf<ReadableStream<Uint8Array>>();
+  expectTypeOf<SandboxProcess['stderr']>().toEqualTypeOf<ReadableStream<Uint8Array>>();
   expectTypeOf<Awaited<ReturnType<SandboxProcess['wait']>>>().toEqualTypeOf<{
     exitCode: number;
   }>();
-  expectTypeOf<
-    Awaited<ReturnType<SandboxProcess['kill']>>
-  >().toEqualTypeOf<void>();
+  expectTypeOf<Awaited<ReturnType<SandboxProcess['kill']>>>().toEqualTypeOf<void>();
 });

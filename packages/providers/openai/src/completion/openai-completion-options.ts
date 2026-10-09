@@ -53,6 +53,4 @@ tokens that were generated.
   ),
 );
 
-export type OpenAICompletionProviderOptions = InferSchema<
-  typeof openaiCompletionProviderOptions
->;
+export type OpenAICompletionProviderOptions = InferSchema<typeof openaiCompletionProviderOptions>;

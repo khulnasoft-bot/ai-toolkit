@@ -59,16 +59,12 @@ export const useAudioDevices = () => {
       setError(null);
 
       const deviceList = await navigator.mediaDevices.enumerateDevices();
-      const audioInputs = deviceList.filter(
-        device => device.kind === 'audioinput',
-      );
+      const audioInputs = deviceList.filter(device => device.kind === 'audioinput');
 
       setDevices(audioInputs);
     } catch (caughtError) {
       const message =
-        caughtError instanceof Error
-          ? caughtError.message
-          : 'Failed to get audio devices';
+        caughtError instanceof Error ? caughtError.message : 'Failed to get audio devices';
 
       setError(message);
       console.error('Error getting audio devices:', message);
@@ -95,17 +91,13 @@ export const useAudioDevices = () => {
       }
 
       const deviceList = await navigator.mediaDevices.enumerateDevices();
-      const audioInputs = deviceList.filter(
-        device => device.kind === 'audioinput',
-      );
+      const audioInputs = deviceList.filter(device => device.kind === 'audioinput');
 
       setDevices(audioInputs);
       setHasPermission(true);
     } catch (caughtError) {
       const message =
-        caughtError instanceof Error
-          ? caughtError.message
-          : 'Failed to get audio devices';
+        caughtError instanceof Error ? caughtError.message : 'Failed to get audio devices';
 
       setError(message);
       console.error('Error getting audio devices:', message);
@@ -130,10 +122,7 @@ export const useAudioDevices = () => {
     navigator.mediaDevices.addEventListener('devicechange', handleDeviceChange);
 
     return () => {
-      navigator.mediaDevices.removeEventListener(
-        'devicechange',
-        handleDeviceChange,
-      );
+      navigator.mediaDevices.removeEventListener('devicechange', handleDeviceChange);
     };
   }, [hasPermission, loadDevicesWithPermission, loadDevicesWithoutPermission]);
 
@@ -204,10 +193,7 @@ export const MicSelector = ({
 
 export type MicSelectorTriggerProps = ComponentProps<typeof Button>;
 
-export const MicSelectorTrigger = ({
-  children,
-  ...props
-}: MicSelectorTriggerProps) => {
+export const MicSelectorTrigger = ({ children, ...props }: MicSelectorTriggerProps) => {
   const { setWidth } = useContext(MicSelectorContext);
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -236,10 +222,7 @@ export const MicSelectorTrigger = ({
     <PopoverTrigger asChild>
       <Button variant="outline" {...props} ref={ref}>
         {children}
-        <ChevronsUpDownIcon
-          className="shrink-0 text-muted-foreground"
-          size={16}
-        />
+        <ChevronsUpDownIcon className="shrink-0 text-muted-foreground" size={16} />
       </Button>
     </PopoverTrigger>
   );
@@ -257,11 +240,7 @@ export const MicSelectorContent = ({
   const { width, onValueChange, value } = useContext(MicSelectorContext);
 
   return (
-    <PopoverContent
-      className={cn('p-0', className)}
-      style={{ width }}
-      {...popoverOptions}
-    >
+    <PopoverContent className={cn('p-0', className)} style={{ width }} {...popoverOptions}>
       <Command onValueChange={onValueChange} value={value} {...props} />
     </PopoverContent>
   );
@@ -277,17 +256,11 @@ export const MicSelectorInput = ({ ...props }: MicSelectorInputProps) => (
   <CommandInput placeholder="Search microphones..." {...props} />
 );
 
-export type MicSelectorListProps = Omit<
-  ComponentProps<typeof CommandList>,
-  'children'
-> & {
+export type MicSelectorListProps = Omit<ComponentProps<typeof CommandList>, 'children'> & {
   children: (devices: MediaDeviceInfo[]) => ReactNode;
 };
 
-export const MicSelectorList = ({
-  children,
-  ...props
-}: MicSelectorListProps) => {
+export const MicSelectorList = ({ children, ...props }: MicSelectorListProps) => {
   const { data } = useContext(MicSelectorContext);
 
   return <CommandList {...props}>{children(data)}</CommandList>;
@@ -320,11 +293,7 @@ export type MicSelectorLabelProps = ComponentProps<'span'> & {
   device: MediaDeviceInfo;
 };
 
-export const MicSelectorLabel = ({
-  device,
-  className,
-  ...props
-}: MicSelectorLabelProps) => {
+export const MicSelectorLabel = ({ device, className, ...props }: MicSelectorLabelProps) => {
   const matches = device.label.match(deviceIdRegex);
 
   if (!matches) {
@@ -348,10 +317,7 @@ export const MicSelectorLabel = ({
 
 export type MicSelectorValueProps = ComponentProps<'span'>;
 
-export const MicSelectorValue = ({
-  className,
-  ...props
-}: MicSelectorValueProps) => {
+export const MicSelectorValue = ({ className, ...props }: MicSelectorValueProps) => {
   const { data, value } = useContext(MicSelectorContext);
   const currentDevice = data.find(d => d.deviceId === value);
 

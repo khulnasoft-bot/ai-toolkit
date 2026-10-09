@@ -40,9 +40,7 @@ describe('executeTool', () => {
       results.push(result);
     }
 
-    expect(results).toEqual([
-      { type: 'final', output: { id: 'calc', sum: 3 } },
-    ]);
+    expect(results).toEqual([{ type: 'final', output: { id: 'calc', sum: 3 } }]);
   });
 
   it('yields a single final output for non-streaming tools', async () => {
@@ -104,8 +102,7 @@ describe('executeTool', () => {
       },
     });
 
-    const results: Array<{ type: 'preliminary' | 'final'; output: string }> =
-      [];
+    const results: Array<{ type: 'preliminary' | 'final'; output: string }> = [];
 
     for await (const result of executeTool({
       tool: weatherTool as ExecutableTool<typeof weatherTool>,

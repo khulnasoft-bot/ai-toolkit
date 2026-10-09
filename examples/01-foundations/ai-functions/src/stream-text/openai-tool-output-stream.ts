@@ -60,9 +60,7 @@ run(async () => {
       }
 
       case 'tool-call': {
-        console.log(
-          `TOOL CALL ${chunk.toolName} ${JSON.stringify(chunk.input)}`,
-        );
+        console.log(`TOOL CALL ${chunk.toolName} ${JSON.stringify(chunk.input)}`);
         break;
       }
 
@@ -77,9 +75,7 @@ run(async () => {
               `PRELIMINARY TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`,
             );
           } else {
-            console.log(
-              `TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`,
-            );
+            console.log(`TOOL RESULT ${chunk.toolName} ${JSON.stringify(chunk.output)}`);
           }
         }
         break;

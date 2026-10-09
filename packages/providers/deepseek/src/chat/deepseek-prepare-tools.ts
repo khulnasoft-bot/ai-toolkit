@@ -1,11 +1,5 @@
-import {
-  LanguageModelV3CallOptions,
-  SharedV3Warning,
-} from '@ai-toolkit/provider';
-import {
-  DeepSeekFunctionTool,
-  DeepSeekToolChoice,
-} from './deepseek-chat-api-types';
+import { LanguageModelV3CallOptions, SharedV3Warning } from '@ai-toolkit/provider';
+import { DeepSeekFunctionTool, DeepSeekToolChoice } from './deepseek-chat-api-types';
 
 export function prepareTools({
   tools,

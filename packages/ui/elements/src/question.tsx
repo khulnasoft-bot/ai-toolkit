@@ -10,13 +10,7 @@ import type {
 } from 'react';
 
 import { Button, Textarea, cn } from '@ai-toolkit/shadcn-ui';
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 export interface QuestionValue {
   selectedValues: readonly string[];
@@ -51,10 +45,7 @@ const useQuestion = () => {
   return context;
 };
 
-export type QuestionProps = Omit<
-  ComponentProps<'form'>,
-  'defaultValue' | 'onSubmit' | 'value'
-> & {
+export type QuestionProps = Omit<ComponentProps<'form'>, 'defaultValue' | 'onSubmit' | 'value'> & {
   defaultValue?: QuestionValue;
   disabled?: boolean;
   onSubmit?: (
@@ -119,11 +110,7 @@ export const Question = ({
 
   const toggleValue = useCallback(
     (optionValue: string) => {
-      const selectedValues = getSelectedValues(
-        value.selectedValues,
-        optionValue,
-        selectionMode,
-      );
+      const selectedValues = getSelectedValues(value.selectedValues, optionValue, selectionMode);
       setValue({ ...value, selectedValues });
     },
     [selectionMode, setValue, value],
@@ -167,10 +154,7 @@ export const Question = ({
   return (
     <QuestionContext.Provider value={contextValue}>
       <form
-        className={cn(
-          'space-y-4 rounded-lg border bg-background p-4',
-          className,
-        )}
+        className={cn('space-y-4 rounded-lg border bg-background p-4', className)}
         onSubmit={handleSubmit}
         {...props}
       >
@@ -182,28 +166,19 @@ export const Question = ({
 
 export type QuestionPromptProps = HTMLAttributes<HTMLParagraphElement>;
 
-export const QuestionPrompt = ({
-  className,
-  ...props
-}: QuestionPromptProps) => (
+export const QuestionPrompt = ({ className, ...props }: QuestionPromptProps) => (
   <p className={cn('font-medium text-sm', className)} {...props} />
 );
 
 export type QuestionDescriptionProps = HTMLAttributes<HTMLParagraphElement>;
 
-export const QuestionDescription = ({
-  className,
-  ...props
-}: QuestionDescriptionProps) => (
+export const QuestionDescription = ({ className, ...props }: QuestionDescriptionProps) => (
   <p className={cn('text-muted-foreground text-sm', className)} {...props} />
 );
 
 export type QuestionOptionsProps = HTMLAttributes<HTMLDivElement>;
 
-export const QuestionOptions = ({
-  className,
-  ...props
-}: QuestionOptionsProps) => {
+export const QuestionOptions = ({ className, ...props }: QuestionOptionsProps) => {
   const { selectionMode } = useQuestion();
 
   return (
@@ -215,10 +190,7 @@ export const QuestionOptions = ({
   );
 };
 
-export type QuestionOptionProps = Omit<
-  ComponentProps<typeof Button>,
-  'value'
-> & {
+export type QuestionOptionProps = Omit<ComponentProps<typeof Button>, 'value'> & {
   value: string;
 };
 
@@ -258,17 +230,9 @@ export const QuestionOption = ({
   );
 };
 
-export type QuestionInputProps = Omit<
-  ComponentProps<typeof Textarea>,
-  'defaultValue' | 'value'
->;
+export type QuestionInputProps = Omit<ComponentProps<typeof Textarea>, 'defaultValue' | 'value'>;
 
-export const QuestionInput = ({
-  className,
-  disabled,
-  onChange,
-  ...props
-}: QuestionInputProps) => {
+export const QuestionInput = ({ className, disabled, onChange, ...props }: QuestionInputProps) => {
   const question = useQuestion();
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -291,14 +255,8 @@ export const QuestionInput = ({
 
 export type QuestionActionsProps = HTMLAttributes<HTMLDivElement>;
 
-export const QuestionActions = ({
-  className,
-  ...props
-}: QuestionActionsProps) => (
-  <div
-    className={cn('flex items-center justify-end gap-2', className)}
-    {...props}
-  />
+export const QuestionActions = ({ className, ...props }: QuestionActionsProps) => (
+  <div className={cn('flex items-center justify-end gap-2', className)} {...props} />
 );
 
 export type QuestionSubmitProps = ComponentProps<typeof Button> & {
@@ -311,15 +269,10 @@ export const QuestionSubmit = ({
   ...props
 }: QuestionSubmitProps) => {
   const question = useQuestion();
-  const hasResponse =
-    question.selectedValues.length > 0 || question.text.trim().length > 0;
+  const hasResponse = question.selectedValues.length > 0 || question.text.trim().length > 0;
 
   return (
-    <Button
-      disabled={question.disabled || disabled || !hasResponse}
-      type="submit"
-      {...props}
-    >
+    <Button disabled={question.disabled || disabled || !hasResponse} type="submit" {...props}>
       {children}
     </Button>
   );

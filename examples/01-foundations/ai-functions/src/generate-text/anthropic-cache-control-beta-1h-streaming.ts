@@ -43,10 +43,7 @@ run(async () => {
 
   const providerMetadata = await result.providerMetadata;
 
-  console.log(
-    'Streaming usage information:',
-    providerMetadata?.anthropic?.usage,
-  );
+  console.log('Streaming usage information:', providerMetadata?.anthropic?.usage);
 
   // e.g.
   // Streaming usage information: {
@@ -93,10 +90,7 @@ run(async () => {
 
   const cachedProviderMetadata = await cachedResult.providerMetadata;
 
-  console.log(
-    'Streaming usage information:',
-    cachedProviderMetadata?.anthropic?.usage,
-  );
+  console.log('Streaming usage information:', cachedProviderMetadata?.anthropic?.usage);
 
   // e.g.
   // Streaming usage information: {

@@ -16,13 +16,7 @@ describe('groqProviderOptions', () => {
     });
 
     it('rejects invalid reasoningEffort values', () => {
-      const invalidValues = [
-        'invalid',
-        'high-effort',
-        'minimal',
-        'maximum',
-        '',
-      ];
+      const invalidValues = ['invalid', 'high-effort', 'minimal', 'maximum', ''];
 
       invalidValues.forEach(value => {
         const result = groqProviderOptions.safeParse({

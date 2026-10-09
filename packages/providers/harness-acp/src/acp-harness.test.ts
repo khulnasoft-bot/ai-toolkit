@@ -27,12 +27,8 @@ describe('createACP', () => {
 
   it('rejects invalid harnessId / version / executable', () => {
     expect(() => createACP({ ...base, harnessId: 'Bad_ID' })).toThrow();
-    expect(() =>
-      createACP({ ...base, harnessId: 'acp-x', version: 'v9' as never }),
-    ).toThrow();
-    expect(() =>
-      createACP({ ...base, harnessId: 'acp-x', executable: './bad' }),
-    ).toThrow();
+    expect(() => createACP({ ...base, harnessId: 'acp-x', version: 'v9' as never })).toThrow();
+    expect(() => createACP({ ...base, harnessId: 'acp-x', executable: './bad' })).toThrow();
   });
 
   it('resolves permission modes and throws on null mappings', () => {
@@ -82,9 +78,7 @@ describe('createACP', () => {
 
 describe('getSourceIdentity', () => {
   it('omits unpinned versions from identity', () => {
-    expect(getSourceIdentity({ type: 'npm-simple', packageName: 'pkg' })).toBe(
-      'pkg',
-    );
+    expect(getSourceIdentity({ type: 'npm-simple', packageName: 'pkg' })).toBe('pkg');
     expect(
       getSourceIdentity({
         type: 'npm-simple',

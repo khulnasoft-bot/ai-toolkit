@@ -285,8 +285,7 @@ describe('extractReasoningMiddleware', () => {
         prompt: 'Hello, how can I help?',
       });
 
-      expect(await convertAsyncIterableToArray(result.fullStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.fullStream)).toMatchInlineSnapshot(`
           [
             {
               "type": "start",
@@ -427,8 +426,7 @@ describe('extractReasoningMiddleware', () => {
         prompt: 'Hello, how can I help?',
       });
 
-      expect(await convertAsyncIterableToArray(result.fullStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.fullStream)).toMatchInlineSnapshot(`
           [
             {
               "type": "start",
@@ -577,8 +575,7 @@ describe('extractReasoningMiddleware', () => {
         prompt: 'Hello, how can I help?',
       });
 
-      expect(await convertAsyncIterableToArray(result.fullStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.fullStream)).toMatchInlineSnapshot(`
           [
             {
               "type": "start",
@@ -717,8 +714,7 @@ describe('extractReasoningMiddleware', () => {
         prompt: 'Hello, how can I help?',
       });
 
-      expect(await convertAsyncIterableToArray(resultTrue.fullStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(resultTrue.fullStream)).toMatchInlineSnapshot(`
           [
             {
               "type": "start",
@@ -816,8 +812,7 @@ describe('extractReasoningMiddleware', () => {
           ]
         `);
 
-      expect(await convertAsyncIterableToArray(resultFalse.fullStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(resultFalse.fullStream)).toMatchInlineSnapshot(`
           [
             {
               "type": "start",
@@ -946,8 +941,7 @@ describe('extractReasoningMiddleware', () => {
         prompt: 'Hello, how can I help?',
       });
 
-      expect(await convertAsyncIterableToArray(result.fullStream))
-        .toMatchInlineSnapshot(`
+      expect(await convertAsyncIterableToArray(result.fullStream)).toMatchInlineSnapshot(`
           [
             {
               "type": "start",

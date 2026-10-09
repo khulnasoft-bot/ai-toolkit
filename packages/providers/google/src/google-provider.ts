@@ -1,9 +1,4 @@
-import {
-  EmbeddingModelV3,
-  LanguageModelV3,
-  ProviderV3,
-  ImageModelV3,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, LanguageModelV3, ProviderV3, ImageModelV3 } from '@ai-toolkit/provider';
 import {
   FetchFunction,
   generateId,
@@ -62,9 +57,7 @@ Creates a model for image generation.
   /**
    * @deprecated Use `embeddingModel` instead.
    */
-  textEmbeddingModel(
-    modelId: GoogleGenerativeAIEmbeddingModelId,
-  ): EmbeddingModelV3;
+  textEmbeddingModel(modelId: GoogleGenerativeAIEmbeddingModelId): EmbeddingModelV3;
 
   tools: typeof googleTools;
 }
@@ -112,8 +105,7 @@ export function createGoogleGenerativeAI(
   options: GoogleGenerativeAIProviderSettings = {},
 ): GoogleGenerativeAIProvider {
   const baseURL =
-    withoutTrailingSlash(options.baseURL) ??
-    'https://generativelanguage.googleapis.com/v1beta';
+    withoutTrailingSlash(options.baseURL) ?? 'https://generativelanguage.googleapis.com/v1beta';
 
   const providerName = options.name ?? 'google.generative-ai';
 
@@ -142,9 +134,7 @@ export function createGoogleGenerativeAI(
           // e.g. https://generativelanguage.googleapis.com/v1beta/files/...
           new RegExp(`^${baseURL}/files/.*$`),
           // YouTube URLs (public or unlisted videos)
-          new RegExp(
-            `^https://(?:www\\.)?youtube\\.com/watch\\?v=[\\w-]+(?:&[\\w=&.-]*)?$`,
-          ),
+          new RegExp(`^https://(?:www\\.)?youtube\\.com/watch\\?v=[\\w-]+(?:&[\\w=&.-]*)?$`),
           new RegExp(`^https://youtu\\.be/[\\w-]+(?:\\?[\\w=&.-]*)?$`),
         ],
       }),

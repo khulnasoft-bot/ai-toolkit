@@ -11,17 +11,12 @@ function scaffold(archetype, extra = {}) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'create-ai-provider-'));
   const name = `test-${archetype.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'provider'}`;
   const ctx = buildContext({ name, archetype, ...extra });
-  emitFiles(
-    path.join(dir, 'packages/providers', name),
-    getArchetype(archetype).getFiles(ctx),
-  );
+  emitFiles(path.join(dir, 'packages/providers', name), getArchetype(archetype).getFiles(ctx));
   return { dir, name, ctx };
 }
 
 function readJson(dir, name, file) {
-  return JSON.parse(
-    fs.readFileSync(path.join(dir, 'packages/providers', name, file), 'utf8'),
-  );
+  return JSON.parse(fs.readFileSync(path.join(dir, 'packages/providers', name, file), 'utf8'));
 }
 
 describe('archetype registry', () => {
@@ -29,11 +24,7 @@ describe('archetype registry', () => {
     const names = getAllArchetypes()
       .map(a => a.name)
       .sort();
-    assert.deepEqual(names, [
-      'full-custom',
-      'harness-acp',
-      'openai-compatible',
-    ]);
+    assert.deepEqual(names, ['full-custom', 'harness-acp', 'openai-compatible']);
   });
 
   it('falls back to openai-compatible for unknown names', () => {
@@ -43,14 +34,7 @@ describe('archetype registry', () => {
 
 describe('args', () => {
   it('parses name and flags', () => {
-    const args = parseArgs([
-      'my-provider',
-      '-a',
-      'harness-acp',
-      '-e',
-      'x --acp',
-      '-y',
-    ]);
+    const args = parseArgs(['my-provider', '-a', 'harness-acp', '-e', 'x --acp', '-y']);
     assert.equal(args.name, 'my-provider');
     assert.equal(args.archetype, 'harness-acp');
     assert.equal(args.executable, 'x --acp');
@@ -62,10 +46,7 @@ describe('args', () => {
   });
 
   it('rejects unknown archetypes', () => {
-    assert.throws(
-      () => validateArgs({ name: 'ok', archetype: 'nope' }),
-      /Unknown archetype/,
-    );
+    assert.throws(() => validateArgs({ name: 'ok', archetype: 'nope' }), /Unknown archetype/);
   });
 });
 
@@ -109,9 +90,7 @@ for (const archetype of ['openai-compatible', 'harness-acp', 'full-custom']) {
         );
       }
       const tsconfig = readJson(dir, name, 'tsconfig.json');
-      assert.ok(
-        tsconfig.references.some(r => r.path === '../../validation/provider'),
-      );
+      assert.ok(tsconfig.references.some(r => r.path === '../../validation/provider'));
     });
   });
 }
@@ -122,15 +101,9 @@ describe('golden: openai-compatible', () => {
       models: ['model-a'],
     });
     const base = path.join(dir, 'packages/providers', name, 'src');
-    const options = fs.readFileSync(
-      path.join(base, `${name}-chat-options.ts`),
-      'utf8',
-    );
+    const options = fs.readFileSync(path.join(base, `${name}-chat-options.ts`), 'utf8');
     assert.match(options, /'model-a'/);
-    const provider = fs.readFileSync(
-      path.join(base, `${name}-provider.ts`),
-      'utf8',
-    );
+    const provider = fs.readFileSync(path.join(base, `${name}-provider.ts`), 'utf8');
     assert.match(provider, /createOpenAICompatible/);
     assert.doesNotMatch(provider, /import \{[^}]*loadApiKey/);
   });

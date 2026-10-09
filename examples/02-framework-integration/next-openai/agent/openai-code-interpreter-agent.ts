@@ -8,6 +8,4 @@ export const openaiCodeInterpreterAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAICodeInterpreterMessage = InferAgentUIMessage<
-  typeof openaiCodeInterpreterAgent
->;
+export type OpenAICodeInterpreterMessage = InferAgentUIMessage<typeof openaiCodeInterpreterAgent>;

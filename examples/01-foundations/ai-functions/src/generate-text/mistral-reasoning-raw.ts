@@ -1,9 +1,5 @@
 import { mistral } from '@ai-toolkit/mistral';
-import {
-  extractReasoningMiddleware,
-  generateText,
-  wrapLanguageModel,
-} from '@ai-toolkit/ai';
+import { extractReasoningMiddleware, generateText, wrapLanguageModel } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -14,8 +10,7 @@ run(async () => {
         tagName: 'think',
       }),
     }),
-    prompt:
-      'Solve this step by step: If a train travels 60 mph for 2 hours, how far does it go?',
+    prompt: 'Solve this step by step: If a train travels 60 mph for 2 hours, how far does it go?',
     maxOutputTokens: 500,
   });
 

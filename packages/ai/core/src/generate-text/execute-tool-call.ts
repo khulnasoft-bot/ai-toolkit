@@ -68,12 +68,8 @@ export async function executeToolCall<TOOLS extends ToolSet>({
       execute: () => PromiseLike<T>;
     },
   ) => Promise<T>;
-  runInTracingChannelSpan?: NonNullable<
-    TelemetryDispatcher['runInTracingChannelSpan']
-  >;
-}): Promise<
-  { output: ToolOutput<TOOLS>; toolExecutionMs: number } | undefined
-> {
+  runInTracingChannelSpan?: NonNullable<TelemetryDispatcher['runInTracingChannelSpan']>;
+}): Promise<{ output: ToolOutput<TOOLS>; toolExecutionMs: number } | undefined> {
   const { toolName, toolCallId, input } = toolCall;
   const tool = tools?.[toolName];
 
@@ -86,9 +82,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
   // producing a tool-error output.
   const toolContext = await validateToolContext({
     toolName,
-    context:
-      toolsContext?.[toolName as keyof InferToolSetContext<TOOLS>] ??
-      experimental_context,
+    context: toolsContext?.[toolName as keyof InferToolSetContext<TOOLS>] ?? experimental_context,
     contextSchema: tool.contextSchema,
   });
 
@@ -156,9 +150,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         ...(toolCall.providerMetadata != null
           ? { providerMetadata: toolCall.providerMetadata }
           : {}),
-        ...(toolCall.toolMetadata != null
-          ? { toolMetadata: toolCall.toolMetadata }
-          : {}),
+        ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
       } as TypedToolResult<TOOLS>;
     } catch (error) {
       output = {
@@ -171,9 +163,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         ...(toolCall.providerMetadata != null
           ? { providerMetadata: toolCall.providerMetadata }
           : {}),
-        ...(toolCall.toolMetadata != null
-          ? { toolMetadata: toolCall.toolMetadata }
-          : {}),
+        ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
       } as TypedToolError<TOOLS>;
     }
 

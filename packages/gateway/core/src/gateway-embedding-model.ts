@@ -1,7 +1,4 @@
-import type {
-  EmbeddingModelV3,
-  SharedV3ProviderMetadata,
-} from '@ai-toolkit/provider';
+import type { EmbeddingModelV3, SharedV3ProviderMetadata } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
@@ -56,9 +53,7 @@ export class GatewayEmbeddingModel implements EmbeddingModelV3 {
           values,
           ...(providerOptions ? { providerOptions } : {}),
         },
-        successfulResponseHandler: createJsonResponseHandler(
-          gatewayEmbeddingResponseSchema,
-        ),
+        successfulResponseHandler: createJsonResponseHandler(gatewayEmbeddingResponseSchema),
         failedResponseHandler: gatewayErrorResponseHandler,
         ...(abortSignal && { abortSignal }),
         fetch: this.config.fetch,
@@ -67,8 +62,7 @@ export class GatewayEmbeddingModel implements EmbeddingModelV3 {
       return {
         embeddings: responseBody.embeddings,
         usage: responseBody.usage ?? undefined,
-        providerMetadata:
-          responseBody.providerMetadata as unknown as SharedV3ProviderMetadata,
+        providerMetadata: responseBody.providerMetadata as unknown as SharedV3ProviderMetadata,
         response: { headers: responseHeaders, body: rawValue },
         warnings: [],
       };
@@ -94,9 +88,7 @@ const gatewayEmbeddingResponseSchema = lazySchema(() =>
     z.object({
       embeddings: z.array(z.array(z.number())),
       usage: z.object({ tokens: z.number() }).nullish(),
-      providerMetadata: z
-        .record(z.string(), z.record(z.string(), z.unknown()))
-        .optional(),
+      providerMetadata: z.record(z.string(), z.record(z.string(), z.unknown())).optional(),
     }),
   ),
 );

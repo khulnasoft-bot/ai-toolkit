@@ -35,8 +35,6 @@ export function normalizeBatchRequestCounts({
   return undefined;
 }
 
-function isNonNegativeSafeInteger(
-  value: number | null | undefined,
-): value is number {
+function isNonNegativeSafeInteger(value: number | null | undefined): value is number {
   return value != null && Number.isSafeInteger(value) && value >= 0;
 }

@@ -30,9 +30,7 @@ describe('convertToLanguageModelV4FilePart', () => {
     });
 
     it('converts a URL string into { type: "url", url }', () => {
-      const result = convertToLanguageModelV4FilePart(
-        'https://example.com/file.pdf',
-      );
+      const result = convertToLanguageModelV4FilePart('https://example.com/file.pdf');
       expect(result.data.type).toBe('url');
       const url = (result.data as { type: 'url'; url: URL }).url;
       expect(url).toBeInstanceOf(URL);
@@ -49,9 +47,7 @@ describe('convertToLanguageModelV4FilePart', () => {
     });
 
     it('extracts base64 and media type from a data URL into { type: "data", data }', () => {
-      const result = convertToLanguageModelV4FilePart(
-        'data:text/plain;base64,aGVsbG8=',
-      );
+      const result = convertToLanguageModelV4FilePart('data:text/plain;base64,aGVsbG8=');
       expect(result).toEqual({
         data: { type: 'data', data: 'aGVsbG8=' },
         mediaType: 'text/plain',
@@ -70,9 +66,7 @@ describe('convertToLanguageModelV4FilePart', () => {
   describe('tagged shapes', () => {
     it('unwraps { type: "data", data: Uint8Array }', () => {
       const bytes = new Uint8Array([1, 2, 3]);
-      expect(
-        convertToLanguageModelV4FilePart({ type: 'data', data: bytes }),
-      ).toEqual({
+      expect(convertToLanguageModelV4FilePart({ type: 'data', data: bytes })).toEqual({
         data: { type: 'data', data: bytes },
         mediaType: undefined,
       });
@@ -93,9 +87,7 @@ describe('convertToLanguageModelV4FilePart', () => {
 
     it('unwraps { type: "data", data: base64 string } that is not a URL', () => {
       const base64 = 'aGVsbG8=';
-      expect(
-        convertToLanguageModelV4FilePart({ type: 'data', data: base64 }),
-      ).toEqual({
+      expect(convertToLanguageModelV4FilePart({ type: 'data', data: base64 })).toEqual({
         data: { type: 'data', data: base64 },
         mediaType: undefined,
       });
@@ -144,9 +136,7 @@ describe('convertToLanguageModelV4FilePart', () => {
     });
 
     it('passes through { type: "text", text }', () => {
-      expect(
-        convertToLanguageModelV4FilePart({ type: 'text', text: 'hello' }),
-      ).toEqual({
+      expect(convertToLanguageModelV4FilePart({ type: 'text', text: 'hello' })).toEqual({
         data: { type: 'text', text: 'hello' },
         mediaType: undefined,
       });
@@ -156,9 +146,9 @@ describe('convertToLanguageModelV4FilePart', () => {
   describe('legacy and tagged produce the same output', () => {
     it('{ type: "data", data: bytes } equals bare bytes', () => {
       const bytes = new Uint8Array([7, 8, 9]);
-      expect(
-        convertToLanguageModelV4FilePart({ type: 'data', data: bytes }),
-      ).toEqual(convertToLanguageModelV4FilePart(bytes));
+      expect(convertToLanguageModelV4FilePart({ type: 'data', data: bytes })).toEqual(
+        convertToLanguageModelV4FilePart(bytes),
+      );
     });
 
     it('{ type: "url", url } equals bare URL', () => {
@@ -170,9 +160,9 @@ describe('convertToLanguageModelV4FilePart', () => {
 
     it('{ type: "reference", reference } equals bare reference', () => {
       const reference = { openai: 'file-123' };
-      expect(
-        convertToLanguageModelV4FilePart({ type: 'reference', reference }),
-      ).toEqual(convertToLanguageModelV4FilePart(reference));
+      expect(convertToLanguageModelV4FilePart({ type: 'reference', reference })).toEqual(
+        convertToLanguageModelV4FilePart(reference),
+      );
     });
   });
 });

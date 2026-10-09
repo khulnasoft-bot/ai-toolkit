@@ -71,13 +71,7 @@ function ImageModal({ src, onClose }: { src: string; onClose: () => void }) {
  * Component to render a generated image with download and zoom options
  * Accepts either a data URL or raw base64 string
  */
-export function GeneratedImage({
-  base64,
-  format = 'png',
-}: {
-  base64: string;
-  format?: string;
-}) {
+export function GeneratedImage({ base64, format = 'png' }: { base64: string; format?: string }) {
   const [showModal, setShowModal] = useState(false);
   /**
    * Convert to proper image source - handles data URIs and raw base64
@@ -129,9 +123,7 @@ export function GeneratedImage({
           <span>Image</span>
         </div>
       </div>
-      {showModal && (
-        <ImageModal src={src} onClose={() => setShowModal(false)} />
-      )}
+      {showModal && <ImageModal src={src} onClose={() => setShowModal(false)} />}
     </>
   );
 }

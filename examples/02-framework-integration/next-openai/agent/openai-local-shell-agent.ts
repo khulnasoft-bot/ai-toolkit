@@ -40,6 +40,4 @@ export const openaiLocalShellAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAILocalShellMessage = InferAgentUIMessage<
-  typeof openaiLocalShellAgent
->;
+export type OpenAILocalShellMessage = InferAgentUIMessage<typeof openaiLocalShellAgent>;

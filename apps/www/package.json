@@ -1,7 +1,21 @@
 {
   "name": "www",
   "private": true,
-  "scripts": { "dev": "next dev", "build": "next build", "lint": "next lint", "type-check": "tsc --noEmit" },
-  "dependencies": { "next": "16.3.6", "react": "19.0.0-rc-cc1ec60d0d-20240607", "react-dom": "19.0.0-rc-cc1ec60d0d-20240607" },
-  "devDependencies": { "@types/node": "^22.0.0", "@types/react": "^19.0.0", "@types/react-dom": "^19.0.0", "typescript": "^5.0.0" }
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "16.3.6",
+    "react": "19.0.0-rc-cc1ec60d0d-20240607",
+    "react-dom": "19.0.0-rc-cc1ec60d0d-20240607"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.0.0"
+  }
 }

@@ -1,11 +1,7 @@
 import { JSONParseError, TypeValidationError } from '@ai-toolkit/provider';
 import { safeParseJSON } from '@ai-toolkit/provider-utils';
 import { NoObjectGeneratedError } from '../error/no-object-generated-error';
-import type {
-  FinishReason,
-  LanguageModelResponseMetadata,
-  LanguageModelUsage,
-} from '../types';
+import type { FinishReason, LanguageModelResponseMetadata, LanguageModelUsage } from '../types';
 import type { OutputStrategy } from './output-strategy';
 import { RepairTextFunction } from './repair-text';
 
@@ -40,14 +36,11 @@ async function parseAndValidateObjectResult<RESULT>(
     });
   }
 
-  const validationResult = await outputStrategy.validateFinalResult(
-    parseResult.value,
-    {
-      text: result,
-      response: context.response,
-      usage: context.usage,
-    },
-  );
+  const validationResult = await outputStrategy.validateFinalResult(parseResult.value, {
+    text: result,
+    response: context.response,
+    usage: context.usage,
+  });
 
   if (!validationResult.success) {
     throw new NoObjectGeneratedError({
@@ -90,8 +83,7 @@ export async function parseAndValidateObjectResultWithRepair<RESULT>(
     if (
       repairText != null &&
       NoObjectGeneratedError.isInstance(error) &&
-      (JSONParseError.isInstance(error.cause) ||
-        TypeValidationError.isInstance(error.cause))
+      (JSONParseError.isInstance(error.cause) || TypeValidationError.isInstance(error.cause))
     ) {
       const repairedText = await repairText({
         text: result,
@@ -100,11 +92,7 @@ export async function parseAndValidateObjectResultWithRepair<RESULT>(
       if (repairedText === null) {
         throw error;
       }
-      return await parseAndValidateObjectResult(
-        repairedText,
-        outputStrategy,
-        context,
-      );
+      return await parseAndValidateObjectResult(repairedText, outputStrategy, context);
     }
     throw error;
   }

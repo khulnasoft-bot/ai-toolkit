@@ -136,8 +136,6 @@ describe('doEmbed', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/cohere/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/cohere/0.0.0-test`);
   });
 });

@@ -2,11 +2,7 @@ export function isSupportedFileUrl(url: URL): boolean {
   const urlString = url.toString();
 
   // Google Generative Language files API
-  if (
-    urlString.startsWith(
-      'https://generativelanguage.googleapis.com/v1beta/files/',
-    )
-  ) {
+  if (urlString.startsWith('https://generativelanguage.googleapis.com/v1beta/files/')) {
     return true;
   }
 

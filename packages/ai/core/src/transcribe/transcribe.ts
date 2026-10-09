@@ -1,18 +1,12 @@
 import { JSONObject } from '@ai-toolkit/provider';
-import {
-  ProviderOptions,
-  withUserAgentSuffix,
-} from '@ai-toolkit/provider-utils';
+import { ProviderOptions, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
 import { NoTranscriptGeneratedError } from '../error/no-transcript-generated-error';
 import { logWarnings } from '../logger/log-warnings';
 import { DataContent } from '../prompt';
 import { convertDataContentToUint8Array } from '../prompt/data-content';
 import { TranscriptionModel } from '../types/transcription-model';
 import { TranscriptionModelResponseMetadata } from '../types/transcription-model-response-metadata';
-import {
-  audioMediaTypeSignatures,
-  detectMediaType,
-} from '../util/detect-media-type';
+import { audioMediaTypeSignatures, detectMediaType } from '../util/detect-media-type';
 import { download } from '../util/download/download';
 import { prepareRetries } from '../util/prepare-retries';
 import { TranscriptionResult } from './transcribe-result';
@@ -94,10 +88,7 @@ Only applicable for HTTP-based providers.
     abortSignal,
   });
 
-  const headersWithUserAgent = withUserAgentSuffix(
-    headers ?? {},
-    `ai/${VERSION}`,
-  );
+  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
 
   const audioData =
     audio instanceof URL

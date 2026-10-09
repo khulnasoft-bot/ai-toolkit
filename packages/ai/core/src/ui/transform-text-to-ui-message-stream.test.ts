@@ -11,8 +11,7 @@ describe('transformTextToUiMessageStream', () => {
       stream: convertArrayToReadableStream(['Hello', ' ', 'World']),
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "type": "start",
@@ -58,8 +57,7 @@ describe('transformTextToUiMessageStream', () => {
       stream: convertArrayToReadableStream<string>([]),
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "type": "start",
@@ -90,8 +88,7 @@ describe('transformTextToUiMessageStream', () => {
       stream: convertArrayToReadableStream(['Complete message']),
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
       [
         {
           "type": "start",

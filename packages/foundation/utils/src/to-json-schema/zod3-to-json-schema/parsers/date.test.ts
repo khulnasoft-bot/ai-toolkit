@@ -23,13 +23,8 @@ describe('Date validations', it => {
   });
 
   it('should be possible to describe minimum date', () => {
-    const zodDateSchema = z
-      .date()
-      .min(new Date('1970-01-02'), { message: 'Too old' });
-    const parsedSchema = parseDateDef(
-      zodDateSchema._def,
-      getRefs({ dateStrategy: 'integer' }),
-    );
+    const zodDateSchema = z.date().min(new Date('1970-01-02'), { message: 'Too old' });
+    const parsedSchema = parseDateDef(zodDateSchema._def, getRefs({ dateStrategy: 'integer' }));
 
     expect(parsedSchema).toStrictEqual({
       type: 'integer',
@@ -40,10 +35,7 @@ describe('Date validations', it => {
 
   it('should be possible to describe maximum date', () => {
     const zodDateSchema = z.date().max(new Date('1970-01-02'));
-    const parsedSchema = parseDateDef(
-      zodDateSchema._def,
-      getRefs({ dateStrategy: 'integer' }),
-    );
+    const parsedSchema = parseDateDef(zodDateSchema._def, getRefs({ dateStrategy: 'integer' }));
 
     expect(parsedSchema).toStrictEqual({
       type: 'integer',
@@ -53,14 +45,8 @@ describe('Date validations', it => {
   });
 
   it('should be possible to describe both maximum and minimum date', () => {
-    const zodDateSchema = z
-      .date()
-      .min(new Date('1970-01-02'))
-      .max(new Date('1972-01-02'));
-    const parsedSchema = parseDateDef(
-      zodDateSchema._def,
-      getRefs({ dateStrategy: 'integer' }),
-    );
+    const zodDateSchema = z.date().min(new Date('1970-01-02')).max(new Date('1972-01-02'));
+    const parsedSchema = parseDateDef(zodDateSchema._def, getRefs({ dateStrategy: 'integer' }));
 
     expect(parsedSchema).toStrictEqual({
       type: 'integer',

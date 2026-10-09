@@ -100,10 +100,7 @@ describe('voiceSelector', () => {
         <VoiceSelectorTrigger>Open</VoiceSelectorTrigger>
         <VoiceSelectorContent>
           <VoiceSelectorList>
-            <VoiceSelectorItem
-              onSelect={() => onValueChange('voice-1')}
-              value="voice-1"
-            >
+            <VoiceSelectorItem onSelect={() => onValueChange('voice-1')} value="voice-1">
               Voice 1
             </VoiceSelectorItem>
           </VoiceSelectorList>
@@ -190,9 +187,7 @@ describe('voiceSelectorContent', () => {
   it('renders with custom title', () => {
     render(
       <VoiceSelector defaultOpen>
-        <VoiceSelectorContent title="Select AI Voice">
-          Content
-        </VoiceSelectorContent>
+        <VoiceSelectorContent title="Select AI Voice">Content</VoiceSelectorContent>
       </VoiceSelector>,
     );
 
@@ -202,9 +197,7 @@ describe('voiceSelectorContent', () => {
   it('applies custom className', () => {
     render(
       <VoiceSelector defaultOpen>
-        <VoiceSelectorContent className="custom-class">
-          Content
-        </VoiceSelectorContent>
+        <VoiceSelectorContent className="custom-class">Content</VoiceSelectorContent>
       </VoiceSelector>,
     );
 
@@ -580,9 +573,7 @@ describe('voiceSelectorDescription', () => {
   it('renders description text', () => {
     render(
       <VoiceSelector>
-        <VoiceSelectorDescription>
-          A warm, friendly voice
-        </VoiceSelectorDescription>
+        <VoiceSelectorDescription>A warm, friendly voice</VoiceSelectorDescription>
       </VoiceSelector>,
     );
 
@@ -879,17 +870,10 @@ describe('integration tests', () => {
     const user = userEvent.setup();
 
     render(
-      <VoiceSelector
-        defaultOpen
-        onOpenChange={onOpenChange}
-        onValueChange={onValueChange}
-      >
+      <VoiceSelector defaultOpen onOpenChange={onOpenChange} onValueChange={onValueChange}>
         <VoiceSelectorContent>
           <VoiceSelectorList>
-            <VoiceSelectorItem
-              onSelect={() => onValueChange('nova')}
-              value="nova"
-            >
+            <VoiceSelectorItem onSelect={() => onValueChange('nova')} value="nova">
               Nova
             </VoiceSelectorItem>
           </VoiceSelectorList>

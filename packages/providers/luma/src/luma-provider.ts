@@ -1,8 +1,4 @@
-import {
-  ImageModelV3,
-  NoSuchModelError,
-  ProviderV3,
-} from '@ai-toolkit/provider';
+import { ImageModelV3, NoSuchModelError, ProviderV3 } from '@ai-toolkit/provider';
 import {
   FetchFunction,
   loadApiKey,

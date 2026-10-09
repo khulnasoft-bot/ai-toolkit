@@ -38,10 +38,7 @@ export function parseIntersectionDef(
       mergedAllOf.push(...schema.allOf);
     } else {
       let nestedSchema: JsonSchema7Type = schema;
-      if (
-        'additionalProperties' in schema &&
-        schema.additionalProperties === false
-      ) {
+      if ('additionalProperties' in schema && schema.additionalProperties === false) {
         const { additionalProperties, ...rest } = schema;
         nestedSchema = rest;
       }

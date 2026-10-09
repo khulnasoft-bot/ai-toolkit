@@ -83,9 +83,7 @@ function addRootTsconfigReference(packageDirName) {
   if (!tsconfig.references.some(r => r.path === entry.path)) {
     // Keep provider entries grouped: insert after harness entries when
     // present, otherwise append before the adapters section.
-    const idx = tsconfig.references.findIndex(
-      r => r.path === 'packages/providers/harness-pi',
-    );
+    const idx = tsconfig.references.findIndex(r => r.path === 'packages/providers/harness-pi');
     if (idx !== -1) tsconfig.references.splice(idx + 1, 0, entry);
     else tsconfig.references.push(entry);
     fs.writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2) + '\n');
@@ -128,10 +126,7 @@ TODO: document the \`@ai-toolkit/${ctx.name}\` provider.
 npm i @ai-toolkit/${ctx.name}
 \`\`\`
 `;
-  const siteDir = path.join(
-    REPO_ROOT,
-    'apps/docs/content/providers/ai-toolkit-providers',
-  );
+  const siteDir = path.join(REPO_ROOT, 'apps/docs/content/providers/ai-toolkit-providers');
   const canonPath = path.join(
     REPO_ROOT,
     `content/providers/01-ai-toolkit-providers/${num}-${ctx.name}.mdx`,
@@ -162,10 +157,7 @@ export function emitExampleStub(ctx) {
     tags: [ctx.name],
   };
   fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
-  fs.writeFileSync(
-    path.join(dir, 'example.json'),
-    JSON.stringify(exampleJson, null, 2) + '\n',
-  );
+  fs.writeFileSync(path.join(dir, 'example.json'), JSON.stringify(exampleJson, null, 2) + '\n');
   fs.writeFileSync(
     path.join(dir, 'package.json'),
     JSON.stringify(
@@ -229,9 +221,7 @@ export async function createProviderPackage(options) {
 
   const targetDir = path.join(repoRoot, 'packages/providers', name);
   if (fs.existsSync(targetDir)) {
-    throw new Error(
-      `Provider "${name}" already exists at packages/providers/${name}`,
-    );
+    throw new Error(`Provider "${name}" already exists at packages/providers/${name}`);
   }
 
   ui.boxStart('create-ai-provider');
@@ -250,9 +240,7 @@ export async function createProviderPackage(options) {
       if (archetype === 'openai-compatible' && !models) {
         const answer = await askQuestion(
           rl,
-          chalk.dim('│') +
-            '  ' +
-            'Model ids (comma-separated, blank for placeholder): ',
+          chalk.dim('│') + '  ' + 'Model ids (comma-separated, blank for placeholder): ',
         );
         models = answer
           .split(',')
@@ -287,10 +275,7 @@ export async function createProviderPackage(options) {
     // Normalize formatting (line wrapping depends on the package name
     // length, so templates can't be prettier-clean for every name).
     try {
-      await runCommand(
-        `pnpm --silent prettier --write "${targetDir}"`,
-        REPO_ROOT,
-      );
+      await runCommand(`pnpm --silent prettier --write "${targetDir}"`, REPO_ROOT);
     } catch {
       logger.warn('Could not format scaffolded files automatically');
     }

@@ -312,8 +312,7 @@ try {
 }`,
     docsUrl: 'https://github.com/aws/bedrock-agentcore-sdk-typescript',
     apiKeyUrl: 'https://vercel.com/docs/oidc/aws',
-    websiteUrl:
-      'https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/built-in-tools.html',
+    websiteUrl: 'https://docs.aws.amazon.com/bedrock-agentcore/latest/devguide/built-in-tools.html',
     npmUrl: 'https://www.npmjs.com/package/bedrock-agentcore',
   },
   {

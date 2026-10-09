@@ -410,9 +410,7 @@ describe('extractJsonMiddleware', () => {
       });
 
       const fullStream = await convertAsyncIterableToArray(result.fullStream);
-      const toolInputStart = fullStream.find(
-        chunk => chunk.type === 'tool-input-start',
-      );
+      const toolInputStart = fullStream.find(chunk => chunk.type === 'tool-input-start');
       expect(toolInputStart).toBeDefined();
     });
 
@@ -456,9 +454,7 @@ describe('extractJsonMiddleware', () => {
       });
 
       const fullStream = await convertAsyncIterableToArray(result.fullStream);
-      const textDeltas = fullStream.filter(
-        chunk => chunk.type === 'text-delta',
-      );
+      const textDeltas = fullStream.filter(chunk => chunk.type === 'text-delta');
 
       const allText = textDeltas.map(d => d.text).join('');
       expect(allText).toContain('{"first": true}');
@@ -498,9 +494,7 @@ describe('extractJsonMiddleware', () => {
       });
 
       const fullStream = await convertAsyncIterableToArray(result.fullStream);
-      const textDeltas = fullStream.filter(
-        chunk => chunk.type === 'text-delta',
-      );
+      const textDeltas = fullStream.filter(chunk => chunk.type === 'text-delta');
       expect(textDeltas.length).toBeGreaterThanOrEqual(1);
     });
 
@@ -538,9 +532,7 @@ describe('extractJsonMiddleware', () => {
       });
 
       const fullStream = await convertAsyncIterableToArray(result.fullStream);
-      const textStarts = fullStream.filter(
-        chunk => chunk.type === 'text-start',
-      );
+      const textStarts = fullStream.filter(chunk => chunk.type === 'text-start');
       const textEnds = fullStream.filter(chunk => chunk.type === 'text-end');
 
       expect(textStarts.length).toBe(1);

@@ -31,9 +31,7 @@ export function createMemoryStore(): MemoryStore {
     delete: id => store.delete(id),
     list: filter => {
       const entries = [...store.values()];
-      return filter?.type
-        ? entries.filter(e => e.type === filter.type)
-        : entries;
+      return filter?.type ? entries.filter(e => e.type === filter.type) : entries;
     },
   };
 }

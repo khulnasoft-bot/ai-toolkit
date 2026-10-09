@@ -21,9 +21,7 @@ const getWeatherInformationTool = tool({
     yield { state: 'loading' as const };
 
     // count the number of assistant messages. throw error if 2 or less
-    const assistantMessageCount = messages.filter(
-      message => message.role === 'assistant',
-    ).length;
+    const assistantMessageCount = messages.filter(message => message.role === 'assistant').length;
 
     // if (assistantMessageCount <= 2) {
     //   throw new Error('could not get weather information');
@@ -33,8 +31,7 @@ const getWeatherInformationTool = tool({
     await new Promise(resolve => setTimeout(resolve, 5000));
 
     const weatherOptions = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy'];
-    const weather =
-      weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
+    const weather = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
 
     yield {
       state: 'ready' as const,
@@ -63,8 +60,7 @@ const askForConfirmationTool = tool({
 });
 
 const getLocationTool = tool({
-  description:
-    'Get the user location. Always ask for confirmation before using this tool.',
+  description: 'Get the user location. Always ask for confirmation before using this tool.',
   inputSchema: z.object({}),
   outputSchema: z.string(),
 });
@@ -78,11 +74,7 @@ const tools = {
   getLocation: getLocationTool,
 } as const;
 
-export type UseChatToolsMessage = UIMessage<
-  never,
-  UIDataTypes,
-  InferUITools<typeof tools>
->;
+export type UseChatToolsMessage = UIMessage<never, UIDataTypes, InferUITools<typeof tools>>;
 
 export async function POST(req: Request) {
   const body = await req.json();

@@ -208,12 +208,8 @@ describe('doGenerate', () => {
 
     const afterDate = new Date();
 
-    expect(result.response.timestamp.getTime()).toBeGreaterThanOrEqual(
-      beforeDate.getTime(),
-    );
-    expect(result.response.timestamp.getTime()).toBeLessThanOrEqual(
-      afterDate.getTime(),
-    );
+    expect(result.response.timestamp.getTime()).toBeGreaterThanOrEqual(beforeDate.getTime());
+    expect(result.response.timestamp.getTime()).toBeLessThanOrEqual(afterDate.getTime());
     expect(result.response.modelId).toBe('amazon.nova-canvas-v1:0');
   });
 
@@ -303,9 +299,7 @@ describe('doGenerate', () => {
         seed: undefined,
         providerOptions: {},
       }),
-    ).rejects.toThrow(
-      'Amazon Bedrock request was moderated: Derivative Works Filter',
-    );
+    ).rejects.toThrow('Amazon Bedrock request was moderated: Derivative Works Filter');
   });
 
   it('should throw error when no images are returned', async () => {
@@ -449,8 +443,7 @@ describe('Image Editing', () => {
   });
 
   it('should send inpainting request with base64 string data', async () => {
-    const base64Image =
-      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk';
+    const base64Image = 'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk';
 
     await model.doGenerate({
       prompt: 'Edit this image',
@@ -563,9 +556,7 @@ describe('Image Editing', () => {
         seed: undefined,
         providerOptions: {},
       }),
-    ).rejects.toThrow(
-      'URL-based images are not supported for Amazon Bedrock image editing.',
-    );
+    ).rejects.toThrow('URL-based images are not supported for Amazon Bedrock image editing.');
   });
 
   it('should send outpainting request with taskType OUTPAINTING', async () => {

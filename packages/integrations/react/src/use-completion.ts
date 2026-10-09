@@ -1,8 +1,4 @@
-import {
-  CompletionRequestOptions,
-  UseCompletionOptions,
-  callCompletionApi,
-} from '@ai-toolkit/ai';
+import { CompletionRequestOptions, UseCompletionOptions, callCompletionApi } from '@ai-toolkit/ai';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { throttle } from './throttle';
@@ -41,9 +37,7 @@ export type UseCompletionHelpers = {
    * ```
    */
   handleInputChange: (
-    event:
-      | React.ChangeEvent<HTMLInputElement>
-      | React.ChangeEvent<HTMLTextAreaElement>,
+    event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
   ) => void;
 
   /**
@@ -99,8 +93,7 @@ export function useCompletion({
   const completion = data!;
 
   // Abort controller to cancel the current API call.
-  const [abortController, setAbortController] =
-    useState<AbortController | null>(null);
+  const [abortController, setAbortController] = useState<AbortController | null>(null);
 
   const extraMetadataRef = useRef({
     credentials,
@@ -130,10 +123,7 @@ export function useCompletion({
         streamProtocol,
         fetch,
         // throttle streamed ui updates:
-        setCompletion: throttle(
-          (completion: string) => mutate(completion, false),
-          throttleWaitMs,
-        ),
+        setCompletion: throttle((completion: string) => mutate(completion, false), throttleWaitMs),
         setLoading: mutateLoading,
         setError,
         setAbortController,

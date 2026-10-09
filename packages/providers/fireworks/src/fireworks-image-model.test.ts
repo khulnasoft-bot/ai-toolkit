@@ -26,14 +26,11 @@ function createBasicModel({
 }
 
 function createSizeModel() {
-  return new FireworksImageModel(
-    'accounts/fireworks/models/playground-v2-5-1024px-aesthetic',
-    {
-      provider: 'fireworks',
-      baseURL: 'https://api.size-example.com',
-      headers: () => ({ 'api-key': 'test-key' }),
-    },
-  );
+  return new FireworksImageModel('accounts/fireworks/models/playground-v2-5-1024px-aesthetic', {
+    provider: 'fireworks',
+    baseURL: 'https://api.size-example.com',
+    headers: () => ({ 'api-key': 'test-key' }),
+  });
 }
 
 describe('FireworksImageModel', () => {
@@ -274,9 +271,7 @@ describe('FireworksImageModel', () => {
 
       controller.abort();
 
-      await expect(generatePromise).rejects.toThrow(
-        'This operation was aborted',
-      );
+      await expect(generatePromise).rejects.toThrow('This operation was aborted');
     });
 
     it('should use custom fetch function when provided', async () => {
@@ -318,10 +313,7 @@ describe('FireworksImageModel', () => {
         providerOptions: {},
       });
 
-      expect(await server.calls[0].requestBodyJson).toHaveProperty(
-        'samples',
-        42,
-      );
+      expect(await server.calls[0].requestBodyJson).toHaveProperty('samples', 42);
     });
 
     describe('response metadata', () => {
@@ -402,14 +394,11 @@ describe('FireworksImageModel', () => {
     });
 
     function createKontextModel() {
-      return new FireworksImageModel(
-        'accounts/fireworks/models/flux-kontext-pro',
-        {
-          provider: 'fireworks',
-          baseURL: 'https://api.edit.example.com',
-          headers: () => ({ 'api-key': 'test-key' }),
-        },
-      );
+      return new FireworksImageModel('accounts/fireworks/models/flux-kontext-pro', {
+        provider: 'fireworks',
+        baseURL: 'https://api.edit.example.com',
+        headers: () => ({ 'api-key': 'test-key' }),
+      });
     }
 
     it('should send edit request with files as data URI', async () => {
@@ -549,8 +538,7 @@ describe('FireworksImageModel', () => {
 
       expect(result.warnings).toContainEqual({
         type: 'other',
-        message:
-          'Fireworks only supports a single input image. Additional images are ignored.',
+        message: 'Fireworks only supports a single input image. Additional images are ignored.',
       });
     });
 

@@ -30,10 +30,7 @@ export type OpenAIResponsesIncludeValue =
   | 'message.output_text.logprobs'
   | 'reasoning.encrypted_content';
 
-export type OpenAIResponsesIncludeOptions =
-  | Array<OpenAIResponsesIncludeValue>
-  | undefined
-  | null;
+export type OpenAIResponsesIncludeOptions = Array<OpenAIResponsesIncludeValue> | undefined | null;
 
 export type OpenAIResponsesApplyPatchOperationDiffDeltaChunk = {
   type: 'response.apply_patch_call_operation_diff.delta';
@@ -218,8 +215,7 @@ export type OpenAIResponsesFileSearchToolCompoundFilter = {
    * Array of filters to combine. Items can be ComparisonFilter or CompoundFilter.
    */
   filters: Array<
-    | OpenAIResponsesFileSearchToolComparisonFilter
-    | OpenAIResponsesFileSearchToolCompoundFilter
+    OpenAIResponsesFileSearchToolComparisonFilter | OpenAIResponsesFileSearchToolCompoundFilter
   >;
 };
 
@@ -270,9 +266,7 @@ export type OpenAIResponsesTool =
       type: 'file_search';
       vector_store_ids: string[];
       max_num_results: number | undefined;
-      ranking_options:
-        | { ranker?: string; score_threshold?: number }
-        | undefined;
+      ranking_options: { ranker?: string; score_threshold?: number } | undefined;
       filters:
         | OpenAIResponsesFileSearchToolComparisonFilter
         | OpenAIResponsesFileSearchToolCompoundFilter
@@ -368,13 +362,9 @@ export const openaiResponsesChunkSchema = lazySchema(() =>
           incomplete_details: z.object({ reason: z.string() }).nullish(),
           usage: z.object({
             input_tokens: z.number(),
-            input_tokens_details: z
-              .object({ cached_tokens: z.number().nullish() })
-              .nullish(),
+            input_tokens_details: z.object({ cached_tokens: z.number().nullish() }).nullish(),
             output_tokens: z.number(),
-            output_tokens_details: z
-              .object({ reasoning_tokens: z.number().nullish() })
-              .nullish(),
+            output_tokens_details: z.object({ reasoning_tokens: z.number().nullish() }).nullish(),
           }),
           service_tier: z.string().nullish(),
         }),
@@ -563,10 +553,7 @@ export const openaiResponsesChunkSchema = lazySchema(() =>
             results: z
               .array(
                 z.object({
-                  attributes: z.record(
-                    z.string(),
-                    z.union([z.string(), z.number(), z.boolean()]),
-                  ),
+                  attributes: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])),
                   file_id: z.string(),
                   filename: z.string(),
                   score: z.number(),
@@ -786,9 +773,7 @@ export const openaiResponsesChunkSchema = lazySchema(() =>
   ),
 );
 
-export type OpenAIResponsesChunk = InferSchema<
-  typeof openaiResponsesChunkSchema
->;
+export type OpenAIResponsesChunk = InferSchema<typeof openaiResponsesChunkSchema>;
 
 export type OpenAIResponsesLogprobs = NonNullable<
   (OpenAIResponsesChunk & {
@@ -1072,13 +1057,9 @@ export const openaiResponsesResponseSchema = lazySchema(() =>
       usage: z
         .object({
           input_tokens: z.number(),
-          input_tokens_details: z
-            .object({ cached_tokens: z.number().nullish() })
-            .nullish(),
+          input_tokens_details: z.object({ cached_tokens: z.number().nullish() }).nullish(),
           output_tokens: z.number(),
-          output_tokens_details: z
-            .object({ reasoning_tokens: z.number().nullish() })
-            .nullish(),
+          output_tokens_details: z.object({ reasoning_tokens: z.number().nullish() }).nullish(),
         })
         .optional(),
     }),

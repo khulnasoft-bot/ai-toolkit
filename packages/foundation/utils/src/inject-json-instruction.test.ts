@@ -216,9 +216,7 @@ describe('injectJsonInstructionIntoMessages', () => {
       schema: basicSchema,
     });
 
-    expect(originalMessages).toEqual([
-      { role: 'system', content: 'Generate a person' },
-    ]);
+    expect(originalMessages).toEqual([{ role: 'system', content: 'Generate a person' }]);
   });
 
   it('should handle empty messages array', () => {

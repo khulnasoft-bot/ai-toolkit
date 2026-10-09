@@ -13,9 +13,7 @@ describe('invokeToolCallbacksFromStream', () => {
     const recordedCalls: unknown[] = [];
     const abortController = new AbortController();
     const runtimeContext = { requestId: 'req-1' };
-    const stepInputMessages: Array<ModelMessage> = [
-      { role: 'user', content: 'test-input' },
-    ];
+    const stepInputMessages: Array<ModelMessage> = [{ role: 'user', content: 'test-input' }];
 
     const tools = {
       'test-tool': tool({

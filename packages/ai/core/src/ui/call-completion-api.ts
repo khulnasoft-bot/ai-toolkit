@@ -4,10 +4,7 @@ import {
   withUserAgentSuffix,
   getRuntimeEnvironmentUserAgent,
 } from '@ai-toolkit/provider-utils';
-import {
-  UIMessageChunk,
-  uiMessageChunkSchema,
-} from '../ui-message-stream/ui-message-chunks';
+import { UIMessageChunk, uiMessageChunkSchema } from '../ui-message-stream/ui-message-chunks';
 import { consumeStream } from '../util/consume-stream';
 import { processTextStream } from './process-text-stream';
 import { VERSION } from '../version';
@@ -75,9 +72,7 @@ export async function callCompletionApi({
     });
 
     if (!response.ok) {
-      throw new Error(
-        (await response.text()) ?? 'Failed to fetch the chat response.',
-      );
+      throw new Error((await response.text()) ?? 'Failed to fetch the chat response.');
     }
 
     if (!response.body) {

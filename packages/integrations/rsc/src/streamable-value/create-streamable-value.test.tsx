@@ -133,9 +133,7 @@ it('should behave like .update() with .append() and .done()', async () => {
 });
 
 it('should be able to accept readableStream as the source', async () => {
-  const streamable = createStreamableValue(
-    convertArrayToReadableStream(['hello', ' world', '!']),
-  );
+  const streamable = createStreamableValue(convertArrayToReadableStream(['hello', ' world', '!']));
   const value = streamable.value;
 
   expect(await getRawChunks(value)).toStrictEqual([

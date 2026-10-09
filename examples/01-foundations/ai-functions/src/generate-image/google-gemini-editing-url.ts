@@ -32,10 +32,7 @@ run(async () => {
 
   for (const file of editResult.files) {
     if (file.mediaType.startsWith('image/')) {
-      await fs.promises.writeFile(
-        `output/edited-${timestamp}.png`,
-        file.uint8Array,
-      );
+      await fs.promises.writeFile(`output/edited-${timestamp}.png`, file.uint8Array);
       console.log(`Saved edited image: output/edited-${timestamp}.png`);
     }
   }

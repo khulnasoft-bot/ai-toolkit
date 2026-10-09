@@ -1,7 +1,4 @@
-import {
-  EmbeddingModelV3,
-  TooManyEmbeddingValuesForCallError,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, TooManyEmbeddingValuesForCallError } from '@ai-toolkit/provider';
 import {
   FetchFunction,
   Resolvable,
@@ -75,17 +72,13 @@ export class BedrockEmbeddingModel implements EmbeddingModelV3 {
     const url = this.getUrl(this.modelId);
     const { value: response } = await postJsonToApi({
       url,
-      headers: await resolve(
-        combineHeaders(await resolve(this.config.headers), headers),
-      ),
+      headers: await resolve(combineHeaders(await resolve(this.config.headers), headers)),
       body: args,
       failedResponseHandler: createJsonErrorResponseHandler({
         errorSchema: BedrockErrorSchema,
         errorToMessage: error => `${error.type}: ${error.message}`,
       }),
-      successfulResponseHandler: createJsonResponseHandler(
-        BedrockEmbeddingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(BedrockEmbeddingResponseSchema),
       fetch: this.config.fetch,
       abortSignal,
     });

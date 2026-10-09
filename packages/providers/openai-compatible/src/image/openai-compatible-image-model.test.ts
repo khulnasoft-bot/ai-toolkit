@@ -191,9 +191,7 @@ describe('OpenAICompatibleImageModel', () => {
         }),
       });
 
-      server.urls[
-        'https://api.example.com/dall-e-3/images/generations'
-      ].response = {
+      server.urls['https://api.example.com/dall-e-3/images/generations'].response = {
         type: 'error',
         status: 400,
         body: JSON.stringify({
@@ -208,14 +206,11 @@ describe('OpenAICompatibleImageModel', () => {
       const model = createBasicModel({
         errorStructure: {
           errorSchema: customErrorSchema,
-          errorToMessage: data =>
-            `Error ${data.details.errorCode}: ${data.details.errorMessage}`,
+          errorToMessage: data => `Error ${data.details.errorCode}: ${data.details.errorMessage}`,
         },
       });
 
-      await expect(
-        model.doGenerate(createDefaultGenerateParams()),
-      ).rejects.toMatchObject({
+      await expect(model.doGenerate(createDefaultGenerateParams())).rejects.toMatchObject({
         message: 'Error 1234: Custom provider error format',
         statusCode: 400,
         url: 'https://api.example.com/dall-e-3/images/generations',
@@ -223,9 +218,7 @@ describe('OpenAICompatibleImageModel', () => {
     });
 
     it('should handle API errors with default error structure', async () => {
-      server.urls[
-        'https://api.example.com/dall-e-3/images/generations'
-      ].response = {
+      server.urls['https://api.example.com/dall-e-3/images/generations'].response = {
         type: 'error',
         status: 400,
         body: JSON.stringify({
@@ -240,9 +233,7 @@ describe('OpenAICompatibleImageModel', () => {
 
       const model = createBasicModel();
 
-      await expect(
-        model.doGenerate(createDefaultGenerateParams()),
-      ).rejects.toMatchObject({
+      await expect(model.doGenerate(createDefaultGenerateParams())).rejects.toMatchObject({
         message: 'Invalid prompt content',
         statusCode: 400,
         url: 'https://api.example.com/dall-e-3/images/generations',
@@ -292,12 +283,8 @@ describe('OpenAICompatibleImageModel', () => {
 
       const afterDate = new Date();
 
-      expect(result.response.timestamp.getTime()).toBeGreaterThanOrEqual(
-        beforeDate.getTime(),
-      );
-      expect(result.response.timestamp.getTime()).toBeLessThanOrEqual(
-        afterDate.getTime(),
-      );
+      expect(result.response.timestamp.getTime()).toBeGreaterThanOrEqual(beforeDate.getTime());
+      expect(result.response.timestamp.getTime()).toBeLessThanOrEqual(afterDate.getTime());
       expect(result.response.modelId).toBe('dall-e-3');
     });
 
@@ -379,9 +366,7 @@ describe('OpenAICompatibleImageModel', () => {
       );
 
       expect(result.images).toStrictEqual(['edited-image-base64']);
-      expect(editServer.calls[0].requestUrl).toBe(
-        'https://api.example.com/dall-e-3/images/edits',
-      );
+      expect(editServer.calls[0].requestUrl).toBe('https://api.example.com/dall-e-3/images/edits');
     });
 
     it('should send edit request with files and mask', async () => {
@@ -410,9 +395,7 @@ describe('OpenAICompatibleImageModel', () => {
       );
 
       expect(result.images).toStrictEqual(['edited-image-base64']);
-      expect(editServer.calls[0].requestUrl).toBe(
-        'https://api.example.com/dall-e-3/images/edits',
-      );
+      expect(editServer.calls[0].requestUrl).toBe('https://api.example.com/dall-e-3/images/edits');
     });
 
     it('should send edit request with Uint8Array data', async () => {

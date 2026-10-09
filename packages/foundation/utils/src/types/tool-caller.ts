@@ -9,9 +9,7 @@ export type ToolCallerDefinition =
     }
   | {
       type: 'provider';
-      prepareProviderOptions: (
-        providerOptions: ProviderOptions | undefined,
-      ) => ProviderOptions;
+      prepareProviderOptions: (providerOptions: ProviderOptions | undefined) => ProviderOptions;
     };
 
 export type ToolCallerTool<TOOL extends Tool = Tool> = TOOL & {
@@ -27,8 +25,6 @@ export function toolCaller<TOOL extends Tool>(
   }) as ToolCallerTool<TOOL>;
 }
 
-export function getToolCaller(
-  tool: Tool | undefined,
-): ToolCallerDefinition | undefined {
+export function getToolCaller(tool: Tool | undefined): ToolCallerDefinition | undefined {
   return (tool as ToolCallerTool | undefined)?.experimental_toolCaller;
 }

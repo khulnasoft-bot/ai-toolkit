@@ -1,10 +1,5 @@
 import { fireworks } from '@ai-toolkit/fireworks';
-import {
-  streamText,
-  ModelMessage,
-  ToolCallPart,
-  ToolResultPart,
-} from '@ai-toolkit/ai';
+import { streamText, ModelMessage, ToolCallPart, ToolResultPart } from '@ai-toolkit/ai';
 import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
 
@@ -37,9 +32,7 @@ run(async () => {
 
       case 'tool-call': {
         toolCalls.push(delta);
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
         break;
       }
 

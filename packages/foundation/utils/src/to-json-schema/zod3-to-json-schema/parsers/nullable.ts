@@ -25,9 +25,7 @@ export function parseNullableDef(
   ) {
     return {
       type: [
-        primitiveMappings[
-          def.innerType._def.typeName as keyof typeof primitiveMappings
-        ],
+        primitiveMappings[def.innerType._def.typeName as keyof typeof primitiveMappings],
         'null',
       ],
     };

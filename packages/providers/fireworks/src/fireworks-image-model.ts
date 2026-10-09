@@ -122,8 +122,7 @@ export class FireworksImageModel implements ImageModelV3 {
       warnings.push({
         type: 'unsupported',
         feature: 'size',
-        details:
-          'This model does not support the `size` option. Use `aspectRatio` instead.',
+        details: 'This model does not support the `size` option. Use `aspectRatio` instead.',
       });
     }
 
@@ -147,8 +146,7 @@ export class FireworksImageModel implements ImageModelV3 {
       if (files.length > 1) {
         warnings.push({
           type: 'other',
-          message:
-            'Fireworks only supports a single input image. Additional images are ignored.',
+          message: 'Fireworks only supports a single input image. Additional images are ignored.',
         });
       }
     }

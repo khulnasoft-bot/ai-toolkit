@@ -24,9 +24,7 @@ export async function asGatewayError(
     response: {},
     statusCode: 500,
     defaultMessage:
-      error instanceof Error
-        ? `Gateway request failed: ${error.message}`
-        : 'Unknown Gateway error',
+      error instanceof Error ? `Gateway request failed: ${error.message}` : 'Unknown Gateway error',
     cause: error,
     authMethod,
   });

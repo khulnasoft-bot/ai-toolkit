@@ -7,9 +7,7 @@ export default createTransformer((fileInfo, api, options, context) => {
   root
     .find(j.ImportDeclaration)
     .filter(
-      path =>
-        path.node.source.value === 'ai-toolkit' ||
-        path.node.source.value === 'ai-toolkit',
+      path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
     )
     .forEach(path => {
       j(path)

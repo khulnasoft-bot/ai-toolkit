@@ -42,15 +42,11 @@ export async function validateApprovedToolApprovals<
 }): Promise<{
   approvedToolApprovals: Array<CollectedToolApprovals<TOOLS>>;
   deniedToolApprovals: Array<CollectedToolApprovals<TOOLS>>;
-  invalidToolApprovals: Array<
-    CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }
-  >;
+  invalidToolApprovals: Array<CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }>;
 }> {
   const approved: Array<CollectedToolApprovals<TOOLS>> = [];
   const denied: Array<CollectedToolApprovals<TOOLS>> = [];
-  const invalid: Array<
-    CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }
-  > = [];
+  const invalid: Array<CollectedToolApprovals<TOOLS> & { error: InvalidToolInputError }> = [];
 
   for (const approval of approvedToolApprovals) {
     const { toolCall, approvalRequest } = approval;

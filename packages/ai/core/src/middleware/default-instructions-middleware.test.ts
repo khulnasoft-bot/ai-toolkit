@@ -13,9 +13,7 @@ import { defaultInstructionsMiddleware } from './default-instructions-middleware
 import { wrapLanguageModel } from './wrap-language-model';
 
 const BASE_PARAMS: LanguageModelV4CallOptions = {
-  prompt: [
-    { role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] },
-  ],
+  prompt: [{ role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] }],
 };
 
 const MOCK_MODEL = new MockLanguageModelV4();
@@ -174,10 +172,7 @@ describe('defaultInstructionsMiddleware', () => {
 
       expect(result).toEqual({
         ...params,
-        prompt: [
-          { role: 'system', content: 'Default instructions' },
-          ...params.prompt,
-        ],
+        prompt: [{ role: 'system', content: 'Default instructions' }, ...params.prompt],
       });
     });
 
@@ -334,9 +329,9 @@ describe('defaultInstructionsMiddleware', () => {
 
       expect(prompts).toHaveLength(2);
       for (const prompt of prompts) {
-        expect(
-          prompt.filter(message => message.role === 'system'),
-        ).toStrictEqual([{ role: 'system', content: 'Default instructions' }]);
+        expect(prompt.filter(message => message.role === 'system')).toStrictEqual([
+          { role: 'system', content: 'Default instructions' },
+        ]);
       }
     });
 

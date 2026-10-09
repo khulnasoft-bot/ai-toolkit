@@ -7,15 +7,7 @@ import {
   convertArrayToReadableStream,
   convertAsyncIterableToArray,
 } from '@ai-toolkit/provider-utils/test';
-import {
-  afterEach,
-  beforeEach,
-  describe,
-  expect,
-  it,
-  vitest,
-  vi,
-} from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vitest, vi } from 'vitest';
 import * as logWarningsModule from '../logger/log-warnings';
 import { MockTranscriptionModelV4 } from '../test/mock-transcription-model-v4';
 import { streamTranscribe } from './stream-transcribe';
@@ -45,9 +37,7 @@ describe('experimental_streamTranscribe', () => {
   let logWarningsSpy: ReturnType<typeof vitest.spyOn>;
 
   beforeEach(() => {
-    logWarningsSpy = vitest
-      .spyOn(logWarningsModule, 'logWarnings')
-      .mockImplementation(() => {});
+    logWarningsSpy = vitest.spyOn(logWarningsModule, 'logWarnings').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -57,9 +47,7 @@ describe('experimental_streamTranscribe', () => {
   it('should send args to doStream', async () => {
     const abortController = new AbortController();
     const abortSignal = abortController.signal;
-    let capturedArgs!: Parameters<
-      NonNullable<TranscriptionModelV4['doStream']>
-    >[0];
+    let capturedArgs!: Parameters<NonNullable<TranscriptionModelV4['doStream']>>[0];
 
     const result = streamTranscribe({
       model: new MockTranscriptionModelV4({
@@ -128,9 +116,7 @@ describe('experimental_streamTranscribe', () => {
       inputAudioFormat,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).resolves.toEqual([
+    await expect(convertAsyncIterableToArray(result.fullStream)).resolves.toEqual([
       { type: 'transcript-delta', id: 'item-1', delta: 'Hel' },
       { type: 'transcript-delta', id: 'item-1', delta: 'lo' },
       { type: 'transcript-final', id: 'item-1', text: 'Hello' },
@@ -141,9 +127,7 @@ describe('experimental_streamTranscribe', () => {
     ]);
     await expect(result.language).resolves.toBe('en');
     await expect(result.durationInSeconds).resolves.toBe(1);
-    await expect(result.warnings).resolves.toEqual([
-      { type: 'other', message: 'test warning' },
-    ]);
+    await expect(result.warnings).resolves.toEqual([{ type: 'other', message: 'test warning' }]);
     await expect(result.responses).resolves.toEqual([
       {
         timestamp: testDate,
@@ -184,9 +168,7 @@ describe('experimental_streamTranscribe', () => {
       inputAudioFormat,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toMatchObject({
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toMatchObject({
       name: 'AI_NoTranscriptGeneratedError',
       message: 'No transcript generated.',
     });
@@ -217,16 +199,12 @@ describe('experimental_streamTranscribe', () => {
       inputAudioFormat,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toMatchObject({
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toMatchObject({
       name: 'AI_NoTranscriptGeneratedError',
     });
 
     // warnings resolved at stream-start and must not flip to rejected:
-    await expect(result.warnings).resolves.toEqual([
-      { type: 'other', message: 'test warning' },
-    ]);
+    await expect(result.warnings).resolves.toEqual([{ type: 'other', message: 'test warning' }]);
     await expect(result.text).rejects.toMatchObject({
       name: 'AI_NoTranscriptGeneratedError',
     });
@@ -250,9 +228,9 @@ describe('experimental_streamTranscribe', () => {
       inputAudioFormat,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toThrow('authentication failed');
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toThrow(
+      'authentication failed',
+    );
     await expect(result.text).rejects.toThrow('authentication failed');
     await vi.waitFor(() => {
       expect(audioCancelReason).toMatchObject({
@@ -290,9 +268,7 @@ describe('experimental_streamTranscribe', () => {
       inputAudioFormat,
     });
 
-    await expect(
-      convertAsyncIterableToArray(result.fullStream),
-    ).rejects.toThrow('connection lost');
+    await expect(convertAsyncIterableToArray(result.fullStream)).rejects.toThrow('connection lost');
     expect(audioReaderTaken).toBe(true);
     await expect(result.text).rejects.toThrow('connection lost');
   });
@@ -382,17 +358,14 @@ describe('experimental_streamTranscribe', () => {
 
     // no fullStream access: accessing a promise consumes the stream
     expect(await result.text).toBe('Hello');
-    expect(await result.segments).toEqual([
-      { text: 'Hello', startSecond: 0, endSecond: 1 },
-    ]);
+    expect(await result.segments).toEqual([{ text: 'Hello', startSecond: 0, endSecond: 1 }]);
     expect(await result.warnings).toEqual([]);
   });
 
   it('should reject the result promises without consuming fullStream when no transcript is produced', async () => {
     const result = streamTranscribe({
       model: new MockTranscriptionModelV4({
-        doStream: async () =>
-          createStreamResponse([{ type: 'stream-start', warnings: [] }]),
+        doStream: async () => createStreamResponse([{ type: 'stream-start', warnings: [] }]),
       }),
       audio,
       inputAudioFormat,
@@ -436,9 +409,7 @@ describe('experimental_streamTranscribe', () => {
     });
 
     const parts = await convertAsyncIterableToArray(result.fullStream);
-    expect(parts).toEqual([
-      { type: 'transcript-delta', id: 'item-1', delta: 'Hello' },
-    ]);
+    expect(parts).toEqual([{ type: 'transcript-delta', id: 'item-1', delta: 'Hello' }]);
     expect(await result.text).toBe('Hello');
   });
 
@@ -496,9 +467,7 @@ describe('experimental_streamTranscribe', () => {
 
     const fullStream = result.fullStream;
     const textAssertion = expect(result.text).rejects.toThrow();
-    expect(() => result.fullStream).toThrow(
-      'fullStream can only be accessed once.',
-    );
+    expect(() => result.fullStream).toThrow('fullStream can only be accessed once.');
     await fullStream.cancel();
     await textAssertion;
   });

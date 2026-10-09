@@ -1,5 +1,7 @@
 {
   "name": "@ai-toolkit/apps",
   "private": true,
-  "scripts": { "dev": "pnpm --filter www dev" }
+  "scripts": {
+    "dev": "pnpm --filter www dev"
+  }
 }

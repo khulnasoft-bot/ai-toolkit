@@ -10,9 +10,7 @@
 export function mergeAbortSignals(
   ...signals: (AbortSignal | null | undefined)[]
 ): AbortSignal | undefined {
-  const validSignals = signals.filter(
-    (signal): signal is AbortSignal => signal != null,
-  );
+  const validSignals = signals.filter((signal): signal is AbortSignal => signal != null);
 
   if (validSignals.length === 0) {
     return undefined;

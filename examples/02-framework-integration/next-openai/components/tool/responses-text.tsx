@@ -9,9 +9,7 @@ type ResponsesOutputTextProviderMetadata =
   | OpenaiResponsesTextProviderMetadata
   | AzureResponsesTextProviderMetadata;
 
-function extractProviderAndAnnotations(
-  providerMetadata: ResponsesOutputTextProviderMetadata,
-) {
+function extractProviderAndAnnotations(providerMetadata: ResponsesOutputTextProviderMetadata) {
   if ('openai' in providerMetadata) {
     return {
       provider: 'openai',
@@ -34,9 +32,7 @@ function extractProviderAndAnnotations(
 export function ResponsesText({ part }: { part: TextUIPart }) {
   if (!part.providerMetadata) return <Response>{part.text}</Response>;
 
-  const providerMetadata = part.providerMetadata as
-    | ResponsesOutputTextProviderMetadata
-    | undefined;
+  const providerMetadata = part.providerMetadata as ResponsesOutputTextProviderMetadata | undefined;
 
   if (!providerMetadata) return <Response>{part.text}</Response>;
 

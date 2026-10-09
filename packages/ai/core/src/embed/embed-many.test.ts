@@ -64,14 +64,7 @@ describe('model.supportsParallelCalls', () => {
 
     const { embeddings } = await embedManyPromise;
 
-    expect(events).toStrictEqual([
-      'start-0',
-      'end-0',
-      'start-1',
-      'end-1',
-      'start-2',
-      'end-2',
-    ]);
+    expect(events).toStrictEqual(['start-0', 'end-0', 'start-1', 'end-1', 'start-2', 'end-2']);
 
     expect(embeddings).toStrictEqual(dummyEmbeddings);
   });
@@ -113,14 +106,7 @@ describe('model.supportsParallelCalls', () => {
 
     const { embeddings } = await embedManyPromise;
 
-    expect(events).toStrictEqual([
-      'start-0',
-      'start-1',
-      'start-2',
-      'end-0',
-      'end-1',
-      'end-2',
-    ]);
+    expect(events).toStrictEqual(['start-0', 'start-1', 'start-2', 'end-0', 'end-1', 'end-2']);
 
     expect(embeddings).toStrictEqual(dummyEmbeddings);
   });
@@ -163,14 +149,7 @@ describe('model.supportsParallelCalls', () => {
 
     const { embeddings } = await embedManyPromise;
 
-    expect(events).toStrictEqual([
-      'start-0',
-      'start-1',
-      'end-0',
-      'end-1',
-      'start-2',
-      'end-2',
-    ]);
+    expect(events).toStrictEqual(['start-0', 'start-1', 'end-0', 'end-1', 'start-2', 'end-2']);
 
     expect(embeddings).toStrictEqual(dummyEmbeddings);
   });
@@ -642,9 +621,7 @@ function mockEmbed(
     headers: {},
     body: {},
   },
-  providerMetadata?: Awaited<
-    ReturnType<EmbeddingModelV3['doEmbed']>
-  >['providerMetadata'],
+  providerMetadata?: Awaited<ReturnType<EmbeddingModelV3['doEmbed']>>['providerMetadata'],
 ): EmbeddingModelV3['doEmbed'] {
   return async ({ values }) => {
     assert.deepStrictEqual(expectedValues, values);

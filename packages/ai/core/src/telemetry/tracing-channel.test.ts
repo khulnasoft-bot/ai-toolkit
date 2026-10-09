@@ -39,9 +39,7 @@ async function collectTracingChannelStartMessages(
     });
   };
 
-  const tracingChannel = diagnosticsChannel.tracingChannel(
-    AI_SDK_TELEMETRY_TRACING_CHANNEL,
-  );
+  const tracingChannel = diagnosticsChannel.tracingChannel(AI_SDK_TELEMETRY_TRACING_CHANNEL);
   const subscribers = {
     start: subscriber,
     end() {},
@@ -61,31 +59,23 @@ async function collectTracingChannelStartMessages(
   return messages;
 }
 
-async function collectTracingChannelEventSequence(
-  run: () => Promise<void>,
-): Promise<string[]> {
+async function collectTracingChannelEventSequence(run: () => Promise<void>): Promise<string[]> {
   const events: string[] = [];
   const store = new AsyncLocalStorage<TelemetryTracingChannelMessage>();
 
-  const tracingChannel = diagnosticsChannel.tracingChannel(
-    AI_SDK_TELEMETRY_TRACING_CHANNEL,
-  );
+  const tracingChannel = diagnosticsChannel.tracingChannel(AI_SDK_TELEMETRY_TRACING_CHANNEL);
   const subscribers = {
     start() {},
     end() {},
     asyncStart() {},
     asyncEnd(message: unknown) {
-      events.push(
-        `asyncEnd ${(message as TelemetryTracingChannelMessage).type}`,
-      );
+      events.push(`asyncEnd ${(message as TelemetryTracingChannelMessage).type}`);
     },
     error() {},
   };
 
   tracingChannel.start.bindStore(store, message => {
-    events.push(
-      `bindStart ${(message as TelemetryTracingChannelMessage).type}`,
-    );
+    events.push(`bindStart ${(message as TelemetryTracingChannelMessage).type}`);
     return message as TelemetryTracingChannelMessage;
   });
   tracingChannel.subscribe(subscribers);
@@ -105,9 +95,7 @@ async function collectTracingChannelAsyncEndMessages(
 ): Promise<TelemetryTracingChannelAsyncEndMessage[]> {
   const messages: TelemetryTracingChannelAsyncEndMessage[] = [];
 
-  const tracingChannel = diagnosticsChannel.tracingChannel(
-    AI_SDK_TELEMETRY_TRACING_CHANNEL,
-  );
+  const tracingChannel = diagnosticsChannel.tracingChannel(AI_SDK_TELEMETRY_TRACING_CHANNEL);
   const subscribers = {
     start() {},
     end() {},
@@ -129,15 +117,11 @@ async function collectTracingChannelAsyncEndMessages(
   return messages;
 }
 
-async function collectTracingChannelParentage(
-  run: () => Promise<void>,
-): Promise<string[]> {
+async function collectTracingChannelParentage(run: () => Promise<void>): Promise<string[]> {
   const events: string[] = [];
   const store = new AsyncLocalStorage<TelemetryTracingChannelMessage>();
 
-  const tracingChannel = diagnosticsChannel.tracingChannel(
-    AI_SDK_TELEMETRY_TRACING_CHANNEL,
-  );
+  const tracingChannel = diagnosticsChannel.tracingChannel(AI_SDK_TELEMETRY_TRACING_CHANNEL);
   const subscribers = {
     start() {},
     end() {},
@@ -148,9 +132,7 @@ async function collectTracingChannelParentage(
 
   tracingChannel.start.bindStore(store, message => {
     const telemetry = message as TelemetryTracingChannelMessage;
-    events.push(
-      `${telemetry.type} parent ${store.getStore()?.type ?? 'undefined'}`,
-    );
+    events.push(`${telemetry.type} parent ${store.getStore()?.type ?? 'undefined'}`);
     return telemetry;
   });
   tracingChannel.subscribe(subscribers);
@@ -232,9 +214,7 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
 
   it('propagates language model execution context through async work', async () => {
     const store = new AsyncLocalStorage<TelemetryTracingChannelMessage>();
-    const tracingChannel = diagnosticsChannel.tracingChannel(
-      AI_SDK_TELEMETRY_TRACING_CHANNEL,
-    );
+    const tracingChannel = diagnosticsChannel.tracingChannel(AI_SDK_TELEMETRY_TRACING_CHANNEL);
     const subscribers = {
       start() {},
       end() {},
@@ -244,10 +224,7 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
     };
     let capturedContext: TelemetryTracingChannelMessage | undefined;
 
-    tracingChannel.start.bindStore(
-      store,
-      message => message as TelemetryTracingChannelMessage,
-    );
+    tracingChannel.start.bindStore(store, message => message as TelemetryTracingChannelMessage);
     tracingChannel.subscribe(subscribers);
 
     try {
@@ -291,9 +268,7 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
 
   it('propagates tool execution context through async work', async () => {
     const store = new AsyncLocalStorage<TelemetryTracingChannelMessage>();
-    const tracingChannel = diagnosticsChannel.tracingChannel(
-      AI_SDK_TELEMETRY_TRACING_CHANNEL,
-    );
+    const tracingChannel = diagnosticsChannel.tracingChannel(AI_SDK_TELEMETRY_TRACING_CHANNEL);
     const subscribers = {
       start() {},
       end() {},
@@ -303,10 +278,7 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
     };
     let capturedContext: TelemetryTracingChannelMessage | undefined;
 
-    tracingChannel.start.bindStore(
-      store,
-      message => message as TelemetryTracingChannelMessage,
-    );
+    tracingChannel.start.bindStore(store, message => message as TelemetryTracingChannelMessage);
     tracingChannel.subscribe(subscribers);
 
     try {
@@ -595,11 +567,7 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
             warnings: [],
           }),
         }),
-        values: [
-          'sunny day at the beach',
-          'rainy day in the city',
-          'cloudy day in the mountains',
-        ],
+        values: ['sunny day at the beach', 'rainy day in the city', 'cloudy day in the mountains'],
         telemetry: {
           functionId: 'tracing-channel-embed-many-test',
         },
@@ -684,27 +652,17 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
             warnings: [],
           }),
         }),
-        values: [
-          'sunny day at the beach',
-          'rainy day in the city',
-          'cloudy day in the mountains',
-        ],
+        values: ['sunny day at the beach', 'rainy day in the city', 'cloudy day in the mountains'],
         telemetry: {
           functionId: 'tracing-channel-embed-many-result-test',
         },
       });
     });
 
-    const embedManyMessage = messages.find(
-      message => message.type === 'embedMany',
-    );
+    const embedManyMessage = messages.find(message => message.type === 'embedMany');
 
     expect(embedManyMessage?.result).toMatchObject({
-      values: [
-        'sunny day at the beach',
-        'rainy day in the city',
-        'cloudy day in the mountains',
-      ],
+      values: ['sunny day at the beach', 'rainy day in the city', 'cloudy day in the mountains'],
       embeddings: [
         [0.1, 0.2, 0.3],
         [0.1, 0.2, 0.3],
@@ -878,12 +836,7 @@ describe.runIf(isNodeRuntime())('telemetry tracing channel publisher', () => {
                     break;
                   case 1:
                     abortController.abort();
-                    controller.error(
-                      new DOMException(
-                        'The user aborted a request.',
-                        'AbortError',
-                      ),
-                    );
+                    controller.error(new DOMException('The user aborted a request.', 'AbortError'));
                     break;
                 }
               },

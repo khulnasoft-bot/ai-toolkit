@@ -50,9 +50,7 @@ export interface ReplicateProvider extends ProviderV3 {
 /**
  * Create a Replicate provider instance.
  */
-export function createReplicate(
-  options: ReplicateProviderSettings = {},
-): ReplicateProvider {
+export function createReplicate(options: ReplicateProviderSettings = {}): ReplicateProvider {
   const createImageModel = (modelId: ReplicateImageModelId) =>
     new ReplicateImageModel(modelId, {
       provider: 'replicate',

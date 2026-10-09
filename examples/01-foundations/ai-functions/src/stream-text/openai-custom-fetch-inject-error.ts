@@ -23,9 +23,7 @@ const openai = createOpenAI({
             controller.enqueue(value);
 
             if (characterCount > 1000) {
-              controller.error(
-                new Error('Injected error after 1000 characters'),
-              );
+              controller.error(new Error('Injected error after 1000 characters'));
               break;
             }
           }

@@ -1,8 +1,5 @@
 import { resolve } from '@ai-toolkit/provider-utils';
-import {
-  generateAuthToken,
-  GoogleCredentials,
-} from '../../edge/google-vertex-auth-edge';
+import { generateAuthToken, GoogleCredentials } from '../../edge/google-vertex-auth-edge';
 import {
   createVertexAnthropic as createVertexAnthropicOriginal,
   GoogleVertexAnthropicProvider,

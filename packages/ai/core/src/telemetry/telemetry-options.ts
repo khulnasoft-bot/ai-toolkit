@@ -1,9 +1,4 @@
-import type {
-  Arrayable,
-  Context,
-  InferToolSetContext,
-  ToolSet,
-} from '@ai-toolkit/provider-utils';
+import type { Arrayable, Context, InferToolSetContext, ToolSet } from '@ai-toolkit/provider-utils';
 import type { Telemetry } from './telemetry';
 
 export type IncludedContext<CONTEXT extends Context | unknown | never> =
@@ -12,9 +7,9 @@ export type IncludedContext<CONTEXT extends Context | unknown | never> =
 
 export type IncludedToolsContext<TOOLS extends ToolSet> =
   | {
-      [TOOL_NAME in keyof NoInfer<
-        InferToolSetContext<TOOLS>
-      >]?: IncludedContext<NoInfer<InferToolSetContext<TOOLS>[TOOL_NAME]>>;
+      [TOOL_NAME in keyof NoInfer<InferToolSetContext<TOOLS>>]?: IncludedContext<
+        NoInfer<InferToolSetContext<TOOLS>[TOOL_NAME]>
+      >;
     }
   | undefined;
 

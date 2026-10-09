@@ -37,9 +37,7 @@ describe('deleteFromApi', () => {
   it('throws an APICallError for a failed response', async () => {
     const mockFetch = vi
       .fn()
-      .mockResolvedValue(
-        new Response('not found', { status: 404, statusText: 'Not Found' }),
-      );
+      .mockResolvedValue(new Response('not found', { status: 404, statusText: 'Not Found' }));
 
     await expect(
       deleteFromApi({

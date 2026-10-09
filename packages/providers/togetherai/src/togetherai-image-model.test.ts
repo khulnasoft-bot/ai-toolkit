@@ -105,9 +105,7 @@ describe('doGenerate', () => {
     });
 
     expect(server.calls[0].requestMethod).toStrictEqual('POST');
-    expect(server.calls[0].requestUrl).toStrictEqual(
-      'https://api.example.com/images/generations',
-    );
+    expect(server.calls[0].requestUrl).toStrictEqual('https://api.example.com/images/generations');
   });
 
   it('should pass headers', async () => {

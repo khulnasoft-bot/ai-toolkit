@@ -7,10 +7,7 @@ import {
   LanguageModelV3StreamPart,
   LanguageModelV3StreamResult,
 } from '@ai-toolkit/provider';
-import {
-  convertReadableStreamToArray,
-  mockId,
-} from '@ai-toolkit/provider-utils/test';
+import { convertReadableStreamToArray, mockId } from '@ai-toolkit/provider-utils/test';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import fs from 'node:fs';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
@@ -40,9 +37,7 @@ describe('AnthropicMessagesLanguageModel', () => {
   function prepareJsonFixtureResponse(filename: string) {
     server.urls['https://api.anthropic.com/v1/messages'].response = {
       type: 'json-value',
-      body: JSON.parse(
-        fs.readFileSync(`src/__fixtures__/${filename}.json`, 'utf8'),
-      ),
+      body: JSON.parse(fs.readFileSync(`src/__fixtures__/${filename}.json`, 'utf8')),
     };
     return;
   }
@@ -1049,9 +1044,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         // custom header
         'test-header': 'test-value',
       });
-      expect(server.calls[0].requestUserAgent).toContain(
-        `ai-toolkit/anthropic/0.0.0-test`,
-      );
+      expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/anthropic/0.0.0-test`);
     });
 
     it('should send the model id and settings', async () => {
@@ -1116,8 +1109,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         expect(warnings).toContainEqual({
           type: 'unsupported',
           feature: 'topP',
-          details:
-            'topP is not supported when temperature is set. topP is ignored.',
+          details: 'topP is not supported when temperature is set. topP is ignored.',
         });
       });
 
@@ -1297,9 +1289,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
       expect(await server.calls[0].requestBodyJson).toStrictEqual({
         model: 'claude-3-haiku-20240307',
-        messages: [
-          { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
-        ],
+        messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
         max_tokens: 4096,
         tools: [
           {
@@ -2173,14 +2163,10 @@ describe('AnthropicMessagesLanguageModel', () => {
         });
 
         it('should extract caller metadata for programmatic tool calls', () => {
-          const toolCalls = result.content.filter(
-            part => part.type === 'tool-call',
-          );
+          const toolCalls = result.content.filter(part => part.type === 'tool-call');
 
           // The rollDie calls should have caller metadata pointing to code_execution
-          const rollDieCalls = toolCalls.filter(
-            tc => tc.toolName === 'rollDie',
-          );
+          const rollDieCalls = toolCalls.filter(tc => tc.toolName === 'rollDie');
           expect(rollDieCalls.length).toBeGreaterThan(0);
 
           for (const call of rollDieCalls) {
@@ -2193,8 +2179,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         it('should include code_execution as provider-executed tool call', () => {
           const codeExecCall = result.content.find(
-            part =>
-              part.type === 'tool-call' && part.toolName === 'code_execution',
+            part => part.type === 'tool-call' && part.toolName === 'code_execution',
           );
           expect(codeExecCall).toBeDefined();
           expect(codeExecCall).toMatchObject({
@@ -2206,8 +2191,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         it('should include code_execution_tool_result as provider-executed tool result', () => {
           const codeExecResult = result.content.find(
-            part =>
-              part.type === 'tool-result' && part.toolName === 'code_execution',
+            part => part.type === 'tool-result' && part.toolName === 'code_execution',
           );
           expect(codeExecResult).toBeDefined();
           expect(codeExecResult).toMatchObject({
@@ -2288,9 +2272,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       const TEST_PROMPT = [
         {
           role: 'user' as const,
-          content: [
-            { type: 'text' as const, text: 'What is the latest news?' },
-          ],
+          content: [{ type: 'text' as const, text: 'What is the latest news?' }],
         },
       ];
 
@@ -2345,9 +2327,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         prepareJsonResponse({
           type: 'message',
           id: 'msg_test',
-          content: [
-            { type: 'text', text: 'Here are the latest stock market trends.' },
-          ],
+          content: [{ type: 'text', text: 'Here are the latest stock market trends.' }],
           stop_reason: 'end_turn',
           usage: { input_tokens: 10, output_tokens: 20 },
         });
@@ -2822,9 +2802,7 @@ describe('AnthropicMessagesLanguageModel', () => {
             prompt: [
               {
                 role: 'user',
-                content: [
-                  { type: 'text', text: 'Find out weather data in SF' },
-                ],
+                content: [{ type: 'text', text: 'Find out weather data in SF' }],
               },
             ],
             tools: [
@@ -3100,9 +3078,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
     describe('agent skills', () => {
       it('should send request body with skills in container', async () => {
-        prepareJsonFixtureResponse(
-          'anthropic-code-execution-20250825.pptx-skill',
-        );
+        prepareJsonFixtureResponse('anthropic-code-execution-20250825.pptx-skill');
 
         const result = await model.doGenerate({
           prompt: TEST_PROMPT,
@@ -3178,9 +3154,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       });
 
       it('should add a warning when the code execution tool is not present', async () => {
-        prepareJsonFixtureResponse(
-          'anthropic-code-execution-20250825.pptx-skill',
-        );
+        prepareJsonFixtureResponse('anthropic-code-execution-20250825.pptx-skill');
 
         const result = await model.doGenerate({
           prompt: TEST_PROMPT,
@@ -3249,9 +3223,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       });
 
       it('should include beta headers when skills are configured', async () => {
-        prepareJsonFixtureResponse(
-          'anthropic-code-execution-20250825.pptx-skill',
-        );
+        prepareJsonFixtureResponse('anthropic-code-execution-20250825.pptx-skill');
 
         await model.doGenerate({
           prompt: TEST_PROMPT,
@@ -3289,9 +3261,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       });
 
       it('should expose container information as provider metadata', async () => {
-        prepareJsonFixtureResponse(
-          'anthropic-code-execution-20250825.pptx-skill',
-        );
+        prepareJsonFixtureResponse('anthropic-code-execution-20250825.pptx-skill');
 
         const result = await model.doGenerate({
           prompt: TEST_PROMPT,
@@ -3710,9 +3680,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         prepareJsonResponse({
           type: 'message',
           id: 'msg_test',
-          content: [
-            { type: 'text', text: 'I can execute code and calculate.' },
-          ],
+          content: [{ type: 'text', text: 'I can execute code and calculate.' }],
           stop_reason: 'end_turn',
           usage: { input_tokens: 10, output_tokens: 20 },
         });
@@ -4079,10 +4047,7 @@ describe('AnthropicMessagesLanguageModel', () => {
           providerOptions: {
             anthropic: {
               contextManagement: {
-                edits: [
-                  { type: 'clear_tool_uses_20250919' },
-                  { type: 'clear_thinking_20251015' },
-                ],
+                edits: [{ type: 'clear_tool_uses_20250919' }, { type: 'clear_thinking_20251015' }],
               },
             },
           },
@@ -4090,10 +4055,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         expect(await server.calls[0].requestBodyJson).toMatchObject({
           context_management: {
-            edits: [
-              { type: 'clear_tool_uses_20250919' },
-              { type: 'clear_thinking_20251015' },
-            ],
+            edits: [{ type: 'clear_tool_uses_20250919' }, { type: 'clear_thinking_20251015' }],
           },
         });
       });
@@ -4505,8 +4467,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       });
 
       it('should stream the tool call', async () => {
-        expect(await convertReadableStreamToArray(result.stream))
-          .toMatchInlineSnapshot(`
+        expect(await convertReadableStreamToArray(result.stream)).toMatchInlineSnapshot(`
             [
               {
                 "type": "stream-start",
@@ -4686,9 +4647,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       });
 
       it('should stream the text output', async () => {
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
@@ -5354,9 +5313,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         stream: true,
         model: 'claude-3-haiku-20240307',
         max_tokens: 4096, // default value
-        messages: [
-          { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
-        ],
+        messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
       });
     });
 
@@ -5423,9 +5380,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         headers: { 'anthropic-beta': 'REQUEST-beta1,request-beta2' },
       });
 
-      expect(
-        server.calls[0].requestHeaders['anthropic-beta'],
-      ).toMatchInlineSnapshot(
+      expect(server.calls[0].requestHeaders['anthropic-beta']).toMatchInlineSnapshot(
         `"fine-grained-tool-streaming-2025-05-14,config-beta1,config-beta2,request-beta1,request-beta2"`,
       );
     });
@@ -5686,8 +5641,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       // consume stream
       const chunks = await convertReadableStreamToArray(result.stream);
 
-      expect(chunks.filter(chunk => chunk.type === 'finish'))
-        .toMatchInlineSnapshot(`
+      expect(chunks.filter(chunk => chunk.type === 'finish')).toMatchInlineSnapshot(`
           [
             {
               "finishReason": {
@@ -5751,8 +5705,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
       const chunks = await convertReadableStreamToArray(result.stream);
 
-      expect(chunks.filter(chunk => chunk.type === 'finish'))
-        .toMatchInlineSnapshot(`
+      expect(chunks.filter(chunk => chunk.type === 'finish')).toMatchInlineSnapshot(`
           [
             {
               "finishReason": {
@@ -5817,8 +5770,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         const chunks = await convertReadableStreamToArray(stream);
 
-        expect(chunks.filter(chunk => chunk.type === 'raw'))
-          .toMatchInlineSnapshot(`
+        expect(chunks.filter(chunk => chunk.type === 'raw')).toMatchInlineSnapshot(`
         [
           {
             "rawValue": {
@@ -6066,17 +6018,13 @@ describe('AnthropicMessagesLanguageModel', () => {
             } satisfies AnthropicProviderOptions,
           },
         });
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
     describe('agent skills', () => {
       it('should stream code execution tool results', async () => {
-        prepareChunksFixtureResponse(
-          'anthropic-code-execution-20250825.pptx-skill',
-        );
+        prepareChunksFixtureResponse('anthropic-code-execution-20250825.pptx-skill');
 
         const result = await model.doStream({
           prompt: TEST_PROMPT,
@@ -6097,9 +6045,7 @@ describe('AnthropicMessagesLanguageModel', () => {
           },
         });
 
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
@@ -6144,8 +6090,7 @@ describe('AnthropicMessagesLanguageModel', () => {
           prompt: TEST_PROMPT,
         });
 
-        expect(await convertReadableStreamToArray(stream))
-          .toMatchInlineSnapshot(`
+        expect(await convertReadableStreamToArray(stream)).toMatchInlineSnapshot(`
             [
               {
                 "type": "stream-start",
@@ -6277,8 +6222,7 @@ describe('AnthropicMessagesLanguageModel', () => {
           prompt: TEST_PROMPT,
         });
 
-        expect(await convertReadableStreamToArray(result.stream))
-          .toMatchInlineSnapshot(`
+        expect(await convertReadableStreamToArray(result.stream)).toMatchInlineSnapshot(`
             [
               {
                 "type": "stream-start",
@@ -6404,8 +6348,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         const parts = await convertReadableStreamToArray(stream);
         const toolCall = parts.find(
-          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } =>
-            p.type === 'tool-call',
+          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } => p.type === 'tool-call',
         );
 
         expect(toolCall).toBeDefined();
@@ -6450,8 +6393,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         const parts = await convertReadableStreamToArray(stream);
         const toolCall = parts.find(
-          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } =>
-            p.type === 'tool-call',
+          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } => p.type === 'tool-call',
         );
 
         expect(toolCall).toBeDefined();
@@ -6493,8 +6435,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         const parts = await convertReadableStreamToArray(stream);
         const toolCall = parts.find(
-          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } =>
-            p.type === 'tool-call',
+          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } => p.type === 'tool-call',
         );
 
         expect(toolCall).toBeDefined();
@@ -6542,8 +6483,7 @@ describe('AnthropicMessagesLanguageModel', () => {
 
         const parts = await convertReadableStreamToArray(stream);
         const toolCall = parts.find(
-          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } =>
-            p.type === 'tool-call',
+          (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } => p.type === 'tool-call',
         );
 
         expect(toolCall).toBeDefined();
@@ -6603,14 +6543,11 @@ describe('AnthropicMessagesLanguageModel', () => {
 
           const parts = await convertReadableStreamToArray(result.stream);
           const toolCalls = parts.filter(
-            (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } =>
-              p.type === 'tool-call',
+            (p): p is LanguageModelV3StreamPart & { type: 'tool-call' } => p.type === 'tool-call',
           );
 
           // Filter rollDie calls (not code_execution)
-          const rollDieCalls = toolCalls.filter(
-            tc => tc.toolName === 'rollDie',
-          );
+          const rollDieCalls = toolCalls.filter(tc => tc.toolName === 'rollDie');
           expect(rollDieCalls.length).toBeGreaterThan(0);
 
           // Each rollDie call should have caller metadata
@@ -6676,9 +6613,7 @@ describe('AnthropicMessagesLanguageModel', () => {
             },
           ],
         });
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
 
       it('should include file id list in code execution tool call result.', async () => {
@@ -6696,9 +6631,7 @@ describe('AnthropicMessagesLanguageModel', () => {
           ],
         });
 
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
@@ -6723,9 +6656,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         });
 
         it('should stream web search tool results', async () => {
-          expect(
-            await convertReadableStreamToArray(result.stream),
-          ).toMatchSnapshot();
+          expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
         });
       });
     });
@@ -6756,9 +6687,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       });
 
       it('should stream web search tool results', async () => {
-        expect(
-          await convertReadableStreamToArray(result.stream),
-        ).toMatchSnapshot();
+        expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
       });
     });
 
@@ -6773,9 +6702,7 @@ describe('AnthropicMessagesLanguageModel', () => {
             prompt: [
               {
                 role: 'user',
-                content: [
-                  { type: 'text', text: 'Find out weather data in SF' },
-                ],
+                content: [{ type: 'text', text: 'Find out weather data in SF' }],
               },
             ],
             tools: [
@@ -6805,9 +6732,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         });
 
         it('should stream tool search regex results', async () => {
-          expect(
-            await convertReadableStreamToArray(result.stream),
-          ).toMatchSnapshot();
+          expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
         });
       });
 
@@ -6856,9 +6781,7 @@ describe('AnthropicMessagesLanguageModel', () => {
         });
 
         it('should stream tool search bm25 results', async () => {
-          expect(
-            await convertReadableStreamToArray(result.stream),
-          ).toMatchSnapshot();
+          expect(await convertReadableStreamToArray(result.stream)).toMatchSnapshot();
         });
       });
     });
@@ -7080,15 +7003,12 @@ describe('AnthropicMessagesLanguageModel', () => {
       const { AnthropicMessagesLanguageModel } = await import(
         './anthropic-messages-language-model'
       );
-      const model = new AnthropicMessagesLanguageModel(
-        'claude-3-haiku-20240307',
-        {
-          provider: 'test-provider',
-          baseURL: 'https://api.anthropic.com/v1',
-          headers: {},
-          transformRequestBody: transformFn,
-        },
-      );
+      const model = new AnthropicMessagesLanguageModel('claude-3-haiku-20240307', {
+        provider: 'test-provider',
+        baseURL: 'https://api.anthropic.com/v1',
+        headers: {},
+        transformRequestBody: transformFn,
+      });
 
       await model.doGenerate({
         prompt: TEST_PROMPT,
@@ -7099,9 +7019,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       expect(transformFn).toHaveBeenCalledWith(
         expect.objectContaining({
           model: 'claude-3-haiku-20240307',
-          messages: [
-            { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
-          ],
+          messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
         }),
       );
 
@@ -7122,15 +7040,12 @@ describe('AnthropicMessagesLanguageModel', () => {
       const { AnthropicMessagesLanguageModel } = await import(
         './anthropic-messages-language-model'
       );
-      const model = new AnthropicMessagesLanguageModel(
-        'claude-3-haiku-20240307',
-        {
-          provider: 'test-provider',
-          baseURL: 'https://api.anthropic.com/v1',
-          headers: {},
-          transformRequestBody: transformFn,
-        },
-      );
+      const model = new AnthropicMessagesLanguageModel('claude-3-haiku-20240307', {
+        provider: 'test-provider',
+        baseURL: 'https://api.anthropic.com/v1',
+        headers: {},
+        transformRequestBody: transformFn,
+      });
 
       const { stream } = await model.doStream({
         prompt: TEST_PROMPT,
@@ -7144,9 +7059,7 @@ describe('AnthropicMessagesLanguageModel', () => {
       expect(transformFn).toHaveBeenCalledWith(
         expect.objectContaining({
           model: 'claude-3-haiku-20240307',
-          messages: [
-            { role: 'user', content: [{ type: 'text', text: 'Hello' }] },
-          ],
+          messages: [{ role: 'user', content: [{ type: 'text', text: 'Hello' }] }],
           stream: true,
         }),
       );
@@ -7163,14 +7076,11 @@ describe('AnthropicMessagesLanguageModel', () => {
       const { AnthropicMessagesLanguageModel } = await import(
         './anthropic-messages-language-model'
       );
-      const model = new AnthropicMessagesLanguageModel(
-        'claude-3-haiku-20240307',
-        {
-          provider: 'test-provider',
-          baseURL: 'https://api.anthropic.com/v1',
-          headers: {},
-        },
-      );
+      const model = new AnthropicMessagesLanguageModel('claude-3-haiku-20240307', {
+        provider: 'test-provider',
+        baseURL: 'https://api.anthropic.com/v1',
+        headers: {},
+      });
 
       await model.doGenerate({
         prompt: TEST_PROMPT,

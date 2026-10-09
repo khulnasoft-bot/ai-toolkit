@@ -77,20 +77,12 @@ describe('customProvider autocomplete / literal model identifiers', () => {
   });
 
   it('narrows languageModel identifiers to the configured languageModels keys', () => {
-    type InferredLanguageModelIdentifier = Parameters<
-      (typeof provider)['languageModel']
-    >[0];
+    type InferredLanguageModelIdentifier = Parameters<(typeof provider)['languageModel']>[0];
 
-    expectTypeOf<InferredLanguageModelIdentifier>().toEqualTypeOf<
-      'opus' | 'sonnet' | 'haiku'
-    >();
+    expectTypeOf<InferredLanguageModelIdentifier>().toEqualTypeOf<'opus' | 'sonnet' | 'haiku'>();
 
-    expectTypeOf(
-      provider.languageModel('haiku'),
-    ).toEqualTypeOf<LanguageModelV4>();
-    expectTypeOf(
-      provider.languageModel('opus'),
-    ).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(provider.languageModel('haiku')).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(provider.languageModel('opus')).toEqualTypeOf<LanguageModelV4>();
 
     expectTypeOf<'sonnet'>().toMatchTypeOf<InferredLanguageModelIdentifier>();
     expectTypeOf<InferredLanguageModelIdentifier>().not.toMatchTypeOf<'gpt-5'>();
@@ -98,48 +90,26 @@ describe('customProvider autocomplete / literal model identifiers', () => {
   });
 
   it('narrows embeddingModel, imageModel, and other accessors to their record keys', () => {
-    type InferredEmbeddingIdentifier = Parameters<
-      (typeof provider)['embeddingModel']
-    >[0];
-    type InferredImageIdentifier = Parameters<
-      (typeof provider)['imageModel']
-    >[0];
-    type InferredTranscriptionIdentifier = Parameters<
-      (typeof provider)['transcriptionModel']
-    >[0];
-    type InferredSpeechIdentifier = Parameters<
-      (typeof provider)['speechModel']
-    >[0];
-    type InferredRerankingIdentifier = Parameters<
-      (typeof provider)['rerankingModel']
-    >[0];
-    type InferredVideoIdentifier = Parameters<
-      (typeof provider)['videoModel']
-    >[0];
+    type InferredEmbeddingIdentifier = Parameters<(typeof provider)['embeddingModel']>[0];
+    type InferredImageIdentifier = Parameters<(typeof provider)['imageModel']>[0];
+    type InferredTranscriptionIdentifier = Parameters<(typeof provider)['transcriptionModel']>[0];
+    type InferredSpeechIdentifier = Parameters<(typeof provider)['speechModel']>[0];
+    type InferredRerankingIdentifier = Parameters<(typeof provider)['rerankingModel']>[0];
+    type InferredVideoIdentifier = Parameters<(typeof provider)['videoModel']>[0];
 
-    expectTypeOf<InferredEmbeddingIdentifier>().toEqualTypeOf<
-      'small' | 'large'
-    >();
+    expectTypeOf<InferredEmbeddingIdentifier>().toEqualTypeOf<'small' | 'large'>();
     expectTypeOf<InferredImageIdentifier>().toEqualTypeOf<'photon'>();
     expectTypeOf<InferredTranscriptionIdentifier>().toEqualTypeOf<'whisper-1'>();
     expectTypeOf<InferredSpeechIdentifier>().toEqualTypeOf<'tts1'>();
     expectTypeOf<InferredRerankingIdentifier>().toEqualTypeOf<'rerank'>();
     expectTypeOf<InferredVideoIdentifier>().toEqualTypeOf<'preview-video'>();
 
-    expectTypeOf(
-      provider.embeddingModel('small'),
-    ).toEqualTypeOf<EmbeddingModelV4>();
+    expectTypeOf(provider.embeddingModel('small')).toEqualTypeOf<EmbeddingModelV4>();
     expectTypeOf(provider.imageModel('photon')).toEqualTypeOf<ImageModelV4>();
-    expectTypeOf(
-      provider.transcriptionModel('whisper-1'),
-    ).toEqualTypeOf<TranscriptionModelV4>();
+    expectTypeOf(provider.transcriptionModel('whisper-1')).toEqualTypeOf<TranscriptionModelV4>();
     expectTypeOf(provider.speechModel('tts1')).toEqualTypeOf<SpeechModelV4>();
-    expectTypeOf(
-      provider.rerankingModel('rerank'),
-    ).toEqualTypeOf<RerankingModelV4>();
-    expectTypeOf(
-      provider.videoModel('preview-video'),
-    ).toEqualTypeOf<Experimental_VideoModelV4>();
+    expectTypeOf(provider.rerankingModel('rerank')).toEqualTypeOf<RerankingModelV4>();
+    expectTypeOf(provider.videoModel('preview-video')).toEqualTypeOf<Experimental_VideoModelV4>();
 
     expectTypeOf<InferredEmbeddingIdentifier>().not.toMatchTypeOf<'wrong-key'>();
   });
@@ -156,9 +126,7 @@ describe('customProvider autocomplete / literal model identifiers', () => {
       },
     });
 
-    type HyphenLanguageIdentifiers = Parameters<
-      (typeof hyphenProvider)['languageModel']
-    >[0];
+    type HyphenLanguageIdentifiers = Parameters<(typeof hyphenProvider)['languageModel']>[0];
 
     expectTypeOf<HyphenLanguageIdentifiers>().toEqualTypeOf<
       'gpt-4o-high-reasoning' | 'claude-3-5-sonnet'
@@ -197,32 +165,16 @@ describe('customProvider with older model versions', () => {
       },
     });
 
-    type InferredLanguageIdentifier = Parameters<
-      (typeof provider)['languageModel']
-    >[0];
-    type InferredEmbeddingIdentifier = Parameters<
-      (typeof provider)['embeddingModel']
-    >[0];
+    type InferredLanguageIdentifier = Parameters<(typeof provider)['languageModel']>[0];
+    type InferredEmbeddingIdentifier = Parameters<(typeof provider)['embeddingModel']>[0];
 
-    expectTypeOf<InferredLanguageIdentifier>().toEqualTypeOf<
-      'language-v2' | 'language-v3'
-    >();
-    expectTypeOf<InferredEmbeddingIdentifier>().toEqualTypeOf<
-      'embedding-v2' | 'embedding-v3'
-    >();
+    expectTypeOf<InferredLanguageIdentifier>().toEqualTypeOf<'language-v2' | 'language-v3'>();
+    expectTypeOf<InferredEmbeddingIdentifier>().toEqualTypeOf<'embedding-v2' | 'embedding-v3'>();
 
-    expectTypeOf(
-      provider.languageModel('language-v2'),
-    ).toEqualTypeOf<LanguageModelV4>();
-    expectTypeOf(
-      provider.languageModel('language-v3'),
-    ).toEqualTypeOf<LanguageModelV4>();
-    expectTypeOf(
-      provider.embeddingModel('embedding-v2'),
-    ).toEqualTypeOf<EmbeddingModelV4>();
-    expectTypeOf(
-      provider.embeddingModel('embedding-v3'),
-    ).toEqualTypeOf<EmbeddingModelV4>();
+    expectTypeOf(provider.languageModel('language-v2')).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(provider.languageModel('language-v3')).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(provider.embeddingModel('embedding-v2')).toEqualTypeOf<EmbeddingModelV4>();
+    expectTypeOf(provider.embeddingModel('embedding-v3')).toEqualTypeOf<EmbeddingModelV4>();
     expectTypeOf(provider.imageModel('image-v2')).toEqualTypeOf<ImageModelV4>();
     expectTypeOf(provider.imageModel('image-v3')).toEqualTypeOf<ImageModelV4>();
     expectTypeOf(
@@ -231,18 +183,10 @@ describe('customProvider with older model versions', () => {
     expectTypeOf(
       provider.transcriptionModel('transcription-v3'),
     ).toEqualTypeOf<TranscriptionModelV4>();
-    expectTypeOf(
-      provider.speechModel('speech-v2'),
-    ).toEqualTypeOf<SpeechModelV4>();
-    expectTypeOf(
-      provider.speechModel('speech-v3'),
-    ).toEqualTypeOf<SpeechModelV4>();
-    expectTypeOf(
-      provider.rerankingModel('reranking-v3'),
-    ).toEqualTypeOf<RerankingModelV4>();
-    expectTypeOf(
-      provider.videoModel('video-v3'),
-    ).toEqualTypeOf<Experimental_VideoModelV4>();
+    expectTypeOf(provider.speechModel('speech-v2')).toEqualTypeOf<SpeechModelV4>();
+    expectTypeOf(provider.speechModel('speech-v3')).toEqualTypeOf<SpeechModelV4>();
+    expectTypeOf(provider.rerankingModel('reranking-v3')).toEqualTypeOf<RerankingModelV4>();
+    expectTypeOf(provider.videoModel('video-v3')).toEqualTypeOf<Experimental_VideoModelV4>();
   });
 });
 
@@ -272,23 +216,15 @@ describe('customProvider with string model ids', () => {
       },
     });
 
-    expectTypeOf(
-      provider.languageModel('gateway'),
-    ).toEqualTypeOf<LanguageModelV4>();
-    expectTypeOf(
-      provider.embeddingModel('embedding'),
-    ).toEqualTypeOf<EmbeddingModelV4>();
+    expectTypeOf(provider.languageModel('gateway')).toEqualTypeOf<LanguageModelV4>();
+    expectTypeOf(provider.embeddingModel('embedding')).toEqualTypeOf<EmbeddingModelV4>();
     expectTypeOf(provider.imageModel('image')).toEqualTypeOf<ImageModelV4>();
     expectTypeOf(
       provider.transcriptionModel('transcription'),
     ).toEqualTypeOf<TranscriptionModelV4>();
     expectTypeOf(provider.speechModel('speech')).toEqualTypeOf<SpeechModelV4>();
-    expectTypeOf(
-      provider.rerankingModel('reranking'),
-    ).toEqualTypeOf<RerankingModelV4>();
-    expectTypeOf(
-      provider.videoModel('video'),
-    ).toEqualTypeOf<Experimental_VideoModelV4>();
+    expectTypeOf(provider.rerankingModel('reranking')).toEqualTypeOf<RerankingModelV4>();
+    expectTypeOf(provider.videoModel('video')).toEqualTypeOf<Experimental_VideoModelV4>();
   });
 });
 
@@ -451,12 +387,8 @@ describe('customProvider negative typing', () => {
       imageModels: { photon: new MockImageModelV4() },
     });
 
-    type EmbeddingIdentifier = Parameters<
-      (typeof configuredProvider)['embeddingModel']
-    >[0];
-    type ImageIdentifier = Parameters<
-      (typeof configuredProvider)['imageModel']
-    >[0];
+    type EmbeddingIdentifier = Parameters<(typeof configuredProvider)['embeddingModel']>[0];
+    type ImageIdentifier = Parameters<(typeof configuredProvider)['imageModel']>[0];
 
     // @ts-expect-error typo is not a configured embedding model id
     const _wrongEmbeddingIdentifier: EmbeddingIdentifier = 'typo';
@@ -479,9 +411,7 @@ describe('customProvider with fallback provider typing', () => {
       fallbackProvider,
     });
 
-    type LanguageIdentifiers = Parameters<
-      (typeof provider)['languageModel']
-    >[0];
+    type LanguageIdentifiers = Parameters<(typeof provider)['languageModel']>[0];
 
     expectTypeOf<LanguageIdentifiers>().toEqualTypeOf<'alias'>();
 

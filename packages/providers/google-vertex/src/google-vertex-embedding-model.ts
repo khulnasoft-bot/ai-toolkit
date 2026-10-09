@@ -1,7 +1,4 @@
-import {
-  EmbeddingModelV3,
-  TooManyEmbeddingValuesForCallError,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, TooManyEmbeddingValuesForCallError } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
@@ -29,10 +26,7 @@ export class GoogleVertexEmbeddingModel implements EmbeddingModelV3 {
     return this.config.provider;
   }
 
-  constructor(
-    modelId: GoogleVertexEmbeddingModelId,
-    config: GoogleVertexConfig,
-  ) {
+  constructor(modelId: GoogleVertexEmbeddingModelId, config: GoogleVertexConfig) {
     this.modelId = modelId;
     this.config = config;
   }
@@ -70,10 +64,7 @@ export class GoogleVertexEmbeddingModel implements EmbeddingModelV3 {
       });
     }
 
-    const mergedHeaders = combineHeaders(
-      await resolve(this.config.headers),
-      headers,
-    );
+    const mergedHeaders = combineHeaders(await resolve(this.config.headers), headers);
 
     const url = `${this.config.baseURL}/models/${this.modelId}:predict`;
     const {
@@ -95,22 +86,17 @@ export class GoogleVertexEmbeddingModel implements EmbeddingModelV3 {
         },
       },
       failedResponseHandler: googleVertexFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        googleVertexTextEmbeddingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(googleVertexTextEmbeddingResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });
 
     return {
       warnings: [],
-      embeddings: response.predictions.map(
-        prediction => prediction.embeddings.values,
-      ),
+      embeddings: response.predictions.map(prediction => prediction.embeddings.values),
       usage: {
         tokens: response.predictions.reduce(
-          (tokenCount, prediction) =>
-            tokenCount + prediction.embeddings.statistics.token_count,
+          (tokenCount, prediction) => tokenCount + prediction.embeddings.statistics.token_count,
           0,
         ),
       },

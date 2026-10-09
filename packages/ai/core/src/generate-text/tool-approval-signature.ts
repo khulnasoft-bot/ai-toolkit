@@ -9,13 +9,10 @@ function fromBase64url(str: string): Uint8Array {
 
 async function importKey(secret: string | Uint8Array): Promise<CryptoKey> {
   const keyData = typeof secret === 'string' ? encoder.encode(secret) : secret;
-  return crypto.subtle.importKey(
-    'raw',
-    keyData,
-    { name: 'HMAC', hash: 'SHA-256' },
-    false,
-    ['sign', 'verify'],
-  );
+  return crypto.subtle.importKey('raw', keyData, { name: 'HMAC', hash: 'SHA-256' }, false, [
+    'sign',
+    'verify',
+  ]);
 }
 
 // Serialize with JSON so the encoding is injective: fields may contain any
@@ -28,13 +25,7 @@ function buildPayload(
   inputDigest: string,
 ): Uint8Array {
   return encoder.encode(
-    JSON.stringify([
-      'ai-sdk-tool-approval-v1',
-      approvalId,
-      toolCallId,
-      toolName,
-      inputDigest,
-    ]),
+    JSON.stringify(['ai-sdk-tool-approval-v1', approvalId, toolCallId, toolName, inputDigest]),
   );
 }
 
@@ -50,9 +41,7 @@ function buildLegacyPayload(
   toolName: string,
   inputDigest: string,
 ): Uint8Array {
-  return encoder.encode(
-    `${approvalId}\n${toolCallId}\n${toolName}\n${inputDigest}`,
-  );
+  return encoder.encode(`${approvalId}\n${toolCallId}\n${toolName}\n${inputDigest}`);
 }
 
 export async function signToolApproval({
@@ -106,17 +95,8 @@ export async function verifyToolApprovalSignature({
   // while still verifying benign approvals signed by an older version, e.g. a
   // pending approval that straddles an upgrade.
   // TODO(#17494): remove in v8 (drop buildLegacyPayload and this fallback).
-  if (
-    !approvalId.includes('\n') &&
-    !toolCallId.includes('\n') &&
-    !toolName.includes('\n')
-  ) {
-    const legacyPayload = buildLegacyPayload(
-      approvalId,
-      toolCallId,
-      toolName,
-      inputDigest,
-    );
+  if (!approvalId.includes('\n') && !toolCallId.includes('\n') && !toolName.includes('\n')) {
+    const legacyPayload = buildLegacyPayload(approvalId, toolCallId, toolName, inputDigest);
     return crypto.subtle.verify('HMAC', key, sigBytes, legacyPayload);
   }
 

@@ -147,7 +147,5 @@ app.post('/messages', async (req, res) => {
 });
 
 app.listen(8084, () => {
-  console.log(
-    'MCP multi-step elicitation server listening on http://localhost:8084',
-  );
+  console.log('MCP multi-step elicitation server listening on http://localhost:8084');
 });

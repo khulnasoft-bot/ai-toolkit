@@ -1,8 +1,4 @@
-import {
-  FlexibleSchema,
-  lazySchema,
-  zodSchema,
-} from '@ai-toolkit/provider-utils';
+import { FlexibleSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 // https://docs.cohere.com/docs/rerank
@@ -28,12 +24,11 @@ export type CohereRerankingOptions = {
   priority?: number;
 };
 
-export const cohereRerankingOptionsSchema: FlexibleSchema<CohereRerankingOptions> =
-  lazySchema(() =>
-    zodSchema(
-      z.object({
-        maxTokensPerDoc: z.number().optional(),
-        priority: z.number().optional(),
-      }),
-    ),
-  );
+export const cohereRerankingOptionsSchema: FlexibleSchema<CohereRerankingOptions> = lazySchema(() =>
+  zodSchema(
+    z.object({
+      maxTokensPerDoc: z.number().optional(),
+      priority: z.number().optional(),
+    }),
+  ),
+);

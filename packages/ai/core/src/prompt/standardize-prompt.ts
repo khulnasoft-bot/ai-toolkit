@@ -1,9 +1,5 @@
 import { InvalidPromptError } from '@ai-toolkit/provider';
-import {
-  ModelMessage,
-  safeValidateTypes,
-  SystemModelMessage,
-} from '@ai-toolkit/provider-utils';
+import { ModelMessage, safeValidateTypes, SystemModelMessage } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { modelMessageSchema } from './message';
 import { Prompt } from './prompt';
@@ -21,9 +17,7 @@ export type StandardizedPrompt = {
   messages: ModelMessage[];
 };
 
-export async function standardizePrompt(
-  prompt: Prompt,
-): Promise<StandardizedPrompt> {
+export async function standardizePrompt(prompt: Prompt): Promise<StandardizedPrompt> {
   if (prompt.prompt == null && prompt.messages == null) {
     throw new InvalidPromptError({
       prompt,
@@ -52,8 +46,7 @@ export async function standardizePrompt(
   ) {
     throw new InvalidPromptError({
       prompt,
-      message:
-        'system must be a string, SystemModelMessage, or array of SystemModelMessage',
+      message: 'system must be a string, SystemModelMessage, or array of SystemModelMessage',
     });
   }
 

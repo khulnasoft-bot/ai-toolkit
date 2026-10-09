@@ -1,10 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import {
-  convertToModelMessages,
-  streamText,
-  UIMessage,
-  InferUITools,
-} from '@ai-toolkit/ai';
+import { convertToModelMessages, streamText, UIMessage, InferUITools } from '@ai-toolkit/ai';
 
 export const maxDuration = 30;
 
@@ -16,11 +11,7 @@ const tools = {
   }),
 } as const;
 
-export type OpenAIResponsesMCPMessage = UIMessage<
-  never,
-  never,
-  InferUITools<typeof tools>
->;
+export type OpenAIResponsesMCPMessage = UIMessage<never, never, InferUITools<typeof tools>>;
 
 export async function POST(req: Request) {
   const { messages }: { messages: UIMessage[] } = await req.json();

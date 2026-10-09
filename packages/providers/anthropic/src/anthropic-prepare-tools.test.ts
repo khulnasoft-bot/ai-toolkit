@@ -775,9 +775,7 @@ describe('prepareTools', () => {
       });
 
       expect(result.tools?.[0]).toHaveProperty('defer_loading', true);
-      expect(result.tools?.[0]).toHaveProperty('allowed_callers', [
-        'code_execution_20250825',
-      ]);
+      expect(result.tools?.[0]).toHaveProperty('allowed_callers', ['code_execution_20250825']);
       expect(result.betas).toContain('advanced-tool-use-2025-11-20');
     });
   });
@@ -1046,8 +1044,7 @@ describe('webSearch_20250305OutputSchema', () => {
         url: 'https://test.com',
         title: null,
         pageAge: 'April 30, 2025',
-        encryptedContent:
-          'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
+        encryptedContent: 'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
         type: 'web_search_result',
       },
     ];
@@ -1065,8 +1062,7 @@ describe('webSearch_20250305OutputSchema', () => {
         url: 'https://test.com',
         title: 'Test title',
         pageAge: 'April 30, 2025',
-        encryptedContent:
-          'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
+        encryptedContent: 'EqgfCioIARgBIiQ3YTAwMjY1Mi1mZjM5LTQ1NGUtODgxNC1kNjNjNTk1ZWI3Y...',
         type: 'web_search_result',
       },
     ];

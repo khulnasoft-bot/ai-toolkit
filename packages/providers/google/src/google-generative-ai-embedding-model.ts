@@ -1,7 +1,4 @@
-import {
-  EmbeddingModelV3,
-  TooManyEmbeddingValuesForCallError,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, TooManyEmbeddingValuesForCallError } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
@@ -69,10 +66,7 @@ export class GoogleGenerativeAIEmbeddingModel implements EmbeddingModelV3 {
       });
     }
 
-    const mergedHeaders = combineHeaders(
-      await resolve(this.config.headers),
-      headers,
-    );
+    const mergedHeaders = combineHeaders(await resolve(this.config.headers), headers);
 
     // For single embeddings, use the single endpoint (ratelimits, etc.)
     if (values.length === 1) {

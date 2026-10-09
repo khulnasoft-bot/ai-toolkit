@@ -14,8 +14,7 @@ import { HumanInTheLoopUIMessage } from './types';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { messages }: { messages: HumanInTheLoopUIMessage[] } =
-    await req.json();
+  const { messages }: { messages: HumanInTheLoopUIMessage[] } = await req.json();
 
   const stream = createUIMessageStream({
     originalMessages: messages,
@@ -46,9 +45,7 @@ export async function POST(req: Request) {
         stopWhen: stepCountIs(5),
       });
 
-      writer.merge(
-        result.toUIMessageStream({ originalMessages: processedMessages }),
-      );
+      writer.merge(result.toUIMessageStream({ originalMessages: processedMessages }));
     },
     onFinish: ({}) => {
       // save messages here

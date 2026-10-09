@@ -22,9 +22,7 @@ const groqProviderOptionsSchema = z.object({
   timestampGranularities: z.array(z.string()).nullish(),
 });
 
-export type GroqTranscriptionCallOptions = z.infer<
-  typeof groqProviderOptionsSchema
->;
+export type GroqTranscriptionCallOptions = z.infer<typeof groqProviderOptionsSchema>;
 
 interface GroqTranscriptionModelConfig extends GroqConfig {
   _internal?: {
@@ -75,23 +73,17 @@ export class GroqTranscriptionModel implements TranscriptionModelV3 {
 
     // Add provider-specific options
     if (groqOptions) {
-      const transcriptionModelOptions: Omit<
-        GroqTranscriptionAPITypes,
-        'model'
-      > = {
+      const transcriptionModelOptions: Omit<GroqTranscriptionAPITypes, 'model'> = {
         language: groqOptions.language ?? undefined,
         prompt: groqOptions.prompt ?? undefined,
         response_format: groqOptions.responseFormat ?? undefined,
         temperature: groqOptions.temperature ?? undefined,
-        timestamp_granularities:
-          groqOptions.timestampGranularities ?? undefined,
+        timestamp_granularities: groqOptions.timestampGranularities ?? undefined,
       };
 
       for (const key in transcriptionModelOptions) {
         const value =
-          transcriptionModelOptions[
-            key as keyof Omit<GroqTranscriptionAPITypes, 'model'>
-          ];
+          transcriptionModelOptions[key as keyof Omit<GroqTranscriptionAPITypes, 'model'>];
         if (value !== undefined) {
           if (Array.isArray(value)) {
             for (const item of value) {
@@ -128,9 +120,7 @@ export class GroqTranscriptionModel implements TranscriptionModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       formData,
       failedResponseHandler: groqFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        groqTranscriptionResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(groqTranscriptionResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });

@@ -87,10 +87,9 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
       warnings.push({ type: 'unsupported', feature: 'stopSequences' });
     }
 
-    const { input, warnings: messageWarnings } =
-      await convertToHuggingFaceResponsesMessages({
-        prompt,
-      });
+    const { input, warnings: messageWarnings } = await convertToHuggingFaceResponsesMessages({
+      prompt,
+    });
 
     warnings.push(...messageWarnings);
 
@@ -149,9 +148,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
     return { args: baseArgs, warnings };
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
     const { args, warnings } = await this.getArgs(options);
 
     const body = {
@@ -173,9 +170,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
       failedResponseHandler: huggingfaceFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        huggingfaceResponsesResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(huggingfaceResponsesResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -307,9 +302,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
     return {
       content,
       finishReason: {
-        unified: mapHuggingFaceResponsesFinishReason(
-          response.incomplete_details?.reason ?? 'stop',
-        ),
+        unified: mapHuggingFaceResponsesFinishReason(response.incomplete_details?.reason ?? 'stop'),
         raw: response.incomplete_details?.reason ?? undefined,
       },
       usage: convertHuggingFaceResponsesUsage(response.usage),
@@ -330,9 +323,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs(options);
 
     const body = {
@@ -348,9 +339,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body,
       failedResponseHandler: huggingfaceFailedResponseHandler,
-      successfulResponseHandler: createEventSourceResponseHandler(
-        huggingfaceResponsesChunkSchema,
-      ),
+      successfulResponseHandler: createEventSourceResponseHandler(huggingfaceResponsesChunkSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -396,10 +385,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
             }
 
             if (isResponseOutputItemAddedChunk(value)) {
-              if (
-                value.item.type === 'message' &&
-                value.item.role === 'assistant'
-              ) {
+              if (value.item.type === 'message' && value.item.role === 'assistant') {
                 controller.enqueue({
                   type: 'text-start',
                   id: value.item.id,
@@ -430,10 +416,7 @@ export class HuggingFaceResponsesLanguageModel implements LanguageModelV3 {
             }
 
             if (isResponseOutputItemDoneChunk(value)) {
-              if (
-                value.item.type === 'message' &&
-                value.item.role === 'assistant'
-              ) {
+              if (value.item.type === 'message' && value.item.role === 'assistant') {
                 controller.enqueue({
                   type: 'text-end',
                   id: value.item.id,
@@ -780,7 +763,9 @@ const huggingfaceResponsesChunkSchema = z.union([
   textDeltaChunkSchema,
   responseCompletedChunkSchema,
   responseCreatedChunkSchema,
-  z.object({ type: z.string() }).loose(), // fallback for unknown chunks
+  z
+    .object({ type: z.string() })
+    .loose(), // fallback for unknown chunks
 ]);
 
 function isResponseOutputItemAddedChunk(

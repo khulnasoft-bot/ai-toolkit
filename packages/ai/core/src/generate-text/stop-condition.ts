@@ -11,9 +11,7 @@ export function stepCountIs(stepCount: number): StopCondition<any> {
 
 export function hasToolCall(toolName: string): StopCondition<any> {
   return ({ steps }) =>
-    steps[steps.length - 1]?.toolCalls?.some(
-      toolCall => toolCall.toolName === toolName,
-    ) ?? false;
+    steps[steps.length - 1]?.toolCalls?.some(toolCall => toolCall.toolName === toolName) ?? false;
 }
 
 export async function isStopConditionMet<TOOLS extends ToolSet>({
@@ -23,7 +21,7 @@ export async function isStopConditionMet<TOOLS extends ToolSet>({
   stopConditions: Array<StopCondition<TOOLS>>;
   steps: Array<StepResult<TOOLS>>;
 }): Promise<boolean> {
-  return (
-    await Promise.all(stopConditions.map(condition => condition({ steps })))
-  ).some(result => result);
+  return (await Promise.all(stopConditions.map(condition => condition({ steps })))).some(
+    result => result,
+  );
 }

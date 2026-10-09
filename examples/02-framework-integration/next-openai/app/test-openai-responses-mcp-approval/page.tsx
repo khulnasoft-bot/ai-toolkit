@@ -24,14 +24,11 @@ function lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses({
   }, -1);
 
   // Include provider-executed tools (unlike the default helper)
-  const lastStepToolInvocations = message.parts
-    .slice(lastStepStartIndex + 1)
-    .filter(isToolUIPart);
+  const lastStepToolInvocations = message.parts.slice(lastStepStartIndex + 1).filter(isToolUIPart);
 
   return (
     // has at least one tool approval response
-    lastStepToolInvocations.filter(part => part.state === 'approval-responded')
-      .length > 0 &&
+    lastStepToolInvocations.filter(part => part.state === 'approval-responded').length > 0 &&
     // all tool approvals must have a response
     lastStepToolInvocations.every(
       part =>
@@ -48,15 +45,12 @@ export default function TestOpenAIResponsesMCPApproval() {
       transport: new DefaultChatTransport({
         api: '/api/chat-openai-responses-mcp-approval',
       }),
-      sendAutomaticallyWhen:
-        lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses,
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithProviderExecutedApprovalResponses,
     });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">
-        OpenAI Responses MCP Tool Approval Test
-      </h1>
+      <h1 className="mb-4 text-xl font-bold">OpenAI Responses MCP Tool Approval Test</h1>
       <p className="mb-4 text-sm text-gray-600">
         Try asking: &quot;Shorten the link https://studio.khulnasoft.com/&quot;
       </p>
@@ -77,10 +71,7 @@ export default function TestOpenAIResponsesMCPApproval() {
               case 'dynamic-tool':
                 // MCP tools from OpenAI are dynamic tools - check if it's an MCP tool
                 // by looking at the toolName (starts with 'mcp.')
-                if (
-                  part.toolName.startsWith('mcp.') ||
-                  part.toolName === 'mcp'
-                ) {
+                if (part.toolName.startsWith('mcp.') || part.toolName === 'mcp') {
                   return (
                     <div key={index} className="mb-4">
                       <OpenAIMCPApprovalView

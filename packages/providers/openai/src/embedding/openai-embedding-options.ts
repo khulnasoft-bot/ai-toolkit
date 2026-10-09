@@ -25,6 +25,4 @@ monitor and detect abuse. Learn more.
   ),
 );
 
-export type OpenAIEmbeddingProviderOptions = InferSchema<
-  typeof openaiEmbeddingProviderOptions
->;
+export type OpenAIEmbeddingProviderOptions = InferSchema<typeof openaiEmbeddingProviderOptions>;

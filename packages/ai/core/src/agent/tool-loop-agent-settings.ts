@@ -60,9 +60,7 @@ When the condition is an array, any of the conditions can be met to stop the gen
 
 @default stepCountIs(20)
    */
-  stopWhen?:
-    | StopCondition<NoInfer<TOOLS>>
-    | Array<StopCondition<NoInfer<TOOLS>>>;
+  stopWhen?: StopCondition<NoInfer<TOOLS>> | Array<StopCondition<NoInfer<TOOLS>>>;
 
   /**
 Optional telemetry configuration (experimental).

@@ -4,11 +4,7 @@ import {
   LanguageModelV3Usage,
   SharedV3Warning,
 } from '@ai-toolkit/provider';
-import {
-  InferSchema,
-  ProviderOptions,
-  safeParseJSON,
-} from '@ai-toolkit/provider-utils';
+import { InferSchema, ProviderOptions, safeParseJSON } from '@ai-toolkit/provider-utils';
 import {
   CallSettings,
   CallWarning,
@@ -45,9 +41,7 @@ type Renderer<T extends Array<any>> = (
   | Generator<Streamable, Streamable, void>
   | AsyncGenerator<Streamable, Streamable, void>;
 
-type RenderTool<
-  INPUT_SCHEMA extends z4.core.$ZodType | z3.Schema | Schema = any,
-> = {
+type RenderTool<INPUT_SCHEMA extends z4.core.$ZodType | z3.Schema | Schema = any> = {
   description?: string;
   inputSchema: INPUT_SCHEMA;
   generate?: Renderer<
@@ -87,8 +81,7 @@ type RenderResult = {
   value: ReactNode;
 } & LanguageModelV3StreamResult;
 
-const defaultTextRenderer: RenderText = ({ content }: { content: string }) =>
-  content;
+const defaultTextRenderer: RenderText = ({ content }: { content: string }) => content;
 
 /**
  * `streamUI` is a helper function to create a streamable UI from LLMs.
@@ -177,14 +170,10 @@ functionality that can be fully encapsulated in the provider.
     );
   }
   if ('functions' in settings) {
-    throw new Error(
-      '`functions` is not supported in `streamUI`, use `tools` instead.',
-    );
+    throw new Error('`functions` is not supported in `streamUI`, use `tools` instead.');
   }
   if ('provider' in settings) {
-    throw new Error(
-      '`provider` is no longer needed in `streamUI`. Use `model` instead.',
-    );
+    throw new Error('`provider` is no longer needed in `streamUI`. Use `model` instead.');
   }
   if (tools) {
     for (const [name, tool] of Object.entries(tools)) {
@@ -230,9 +219,7 @@ functionality that can be fully encapsulated in the provider.
     // it is appended to the `finished` promise chain to ensure the render call
     // is finished before the next render call starts.
     const renderFinished = createResolvablePromise<void>();
-    finished = finished
-      ? finished.then(() => renderFinished.promise)
-      : renderFinished.promise;
+    finished = finished ? finished.then(() => renderFinished.promise) : renderFinished.promise;
 
     const rendererResult = renderer(...args);
 

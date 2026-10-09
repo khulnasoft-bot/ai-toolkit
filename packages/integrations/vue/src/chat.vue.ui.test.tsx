@@ -1,7 +1,4 @@
-import {
-  createTestServer,
-  TestResponseController,
-} from '@ai-toolkit/test-server/with-vitest';
+import { createTestServer, TestResponseController } from '@ai-toolkit/test-server/with-vitest';
 import '@testing-library/jest-dom/vitest';
 import userEvent from '@testing-library/user-event';
 import { screen, waitFor } from '@testing-library/vue';
@@ -49,9 +46,7 @@ describe('prepareSubmitMessagesRequest', () => {
       expect(element.textContent?.trim() ?? '').not.toBe('');
     });
 
-    const value = JSON.parse(
-      screen.getByTestId('on-options').textContent ?? '',
-    );
+    const value = JSON.parse(screen.getByTestId('on-options').textContent ?? '');
 
     expect(screen.getByTestId('message-0')).toHaveTextContent('User: hi');
 
@@ -80,9 +75,7 @@ describe('prepareSubmitMessagesRequest', () => {
     });
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: Hello, world.',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello, world.');
   });
 });
 
@@ -108,9 +101,7 @@ describe('data protocol stream', () => {
     expect(screen.getByTestId('message-0')).toHaveTextContent('User: hi');
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: Hello, world.',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello, world.');
   });
 
   it('should show error response', async () => {
@@ -145,9 +136,7 @@ describe('data protocol stream', () => {
       });
 
       controller.write(formatChunk({ type: 'text-start', id: '0' }));
-      controller.write(
-        formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-      );
+      controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
       controller.write(formatChunk({ type: 'text-end', id: '0' }));
 
       await waitFor(() => {
@@ -172,18 +161,12 @@ describe('data protocol stream', () => {
 
       try {
         await userEvent.click(screen.getByTestId('do-append'));
-        await waitFor(() =>
-          expect(screen.getByTestId('status')).toHaveTextContent('submitted'),
-        );
+        await waitFor(() => expect(screen.getByTestId('status')).toHaveTextContent('submitted'));
 
         controller.write(formatChunk({ type: 'text-start', id: '0' }));
-        controller.write(
-          formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }),
-        );
+        controller.write(formatChunk({ type: 'text-delta', id: '0', delta: 'Hello' }));
 
-        await waitFor(() =>
-          expect(screen.getByTestId('status')).toHaveTextContent('streaming'),
-        );
+        await waitFor(() => expect(screen.getByTestId('status')).toHaveTextContent('streaming'));
 
         Object.defineProperty(document, 'visibilityState', {
           configurable: true,
@@ -191,15 +174,11 @@ describe('data protocol stream', () => {
         });
         document.dispatchEvent(new Event('visibilitychange'));
 
-        controller.write(
-          formatChunk({ type: 'text-delta', id: '0', delta: ' world.' }),
-        );
+        controller.write(formatChunk({ type: 'text-delta', id: '0', delta: ' world.' }));
         controller.write(formatChunk({ type: 'text-end', id: '0' }));
         controller.close();
 
-        await waitFor(() =>
-          expect(screen.getByTestId('status')).toHaveTextContent('ready'),
-        );
+        await waitFor(() => expect(screen.getByTestId('status')).toHaveTextContent('ready'));
       } finally {
         Object.defineProperty(document, 'visibilityState', {
           configurable: true,
@@ -245,9 +224,7 @@ describe('data protocol stream', () => {
       expect(element.textContent?.trim() ?? '').not.toBe('');
     });
 
-    const value = JSON.parse(
-      screen.getByTestId('on-finish-calls').textContent ?? '',
-    );
+    const value = JSON.parse(screen.getByTestId('on-finish-calls').textContent ?? '');
 
     expect(value).toStrictEqual([
       {
@@ -291,9 +268,7 @@ describe('text stream', () => {
     expect(screen.getByTestId('message-0')).toHaveTextContent('User: hi');
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: Hello, world.',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: Hello, world.');
   });
 
   it('should invoke onFinish when the stream finishes', async () => {
@@ -309,9 +284,7 @@ describe('text stream', () => {
       expect(element.textContent?.trim() ?? '').not.toBe('');
     });
 
-    const value = JSON.parse(
-      screen.getByTestId('on-finish-calls').textContent ?? '',
-    );
+    const value = JSON.parse(screen.getByTestId('on-finish-calls').textContent ?? '');
 
     expect(value).toStrictEqual([
       {
@@ -321,10 +294,7 @@ describe('text stream', () => {
         message: {
           id: expect.any(String),
           role: 'assistant',
-          parts: [
-            { type: 'step-start' },
-            { text: 'Hello, world.', type: 'text', state: 'done' },
-          ],
+          parts: [{ type: 'step-start' }, { text: 'Hello, world.', type: 'text', state: 'done' }],
         },
         messages: [
           {
@@ -335,10 +305,7 @@ describe('text stream', () => {
           {
             id: expect.any(String),
             role: 'assistant',
-            parts: [
-              { type: 'step-start' },
-              { text: 'Hello, world.', type: 'text', state: 'done' },
-            ],
+            parts: [{ type: 'step-start' }, { text: 'Hello, world.', type: 'text', state: 'done' }],
           },
         ],
       },
@@ -411,9 +378,7 @@ describe('regenerate', () => {
     });
 
     await screen.findByTestId('message-1');
-    expect(screen.getByTestId('message-1')).toHaveTextContent(
-      'AI: second response',
-    );
+    expect(screen.getByTestId('message-1')).toHaveTextContent('AI: second response');
   });
 });
 
@@ -422,9 +387,7 @@ describe('tool invocations', () => {
 
   it('should display partial tool call, tool call, and tool result', async () => {
     const controller = new TestResponseController();
-    server.urls['/api/chat'].response = [
-      { type: 'controlled-stream', controller },
-    ];
+    server.urls['/api/chat'].response = [{ type: 'controlled-stream', controller }];
 
     await userEvent.click(screen.getByTestId('do-append'));
 
@@ -480,9 +443,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -500,9 +461,7 @@ describe('tool invocations', () => {
     controller.close();
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'output-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -533,9 +492,7 @@ describe('tool invocations', () => {
     );
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('message-1').textContent ?? ''),
-      ).toStrictEqual({
+      expect(JSON.parse(screen.getByTestId('message-1').textContent ?? '')).toStrictEqual({
         state: 'input-available',
         input: { testArg: 'test-value' },
         toolCallId: 'tool-call-0',
@@ -640,9 +597,7 @@ describe('file attachments with data url', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-0',
           role: 'user',
@@ -705,9 +660,7 @@ describe('file attachments with data url', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           id: 'id-0',
@@ -767,9 +720,7 @@ describe('file attachments with url', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           role: 'user',
           id: 'id-0',
@@ -832,9 +783,7 @@ describe('attachments with empty submit', () => {
     await userEvent.click(submitButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-0',
           role: 'user',
@@ -891,9 +840,7 @@ describe('should append message with attachments', () => {
     await userEvent.click(appendButton);
 
     await waitFor(() => {
-      expect(
-        JSON.parse(screen.getByTestId('messages').textContent ?? ''),
-      ).toStrictEqual([
+      expect(JSON.parse(screen.getByTestId('messages').textContent ?? '')).toStrictEqual([
         {
           id: 'id-0',
           parts: [
@@ -947,8 +894,6 @@ describe('init messages', () => {
     expect(screen.getByTestId('message-2')).toHaveTextContent('User: Hi.');
 
     await screen.findByTestId('message-3');
-    expect(screen.getByTestId('message-3')).toHaveTextContent(
-      'AI: Hello, world.',
-    );
+    expect(screen.getByTestId('message-3')).toHaveTextContent('AI: Hello, world.');
   });
 });

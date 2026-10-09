@@ -18,9 +18,7 @@ const server = createTestServer({
 });
 
 describe('doGenerate', () => {
-  function prepareJsonResponse({
-    headers,
-  }: { headers?: Record<string, string> } = {}) {
+  function prepareJsonResponse({ headers }: { headers?: Record<string, string> } = {}) {
     server.urls['https://api.openai.com/v1/images/generations'].response = {
       type: 'json-value',
       headers,
@@ -28,8 +26,7 @@ describe('doGenerate', () => {
         created: 1733837122,
         data: [
           {
-            revised_prompt:
-              'A charming visual illustration of a baby sea otter swimming joyously.',
+            revised_prompt: 'A charming visual illustration of a baby sea otter swimming joyously.',
             b64_json: 'base64-image-1',
           },
           {
@@ -98,9 +95,7 @@ describe('doGenerate', () => {
       'openai-organization': 'test-organization',
       'openai-project': 'test-project',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/openai/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/openai/0.0.0-test`);
   });
 
   it('should extract the generated images', async () => {
@@ -216,12 +211,8 @@ describe('doGenerate', () => {
 
     const afterDate = new Date();
 
-    expect(result.response.timestamp.getTime()).toBeGreaterThanOrEqual(
-      beforeDate.getTime(),
-    );
-    expect(result.response.timestamp.getTime()).toBeLessThanOrEqual(
-      afterDate.getTime(),
-    );
+    expect(result.response.timestamp.getTime()).toBeGreaterThanOrEqual(beforeDate.getTime());
+    expect(result.response.timestamp.getTime()).toBeLessThanOrEqual(afterDate.getTime());
     expect(result.response.modelId).toBe('dall-e-3');
   });
 
@@ -240,8 +231,7 @@ describe('doGenerate', () => {
       providerOptions: {},
     });
 
-    const requestBody =
-      await server.calls[server.calls.length - 1].requestBodyJson;
+    const requestBody = await server.calls[server.calls.length - 1].requestBodyJson;
     expect(requestBody).toStrictEqual({
       model: 'gpt-image-1',
       prompt,
@@ -268,8 +258,7 @@ describe('doGenerate', () => {
       providerOptions: {},
     });
 
-    const requestBody =
-      await server.calls[server.calls.length - 1].requestBodyJson;
+    const requestBody = await server.calls[server.calls.length - 1].requestBodyJson;
     expect(requestBody).toStrictEqual({
       model: 'gpt-image-1.5-2025-12-16',
       prompt,
@@ -336,8 +325,7 @@ describe('doGenerate', () => {
       providerOptions: {},
     });
 
-    const requestBody =
-      await server.calls[server.calls.length - 1].requestBodyJson;
+    const requestBody = await server.calls[server.calls.length - 1].requestBodyJson;
     expect(requestBody).toHaveProperty('response_format', 'b64_json');
   });
 
@@ -359,8 +347,7 @@ describe('doGenerate', () => {
       openai: {
         images: [
           {
-            revisedPrompt:
-              'A charming visual illustration of a baby sea otter swimming joyously.',
+            revisedPrompt: 'A charming visual illustration of a baby sea otter swimming joyously.',
             created: 1733837122,
             size: undefined,
             quality: undefined,
@@ -421,9 +408,7 @@ describe('doGenerate', () => {
 });
 
 describe('doGenerate - image editing', () => {
-  function prepareEditResponse({
-    headers,
-  }: { headers?: Record<string, string> } = {}) {
+  function prepareEditResponse({ headers }: { headers?: Record<string, string> } = {}) {
     server.urls['https://api.openai.com/v1/images/edits'].response = {
       type: 'json-value',
       headers,
@@ -458,9 +443,7 @@ describe('doGenerate - image editing', () => {
       providerOptions: {},
     });
 
-    expect(server.calls[0].requestUrl).toBe(
-      'https://api.openai.com/v1/images/edits',
-    );
+    expect(server.calls[0].requestUrl).toBe('https://api.openai.com/v1/images/edits');
   });
 
   it('should send image as form data with Uint8Array input', async () => {

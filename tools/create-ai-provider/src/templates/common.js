@@ -14,12 +14,7 @@ export function toEnvPrefix(kebab) {
   return kebab.replace(/-/g, '_').toUpperCase();
 }
 
-export function buildPackageJson({
-  name,
-  description,
-  keywords,
-  dependencies,
-}) {
+export function buildPackageJson({ name, description, keywords, dependencies }) {
   return (
     JSON.stringify(
       {
@@ -174,9 +169,5 @@ export const VERSION: string =
 `;
 
 export function baseTsconfigReferences(extra = []) {
-  return [
-    { path: '../../validation/provider' },
-    { path: '../../core/provider-utils' },
-    ...extra,
-  ];
+  return [{ path: '../../validation/provider' }, { path: '../../core/provider-utils' }, ...extra];
 }

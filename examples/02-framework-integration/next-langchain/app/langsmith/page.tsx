@@ -33,9 +33,8 @@ export default function LangSmithPage() {
       title="LangSmith Deployment"
       description={
         <>
-          Uses <code>LangSmithDeploymentTransport</code> to communicate directly
-          from the browser to a LangGraph deployment, bypassing the Next.js API
-          route.
+          Uses <code>LangSmithDeploymentTransport</code> to communicate directly from the browser to
+          a LangGraph deployment, bypassing the Next.js API route.
         </>
       }
       messages={messages}
@@ -43,11 +42,7 @@ export default function LangSmithPage() {
       status={status}
       error={error}
       placeholder="Send a message..."
-      suggestions={[
-        "What's the weather in Paris?",
-        'Calculate 25 * 4 + 10',
-        'Tell me a fun fact',
-      ]}
+      suggestions={["What's the weather in Paris?", 'Calculate 25 * 4 + 10', 'Tell me a fun fact']}
       configPanel={
         <LangsmithConfigPanel
           deploymentUrl={deploymentUrl}

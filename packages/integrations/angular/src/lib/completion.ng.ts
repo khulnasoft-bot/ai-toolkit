@@ -83,10 +83,7 @@ export class Completion {
     }
   };
 
-  #triggerRequest = async (
-    prompt: string,
-    options?: CompletionRequestOptions,
-  ) => {
+  #triggerRequest = async (prompt: string, options?: CompletionRequestOptions) => {
     return callCompletionApi({
       api: this.api,
       prompt,

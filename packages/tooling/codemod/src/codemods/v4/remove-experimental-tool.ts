@@ -10,9 +10,7 @@ export default createTransformer((fileInfo, api, options, context) => {
   root
     .find(j.ImportDeclaration)
     .filter(
-      path =>
-        path.node.source.value === 'ai-toolkit' ||
-        path.node.source.value === 'ai-toolkit',
+      path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
     )
     .forEach(path => {
       path.node.specifiers?.forEach(spec => {
@@ -36,8 +34,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .find(j.TSTypeReference)
     .filter(
       path =>
-        path.node.typeName.type === 'Identifier' &&
-        targetImports.has(path.node.typeName.name),
+        path.node.typeName.type === 'Identifier' && targetImports.has(path.node.typeName.name),
     )
     .forEach(path => {
       if (path.node.typeName.type === 'Identifier') {

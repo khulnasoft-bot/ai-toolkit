@@ -7,6 +7,4 @@ export const deepseekToolsAgent = new ToolLoopAgent({
   tools: { weather: weatherTool },
 });
 
-export type DeepSeekToolsAgentMessage = InferAgentUIMessage<
-  typeof deepseekToolsAgent
->;
+export type DeepSeekToolsAgentMessage = InferAgentUIMessage<typeof deepseekToolsAgent>;

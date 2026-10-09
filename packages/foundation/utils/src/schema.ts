@@ -34,9 +34,7 @@ export {
  * @param createValidator A function that creates a schema.
  * @returns A function that returns a schema.
  */
-export function lazySchema<SCHEMA>(
-  createSchema: () => Schema<SCHEMA>,
-): LazySchema<SCHEMA> {
+export function lazySchema<SCHEMA>(createSchema: () => Schema<SCHEMA>): LazySchema<SCHEMA> {
   // cache the validator to avoid initializing it multiple times
   let schema: Schema<SCHEMA> | undefined;
   return () => {
@@ -61,9 +59,7 @@ export function jsonSchema<OBJECT = unknown>(
   {
     validate,
   }: {
-    validate?: (
-      value: unknown,
-    ) => ValidationResult<OBJECT> | PromiseLike<ValidationResult<OBJECT>>;
+    validate?: (value: unknown) => ValidationResult<OBJECT> | PromiseLike<ValidationResult<OBJECT>>;
   } = {},
 ): Schema<OBJECT> {
   return {
@@ -90,9 +86,7 @@ function isSchema(value: unknown): value is Schema {
   );
 }
 
-export function asSchema<OBJECT>(
-  schema: FlexibleSchema<OBJECT> | undefined,
-): Schema<OBJECT> {
+export function asSchema<OBJECT>(schema: FlexibleSchema<OBJECT> | undefined): Schema<OBJECT> {
   return schema == null
     ? jsonSchema({ properties: {}, additionalProperties: false })
     : isSchema(schema)
@@ -104,9 +98,7 @@ export function asSchema<OBJECT>(
         : schema();
 }
 
-function standardSchema<OBJECT>(
-  standardSchema: StandardSchema<OBJECT>,
-): Schema<OBJECT> {
+function standardSchema<OBJECT>(standardSchema: StandardSchema<OBJECT>): Schema<OBJECT> {
   return jsonSchema(
     () =>
       addAdditionalPropertiesToJsonSchema(
@@ -199,9 +191,7 @@ export function zod4Schema<OBJECT>(
   );
 }
 
-export function isZod4Schema(
-  zodSchema: ZodSchema<any>,
-): zodSchema is z4.core.$ZodType<any, any> {
+export function isZod4Schema(zodSchema: ZodSchema<any>): zodSchema is z4.core.$ZodType<any, any> {
   // https://zod.dev/library-authors?id=how-to-support-zod-3-and-zod-4-simultaneously
   return '_zod' in zodSchema;
 }
@@ -221,9 +211,6 @@ export function zodSchema<OBJECT>(
   if (isZod4Schema(zodSchema)) {
     return zod4Schema(zodSchema as z4.core.$ZodType<OBJECT, any>, options);
   } else {
-    return zod3Schema(
-      zodSchema as z3.Schema<OBJECT, z3.ZodTypeDef, any>,
-      options,
-    );
+    return zod3Schema(zodSchema as z3.Schema<OBJECT, z3.ZodTypeDef, any>, options);
   }
 }

@@ -157,10 +157,7 @@ test('minor update - with "minor" label', async () => {
   });
 
   const message = await verifyChangesets(event, env, readFile);
-  assert.strictEqual(
-    message,
-    'Skipping changeset verification - "minor" label found',
-  );
+  assert.strictEqual(message, 'Skipping changeset verification - "minor" label found');
 });
 
 test('major update - with "major" label', async () => {
@@ -186,8 +183,5 @@ test('major update - with "major" label', async () => {
   });
 
   const message = await verifyChangesets(event, env, readFile);
-  assert.strictEqual(
-    message,
-    'Skipping changeset verification - "major" label found',
-  );
+  assert.strictEqual(message, 'Skipping changeset verification - "major" label found');
 });

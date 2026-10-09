@@ -12,6 +12,5 @@ const codeExecutionToolFactory = createProviderToolFactoryWithOutputSchema({
   outputSchema: codeExecutionOutputSchema,
 });
 
-export const codeExecution = (
-  args: Parameters<typeof codeExecutionToolFactory>[0] = {},
-) => codeExecutionToolFactory(args);
+export const codeExecution = (args: Parameters<typeof codeExecutionToolFactory>[0] = {}) =>
+  codeExecutionToolFactory(args);

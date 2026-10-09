@@ -11,15 +11,10 @@ export default createTransformer((fileInfo, api, options, context) => {
     const node = importPath.node;
 
     // Check if the source is 'ai-toolkit'
-    if (
-      node.source.value !== 'ai-toolkit' &&
-      node.source.value !== 'ai-toolkit'
-    )
-      return;
+    if (node.source.value !== 'ai-toolkit' && node.source.value !== 'ai-toolkit') return;
 
     // Check named imports and rename them
-    const specifiers =
-      node.specifiers?.filter(s => j.ImportSpecifier.check(s)) ?? [];
+    const specifiers = node.specifiers?.filter(s => j.ImportSpecifier.check(s)) ?? [];
 
     for (const specifier of specifiers) {
       if (
@@ -28,17 +23,13 @@ export default createTransformer((fileInfo, api, options, context) => {
         specifier.imported.name === 'experimental_wrapLanguageModel'
       ) {
         // Track the local name that's being used in the code
-        importedLocalName =
-          specifier.local?.name || 'experimental_wrapLanguageModel';
+        importedLocalName = specifier.local?.name || 'experimental_wrapLanguageModel';
 
         // Update the import name
         specifier.imported.name = 'wrapLanguageModel';
 
         // If there's no alias, we also need to update the local name
-        if (
-          !specifier.local ||
-          specifier.local.name === 'experimental_wrapLanguageModel'
-        ) {
+        if (!specifier.local || specifier.local.name === 'experimental_wrapLanguageModel') {
           specifier.local = j.identifier('wrapLanguageModel');
         }
 
@@ -48,10 +39,7 @@ export default createTransformer((fileInfo, api, options, context) => {
   });
 
   // If we found an import, also rename all usages in the code
-  if (
-    importedLocalName &&
-    importedLocalName === 'experimental_wrapLanguageModel'
-  ) {
+  if (importedLocalName && importedLocalName === 'experimental_wrapLanguageModel') {
     root.find(j.Identifier).forEach(identifierPath => {
       const node = identifierPath.node;
 
@@ -69,11 +57,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         }
 
         // Skip if this is a property name in an object (e.g., { experimental_wrapLanguageModel: something })
-        if (
-          parent &&
-          j.Property.check(parent.node) &&
-          parent.node.key === node
-        ) {
+        if (parent && j.Property.check(parent.node) && parent.node.key === node) {
           return;
         }
 

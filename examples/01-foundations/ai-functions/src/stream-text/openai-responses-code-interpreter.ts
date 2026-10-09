@@ -59,9 +59,6 @@ run(async () => {
     }
   }
   for await (const containerFile of containerfileList) {
-    await downloadOpenaiContainerFile(
-      containerFile.containerId,
-      containerFile.fileId,
-    );
+    await downloadOpenaiContainerFile(containerFile.containerId, containerFile.fileId);
   }
 });

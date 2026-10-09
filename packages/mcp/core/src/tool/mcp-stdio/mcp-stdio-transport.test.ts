@@ -35,9 +35,7 @@ describe('StdioMCPTransport', () => {
       removeAllListeners: vi.fn(),
     };
 
-    vi.mocked(createChildProcess).mockReturnValue(
-      mockChildProcess as unknown as ChildProcess,
-    );
+    vi.mocked(createChildProcess).mockReturnValue(mockChildProcess as unknown as ChildProcess);
 
     transport = new StdioMCPTransport({
       command: 'test-command',
@@ -54,29 +52,18 @@ describe('StdioMCPTransport', () => {
       const stdinOnSpy = vi.spyOn(mockStdin, 'on');
       const stdoutOnSpy = vi.spyOn(mockStdout, 'on');
 
-      mockChildProcess.on.mockImplementation(
-        (event: string, callback: () => void) => {
-          if (event === 'spawn') {
-            callback();
-          }
-        },
-      );
+      mockChildProcess.on.mockImplementation((event: string, callback: () => void) => {
+        if (event === 'spawn') {
+          callback();
+        }
+      });
 
       const startPromise = transport.start();
       await expect(startPromise).resolves.toBeUndefined();
 
-      expect(mockChildProcess.on).toHaveBeenCalledWith(
-        'error',
-        expect.any(Function),
-      );
-      expect(mockChildProcess.on).toHaveBeenCalledWith(
-        'spawn',
-        expect.any(Function),
-      );
-      expect(mockChildProcess.on).toHaveBeenCalledWith(
-        'close',
-        expect.any(Function),
-      );
+      expect(mockChildProcess.on).toHaveBeenCalledWith('error', expect.any(Function));
+      expect(mockChildProcess.on).toHaveBeenCalledWith('spawn', expect.any(Function));
+      expect(mockChildProcess.on).toHaveBeenCalledWith('close', expect.any(Function));
 
       expect(stdinOnSpy).toHaveBeenCalledWith('error', expect.any(Function));
       expect(stdoutOnSpy).toHaveBeenCalledWith('error', expect.any(Function));
@@ -84,13 +71,11 @@ describe('StdioMCPTransport', () => {
     });
 
     it('should throw error if already started', async () => {
-      mockChildProcess.on.mockImplementation(
-        (event: string, callback: () => void) => {
-          if (event === 'spawn') {
-            callback();
-          }
-        },
-      );
+      mockChildProcess.on.mockImplementation((event: string, callback: () => void) => {
+        if (event === 'spawn') {
+          callback();
+        }
+      });
       const firstStart = transport.start();
       await expect(firstStart).resolves.toBeUndefined();
       const secondStart = transport.start();
@@ -103,13 +88,11 @@ describe('StdioMCPTransport', () => {
       transport.onerror = onErrorSpy;
 
       // simulate `spawn` failure by emitting error event after returning child process
-      mockChildProcess.on.mockImplementation(
-        (event: string, callback: (err: Error) => void) => {
-          if (event === 'error') {
-            callback(error);
-          }
-        },
-      );
+      mockChildProcess.on.mockImplementation((event: string, callback: (err: Error) => void) => {
+        if (event === 'error') {
+          callback(error);
+        }
+      });
 
       const startPromise = transport.start();
       await expect(startPromise).rejects.toThrow('Spawn failed');
@@ -119,13 +102,11 @@ describe('StdioMCPTransport', () => {
 
   describe('send', () => {
     beforeEach(async () => {
-      mockChildProcess.on.mockImplementation(
-        (event: string, callback: () => void) => {
-          if (event === 'spawn') {
-            callback();
-          }
-        },
-      );
+      mockChildProcess.on.mockImplementation((event: string, callback: () => void) => {
+        if (event === 'spawn') {
+          callback();
+        }
+      });
       await transport.start();
     });
 
@@ -141,9 +122,7 @@ describe('StdioMCPTransport', () => {
 
       await transport.send(message);
 
-      expect(mockStdin.write).toHaveBeenCalledWith(
-        JSON.stringify(message) + '\n',
-      );
+      expect(mockStdin.write).toHaveBeenCalledWith(JSON.stringify(message) + '\n');
     });
 
     it('should handle write backpressure', async () => {
@@ -181,13 +160,11 @@ describe('StdioMCPTransport', () => {
     const onMessageSpy = vi.fn();
 
     beforeEach(async () => {
-      mockChildProcess.on.mockImplementation(
-        (event: string, callback: () => void) => {
-          if (event === 'spawn') {
-            callback();
-          }
-        },
-      );
+      mockChildProcess.on.mockImplementation((event: string, callback: () => void) => {
+        if (event === 'spawn') {
+          callback();
+        }
+      });
       transport.onmessage = onMessageSpy;
       await transport.start();
     });
@@ -223,15 +200,13 @@ describe('StdioMCPTransport', () => {
     const onCloseSpy = vi.fn();
 
     beforeEach(async () => {
-      mockChildProcess.on.mockImplementation(
-        (event: string, callback: (code?: number) => void) => {
-          if (event === 'spawn') {
-            callback();
-          } else if (event === 'close') {
-            callback(0);
-          }
-        },
-      );
+      mockChildProcess.on.mockImplementation((event: string, callback: (code?: number) => void) => {
+        if (event === 'spawn') {
+          callback();
+        } else if (event === 'close') {
+          callback(0);
+        }
+      });
       transport.onclose = onCloseSpy;
       await transport.start();
     });
@@ -239,10 +214,7 @@ describe('StdioMCPTransport', () => {
     it('should close the transport successfully', async () => {
       await transport.close();
 
-      expect(mockChildProcess.on).toHaveBeenCalledWith(
-        'close',
-        expect.any(Function),
-      );
+      expect(mockChildProcess.on).toHaveBeenCalledWith('close', expect.any(Function));
       expect(onCloseSpy).toHaveBeenCalled();
     });
   });

@@ -1,9 +1,5 @@
 import { GoogleErrorData, google as provider } from '@ai-toolkit/google';
-import {
-  APICallError,
-  ImageModelV3,
-  LanguageModelV3,
-} from '@ai-toolkit/provider';
+import { APICallError, ImageModelV3, LanguageModelV3 } from '@ai-toolkit/provider';
 import 'dotenv/config';
 import { expect } from 'vitest';
 import {
@@ -17,19 +13,13 @@ import {
 import { wrapLanguageModel } from '@ai-toolkit/ai';
 import { defaultSettingsMiddleware } from '@ai-toolkit/ai';
 
-const createChatModel = (
-  modelId: string,
-): ModelWithCapabilities<LanguageModelV3> =>
+const createChatModel = (modelId: string): ModelWithCapabilities<LanguageModelV3> =>
   createLanguageModelWithCapabilities(provider.chat(modelId));
 
-const createImageModel = (
-  modelId: string,
-): ModelWithCapabilities<ImageModelV3> =>
+const createImageModel = (modelId: string): ModelWithCapabilities<ImageModelV3> =>
   createImageModelWithCapabilities(provider.image(modelId));
 
-const createSearchGroundedModel = (
-  modelId: string,
-): ModelWithCapabilities<LanguageModelV3> => {
+const createSearchGroundedModel = (modelId: string): ModelWithCapabilities<LanguageModelV3> => {
   const model = provider.chat(modelId);
   return {
     model: wrapLanguageModel({
@@ -58,9 +48,7 @@ createFeatureTestSuite({
       // createChatModel('gemini-1.0-pro'),
     ],
     embeddingModels: [
-      createEmbeddingModelWithCapabilities(
-        provider.embeddingModel('gemini-embedding-001'),
-      ),
+      createEmbeddingModelWithCapabilities(provider.embeddingModel('gemini-embedding-001')),
     ],
     imageModels: [createImageModel('imagen-3.0-generate-002')],
   },

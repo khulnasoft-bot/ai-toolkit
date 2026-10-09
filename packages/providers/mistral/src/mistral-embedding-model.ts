@@ -1,7 +1,4 @@
-import {
-  EmbeddingModelV3,
-  TooManyEmbeddingValuesForCallError,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, TooManyEmbeddingValuesForCallError } from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
@@ -31,10 +28,7 @@ export class MistralEmbeddingModel implements EmbeddingModelV3 {
     return this.config.provider;
   }
 
-  constructor(
-    modelId: MistralEmbeddingModelId,
-    config: MistralEmbeddingConfig,
-  ) {
+  constructor(modelId: MistralEmbeddingModelId, config: MistralEmbeddingConfig) {
     this.modelId = modelId;
     this.config = config;
   }
@@ -68,9 +62,7 @@ export class MistralEmbeddingModel implements EmbeddingModelV3 {
         encoding_format: 'float',
       },
       failedResponseHandler: mistralFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(
-        MistralTextEmbeddingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(MistralTextEmbeddingResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });
@@ -78,9 +70,7 @@ export class MistralEmbeddingModel implements EmbeddingModelV3 {
     return {
       warnings: [],
       embeddings: response.data.map(item => item.embedding),
-      usage: response.usage
-        ? { tokens: response.usage.prompt_tokens }
-        : undefined,
+      usage: response.usage ? { tokens: response.usage.prompt_tokens } : undefined,
       response: { headers: responseHeaders, body: rawValue },
     };
   }

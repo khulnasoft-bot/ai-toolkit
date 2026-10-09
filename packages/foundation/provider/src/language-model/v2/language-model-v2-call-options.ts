@@ -93,9 +93,7 @@ by the model, calls will generate deterministic results.
   /**
 The tools that are available for the model.
   */
-  tools?: Array<
-    LanguageModelV2FunctionTool | LanguageModelV2ProviderDefinedTool
-  >;
+  tools?: Array<LanguageModelV2FunctionTool | LanguageModelV2ProviderDefinedTool>;
 
   /**
 Specifies how the tool should be selected. Defaults to 'auto'.

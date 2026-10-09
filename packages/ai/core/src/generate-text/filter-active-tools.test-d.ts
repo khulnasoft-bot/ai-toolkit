@@ -28,9 +28,7 @@ const mockToolsWithProviderDefined = {
   providerTool: mockProviderDefinedTool,
 };
 
-declare const maybeToolsWithProviderDefined:
-  | typeof mockToolsWithProviderDefined
-  | undefined;
+declare const maybeToolsWithProviderDefined: typeof mockToolsWithProviderDefined | undefined;
 
 describe('filterActiveTools types', () => {
   it('should infer the active tool subset for literal activeTools', () => {
@@ -50,24 +48,18 @@ describe('filterActiveTools types', () => {
       activeTools: undefined,
     });
 
-    expectTypeOf<typeof result>().toEqualTypeOf<
-      typeof mockToolsWithProviderDefined
-    >();
+    expectTypeOf<typeof result>().toEqualTypeOf<typeof mockToolsWithProviderDefined>();
   });
 
   it('should preserve the full tool set for non-literal activeTools arrays', () => {
-    const activeTools: Array<keyof typeof mockToolsWithProviderDefined> = [
-      'tool1',
-    ];
+    const activeTools: Array<keyof typeof mockToolsWithProviderDefined> = ['tool1'];
 
     const result = filterActiveTools({
       tools: mockToolsWithProviderDefined,
       activeTools,
     });
 
-    expectTypeOf<typeof result>().toEqualTypeOf<
-      typeof mockToolsWithProviderDefined
-    >();
+    expectTypeOf<typeof result>().toEqualTypeOf<typeof mockToolsWithProviderDefined>();
   });
 
   it('should infer undefined from possibly undefined tools', () => {
@@ -77,8 +69,7 @@ describe('filterActiveTools types', () => {
     });
 
     expectTypeOf<typeof result>().toEqualTypeOf<
-      | Pick<typeof mockToolsWithProviderDefined, 'tool1' | 'providerTool'>
-      | undefined
+      Pick<typeof mockToolsWithProviderDefined, 'tool1' | 'providerTool'> | undefined
     >();
   });
 
@@ -92,18 +83,14 @@ describe('filterActiveTools types', () => {
   });
 
   it('should preserve the full tool set for maybe undefined activeTools', () => {
-    const activeTools: ActiveTools<typeof mockToolsWithProviderDefined> = [
-      'tool1',
-    ];
+    const activeTools: ActiveTools<typeof mockToolsWithProviderDefined> = ['tool1'];
 
     const result = filterActiveTools({
       tools: mockToolsWithProviderDefined,
       activeTools,
     });
 
-    expectTypeOf<typeof result>().toEqualTypeOf<
-      typeof mockToolsWithProviderDefined
-    >();
+    expectTypeOf<typeof result>().toEqualTypeOf<typeof mockToolsWithProviderDefined>();
   });
 
   it('should reject invalid active tool names', () => {

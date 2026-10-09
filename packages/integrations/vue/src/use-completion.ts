@@ -1,7 +1,4 @@
-import type {
-  CompletionRequestOptions,
-  UseCompletionOptions,
-} from '@ai-toolkit/ai';
+import type { CompletionRequestOptions, UseCompletionOptions } from '@ai-toolkit/ai';
 import { callCompletionApi } from '@ai-toolkit/ai';
 import swrv from 'swrv';
 import type { Ref } from 'vue';
@@ -48,7 +45,7 @@ export type UseCompletionHelpers = {
 let uniqueId = 0;
 
 // @ts-expect-error - some issues with the default export of useSWRV
-const useSWRV = (swrv.default as (typeof import('swrv'))['default']) || swrv;
+const useSWRV = (swrv.default as typeof import('swrv')['default']) || swrv;
 const store: Record<string, any> = {};
 
 export function useCompletion({
@@ -95,10 +92,7 @@ export function useCompletion({
 
   let abortController: AbortController | null = null;
 
-  async function triggerRequest(
-    prompt: string,
-    options?: CompletionRequestOptions,
-  ) {
+  async function triggerRequest(prompt: string, options?: CompletionRequestOptions) {
     return callCompletionApi({
       api,
       prompt,
@@ -126,10 +120,7 @@ export function useCompletion({
     });
   }
 
-  const complete: UseCompletionHelpers['complete'] = async (
-    prompt,
-    options,
-  ) => {
+  const complete: UseCompletionHelpers['complete'] = async (prompt, options) => {
     return triggerRequest(prompt, options);
   };
 

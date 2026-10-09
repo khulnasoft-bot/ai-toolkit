@@ -25,8 +25,7 @@ describe('readUIMessageStream', () => {
 
     const uiMessages = readUIMessageStream({ stream });
 
-    expect(await convertAsyncIterableToArray(uiMessages))
-      .toMatchInlineSnapshot(`
+    expect(await convertAsyncIterableToArray(uiMessages)).toMatchInlineSnapshot(`
         [
           {
             "id": "msg-123",
@@ -115,8 +114,6 @@ describe('readUIMessageStream', () => {
       terminateOnError: true,
     });
 
-    await expect(convertAsyncIterableToArray(uiMessages)).rejects.toThrow(
-      'Test error message',
-    );
+    await expect(convertAsyncIterableToArray(uiMessages)).rejects.toThrow('Test error message');
   });
 });

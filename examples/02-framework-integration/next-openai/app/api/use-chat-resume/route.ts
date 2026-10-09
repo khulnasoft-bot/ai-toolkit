@@ -1,8 +1,4 @@
-import {
-  appendMessageToChat,
-  appendStreamId,
-  saveChat,
-} from '@/util/chat-store';
+import { appendMessageToChat, appendStreamId, saveChat } from '@/util/chat-store';
 import { openai } from '@ai-toolkit/openai';
 import {
   convertToModelMessages,
@@ -19,14 +15,11 @@ import { createResumableStreamContext } from 'resumable-stream';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { chatId, messages }: { chatId: string; messages: UIMessage[] } =
-    await req.json();
+  const { chatId, messages }: { chatId: string; messages: UIMessage[] } = await req.json();
 
   const streamId = generateId();
 
-  const recentUserMessage = messages
-    .filter(message => message.role === 'user')
-    .at(-1);
+  const recentUserMessage = messages.filter(message => message.role === 'user').at(-1);
 
   if (!recentUserMessage) {
     throw new Error('No recent user message found');

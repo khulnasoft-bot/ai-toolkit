@@ -10,9 +10,7 @@ run(async () => {
       Authorization: `Bearer ${process.env.TOGETHER_AI_API_KEY}`,
     },
   });
-  const model = togetherai.chatModel(
-    'meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo',
-  );
+  const model = togetherai.chatModel('meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo');
   const result = streamText({
     model,
     prompt:

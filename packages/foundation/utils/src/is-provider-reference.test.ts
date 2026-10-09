@@ -21,9 +21,7 @@ describe('isProviderReference', () => {
   });
 
   it('returns false for a tagged data object with type: "data"', () => {
-    expect(isProviderReference({ type: 'data', data: 'x' } as never)).toBe(
-      false,
-    );
+    expect(isProviderReference({ type: 'data', data: 'x' } as never)).toBe(false);
   });
 
   it('returns false for a Uint8Array', () => {
@@ -31,9 +29,7 @@ describe('isProviderReference', () => {
   });
 
   it('returns false for a URL instance', () => {
-    expect(isProviderReference(new URL('https://example.com/file'))).toBe(
-      false,
-    );
+    expect(isProviderReference(new URL('https://example.com/file'))).toBe(false);
   });
 
   it('returns false for null', () => {

@@ -675,9 +675,7 @@ describe('convertToOpenAIResponsesInput', () => {
   describe('assistant messages', () => {
     it('should convert messages with only a text part to a string content', async () => {
       const result = await convertToOpenAIResponsesInput({
-        prompt: [
-          { role: 'assistant', content: [{ type: 'text', text: 'Hello' }] },
-        ],
+        prompt: [{ role: 'assistant', content: [{ type: 'text', text: 'Hello' }] }],
         toolNameMapping: testToolNameMapping,
         systemMessageMode: 'system',
         providerOptionsName: 'openai',
@@ -2076,8 +2074,7 @@ describe('convertToOpenAIResponsesInput', () => {
               {
                 input: { code: 'example code', containerId: 'container_123' },
                 providerExecuted: true,
-                toolCallId:
-                  'ci_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
+                toolCallId: 'ci_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
                 toolName: 'code_interpreter',
                 type: 'tool-call',
               },
@@ -2088,8 +2085,7 @@ describe('convertToOpenAIResponsesInput', () => {
                     outputs: [{ type: 'logs', logs: 'example logs' }],
                   },
                 },
-                toolCallId:
-                  'ci_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
+                toolCallId: 'ci_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
                 toolName: 'code_interpreter',
                 type: 'tool-result',
               },
@@ -2212,8 +2208,7 @@ describe('convertToOpenAIResponsesInput', () => {
                   input: { action: { type: 'exec', command: ['ls'] } },
                   providerOptions: {
                     openai: {
-                      itemId:
-                        'lsh_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
+                      itemId: 'lsh_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
                     },
                   },
                 },
@@ -2266,8 +2261,7 @@ describe('convertToOpenAIResponsesInput', () => {
                   input: { action: { type: 'exec', command: ['ls'] } },
                   providerOptions: {
                     openai: {
-                      itemId:
-                        'lsh_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
+                      itemId: 'lsh_68c2e2cf522c81908f3e2c1bccd1493b0b24aae9c6c01e4f',
                     },
                   },
                 },

@@ -80,9 +80,7 @@ describe('modelSelectorTrigger', () => {
   it('applies custom className', () => {
     render(
       <ModelSelector>
-        <ModelSelectorTrigger className="custom-trigger">
-          Select
-        </ModelSelectorTrigger>
+        <ModelSelectorTrigger className="custom-trigger">Select</ModelSelectorTrigger>
       </ModelSelector>,
     );
     expect(screen.getByText('Select')).toHaveClass('custom-trigger');
@@ -126,10 +124,7 @@ describe('modelSelectorContent', () => {
   it('merges custom className with default', () => {
     render(
       <ModelSelector open={true}>
-        <ModelSelectorContent
-          aria-describedby="test-description"
-          className="custom-content"
-        >
+        <ModelSelectorContent aria-describedby="test-description" className="custom-content">
           <div data-testid="inner-content">Content</div>
         </ModelSelectorContent>
       </ModelSelector>,
@@ -327,10 +322,7 @@ describe('modelSelectorItem', () => {
       </ModelSelector>,
     );
     const item = screen.getByText('GPT-4');
-    expect(item.closest('[role="option"]')).toHaveAttribute(
-      'aria-disabled',
-      'true',
-    );
+    expect(item.closest('[role="option"]')).toHaveAttribute('aria-disabled', 'true');
   });
 });
 
@@ -388,30 +380,18 @@ describe('modelSelectorLogo', () => {
   });
 
   it('accepts custom className', () => {
-    render(
-      <ModelSelectorLogo className="custom-logo-size" provider="google" />,
-    );
+    render(<ModelSelectorLogo className="custom-logo-size" provider="google" />);
     const logo = screen.getByAltText('google logo');
     expect(logo).toHaveClass('custom-logo-size');
   });
 
   it('supports all known providers', () => {
-    const providers = [
-      'openai',
-      'anthropic',
-      'google',
-      'mistral',
-      'groq',
-      'perplexity',
-    ];
+    const providers = ['openai', 'anthropic', 'google', 'mistral', 'groq', 'perplexity'];
 
     for (const provider of providers) {
       const { unmount } = render(<ModelSelectorLogo provider={provider} />);
       const logo = screen.getByAltText(`${provider} logo`);
-      expect(logo).toHaveAttribute(
-        'src',
-        `https://models.dev/logos/${provider}.svg`,
-      );
+      expect(logo).toHaveAttribute('src', `https://models.dev/logos/${provider}.svg`);
       unmount();
     }
   });
@@ -419,10 +399,7 @@ describe('modelSelectorLogo', () => {
   it('supports custom string providers', () => {
     render(<ModelSelectorLogo provider="custom-provider" />);
     const logo = screen.getByAltText('custom-provider logo');
-    expect(logo).toHaveAttribute(
-      'src',
-      'https://models.dev/logos/custom-provider.svg',
-    );
+    expect(logo).toHaveAttribute('src', 'https://models.dev/logos/custom-provider.svg');
   });
 
   it('accepts additional img props', () => {
@@ -480,9 +457,7 @@ describe('modelSelectorName', () => {
   });
 
   it('accepts custom className', () => {
-    render(
-      <ModelSelectorName className="custom-name">Model</ModelSelectorName>,
-    );
+    render(<ModelSelectorName className="custom-name">Model</ModelSelectorName>);
     const name = screen.getByText('Model');
     expect(name).toHaveClass('custom-name');
   });

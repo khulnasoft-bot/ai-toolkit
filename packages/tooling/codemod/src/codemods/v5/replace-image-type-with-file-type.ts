@@ -30,11 +30,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       // Additional check: ensure this object also has an 'image' property
       // to distinguish from other objects that might have type: 'image'
       const hasImageProperty = node.properties.some(prop => {
-        return (
-          j.Property.check(prop) &&
-          j.Identifier.check(prop.key) &&
-          prop.key.name === 'image'
-        );
+        return j.Property.check(prop) && j.Identifier.check(prop.key) && prop.key.name === 'image';
       });
 
       return hasImageProperty;

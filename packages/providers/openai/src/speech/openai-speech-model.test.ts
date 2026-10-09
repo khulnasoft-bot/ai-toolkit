@@ -75,9 +75,7 @@ describe('doGenerate', () => {
       'openai-project': 'test-project',
     });
 
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/openai/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/openai/0.0.0-test`);
   });
 
   it('should pass options', async () => {

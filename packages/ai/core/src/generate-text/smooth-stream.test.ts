@@ -756,9 +756,7 @@ describe('smoothStream', () => {
           }),
         );
 
-        await expect(
-          consumeStream(stream),
-        ).rejects.toThrowErrorMatchingInlineSnapshot(
+        await expect(consumeStream(stream)).rejects.toThrowErrorMatchingInlineSnapshot(
           `[Error: Chunking function must return a non-empty string.]`,
         );
       });
@@ -774,9 +772,7 @@ describe('smoothStream', () => {
           }),
         );
 
-        await expect(
-          consumeStream(stream),
-        ).rejects.toThrowErrorMatchingInlineSnapshot(
+        await expect(consumeStream(stream)).rejects.toThrowErrorMatchingInlineSnapshot(
           `[Error: Chunking function must return a match that is a prefix of the buffer. Received: "world" expected to start with "Hello, world!"]`,
         );
       });
@@ -1538,9 +1534,7 @@ describe('smoothStream', () => {
       await consumeStream(stream);
 
       // Find the last reasoning-delta chunk
-      const reasoningDeltas = events.filter(
-        (e: any) => e.type === 'reasoning-delta',
-      );
+      const reasoningDeltas = events.filter((e: any) => e.type === 'reasoning-delta');
       const lastReasoningDelta = reasoningDeltas[reasoningDeltas.length - 1];
 
       expect(lastReasoningDelta).toHaveProperty('providerMetadata');
@@ -1569,9 +1563,7 @@ describe('smoothStream', () => {
       await consumeStream(stream);
 
       // reasoning-start should pass through unchanged with providerMetadata
-      const reasoningStart = events.find(
-        (e: any) => e.type === 'reasoning-start',
-      );
+      const reasoningStart = events.find((e: any) => e.type === 'reasoning-start');
       expect(reasoningStart).toHaveProperty('providerMetadata');
       expect(reasoningStart.providerMetadata).toEqual({
         anthropic: { redactedData: 'redacted-thinking-data' },

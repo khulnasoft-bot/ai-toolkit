@@ -18,9 +18,7 @@ describe('uploadSkill', () => {
   it('should delegate to api.uploadSkill', async () => {
     const skills = createMockSkills();
 
-    const files = [
-      { path: 'test.ts', data: { type: 'data' as const, data: 'hello' } },
-    ];
+    const files = [{ path: 'test.ts', data: { type: 'data' as const, data: 'hello' } }];
     await uploadSkill({
       api: skills,
       files,
@@ -45,9 +43,7 @@ describe('uploadSkill', () => {
 
     const result = await uploadSkill({
       api: skills,
-      files: [
-        { path: 'test.ts', data: { type: 'data' as const, data: 'hello' } },
-      ],
+      files: [{ path: 'test.ts', data: { type: 'data' as const, data: 'hello' } }],
     });
 
     expect(result.providerReference).toEqual({ 'mock-provider': 'skill_123' });
@@ -74,9 +70,7 @@ describe('uploadSkill', () => {
 
     await uploadSkill({
       api: mockProvider,
-      files: [
-        { path: 'test.ts', data: { type: 'data' as const, data: 'hello' } },
-      ],
+      files: [{ path: 'test.ts', data: { type: 'data' as const, data: 'hello' } }],
     });
 
     expect(mockProvider.skills).toHaveBeenCalled();
@@ -94,9 +88,7 @@ describe('uploadSkill', () => {
     await expect(
       uploadSkill({
         api: mockProvider,
-        files: [
-          { path: 'test.ts', data: { type: 'data' as const, data: 'hello' } },
-        ],
+        files: [{ path: 'test.ts', data: { type: 'data' as const, data: 'hello' } }],
       }),
     ).rejects.toThrow(
       'The provider does not support skills. Make sure it exposes a skills() method.',
@@ -108,16 +100,12 @@ describe('uploadSkill', () => {
 
     await uploadSkill({
       api: skills,
-      files: [
-        { path: 'test.ts', data: { type: 'data' as const, data: 'hello' } },
-      ],
+      files: [{ path: 'test.ts', data: { type: 'data' as const, data: 'hello' } }],
       providerOptions: { openai: { custom: 'value' } },
     });
 
     expect(skills.uploadSkill).toHaveBeenCalledWith({
-      files: [
-        { path: 'test.ts', data: { type: 'data' as const, data: 'hello' } },
-      ],
+      files: [{ path: 'test.ts', data: { type: 'data' as const, data: 'hello' } }],
       displayTitle: undefined,
       providerOptions: { openai: { custom: 'value' } },
     });

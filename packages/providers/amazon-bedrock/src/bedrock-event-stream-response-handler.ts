@@ -10,9 +10,7 @@ import { ZodType } from 'zod/v4';
 import { createBedrockEventStreamDecoder } from './bedrock-event-stream-decoder';
 
 export const createBedrockEventStreamResponseHandler =
-  <T>(
-    chunkSchema: ZodType<T, any>,
-  ): ResponseHandler<ReadableStream<ParseResult<T>>> =>
+  <T>(chunkSchema: ZodType<T, any>): ResponseHandler<ReadableStream<ParseResult<T>>> =>
   async ({ response }: { response: Response }) => {
     const responseHeaders = extractResponseHeaders(response);
 

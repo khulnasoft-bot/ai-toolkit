@@ -10,9 +10,7 @@ run(async () => {
       shell: openai.tools.shell({
         execute: async ({ action }) => {
           const outputs = await Promise.all(
-            action.commands.map(command =>
-              executeShellCommand(command, action.timeoutMs),
-            ),
+            action.commands.map(command => executeShellCommand(command, action.timeoutMs)),
           );
 
           return { output: outputs };
@@ -31,16 +29,12 @@ run(async () => {
       }
 
       case 'tool-call': {
-        console.log(
-          `\x1b[32m\x1b[1mTool call:\x1b[22m ${JSON.stringify(chunk, null, 2)}\x1b[0m`,
-        );
+        console.log(`\x1b[32m\x1b[1mTool call:\x1b[22m ${JSON.stringify(chunk, null, 2)}\x1b[0m`);
         break;
       }
 
       case 'tool-result': {
-        console.log(
-          `\x1b[32m\x1b[1mTool result:\x1b[22m ${JSON.stringify(chunk, null, 2)}\x1b[0m`,
-        );
+        console.log(`\x1b[32m\x1b[1mTool result:\x1b[22m ${JSON.stringify(chunk, null, 2)}\x1b[0m`);
         break;
       }
 

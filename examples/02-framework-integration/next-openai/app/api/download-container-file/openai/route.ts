@@ -30,8 +30,7 @@ export async function GET(req: Request) {
     }
 
     const arrayBuffer = await response.arrayBuffer();
-    const contentType =
-      response.headers.get('content-type') || 'application/octet-stream';
+    const contentType = response.headers.get('content-type') || 'application/octet-stream';
 
     return new Response(arrayBuffer, {
       headers: {

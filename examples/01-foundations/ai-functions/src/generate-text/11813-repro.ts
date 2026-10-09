@@ -11,23 +11,18 @@ run(async () => {
   }
 
   console.log('Step 1: Creating conversation via OpenAI API...');
-  const createConvResponse = await fetch(
-    'https://api.openai.com/v1/conversations',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({}),
+  const createConvResponse = await fetch('https://api.openai.com/v1/conversations', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+      'Content-Type': 'application/json',
     },
-  );
+    body: JSON.stringify({}),
+  });
 
   if (!createConvResponse.ok) {
     const errorText = await createConvResponse.text();
-    throw new Error(
-      `Failed to create conversation: ${createConvResponse.status} - ${errorText}`,
-    );
+    throw new Error(`Failed to create conversation: ${createConvResponse.status} - ${errorText}`);
   }
 
   const convData = await createConvResponse.json();

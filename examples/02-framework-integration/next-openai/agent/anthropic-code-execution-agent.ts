@@ -24,6 +24,4 @@ export const anthropicCodeExecutionAgent = new ToolLoopAgent({
   }),
 });
 
-export type AnthropicCodeExecutionMessage = InferAgentUIMessage<
-  typeof anthropicCodeExecutionAgent
->;
+export type AnthropicCodeExecutionMessage = InferAgentUIMessage<typeof anthropicCodeExecutionAgent>;

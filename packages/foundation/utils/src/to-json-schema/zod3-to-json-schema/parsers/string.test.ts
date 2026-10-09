@@ -24,10 +24,7 @@ describe('string', () => {
   });
 
   it('should be possible to describe both minimum and maximum length of a string', () => {
-    const parsedSchema = parseStringDef(
-      z.string().min(5).max(5)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseStringDef(z.string().min(5).max(5)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -63,10 +60,7 @@ describe('string', () => {
   });
 
   it('should be possible to use regex constraint', () => {
-    const parsedSchema = parseStringDef(
-      z.string().regex(/[A-C]/)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseStringDef(z.string().regex(/[A-C]/)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -139,10 +133,7 @@ describe('string', () => {
   });
 
   it('should be possible to use length with min and max constraints', () => {
-    const parsedSchema = parseStringDef(
-      z.string().min(20).max(25).length(15)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseStringDef(z.string().min(20).max(25).length(15)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -160,10 +151,7 @@ describe('string', () => {
   });
 
   it('should gracefully ignore the .toLowerCase() "check"', () => {
-    const parsedSchema = parseStringDef(
-      z.string().toLowerCase()._def,
-      getRefs(),
-    );
+    const parsedSchema = parseStringDef(z.string().toLowerCase()._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -171,10 +159,7 @@ describe('string', () => {
   });
 
   it('should gracefully ignore the .toUpperCase() "check"', () => {
-    const parsedSchema = parseStringDef(
-      z.string().toUpperCase()._def,
-      getRefs(),
-    );
+    const parsedSchema = parseStringDef(z.string().toUpperCase()._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -182,27 +167,21 @@ describe('string', () => {
   });
 
   it('should work with the startsWith check', () => {
-    expect(
-      parseStringDef(z.string().startsWith('aBcD123{}[]')._def, getRefs()),
-    ).toStrictEqual({
+    expect(parseStringDef(z.string().startsWith('aBcD123{}[]')._def, getRefs())).toStrictEqual({
       type: 'string',
       pattern: '^aBcD123\\{\\}\\[\\]',
     } satisfies JSONSchema7);
   });
 
   it('should work with the endsWith check', () => {
-    expect(
-      parseStringDef(z.string().endsWith('aBcD123{}[]')._def, getRefs()),
-    ).toStrictEqual({
+    expect(parseStringDef(z.string().endsWith('aBcD123{}[]')._def, getRefs())).toStrictEqual({
       type: 'string',
       pattern: 'aBcD123\\{\\}\\[\\]$',
     } satisfies JSONSchema7);
   });
 
   it('should work with the includes check', () => {
-    expect(
-      parseStringDef(z.string().includes('aBcD123{}[]')._def, getRefs()),
-    ).toStrictEqual({
+    expect(parseStringDef(z.string().includes('aBcD123{}[]')._def, getRefs())).toStrictEqual({
       type: 'string',
       pattern: 'aBcD123\\{\\}\\[\\]',
     } satisfies JSONSchema7);
@@ -224,10 +203,7 @@ describe('string', () => {
 
   it('should bundle multiple pattern type checks in an allOf container', () => {
     expect(
-      parseStringDef(
-        z.string().startsWith('alpha').endsWith('omega')._def,
-        getRefs(),
-      ),
+      parseStringDef(z.string().startsWith('alpha').endsWith('omega')._def, getRefs()),
     ).toStrictEqual({
       type: 'string',
       allOf: [
@@ -242,9 +218,7 @@ describe('string', () => {
   });
 
   it('should pick correct value if multiple min/max are present', () => {
-    expect(
-      parseStringDef(z.string().min(1).min(2).max(3).max(4)._def, getRefs()),
-    ).toStrictEqual({
+    expect(parseStringDef(z.string().min(1).min(2).max(3).max(4)._def, getRefs())).toStrictEqual({
       type: 'string',
       maxLength: 3,
       minLength: 2,
@@ -280,25 +254,18 @@ describe('string', () => {
     } satisfies JSONSchema7);
 
     expect(
-      parseStringDef(
-        def,
-        getRefs({ base64Strategy: 'contentEncoding:base64' }),
-      ),
+      parseStringDef(def, getRefs({ base64Strategy: 'contentEncoding:base64' })),
     ).toStrictEqual({
       type: 'string',
       contentEncoding: 'base64',
     } satisfies JSONSchema7);
 
-    expect(
-      parseStringDef(def, getRefs({ base64Strategy: 'format:binary' })),
-    ).toStrictEqual({
+    expect(parseStringDef(def, getRefs({ base64Strategy: 'format:binary' }))).toStrictEqual({
       type: 'string',
       format: 'binary',
     } satisfies JSONSchema7);
 
-    expect(
-      parseStringDef(def, getRefs({ base64Strategy: 'pattern:zod' })),
-    ).toStrictEqual({
+    expect(parseStringDef(def, getRefs({ base64Strategy: 'pattern:zod' }))).toStrictEqual({
       type: 'string',
       pattern: zodPatterns.base64.source,
     } satisfies JSONSchema7);
@@ -329,30 +296,21 @@ describe('string', () => {
     } satisfies JSONSchema7);
 
     expect(
-      parseStringDef(
-        z.string().email()._def,
-        getRefs({ emailStrategy: 'format:email' }),
-      ),
+      parseStringDef(z.string().email()._def, getRefs({ emailStrategy: 'format:email' })),
     ).toStrictEqual({
       type: 'string',
       format: 'email',
     } satisfies JSONSchema7);
 
     expect(
-      parseStringDef(
-        z.string().email()._def,
-        getRefs({ emailStrategy: 'format:idn-email' }),
-      ),
+      parseStringDef(z.string().email()._def, getRefs({ emailStrategy: 'format:idn-email' })),
     ).toStrictEqual({
       type: 'string',
       format: 'idn-email',
     } satisfies JSONSchema7);
 
     expect(
-      parseStringDef(
-        z.string().email()._def,
-        getRefs({ emailStrategy: 'pattern:zod' }),
-      ),
+      parseStringDef(z.string().email()._def, getRefs({ emailStrategy: 'pattern:zod' })),
     ).toStrictEqual({
       type: 'string',
       pattern: zodPatterns.email.source,
@@ -401,20 +359,14 @@ describe('string', () => {
     } satisfies JSONSchema7);
 
     expect(
-      parseStringDef(
-        z.string().regex(/foo.+$/m)._def,
-        getRefs({ applyRegexFlags: true }),
-      ),
+      parseStringDef(z.string().regex(/foo.+$/m)._def, getRefs({ applyRegexFlags: true })),
     ).toStrictEqual({
       type: 'string',
       pattern: 'foo.+($|(?=[\r\n]))',
     } satisfies JSONSchema7);
 
     expect(
-      parseStringDef(
-        z.string().regex(/foo.+[amz]/i)._def,
-        getRefs({ applyRegexFlags: true }),
-      ),
+      parseStringDef(z.string().regex(/foo.+[amz]/i)._def, getRefs({ applyRegexFlags: true })),
     ).toStrictEqual({
       type: 'string',
       pattern: '[fF][oO][oO].+[aAmMzZ]',

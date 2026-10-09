@@ -8,10 +8,7 @@ import {
   UIDataTypes,
   UIMessage,
 } from '@ai-toolkit/ai';
-import {
-  convertArrayToReadableStream,
-  MockLanguageModelV3,
-} from '@ai-toolkit/ai/test';
+import { convertArrayToReadableStream, MockLanguageModelV3 } from '@ai-toolkit/ai/test';
 import { z } from 'zod';
 
 // Allow streaming responses up to 30 seconds
@@ -34,11 +31,7 @@ const tools = {
   getWeatherInformation: getWeatherInformationTool,
 } as const;
 
-export type UseChatToolsMessage = UIMessage<
-  never,
-  UIDataTypes,
-  InferUITools<typeof tools>
->;
+export type UseChatToolsMessage = UIMessage<never, UIDataTypes, InferUITools<typeof tools>>;
 
 export async function POST(req: Request) {
   const { messages } = await req.json();

@@ -7,9 +7,7 @@ export default createTransformer((fileInfo, api, options, context) => {
   root
     .find(j.ImportDeclaration)
     .filter(
-      path =>
-        path.node.source.value === 'ai-toolkit' ||
-        path.node.source.value === 'ai-toolkit',
+      path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
     )
     .forEach(path => {
       const newSpecifiers = path.node.specifiers
@@ -19,9 +17,7 @@ export default createTransformer((fileInfo, api, options, context) => {
           const oldName = spec.imported.name;
           if (oldName === 'experimental_createModelRegistry') {
             context.hasChanges = true;
-            return j.importSpecifier(
-              j.identifier('experimental_createProviderRegistry'),
-            );
+            return j.importSpecifier(j.identifier('experimental_createProviderRegistry'));
           }
 
           if (

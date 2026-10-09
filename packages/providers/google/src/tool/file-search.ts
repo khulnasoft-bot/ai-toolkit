@@ -1,8 +1,4 @@
-import {
-  createProviderToolFactory,
-  lazySchema,
-  zodSchema,
-} from '@ai-toolkit/provider-utils';
+import { createProviderToolFactory, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 /** Tool to retrieve knowledge from the File Search Stores. */
@@ -38,14 +34,9 @@ const fileSearchArgsBaseSchema = z
 
 export type GoogleFileSearchToolArgs = z.infer<typeof fileSearchArgsBaseSchema>;
 
-const fileSearchArgsSchema = lazySchema(() =>
-  zodSchema(fileSearchArgsBaseSchema),
-);
+const fileSearchArgsSchema = lazySchema(() => zodSchema(fileSearchArgsBaseSchema));
 
-export const fileSearch = createProviderToolFactory<
-  {},
-  GoogleFileSearchToolArgs
->({
+export const fileSearch = createProviderToolFactory<{}, GoogleFileSearchToolArgs>({
   id: 'google.file_search',
   inputSchema: fileSearchArgsSchema,
 });

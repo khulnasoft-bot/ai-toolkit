@@ -1,8 +1,4 @@
-import {
-  tool,
-  type InferToolContext,
-  type Tool,
-} from '@ai-toolkit/provider-utils';
+import { tool, type InferToolContext, type Tool } from '@ai-toolkit/provider-utils';
 import { describe, expectTypeOf, it } from 'vitest';
 import { z } from 'zod/v4';
 import type { ToolsContextParameter } from './tools-context-parameter';
@@ -84,11 +80,7 @@ describe('ToolsContextParameter', () => {
   it('includes only contextual tools in the inferred toolsContext map', () => {
     type Tools = {
       weather: Tool<{ location: string }>;
-      calculator: Tool<
-        { expression: string },
-        any,
-        { calculatorApiKey: string }
-      >;
+      calculator: Tool<{ expression: string }, any, { calculatorApiKey: string }>;
     };
     type Expected = {
       tools?: Tools;
@@ -141,12 +133,8 @@ describe('ToolsContextParameter', () => {
       };
     };
 
-    expectTypeOf<
-      ToolsContextParameter<typeof tools>
-    >().toMatchTypeOf<Expected>();
-    expectTypeOf<Expected>().toMatchTypeOf<
-      ToolsContextParameter<typeof tools>
-    >();
+    expectTypeOf<ToolsContextParameter<typeof tools>>().toMatchTypeOf<Expected>();
+    expectTypeOf<Expected>().toMatchTypeOf<ToolsContextParameter<typeof tools>>();
   });
 
   it('keeps each tool context specific in mixed toolsets', () => {
@@ -206,27 +194,19 @@ describe('ToolsContextParameter', () => {
         toolsContext: {},
       };
 
-      expectTypeOf(unnecessaryToolsContext).toEqualTypeOf<
-        ToolsContextParameter<Tools>
-      >();
+      expectTypeOf(unnecessaryToolsContext).toEqualTypeOf<ToolsContextParameter<Tools>>();
     });
 
     it('errors when toolsContext is omitted for a toolset with contextual tools', () => {
       type Tools = {
         weather: Tool<{ location: string }>;
-        calculator: Tool<
-          { expression: string },
-          any,
-          { calculatorApiKey: string }
-        >;
+        calculator: Tool<{ expression: string }, any, { calculatorApiKey: string }>;
       };
 
       // @ts-expect-error - toolsContext is required when one tool in the set requires it
       const missingToolsContext: ToolsContextParameter<Tools> = {};
 
-      expectTypeOf(missingToolsContext).toEqualTypeOf<
-        ToolsContextParameter<Tools>
-      >();
+      expectTypeOf(missingToolsContext).toEqualTypeOf<ToolsContextParameter<Tools>>();
     });
 
     it('errors when required nested tool context fields are missing', () => {
@@ -241,9 +221,7 @@ describe('ToolsContextParameter', () => {
         },
       };
 
-      expectTypeOf(missingRequiredField).toEqualTypeOf<
-        ToolsContextParameter<Tools>
-      >();
+      expectTypeOf(missingRequiredField).toEqualTypeOf<ToolsContextParameter<Tools>>();
     });
 
     it('errors when optional-only nested tool context fields have the wrong type', () => {
@@ -260,9 +238,7 @@ describe('ToolsContextParameter', () => {
         },
       };
 
-      expectTypeOf(invalidOptionalField).toEqualTypeOf<
-        ToolsContextParameter<Tools>
-      >();
+      expectTypeOf(invalidOptionalField).toEqualTypeOf<ToolsContextParameter<Tools>>();
     });
 
     it('errors when optional context object fields are missing after the entry is provided', () => {
@@ -277,9 +253,7 @@ describe('ToolsContextParameter', () => {
         },
       };
 
-      expectTypeOf(missingOptionalObjectField).toEqualTypeOf<
-        ToolsContextParameter<Tools>
-      >();
+      expectTypeOf(missingOptionalObjectField).toEqualTypeOf<ToolsContextParameter<Tools>>();
     });
 
     it('errors when the contextual tool key is missing from toolsContext', () => {
@@ -308,9 +282,7 @@ describe('ToolsContextParameter', () => {
         toolsContext: {},
       };
 
-      expectTypeOf(missingToolEntry).toEqualTypeOf<
-        ToolsContextParameter<typeof tools>
-      >();
+      expectTypeOf(missingToolEntry).toEqualTypeOf<ToolsContextParameter<typeof tools>>();
     });
   });
 });

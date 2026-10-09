@@ -42,8 +42,7 @@ export function mergeObjects<T extends object, U extends object>(
       if (overridesValue === undefined) continue;
 
       // Get the base value if it exists
-      const baseValue =
-        key in base ? base[key as unknown as keyof T] : undefined;
+      const baseValue = key in base ? base[key as unknown as keyof T] : undefined;
 
       // Check if both values are objects that can be deeply merged
       const isSourceObject =

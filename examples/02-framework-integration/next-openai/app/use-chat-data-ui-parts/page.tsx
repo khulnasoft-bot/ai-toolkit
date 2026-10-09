@@ -2,11 +2,7 @@
 
 import ChatInput from '@/components/chat-input';
 import { useChat } from '@ai-toolkit/react';
-import {
-  DefaultChatTransport,
-  UIMessage,
-  type FinishReason,
-} from '@ai-toolkit/ai';
+import { DefaultChatTransport, UIMessage, type FinishReason } from '@ai-toolkit/ai';
 import { useState } from 'react';
 
 type MyMessage = UIMessage<
@@ -21,21 +17,18 @@ type MyMessage = UIMessage<
 >;
 
 export default function Chat() {
-  const [lastFinishReason, setLastFinishReason] = useState<
-    FinishReason | undefined
-  >(undefined);
-  const { error, status, sendMessage, messages, regenerate, stop } =
-    useChat<MyMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/use-chat-data-ui-parts',
-      }),
-      onData: dataPart => {
-        console.log('dataPart', JSON.stringify(dataPart, null, 2));
-      },
-      onFinish: ({ finishReason }) => {
-        setLastFinishReason(finishReason);
-      },
-    });
+  const [lastFinishReason, setLastFinishReason] = useState<FinishReason | undefined>(undefined);
+  const { error, status, sendMessage, messages, regenerate, stop } = useChat<MyMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/use-chat-data-ui-parts',
+    }),
+    onData: dataPart => {
+      console.log('dataPart', JSON.stringify(dataPart, null, 2));
+    },
+    onFinish: ({ finishReason }) => {
+      setLastFinishReason(finishReason);
+    },
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -61,8 +54,7 @@ export default function Chat() {
                   </>
                 ) : part.data.status === 'success' ? (
                   <>
-                    Weather in <b>{part.data.city}</b>:{' '}
-                    <b>{part.data.weather}</b>
+                    Weather in <b>{part.data.city}</b>: <b>{part.data.weather}</b>
                   </>
                 ) : (
                   <>Unknown weather state</>
@@ -106,9 +98,7 @@ export default function Chat() {
       )}
 
       {messages.length > 0 && (
-        <div className="mt-4 text-gray-500">
-          Finish reason: {String(lastFinishReason)}
-        </div>
+        <div className="mt-4 text-gray-500">Finish reason: {String(lastFinishReason)}</div>
       )}
 
       <ChatInput status={status} onSubmit={text => sendMessage({ text })} />

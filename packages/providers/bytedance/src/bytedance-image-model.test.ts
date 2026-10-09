@@ -76,9 +76,7 @@ describe('ByteDanceImageModel', () => {
         }),
       );
 
-      expect(server.calls[0].requestUrl).toBe(
-        'https://api.example.com/images/generations',
-      );
+      expect(server.calls[0].requestUrl).toBe('https://api.example.com/images/generations');
       expect(await server.calls[0].requestBodyJson).toStrictEqual({
         model: 'seedream-5-0-260128',
         prompt,
@@ -159,9 +157,11 @@ describe('ByteDanceImageModel', () => {
         }),
       );
 
-      expect(
-        result.warnings.map(w => ('feature' in w ? w.feature : w.type)),
-      ).toStrictEqual(['aspectRatio', 'seed', 'mask']);
+      expect(result.warnings.map(w => ('feature' in w ? w.feature : w.type))).toStrictEqual([
+        'aspectRatio',
+        'seed',
+        'mask',
+      ]);
     });
 
     it('should pass headers', async () => {
@@ -196,9 +196,7 @@ describe('ByteDanceImageModel', () => {
 
       const model = createBasicModel();
 
-      await expect(
-        model.doGenerate(createDefaultGenerateParams()),
-      ).rejects.toMatchObject({
+      await expect(model.doGenerate(createDefaultGenerateParams())).rejects.toMatchObject({
         message: 'Invalid prompt content',
         statusCode: 400,
         url: 'https://api.example.com/images/generations',
@@ -325,9 +323,7 @@ describe('ByteDanceImageModel', () => {
         }),
       );
 
-      expect(server.calls[0].requestUrl).toBe(
-        'https://api.example.com/images/generations',
-      );
+      expect(server.calls[0].requestUrl).toBe('https://api.example.com/images/generations');
       expect(await server.calls[0].requestBodyJson).toStrictEqual({
         model: 'seedream-5-0-260128',
         prompt: 'Change the salamander to a snow weasel',
@@ -361,10 +357,7 @@ describe('ByteDanceImageModel', () => {
       expect(await server.calls[0].requestBodyJson).toStrictEqual({
         model: 'seedream-5-0-260128',
         prompt: 'Combine these images',
-        image: [
-          'data:image/png;base64,iVBORw==',
-          'data:image/png;base64,iVBORw==',
-        ],
+        image: ['data:image/png;base64,iVBORw==', 'data:image/png;base64,iVBORw=='],
         response_format: 'b64_json',
       });
     });

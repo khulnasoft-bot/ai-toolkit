@@ -26,10 +26,7 @@ const lmntSpeechCallOptionsSchema = z.object({
    * The audio format of the output.
    * @default 'mp3'
    */
-  format: z
-    .enum(['aac', 'mp3', 'mulaw', 'raw', 'wav'])
-    .nullish()
-    .default('mp3'),
+  format: z.enum(['aac', 'mp3', 'mulaw', 'raw', 'wav']).nullish().default('mp3'),
 
   /**
    * The sample rate of the output audio in Hz.
@@ -146,10 +143,7 @@ export class LMNTSpeechModel implements SpeechModelV3 {
       };
 
       for (const key in speechModelOptions) {
-        const value =
-          speechModelOptions[
-            key as keyof Omit<LMNTSpeechAPITypes, 'voice' | 'text'>
-          ];
+        const value = speechModelOptions[key as keyof Omit<LMNTSpeechAPITypes, 'voice' | 'text'>];
         if (value !== undefined) {
           requestBody[key] = value;
         }

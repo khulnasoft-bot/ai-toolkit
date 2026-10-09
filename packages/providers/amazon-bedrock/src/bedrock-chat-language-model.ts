@@ -24,15 +24,8 @@ import {
   resolve,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import {
-  BEDROCK_STOP_REASONS,
-  BedrockConverseInput,
-  BedrockStopReason,
-} from './bedrock-api-types';
-import {
-  BedrockChatModelId,
-  bedrockProviderOptions,
-} from './bedrock-chat-options';
+import { BEDROCK_STOP_REASONS, BedrockConverseInput, BedrockStopReason } from './bedrock-api-types';
+import { BedrockChatModelId, bedrockProviderOptions } from './bedrock-chat-options';
 import { BedrockErrorSchema } from './bedrock-error';
 import { createBedrockEventStreamResponseHandler } from './bedrock-event-stream-response-handler';
 import { prepareTools } from './bedrock-prepare-tools';
@@ -146,13 +139,11 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
           }
         : undefined;
 
-    const { toolConfig, additionalTools, toolWarnings, betas } =
-      await prepareTools({
-        tools: jsonResponseTool ? [...(tools ?? []), jsonResponseTool] : tools,
-        toolChoice:
-          jsonResponseTool != null ? { type: 'required' } : toolChoice,
-        modelId: this.modelId,
-      });
+    const { toolConfig, additionalTools, toolWarnings, betas } = await prepareTools({
+      tools: jsonResponseTool ? [...(tools ?? []), jsonResponseTool] : tools,
+      toolChoice: jsonResponseTool != null ? { type: 'required' } : toolChoice,
+      modelId: this.modelId,
+    });
 
     warnings.push(...toolWarnings);
 
@@ -165,10 +156,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
 
     if (betas.size > 0 || bedrockOptions.anthropicBeta) {
       const existingBetas = bedrockOptions.anthropicBeta ?? [];
-      const mergedBetas =
-        betas.size > 0
-          ? [...existingBetas, ...Array.from(betas)]
-          : existingBetas;
+      const mergedBetas = betas.size > 0 ? [...existingBetas, ...Array.from(betas)] : existingBetas;
 
       bedrockOptions.additionalModelRequestFields = {
         ...bedrockOptions.additionalModelRequestFields,
@@ -177,8 +165,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
     }
 
     const isAnthropicModel = this.modelId.includes('anthropic');
-    const isThinkingRequested =
-      bedrockOptions.reasoningConfig?.type === 'enabled';
+    const isThinkingRequested = bedrockOptions.reasoningConfig?.type === 'enabled';
     const thinkingBudget = bedrockOptions.reasoningConfig?.budgetTokens;
     const isAnthropicThinkingEnabled = isAnthropicModel && isThinkingRequested;
 
@@ -214,8 +201,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
       });
     }
 
-    const maxReasoningEffort =
-      bedrockOptions.reasoningConfig?.maxReasoningEffort;
+    const maxReasoningEffort = bedrockOptions.reasoningConfig?.maxReasoningEffort;
     const isOpenAIModel = this.modelId.startsWith('openai.');
 
     if (maxReasoningEffort != null && !isAnthropicModel) {
@@ -282,9 +268,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
         message =>
           'content' in message &&
           Array.isArray(message.content) &&
-          message.content.some(
-            part => part.type === 'tool-call' || part.type === 'tool-result',
-          ),
+          message.content.some(part => part.type === 'tool-call' || part.type === 'tool-result'),
       );
 
       if (hasToolContent) {
@@ -295,8 +279,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
               : {
                   ...message,
                   content: message.content.filter(
-                    part =>
-                      part.type !== 'tool-call' && part.type !== 'tool-result',
+                    part => part.type !== 'tool-call' && part.type !== 'tool-result',
                   ),
                 },
           )
@@ -314,10 +297,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
     }
 
     const isMistral = isMistralModel(this.modelId);
-    const { system, messages } = await convertToBedrockChatMessages(
-      filteredPrompt,
-      isMistral,
-    );
+    const { system, messages } = await convertToBedrockChatMessages(filteredPrompt, isMistral);
 
     // Filter out reasoningConfig from providerOptions.bedrock to prevent sending it to Bedrock API
     const {
@@ -334,8 +314,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
       command: {
         system,
         messages,
-        additionalModelRequestFields:
-          bedrockOptions.additionalModelRequestFields,
+        additionalModelRequestFields: bedrockOptions.additionalModelRequestFields,
         ...(additionalModelResponseFieldPaths && {
           additionalModelResponseFieldPaths,
         }),
@@ -343,9 +322,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
           inferenceConfig,
         }),
         ...filteredBedrockOptions,
-        ...(toolConfig.tools !== undefined && toolConfig.tools.length > 0
-          ? { toolConfig }
-          : {}),
+        ...(toolConfig.tools !== undefined && toolConfig.tools.length > 0 ? { toolConfig } : {}),
       },
       warnings,
       usesJsonResponseTool: jsonResponseTool != null,
@@ -365,14 +342,8 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
     return combineHeaders(await resolve(this.config.headers), headers);
   }
 
-  async doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3GenerateResult> {
-    const {
-      command: args,
-      warnings,
-      usesJsonResponseTool,
-    } = await this.getArgs(options);
+  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
+    const { command: args, warnings, usesJsonResponseTool } = await this.getArgs(options);
 
     const url = `${this.getUrl(this.modelId)}/converse`;
     const { value: response, responseHeaders } = await postJsonToApi({
@@ -383,9 +354,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
         errorSchema: BedrockErrorSchema,
         errorToMessage: error => `${error.message ?? 'Unknown error'}`,
       }),
-      successfulResponseHandler: createJsonResponseHandler(
-        BedrockResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(BedrockResponseSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -423,8 +392,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
             text: '',
             providerMetadata: {
               bedrock: {
-                redactedData:
-                  part.reasoningContent.redactedReasoning.data ?? '',
+                redactedData: part.reasoningContent.redactedReasoning.data ?? '',
               } satisfies BedrockReasoningMetadata,
             },
           });
@@ -433,8 +401,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
 
       // tool calls
       if (part.toolUse) {
-        const isJsonResponseTool =
-          usesJsonResponseTool && part.toolUse.name === 'json';
+        const isJsonResponseTool = usesJsonResponseTool && part.toolUse.name === 'json';
 
         if (isJsonResponseTool) {
           isJsonResponseFromTool = true;
@@ -445,8 +412,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
           });
         } else {
           const isMistral = isMistralModel(this.modelId);
-          const rawToolCallId =
-            part.toolUse?.toolUseId ?? this.config.generateId();
+          const rawToolCallId = part.toolUse?.toolUseId ?? this.config.generateId();
           content.push({
             type: 'tool-call' as const,
             toolCallId: normalizeToolCallId(rawToolCallId, isMistral),
@@ -458,8 +424,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
     }
 
     // provider metadata:
-    const stopSequence =
-      response.additionalModelResponseFields?.delta?.stop_sequence ?? null;
+    const stopSequence = response.additionalModelResponseFields?.delta?.stop_sequence ?? null;
 
     const providerMetadata =
       response.trace || response.usage || isJsonResponseFromTool || stopSequence
@@ -498,14 +463,8 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(
-    options: LanguageModelV3CallOptions,
-  ): Promise<LanguageModelV3StreamResult> {
-    const {
-      command: args,
-      warnings,
-      usesJsonResponseTool,
-    } = await this.getArgs(options);
+  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
+    const { command: args, warnings, usesJsonResponseTool } = await this.getArgs(options);
     const isMistral = isMistralModel(this.modelId);
     const url = `${this.getUrl(this.modelId)}/converse-stream`;
 
@@ -517,8 +476,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
         errorSchema: BedrockErrorSchema,
         errorToMessage: error => `${error.type}: ${error.message}`,
       }),
-      successfulResponseHandler:
-        createBedrockEventStreamResponseHandler(BedrockStreamSchema),
+      successfulResponseHandler: createBedrockEventStreamResponseHandler(BedrockStreamSchema),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -600,8 +558,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
                 raw: value.messageStop.stopReason ?? undefined,
               };
               stopSequence =
-                value.messageStop.additionalModelResponseFields?.delta
-                  ?.stop_sequence ?? null;
+                value.messageStop.additionalModelResponseFields?.delta?.stop_sequence ?? null;
             }
 
             if (value.metadata) {
@@ -613,8 +570,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
                 value.metadata.usage?.cacheWriteInputTokens != null
                   ? {
                       usage: {
-                        cacheWriteInputTokens:
-                          value.metadata.usage.cacheWriteInputTokens,
+                        cacheWriteInputTokens: value.metadata.usage.cacheWriteInputTokens,
                       },
                     }
                   : undefined;
@@ -711,10 +667,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
                       type: 'tool-call',
                       toolCallId: contentBlock.toolCallId,
                       toolName: contentBlock.toolName,
-                      input:
-                        contentBlock.jsonText === ''
-                          ? '{}'
-                          : contentBlock.jsonText,
+                      input: contentBlock.jsonText === '' ? '{}' : contentBlock.jsonText,
                     });
                   }
                 }
@@ -729,8 +682,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
               value.contentBlockDelta.delta.reasoningContent
             ) {
               const blockIndex = value.contentBlockDelta.contentBlockIndex || 0;
-              const reasoningContent =
-                value.contentBlockDelta.delta.reasoningContent;
+              const reasoningContent = value.contentBlockDelta.delta.reasoningContent;
 
               if ('text' in reasoningContent && reasoningContent.text) {
                 if (contentBlocks[blockIndex] == null) {
@@ -746,10 +698,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
                   id: String(blockIndex),
                   delta: reasoningContent.text,
                 });
-              } else if (
-                'signature' in reasoningContent &&
-                reasoningContent.signature
-              ) {
+              } else if ('signature' in reasoningContent && reasoningContent.signature) {
                 controller.enqueue({
                   type: 'reasoning-delta',
                   id: String(blockIndex),
@@ -778,13 +727,9 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
             if (contentBlockStart?.start?.toolUse != null) {
               const toolUse = contentBlockStart.start.toolUse;
               const blockIndex = contentBlockStart.contentBlockIndex!;
-              const isJsonResponseTool =
-                usesJsonResponseTool && toolUse.name === 'json';
+              const isJsonResponseTool = usesJsonResponseTool && toolUse.name === 'json';
 
-              const normalizedToolCallId = normalizeToolCallId(
-                toolUse.toolUseId!,
-                isMistral,
-              );
+              const normalizedToolCallId = normalizeToolCallId(toolUse.toolUseId!, isMistral);
               contentBlocks[blockIndex] = {
                 type: 'tool-call',
                 toolCallId: normalizedToolCallId,
@@ -871,10 +816,7 @@ export class BedrockChatLanguageModel implements LanguageModelV3 {
   }
 }
 
-const BedrockStopReasonSchema = z.union([
-  z.enum(BEDROCK_STOP_REASONS),
-  z.string(),
-]);
+const BedrockStopReasonSchema = z.union([z.enum(BEDROCK_STOP_REASONS), z.string()]);
 
 const BedrockAdditionalModelResponseFieldsSchema = z
   .object({
@@ -931,8 +873,7 @@ const BedrockResponseSchema = z.object({
     }),
   }),
   stopReason: BedrockStopReasonSchema,
-  additionalModelResponseFields:
-    BedrockAdditionalModelResponseFieldsSchema.nullish(),
+  additionalModelResponseFields: BedrockAdditionalModelResponseFieldsSchema.nullish(),
   trace: z.unknown().nullish(),
   usage: z.object({
     inputTokens: z.number(),
@@ -986,8 +927,7 @@ const BedrockStreamSchema = z.object({
   internalServerException: z.record(z.string(), z.unknown()).nullish(),
   messageStop: z
     .object({
-      additionalModelResponseFields:
-        BedrockAdditionalModelResponseFieldsSchema.nullish(),
+      additionalModelResponseFields: BedrockAdditionalModelResponseFieldsSchema.nullish(),
       stopReason: BedrockStopReasonSchema,
     })
     .nullish(),
@@ -1014,6 +954,4 @@ export const bedrockReasoningMetadataSchema = z.object({
   redactedData: z.string().optional(),
 });
 
-export type BedrockReasoningMetadata = z.infer<
-  typeof bedrockReasoningMetadataSchema
->;
+export type BedrockReasoningMetadata = z.infer<typeof bedrockReasoningMetadataSchema>;

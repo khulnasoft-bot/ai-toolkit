@@ -46,9 +46,7 @@ const imageAnalysisTool = tool({
 });
 
 run(async () => {
-  console.log(
-    '🔍 Testing Google model image analysis with tool-returned images...\n',
-  );
+  console.log('🔍 Testing Google model image analysis with tool-returned images...\n');
 
   const result = await generateText({
     model: google('gemini-2.5-flash'),

@@ -59,17 +59,13 @@ export type RealtimeModelV4 = {
    * normalized events (e.g. Google's serverContent can contain audio,
    * text, and turn-complete data in one message).
    */
-  parseServerEvent(
-    raw: unknown,
-  ): RealtimeModelV4ServerEvent | RealtimeModelV4ServerEvent[];
+  parseServerEvent(raw: unknown): RealtimeModelV4ServerEvent | RealtimeModelV4ServerEvent[];
 
   /**
    * Browser-side: Serializes a normalized client event into the
    * provider's native JSON format for sending over the WebSocket.
    */
-  serializeClientEvent(
-    event: RealtimeModelV4ClientEvent,
-  ): unknown | PromiseLike<unknown>;
+  serializeClientEvent(event: RealtimeModelV4ClientEvent): unknown | PromiseLike<unknown>;
 
   /**
    * Browser-side: Builds the provider-specific session configuration

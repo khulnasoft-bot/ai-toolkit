@@ -14,9 +14,7 @@ describe('bigint', () => {
   });
 
   it('should be possible to define gt/lt', () => {
-    const parsedSchema = parseBigintDef(
-      z.bigint().gte(BigInt(10)).lte(BigInt(20))._def,
-    );
+    const parsedSchema = parseBigintDef(z.bigint().gte(BigInt(10)).lte(BigInt(20))._def);
 
     expect(parsedSchema).toStrictEqual({
       type: 'integer',
@@ -27,9 +25,7 @@ describe('bigint', () => {
   });
 
   it('should be possible to define gt/lt', () => {
-    const parsedSchema = parseBigintDef(
-      z.bigint().gt(BigInt(10)).lt(BigInt(20))._def,
-    );
+    const parsedSchema = parseBigintDef(z.bigint().gt(BigInt(10)).lt(BigInt(20))._def);
 
     expect(parsedSchema).toStrictEqual({
       type: 'integer',

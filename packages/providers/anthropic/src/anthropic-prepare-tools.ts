@@ -74,14 +74,10 @@ export async function prepareTools({
             ? { strict: tool.strict }
             : {}),
           ...(deferLoading != null ? { defer_loading: deferLoading } : {}),
-          ...(allowedCallers != null
-            ? { allowed_callers: allowedCallers }
-            : {}),
+          ...(allowedCallers != null ? { allowed_callers: allowedCallers } : {}),
           ...(tool.inputExamples != null
             ? {
-                input_examples: tool.inputExamples.map(
-                  example => example.input,
-                ),
+                input_examples: tool.inputExamples.map(example => example.input),
               }
             : {}),
         });

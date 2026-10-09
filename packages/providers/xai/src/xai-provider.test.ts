@@ -5,8 +5,7 @@ import { XaiChatLanguageModel } from './xai-chat-language-model';
 import { OpenAICompatibleImageModel } from '@ai-toolkit/openai-compatible';
 
 const XaiChatLanguageModelMock = XaiChatLanguageModel as unknown as Mock;
-const OpenAICompatibleImageModelMock =
-  OpenAICompatibleImageModel as unknown as Mock;
+const OpenAICompatibleImageModelMock = OpenAICompatibleImageModel as unknown as Mock;
 
 vi.mock('./xai-chat-language-model', () => ({
   XaiChatLanguageModel: vi.fn(),
@@ -128,9 +127,7 @@ describe('xAIProvider', () => {
 
       const config = constructorCall[1];
       expect(config.provider).toBe('xai.image');
-      expect(config.url({ path: '/test-path' })).toBe(
-        'https://api.x.ai/v1/test-path',
-      );
+      expect(config.url({ path: '/test-path' })).toBe('https://api.x.ai/v1/test-path');
     });
 
     it('should use custom baseURL for image model', () => {
@@ -142,9 +139,7 @@ describe('xAIProvider', () => {
 
       const constructorCall = OpenAICompatibleImageModelMock.mock.calls[0];
       const config = constructorCall[1];
-      expect(config.url({ path: '/test-path' })).toBe(
-        `${customBaseURL}/test-path`,
-      );
+      expect(config.url({ path: '/test-path' })).toBe(`${customBaseURL}/test-path`);
     });
 
     it('should pass custom headers to image model', () => {

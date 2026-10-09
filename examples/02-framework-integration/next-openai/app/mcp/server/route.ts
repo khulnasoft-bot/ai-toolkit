@@ -9,8 +9,4 @@ const requestHandler = (req: NextRequest) => {
   });
 };
 
-export {
-  requestHandler as DELETE,
-  requestHandler as GET,
-  requestHandler as POST,
-};
+export { requestHandler as DELETE, requestHandler as GET, requestHandler as POST };

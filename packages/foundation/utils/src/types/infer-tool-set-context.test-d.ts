@@ -89,11 +89,7 @@ describe('InferToolSetContext', () => {
 
   it('keeps tools with optional-only context properties', () => {
     type Tools = {
-      weather: Tool<
-        { city: string },
-        never,
-        { userId?: string; role?: string }
-      >;
+      weather: Tool<{ city: string }, never, { userId?: string; role?: string }>;
     };
 
     expectTypeOf<InferToolSetContext<Tools>>().toEqualTypeOf<{

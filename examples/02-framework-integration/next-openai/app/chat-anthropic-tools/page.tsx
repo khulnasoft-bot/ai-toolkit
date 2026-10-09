@@ -8,12 +8,11 @@ import { useChat } from '@ai-toolkit/react';
 import { DefaultChatTransport } from '@ai-toolkit/ai';
 
 export default function TestAnthropicCodeExecution() {
-  const { error, status, sendMessage, messages, regenerate } =
-    useChat<AnthropicToolsAgentMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/chat-anthropic-tools',
-      }),
-    });
+  const { error, status, sendMessage, messages, regenerate } = useChat<AnthropicToolsAgentMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/chat-anthropic-tools',
+    }),
+  });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">

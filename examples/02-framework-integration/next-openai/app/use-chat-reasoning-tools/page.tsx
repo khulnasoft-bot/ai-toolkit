@@ -6,12 +6,11 @@ import { DefaultChatTransport } from '@ai-toolkit/ai';
 import { ReasoningToolsMessage } from '../api/use-chat-reasoning-tools/route';
 
 export default function Chat() {
-  const { messages, sendMessage, addToolOutput, status } =
-    useChat<ReasoningToolsMessage>({
-      transport: new DefaultChatTransport({
-        api: '/api/use-chat-reasoning-tools',
-      }),
-    });
+  const { messages, sendMessage, addToolOutput, status } = useChat<ReasoningToolsMessage>({
+    transport: new DefaultChatTransport({
+      api: '/api/use-chat-reasoning-tools',
+    }),
+  });
 
   console.log(structuredClone(messages));
 
@@ -47,11 +46,7 @@ export default function Chat() {
               switch (part.state) {
                 // example of pre-rendering streaming tool calls:
                 case 'input-streaming':
-                  return (
-                    <pre key={part.toolCallId}>
-                      {JSON.stringify(part, null, 2)}
-                    </pre>
-                  );
+                  return <pre key={part.toolCallId}>{JSON.stringify(part, null, 2)}</pre>;
                 case 'input-available':
                   return (
                     <div key={part.toolCallId} className="text-gray-500">

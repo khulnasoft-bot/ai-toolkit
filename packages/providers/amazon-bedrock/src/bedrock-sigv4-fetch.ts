@@ -26,10 +26,7 @@ export function createSigV4FetchFunction(
   getCredentials: () => BedrockCredentials | PromiseLike<BedrockCredentials>,
   fetch: FetchFunction = globalThis.fetch,
 ): FetchFunction {
-  return async (
-    input: RequestInfo | URL,
-    init?: RequestInit,
-  ): Promise<Response> => {
+  return async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const request = input instanceof Request ? input : undefined;
     const originalHeaders = combineHeaders(
       normalizeHeaders(request?.headers),
@@ -57,12 +54,7 @@ export function createSigV4FetchFunction(
       });
     }
 
-    const url =
-      typeof input === 'string'
-        ? input
-        : input instanceof URL
-          ? input.href
-          : input.url;
+    const url = typeof input === 'string' ? input : input instanceof URL ? input.href : input.url;
 
     const body = prepareBodyString(effectiveBody);
     const credentials = await getCredentials();
@@ -115,10 +107,7 @@ export function createApiKeyFetchFunction(
   apiKey: string,
   fetch: FetchFunction = globalThis.fetch,
 ): FetchFunction {
-  return async (
-    input: RequestInfo | URL,
-    init?: RequestInit,
-  ): Promise<Response> => {
+  return async (input: RequestInfo | URL, init?: RequestInit): Promise<Response> => {
     const originalHeaders = normalizeHeaders(init?.headers);
     const headersWithUserAgent = withUserAgentSuffix(
       originalHeaders,

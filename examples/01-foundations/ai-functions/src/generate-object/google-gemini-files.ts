@@ -6,9 +6,7 @@ import { z } from 'zod';
 import { run } from '../lib/run';
 
 run(async () => {
-  const fileManager = new GoogleAIFileManager(
-    process.env.GOOGLE_GENERATIVE_AI_API_KEY!,
-  );
+  const fileManager = new GoogleAIFileManager(process.env.GOOGLE_GENERATIVE_AI_API_KEY!);
 
   const filePath = path.resolve(__dirname, '../../data/ai.pdf');
 

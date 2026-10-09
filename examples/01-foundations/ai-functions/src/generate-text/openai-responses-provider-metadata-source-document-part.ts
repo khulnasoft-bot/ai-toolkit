@@ -1,7 +1,4 @@
-import {
-  openai,
-  type OpenaiResponsesSourceDocumentProviderMetadata,
-} from '@ai-toolkit/openai';
+import { openai, type OpenaiResponsesSourceDocumentProviderMetadata } from '@ai-toolkit/openai';
 import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 
@@ -42,9 +39,7 @@ run(async () => {
             break;
           default: {
             const _exhaustiveCheck: never = annotation;
-            throw new Error(
-              `Unhandled annotation: ${JSON.stringify(_exhaustiveCheck)}`,
-            );
+            throw new Error(`Unhandled annotation: ${JSON.stringify(_exhaustiveCheck)}`);
           }
         }
       }

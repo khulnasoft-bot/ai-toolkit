@@ -1,7 +1,4 @@
-import {
-  LanguageModelV3StreamPart,
-  LanguageModelV3Usage,
-} from '@ai-toolkit/provider';
+import { LanguageModelV3StreamPart, LanguageModelV3Usage } from '@ai-toolkit/provider';
 import { delay, tool } from '@ai-toolkit/provider-utils';
 import {
   convertArrayToReadableStream,
@@ -30,17 +27,16 @@ const testUsage: LanguageModelV3Usage = {
 
 describe('runToolsTransformation', () => {
   it('should forward text parts', async () => {
-    const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-      convertArrayToReadableStream([
-        { type: 'text-start', id: '1' },
-        { type: 'text-delta', id: '1', delta: 'text' },
-        { type: 'text-end', id: '1' },
-        {
-          type: 'finish',
-          finishReason: { unified: 'stop', raw: 'stop' },
-          usage: testUsage,
-        },
-      ]);
+    const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+      { type: 'text-start', id: '1' },
+      { type: 'text-delta', id: '1', delta: 'text' },
+      { type: 'text-end', id: '1' },
+      {
+        type: 'finish',
+        finishReason: { unified: 'stop', raw: 'stop' },
+        usage: testUsage,
+      },
+    ]);
 
     const transformedStream = runToolsTransformation({
       generateId: mockId({ prefix: 'id' }),
@@ -100,20 +96,19 @@ describe('runToolsTransformation', () => {
   });
 
   it('should handle async tool execution', async () => {
-    const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-      convertArrayToReadableStream([
-        {
-          type: 'tool-call',
-          toolCallId: 'call-1',
-          toolName: 'syncTool',
-          input: `{ "value": "test" }`,
-        },
-        {
-          type: 'finish',
-          finishReason: { unified: 'stop', raw: 'stop' },
-          usage: testUsage,
-        },
-      ]);
+    const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+      {
+        type: 'tool-call',
+        toolCallId: 'call-1',
+        toolName: 'syncTool',
+        input: `{ "value": "test" }`,
+      },
+      {
+        type: 'finish',
+        finishReason: { unified: 'stop', raw: 'stop' },
+        usage: testUsage,
+      },
+    ]);
 
     const transformedStream = runToolsTransformation({
       generateId: mockId({ prefix: 'id' }),
@@ -134,8 +129,7 @@ describe('runToolsTransformation', () => {
       experimental_context: undefined,
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -186,20 +180,19 @@ describe('runToolsTransformation', () => {
   });
 
   it('should handle sync tool execution', async () => {
-    const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-      convertArrayToReadableStream([
-        {
-          type: 'tool-call',
-          toolCallId: 'call-1',
-          toolName: 'syncTool',
-          input: `{ "value": "test" }`,
-        },
-        {
-          type: 'finish',
-          finishReason: { unified: 'stop', raw: 'stop' },
-          usage: testUsage,
-        },
-      ]);
+    const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+      {
+        type: 'tool-call',
+        toolCallId: 'call-1',
+        toolName: 'syncTool',
+        input: `{ "value": "test" }`,
+      },
+      {
+        type: 'finish',
+        finishReason: { unified: 'stop', raw: 'stop' },
+        usage: testUsage,
+      },
+    ]);
 
     const transformedStream = runToolsTransformation({
       generateId: mockId({ prefix: 'id' }),
@@ -220,8 +213,7 @@ describe('runToolsTransformation', () => {
       experimental_context: undefined,
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -272,20 +264,19 @@ describe('runToolsTransformation', () => {
   });
 
   it('should hold off on sending finish until the delayed tool result is received', async () => {
-    const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-      convertArrayToReadableStream([
-        {
-          type: 'tool-call',
-          toolCallId: 'call-1',
-          toolName: 'delayedTool',
-          input: `{ "value": "test" }`,
-        },
-        {
-          type: 'finish',
-          finishReason: { unified: 'stop', raw: 'stop' },
-          usage: testUsage,
-        },
-      ]);
+    const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+      {
+        type: 'tool-call',
+        toolCallId: 'call-1',
+        toolName: 'delayedTool',
+        input: `{ "value": "test" }`,
+      },
+      {
+        type: 'finish',
+        finishReason: { unified: 'stop', raw: 'stop' },
+        usage: testUsage,
+      },
+    ]);
 
     const transformedStream = runToolsTransformation({
       generateId: mockId({ prefix: 'id' }),
@@ -362,20 +353,19 @@ describe('runToolsTransformation', () => {
   });
 
   it('should try to repair tool call when the tool name is not found', async () => {
-    const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-      convertArrayToReadableStream([
-        {
-          type: 'tool-call',
-          toolCallId: 'call-1',
-          toolName: 'unknownTool',
-          input: `{ "value": "test" }`,
-        },
-        {
-          type: 'finish',
-          finishReason: { unified: 'stop', raw: 'stop' },
-          usage: testUsage,
-        },
-      ]);
+    const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+      {
+        type: 'tool-call',
+        toolCallId: 'call-1',
+        toolName: 'unknownTool',
+        input: `{ "value": "test" }`,
+      },
+      {
+        type: 'finish',
+        finishReason: { unified: 'stop', raw: 'stop' },
+        usage: testUsage,
+      },
+    ]);
 
     const transformedStream = runToolsTransformation({
       generateId: mockId({ prefix: 'id' }),
@@ -405,8 +395,7 @@ describe('runToolsTransformation', () => {
       experimental_context: undefined,
     });
 
-    expect(await convertReadableStreamToArray(transformedStream))
-      .toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -459,28 +448,27 @@ describe('runToolsTransformation', () => {
   it('should not call execute for provider-executed tool calls', async () => {
     let toolExecuted = false;
 
-    const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-      convertArrayToReadableStream([
-        {
-          type: 'tool-call',
-          toolCallId: 'call-1',
-          toolName: 'providerTool',
-          input: `{ "value": "test" }`,
-          providerExecuted: true,
-        },
-        {
-          type: 'tool-result',
-          toolCallId: 'call-1',
-          toolName: 'providerTool',
-          providerExecuted: true,
-          result: { example: 'example' },
-        },
-        {
-          type: 'finish',
-          finishReason: { unified: 'stop', raw: 'stop' },
-          usage: testUsage,
-        },
-      ]);
+    const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+      {
+        type: 'tool-call',
+        toolCallId: 'call-1',
+        toolName: 'providerTool',
+        input: `{ "value": "test" }`,
+        providerExecuted: true,
+      },
+      {
+        type: 'tool-result',
+        toolCallId: 'call-1',
+        toolName: 'providerTool',
+        providerExecuted: true,
+        result: { example: 'example' },
+      },
+      {
+        type: 'finish',
+        finishReason: { unified: 'stop', raw: 'stop' },
+        usage: testUsage,
+      },
+    ]);
 
     const transformedStream = runToolsTransformation({
       generateId: mockId({ prefix: 'id' }),
@@ -510,26 +498,25 @@ describe('runToolsTransformation', () => {
 
   describe('provider-emitted tool-approval-request (MCP flow)', () => {
     it('should forward provider-emitted tool-approval-request with the correct tool call', async () => {
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          {
-            type: 'tool-call',
-            toolCallId: 'mcp-call-1',
-            toolName: 'mcp_tool',
-            input: `{ "query": "test" }`,
-            providerExecuted: true,
-          },
-          {
-            type: 'tool-approval-request',
-            approvalId: 'mcp-approval-1',
-            toolCallId: 'mcp-call-1',
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'tool-calls', raw: undefined },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        {
+          type: 'tool-call',
+          toolCallId: 'mcp-call-1',
+          toolName: 'mcp_tool',
+          input: `{ "query": "test" }`,
+          providerExecuted: true,
+        },
+        {
+          type: 'tool-approval-request',
+          approvalId: 'mcp-approval-1',
+          toolCallId: 'mcp-call-1',
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'tool-calls', raw: undefined },
+          usage: testUsage,
+        },
+      ]);
 
       const transformedStream = runToolsTransformation({
         generateId: mockId({ prefix: 'id' }),
@@ -609,20 +596,19 @@ describe('runToolsTransformation', () => {
     });
 
     it('should emit error when tool call is not found for provider approval request', async () => {
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          // No tool-call part before the approval request
-          {
-            type: 'tool-approval-request',
-            approvalId: 'mcp-approval-1',
-            toolCallId: 'non-existent-call',
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'stop', raw: undefined },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        // No tool-call part before the approval request
+        {
+          type: 'tool-approval-request',
+          approvalId: 'mcp-approval-1',
+          toolCallId: 'non-existent-call',
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'stop', raw: undefined },
+          usage: testUsage,
+        },
+      ]);
 
       const transformedStream = runToolsTransformation({
         generateId: mockId({ prefix: 'id' }),
@@ -673,38 +659,37 @@ describe('runToolsTransformation', () => {
     });
 
     it('should handle multiple provider-executed tool calls with approval requests', async () => {
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          {
-            type: 'tool-call',
-            toolCallId: 'mcp-call-1',
-            toolName: 'mcp_search',
-            input: `{ "query": "first" }`,
-            providerExecuted: true,
-          },
-          {
-            type: 'tool-call',
-            toolCallId: 'mcp-call-2',
-            toolName: 'mcp_execute',
-            input: `{ "command": "ls" }`,
-            providerExecuted: true,
-          },
-          {
-            type: 'tool-approval-request',
-            approvalId: 'approval-1',
-            toolCallId: 'mcp-call-1',
-          },
-          {
-            type: 'tool-approval-request',
-            approvalId: 'approval-2',
-            toolCallId: 'mcp-call-2',
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'tool-calls', raw: undefined },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        {
+          type: 'tool-call',
+          toolCallId: 'mcp-call-1',
+          toolName: 'mcp_search',
+          input: `{ "query": "first" }`,
+          providerExecuted: true,
+        },
+        {
+          type: 'tool-call',
+          toolCallId: 'mcp-call-2',
+          toolName: 'mcp_execute',
+          input: `{ "command": "ls" }`,
+          providerExecuted: true,
+        },
+        {
+          type: 'tool-approval-request',
+          approvalId: 'approval-1',
+          toolCallId: 'mcp-call-1',
+        },
+        {
+          type: 'tool-approval-request',
+          approvalId: 'approval-2',
+          toolCallId: 'mcp-call-2',
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'tool-calls', raw: undefined },
+          usage: testUsage,
+        },
+      ]);
 
       const transformedStream = runToolsTransformation({
         generateId: mockId({ prefix: 'id' }),
@@ -819,20 +804,19 @@ describe('runToolsTransformation', () => {
   describe('Tool.onInputAvailable', () => {
     it('should call onInputAvailable before the tool call is executed', async () => {
       const output: unknown[] = [];
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          {
-            type: 'tool-call',
-            toolCallId: 'call-1',
-            toolName: 'onInputAvailableTool',
-            input: `{ "value": "test" }`,
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'stop', raw: 'stop' },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        {
+          type: 'tool-call',
+          toolCallId: 'call-1',
+          toolName: 'onInputAvailableTool',
+          input: `{ "value": "test" }`,
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'stop', raw: 'stop' },
+          usage: testUsage,
+        },
+      ]);
 
       const transformedStream = runToolsTransformation({
         generateId: mockId({ prefix: 'id' }),
@@ -910,20 +894,19 @@ describe('runToolsTransformation', () => {
 
     it('should call onInputAvailable when the tool needs approval', async () => {
       const output: unknown[] = [];
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          {
-            type: 'tool-call',
-            toolCallId: 'call-1',
-            toolName: 'onInputAvailableTool',
-            input: `{ "value": "test" }`,
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'stop', raw: 'stop' },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        {
+          type: 'tool-call',
+          toolCallId: 'call-1',
+          toolName: 'onInputAvailableTool',
+          input: `{ "value": "test" }`,
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'stop', raw: 'stop' },
+          usage: testUsage,
+        },
+      ]);
 
       const transformedStream = runToolsTransformation({
         generateId: mockId({ prefix: 'id' }),
@@ -1018,20 +1001,19 @@ describe('runToolsTransformation', () => {
 
   describe('tool execution error handling', () => {
     it('should handle error thrown in async tool execution', async () => {
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          {
-            type: 'tool-call',
-            toolCallId: 'call-1',
-            toolName: 'failingTool',
-            input: `{ "value": "test" }`,
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'stop', raw: 'stop' },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        {
+          type: 'tool-call',
+          toolCallId: 'call-1',
+          toolName: 'failingTool',
+          input: `{ "value": "test" }`,
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'stop', raw: 'stop' },
+          usage: testUsage,
+        },
+      ]);
 
       const toolError = new Error('Tool execution failed!');
 
@@ -1084,20 +1066,19 @@ describe('runToolsTransformation', () => {
     });
 
     it('should handle error thrown in sync tool execution', async () => {
-      const inputStream: ReadableStream<LanguageModelV3StreamPart> =
-        convertArrayToReadableStream([
-          {
-            type: 'tool-call',
-            toolCallId: 'call-1',
-            toolName: 'failingTool',
-            input: `{ "value": "test" }`,
-          },
-          {
-            type: 'finish',
-            finishReason: { unified: 'stop', raw: 'stop' },
-            usage: testUsage,
-          },
-        ]);
+      const inputStream: ReadableStream<LanguageModelV3StreamPart> = convertArrayToReadableStream([
+        {
+          type: 'tool-call',
+          toolCallId: 'call-1',
+          toolName: 'failingTool',
+          input: `{ "value": "test" }`,
+        },
+        {
+          type: 'finish',
+          finishReason: { unified: 'stop', raw: 'stop' },
+          usage: testUsage,
+        },
+      ]);
 
       const toolError = new Error('Sync tool failed!');
 

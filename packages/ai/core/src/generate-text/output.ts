@@ -1,8 +1,4 @@
-import {
-  JSONValue,
-  LanguageModelV3CallOptions,
-  TypeValidationError,
-} from '@ai-toolkit/provider';
+import { JSONValue, LanguageModelV3CallOptions, TypeValidationError } from '@ai-toolkit/provider';
 import {
   asSchema,
   FlexibleSchema,
@@ -44,9 +40,7 @@ export interface Output<OUTPUT = any, PARTIAL = any, ELEMENT = any> {
   /**
    * Parses the partial output of the model.
    */
-  parsePartialOutput(options: {
-    text: string;
-  }): Promise<{ partial: PARTIAL } | undefined>;
+  parsePartialOutput(options: { text: string }): Promise<{ partial: PARTIAL } | undefined>;
 
   /**
    * Creates a stream transform that emits individual elements as they complete.
@@ -347,18 +341,11 @@ export const array = <ELEMENT>({
     createElementStreamTransform() {
       let publishedElements = 0;
 
-      return new TransformStream<
-        EnrichedStreamPart<any, Array<ELEMENT>>,
-        ELEMENT
-      >({
+      return new TransformStream<EnrichedStreamPart<any, Array<ELEMENT>>, ELEMENT>({
         transform({ partialOutput }, controller) {
           if (partialOutput != null) {
             // Only enqueue new elements that haven't been published yet
-            for (
-              ;
-              publishedElements < partialOutput.length;
-              publishedElements++
-            ) {
+            for (; publishedElements < partialOutput.length; publishedElements++) {
               controller.enqueue(partialOutput[publishedElements]);
             }
           }
@@ -576,9 +563,7 @@ export const json = ({
 
         case 'repaired-parse':
         case 'successful-parse': {
-          return result.value === undefined
-            ? undefined
-            : { partial: result.value };
+          return result.value === undefined ? undefined : { partial: result.value };
         }
       }
     },

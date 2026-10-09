@@ -18,8 +18,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       return (
         path.node.source.type === 'StringLiteral' &&
-        (path.node.source.value === 'ai-toolkit' ||
-          path.node.source.value === 'ai-toolkit')
+        (path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit')
       );
     })
     .forEach(path => {
@@ -71,10 +70,7 @@ export default createTransformer((fileInfo, api, options, context) => {
       const left = path.node.left;
       if (left.type === 'VariableDeclaration' && left.declarations[0]) {
         const declaration = left.declarations[0];
-        if (
-          declaration.type === 'VariableDeclarator' &&
-          declaration.id.type === 'Identifier'
-        ) {
+        if (declaration.type === 'VariableDeclarator' && declaration.id.type === 'Identifier') {
           fullStreamIteratorVariables.add(declaration.id.name);
         }
       }
@@ -162,10 +158,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         });
 
         if (typeProperty) {
-          const newProperties = [
-            typeProperty,
-            j.objectProperty(j.identifier('file'), fileObject),
-          ];
+          const newProperties = [typeProperty, j.objectProperty(j.identifier('file'), fileObject)];
 
           path.node.properties = newProperties;
           context.hasChanges = true;
@@ -256,17 +249,11 @@ export default createTransformer((fileInfo, api, options, context) => {
     .forEach(path => {
       // Transform part.mediaType to part.file.mediaType
       // Also rename mimeType to mediaType
-      if (
-        path.node.property.type === 'Identifier' &&
-        path.node.property.name === 'mimeType'
-      ) {
+      if (path.node.property.type === 'Identifier' && path.node.property.name === 'mimeType') {
         path.node.property.name = 'mediaType';
       }
 
-      path.node.object = j.memberExpression(
-        path.node.object,
-        j.identifier('file'),
-      );
+      path.node.object = j.memberExpression(path.node.object, j.identifier('file'));
       context.hasChanges = true;
     });
 
@@ -326,12 +313,7 @@ export default createTransformer((fileInfo, api, options, context) => {
 
       if (isInFileContext) {
         // Transform part to part.file
-        j(path).replaceWith(
-          j.memberExpression(
-            j.identifier(path.node.name),
-            j.identifier('file'),
-          ),
-        );
+        j(path).replaceWith(j.memberExpression(j.identifier(path.node.name), j.identifier('file')));
         context.hasChanges = true;
       }
     });

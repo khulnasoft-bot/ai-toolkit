@@ -45,8 +45,7 @@ run(async () => {
         },
       }),
     },
-    prompt:
-      'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+    prompt: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     onStepFinish: ({ toolCalls, toolResults }) => {
       if (toolCalls) {
         console.log(`\n  Tool calls: ${toolCalls.length}`);
@@ -55,11 +54,7 @@ run(async () => {
           console.log(
             `    ${call.toolName}: ${
               sig && typeof sig === 'string'
-                ? 'Signature: ' +
-                  sig.substring(0, 50) +
-                  '... (length: ' +
-                  sig.length +
-                  ')'
+                ? 'Signature: ' + sig.substring(0, 50) + '... (length: ' + sig.length + ')'
                 : 'No signature (may be parallel call or non-Gemini 3)'
             }`,
           );
@@ -134,8 +129,7 @@ run(async () => {
   const messagesForTurn2: ModelMessage[] = [
     {
       role: 'user',
-      content:
-        'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+      content: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     },
     ...response1.messages,
     {

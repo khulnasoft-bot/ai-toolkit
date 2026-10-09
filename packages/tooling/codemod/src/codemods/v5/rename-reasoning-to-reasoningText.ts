@@ -21,10 +21,7 @@ export default createTransformer((fileInfo, api, options, context) => {
     .filter(path => {
       const init = path.node.init;
 
-      if (
-        init?.type !== 'AwaitExpression' ||
-        init.argument?.type !== 'CallExpression'
-      ) {
+      if (init?.type !== 'AwaitExpression' || init.argument?.type !== 'CallExpression') {
         return false;
       }
 
@@ -68,10 +65,7 @@ export default createTransformer((fileInfo, api, options, context) => {
 
       if (callee.type !== 'MemberExpression') return false;
 
-      return (
-        callee.object.type === 'Identifier' &&
-        stepsIdentifiers.has(callee.object.name)
-      );
+      return callee.object.type === 'Identifier' && stepsIdentifiers.has(callee.object.name);
     })
     .forEach(path => {
       const arg = path.node.arguments[0];

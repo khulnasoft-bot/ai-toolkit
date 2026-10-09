@@ -18,10 +18,7 @@ export default function Page() {
         Generate
       </div>
 
-      <pre
-        className="text-sm w-full whitespace-pre-wrap"
-        data-testid="generation"
-      >
+      <pre className="text-sm w-full whitespace-pre-wrap" data-testid="generation">
         {JSON.stringify(object, null, 2)}
       </pre>
     </div>

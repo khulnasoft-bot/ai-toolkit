@@ -84,9 +84,7 @@ describe('resolveToolApproval', () => {
     });
 
     it('resolves a Promise returned by the generic function', async () => {
-      const genericToolApproval = vi.fn(() =>
-        Promise.resolve('user-approval' as const),
-      );
+      const genericToolApproval = vi.fn(() => Promise.resolve('user-approval' as const));
 
       const result = await resolveToolApproval({
         tools: {

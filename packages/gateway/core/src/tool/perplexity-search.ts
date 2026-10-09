@@ -152,9 +152,7 @@ export interface PerplexitySearchInput {
   search_recency_filter?: 'day' | 'week' | 'month' | 'year';
 }
 
-export type PerplexitySearchOutput =
-  | PerplexitySearchResponse
-  | PerplexitySearchError;
+export type PerplexitySearchOutput = PerplexitySearchResponse | PerplexitySearchError;
 
 const perplexitySearchInputSchema = lazySchema(() =>
   zodSchema(
@@ -168,9 +166,7 @@ const perplexitySearchInputSchema = lazySchema(() =>
       max_results: z
         .number()
         .optional()
-        .describe(
-          'Maximum number of search results to return (1-20, default: 10)',
-        ),
+        .describe('Maximum number of search results to return (1-20, default: 10)'),
 
       max_tokens_per_page: z
         .number()
@@ -182,9 +178,7 @@ const perplexitySearchInputSchema = lazySchema(() =>
       max_tokens: z
         .number()
         .optional()
-        .describe(
-          'Maximum total tokens across all search results (default: 25000, max: 1000000)',
-        ),
+        .describe('Maximum total tokens across all search results (default: 25000, max: 1000000)'),
 
       country: z
         .string()
@@ -263,13 +257,7 @@ const perplexitySearchOutputSchema = lazySchema(() =>
       }),
       // Error response
       z.object({
-        error: z.enum([
-          'api_error',
-          'rate_limit',
-          'timeout',
-          'invalid_input',
-          'unknown',
-        ]),
+        error: z.enum(['api_error', 'rate_limit', 'timeout', 'invalid_input', 'unknown']),
         statusCode: z.number().optional(),
         message: z.string(),
       }),
@@ -277,18 +265,16 @@ const perplexitySearchOutputSchema = lazySchema(() =>
   ),
 );
 
-export const perplexitySearchToolFactory =
-  createProviderToolFactoryWithOutputSchema<
-    PerplexitySearchInput,
-    PerplexitySearchOutput,
-    PerplexitySearchConfig
-  >({
-    id: 'gateway.perplexity_search',
-    inputSchema: perplexitySearchInputSchema,
-    outputSchema: perplexitySearchOutputSchema,
-  });
+export const perplexitySearchToolFactory = createProviderToolFactoryWithOutputSchema<
+  PerplexitySearchInput,
+  PerplexitySearchOutput,
+  PerplexitySearchConfig
+>({
+  id: 'gateway.perplexity_search',
+  inputSchema: perplexitySearchInputSchema,
+  outputSchema: perplexitySearchOutputSchema,
+});
 
 export const perplexitySearch = (
   config: PerplexitySearchConfig = {},
-): ReturnType<typeof perplexitySearchToolFactory> =>
-  perplexitySearchToolFactory(config);
+): ReturnType<typeof perplexitySearchToolFactory> => perplexitySearchToolFactory(config);

@@ -33,11 +33,7 @@ export const SafeUrlSchema = z
   .refine(
     url => {
       const u = new URL(url);
-      return (
-        u.protocol !== 'javascript:' &&
-        u.protocol !== 'data:' &&
-        u.protocol !== 'vbscript:'
-      );
+      return u.protocol !== 'javascript:' && u.protocol !== 'data:' && u.protocol !== 'vbscript:';
     },
     { message: 'URL cannot use javascript:, data:, or vbscript: scheme' },
   );
@@ -72,9 +68,7 @@ export const OAuthMetadataSchema = z
     grant_types_supported: z.array(z.string()).optional(),
     code_challenge_methods_supported: z.array(z.string()),
     token_endpoint_auth_methods_supported: z.array(z.string()).optional(),
-    token_endpoint_auth_signing_alg_values_supported: z
-      .array(z.string())
-      .optional(),
+    token_endpoint_auth_signing_alg_values_supported: z.array(z.string()).optional(),
   })
   .passthrough();
 
@@ -105,12 +99,11 @@ export const OpenIdProviderMetadataSchema = z
  * This schema represents the real-world scenario where OIDC providers
  * return a mix of OpenID Connect and OAuth 2.0 metadata fields
  */
-export const OpenIdProviderDiscoveryMetadataSchema =
-  OpenIdProviderMetadataSchema.merge(
-    OAuthMetadataSchema.pick({
-      code_challenge_methods_supported: true,
-    }),
-  );
+export const OpenIdProviderDiscoveryMetadataSchema = OpenIdProviderMetadataSchema.merge(
+  OAuthMetadataSchema.pick({
+    code_challenge_methods_supported: true,
+  }),
+);
 
 export const OAuthClientInformationSchema = z
   .object({
@@ -143,19 +136,11 @@ export const OAuthClientMetadataSchema = z
   .strip();
 
 export type OAuthMetadata = z.infer<typeof OAuthMetadataSchema>;
-export type OpenIdProviderDiscoveryMetadata = z.infer<
-  typeof OpenIdProviderDiscoveryMetadataSchema
->;
+export type OpenIdProviderDiscoveryMetadata = z.infer<typeof OpenIdProviderDiscoveryMetadataSchema>;
 export type OAuthTokens = z.infer<typeof OAuthTokensSchema>;
-export type OAuthProtectedResourceMetadata = z.infer<
-  typeof OAuthProtectedResourceMetadataSchema
->;
-export type OAuthClientInformation = z.infer<
-  typeof OAuthClientInformationSchema
->;
-export type AuthorizationServerMetadata =
-  | OAuthMetadata
-  | OpenIdProviderDiscoveryMetadata;
+export type OAuthProtectedResourceMetadata = z.infer<typeof OAuthProtectedResourceMetadataSchema>;
+export type OAuthClientInformation = z.infer<typeof OAuthClientInformationSchema>;
+export type AuthorizationServerMetadata = OAuthMetadata | OpenIdProviderDiscoveryMetadata;
 
 export const OAuthErrorResponseSchema = z.object({
   error: z.string(),
@@ -166,6 +151,4 @@ export const OAuthClientInformationFullSchema = OAuthClientMetadataSchema.merge(
   OAuthClientInformationSchema,
 );
 export type OAuthClientMetadata = z.infer<typeof OAuthClientMetadataSchema>;
-export type OAuthClientInformationFull = z.infer<
-  typeof OAuthClientInformationFullSchema
->;
+export type OAuthClientInformationFull = z.infer<typeof OAuthClientInformationFullSchema>;

@@ -1,9 +1,6 @@
 import { JSONValue } from '../../json-value/json-value';
 
-type TranscriptionModelV2ProviderOptions = Record<
-  string,
-  Record<string, JSONValue>
->;
+type TranscriptionModelV2ProviderOptions = Record<string, Record<string, JSONValue>>;
 
 export type TranscriptionModelV2CallOptions = {
   /**

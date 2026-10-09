@@ -64,10 +64,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
@@ -100,10 +97,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
@@ -134,10 +128,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
@@ -146,9 +137,7 @@ describe('createBedrockAnthropicFetch', () => {
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
-    expect(text).toBe(
-      `data: ${JSON.stringify({ type: 'error', error: errorData })}\n\n`,
-    );
+    expect(text).toBe(`data: ${JSON.stringify({ type: 'error', error: errorData })}\n\n`);
   });
 
   it('should handle multiple events in sequence', async () => {
@@ -196,10 +185,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
@@ -248,10 +234,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
@@ -326,10 +309,7 @@ describe('createBedrockAnthropicFetch', () => {
       },
     });
 
-    const mockResponse = createMockResponse(
-      stream,
-      'application/vnd.amazon.eventstream',
-    );
+    const mockResponse = createMockResponse(stream, 'application/vnd.amazon.eventstream');
     const baseFetch = createMockFetch(mockResponse);
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 

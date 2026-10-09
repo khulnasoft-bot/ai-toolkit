@@ -5,16 +5,10 @@ const BYPASS_LABELS = ['minor', 'major'];
 // check if current file is the entry point
 if (import.meta.url.endsWith(process.argv[1])) {
   // https://docs.github.com/en/webhooks/webhook-events-and-payloads#pull_request
-  const pullRequestEvent = JSON.parse(
-    await fs.readFile(process.env.GITHUB_EVENT_PATH, 'utf-8'),
-  );
+  const pullRequestEvent = JSON.parse(await fs.readFile(process.env.GITHUB_EVENT_PATH, 'utf-8'));
 
   try {
-    const message = await verifyChangesets(
-      pullRequestEvent,
-      process.env,
-      fs.readFile,
-    );
+    const message = await verifyChangesets(pullRequestEvent, process.env, fs.readFile);
     await fs.writeFile(
       process.env.GITHUB_STEP_SUMMARY,
       `## Changeset verification passed ✅\n\n${message || ''}`,
@@ -30,10 +24,7 @@ ${error.message}`,
     );
 
     if (error.path) {
-      await fs.appendFile(
-        process.env.GITHUB_STEP_SUMMARY,
-        `\n\nFile: \`${error.path}\``,
-      );
+      await fs.appendFile(process.env.GITHUB_STEP_SUMMARY, `\n\nFile: \`${error.path}\``);
     }
 
     if (error.content) {
@@ -47,15 +38,9 @@ ${error.message}`,
   }
 }
 
-export async function verifyChangesets(
-  event,
-  env = process.env,
-  readFile = fs.readFile,
-) {
+export async function verifyChangesets(event, env = process.env, readFile = fs.readFile) {
   // Skip check if pull request has "minor-release" label
-  const byPassLabel = event.pull_request.labels.find(label =>
-    BYPASS_LABELS.includes(label.name),
-  );
+  const byPassLabel = event.pull_request.labels.find(label => BYPASS_LABELS.includes(label.name));
   if (byPassLabel) {
     return `Skipping changeset verification - "${byPassLabel.name}" label found`;
   }
@@ -76,13 +61,10 @@ export async function verifyChangesets(
     const content = await readFile(`../../../../${path}`, 'utf-8');
     const result = content.match(/---\n([\s\S]+?)\n---/);
     if (!result) {
-      throw Object.assign(
-        new Error(`Invalid .changeset file - no frontmatter found`),
-        {
-          path,
-          content,
-        },
-      );
+      throw Object.assign(new Error(`Invalid .changeset file - no frontmatter found`), {
+        path,
+        content,
+      });
     }
 
     const [frontmatter] = result;
@@ -109,9 +91,7 @@ export async function verifyChangesets(
       // Check if packageName is already set
       if (versionBumps[packageName]) {
         throw Object.assign(
-          new Error(
-            `Invalid .changeset file - duplicate package name "${packageName}"`,
-          ),
+          new Error(`Invalid .changeset file - duplicate package name "${packageName}"`),
           { path, content },
         );
       }

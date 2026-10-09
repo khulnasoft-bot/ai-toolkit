@@ -4,10 +4,7 @@ import {
   type FetchFunction,
 } from '@ai-toolkit/provider-utils';
 import { asGatewayError, GatewayAuthenticationError } from './errors';
-import {
-  GATEWAY_AUTH_METHOD_HEADER,
-  parseAuthMethod,
-} from './errors/parse-auth-method';
+import { GATEWAY_AUTH_METHOD_HEADER, parseAuthMethod } from './errors/parse-auth-method';
 import {
   GatewayFetchMetadata,
   type GatewayFetchMetadataResponse,
@@ -109,18 +106,13 @@ const AI_GATEWAY_PROTOCOL_VERSION = '0.0.1';
 /**
 Create a remote provider instance.
  */
-export function createGatewayProvider(
-  options: GatewayProviderSettings = {},
-): GatewayProvider {
+export function createGatewayProvider(options: GatewayProviderSettings = {}): GatewayProvider {
   let pendingMetadata: Promise<GatewayFetchMetadataResponse> | null = null;
   let metadataCache: GatewayFetchMetadataResponse | null = null;
-  const cacheRefreshMillis =
-    options.metadataCacheRefreshMillis ?? 1000 * 60 * 5;
+  const cacheRefreshMillis = options.metadataCacheRefreshMillis ?? 1000 * 60 * 5;
   let lastFetchTime = 0;
 
-  const baseURL =
-    withoutTrailingSlash(options.baseURL) ??
-    'https://ai-gateway.vercel.sh/v3/ai';
+  const baseURL = withoutTrailingSlash(options.baseURL) ?? 'https://ai-gateway.vercel.sh/v3/ai';
 
   const getHeaders = async () => {
     try {
@@ -199,10 +191,7 @@ export function createGatewayProvider(
           return metadata;
         })
         .catch(async (error: unknown) => {
-          throw await asGatewayError(
-            error,
-            await parseAuthMethod(await getHeaders()),
-          );
+          throw await asGatewayError(error, await parseAuthMethod(await getHeaders()));
         });
     }
 
@@ -217,18 +206,13 @@ export function createGatewayProvider(
     })
       .getCredits()
       .catch(async (error: unknown) => {
-        throw await asGatewayError(
-          error,
-          await parseAuthMethod(await getHeaders()),
-        );
+        throw await asGatewayError(error, await parseAuthMethod(await getHeaders()));
       });
   };
 
   const provider = function (modelId: GatewayModelId) {
     if (new.target) {
-      throw new Error(
-        'The Gateway Provider model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Gateway Provider model function cannot be called with the new keyword.');
     }
 
     return createLanguageModel(modelId);

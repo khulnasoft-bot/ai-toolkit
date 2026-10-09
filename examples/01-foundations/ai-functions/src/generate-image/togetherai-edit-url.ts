@@ -1,7 +1,4 @@
-import {
-  togetherai,
-  type TogetherAIImageProviderOptions,
-} from '@ai-toolkit/togetherai';
+import { togetherai, type TogetherAIImageProviderOptions } from '@ai-toolkit/togetherai';
 import { generateImage } from '@ai-toolkit/ai';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';

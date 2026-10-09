@@ -104,11 +104,7 @@ describe('edge.Temporary', () => {
 
     const edges = [props];
     const { container } = render(
-      <Canvas
-        edges={edges}
-        edgeTypes={{ temporary: Edge.Temporary }}
-        nodes={[]}
-      >
+      <Canvas edges={edges} edgeTypes={{ temporary: Edge.Temporary }} nodes={[]}>
         <div>Content</div>
       </Canvas>,
     );
@@ -152,11 +148,7 @@ describe('edge.Temporary', () => {
 
     const edges = [props];
     const { container } = render(
-      <Canvas
-        edges={edges}
-        edgeTypes={{ temporary: Edge.Temporary }}
-        nodes={[]}
-      >
+      <Canvas edges={edges} edgeTypes={{ temporary: Edge.Temporary }} nodes={[]}>
         <div>Content</div>
       </Canvas>,
     );
@@ -207,11 +199,7 @@ describe('edge.Animated', () => {
 
     const edges = [props];
     const { container } = render(
-      <Canvas
-        edges={edges}
-        edgeTypes={{ animated: Edge.Animated }}
-        nodes={nodes}
-      >
+      <Canvas edges={edges} edgeTypes={{ animated: Edge.Animated }} nodes={nodes}>
         <div>Content</div>
       </Canvas>,
     );
@@ -241,11 +229,7 @@ describe('edge.Animated', () => {
 
     const edges = [props];
     const { container } = render(
-      <Canvas
-        edges={edges}
-        edgeTypes={{ animated: Edge.Animated }}
-        nodes={nodes}
-      >
+      <Canvas edges={edges} edgeTypes={{ animated: Edge.Animated }} nodes={nodes}>
         <div>Content</div>
       </Canvas>,
     );
@@ -266,17 +250,11 @@ describe('edge.Animated', () => {
       targetY: 100,
     };
 
-    const nodes = [
-      { data: { label: 'Node 2' }, id: '2', position: { x: 200, y: 0 } },
-    ];
+    const nodes = [{ data: { label: 'Node 2' }, id: '2', position: { x: 200, y: 0 } }];
 
     const edges = [props];
     const { container } = render(
-      <Canvas
-        edges={edges}
-        edgeTypes={{ animated: Edge.Animated }}
-        nodes={nodes}
-      >
+      <Canvas edges={edges} edgeTypes={{ animated: Edge.Animated }} nodes={nodes}>
         <div>Content</div>
       </Canvas>,
     );
@@ -297,17 +275,11 @@ describe('edge.Animated', () => {
       targetY: 100,
     };
 
-    const nodes = [
-      { data: { label: 'Node 1' }, id: '1', position: { x: 0, y: 0 } },
-    ];
+    const nodes = [{ data: { label: 'Node 1' }, id: '1', position: { x: 0, y: 0 } }];
 
     const edges = [props];
     const { container } = render(
-      <Canvas
-        edges={edges}
-        edgeTypes={{ animated: Edge.Animated }}
-        nodes={nodes}
-      >
+      <Canvas edges={edges} edgeTypes={{ animated: Edge.Animated }} nodes={nodes}>
         <div>Content</div>
       </Canvas>,
     );

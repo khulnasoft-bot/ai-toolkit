@@ -1,18 +1,11 @@
-import {
-  LanguageModelV3,
-  NoSuchModelError,
-  ProviderV3,
-} from '@ai-toolkit/provider';
+import { LanguageModelV3, NoSuchModelError, ProviderV3 } from '@ai-toolkit/provider';
 import {
   FetchFunction,
   Resolvable,
   loadOptionalSetting,
   withoutTrailingSlash,
 } from '@ai-toolkit/provider-utils';
-import {
-  anthropicTools,
-  AnthropicMessagesLanguageModel,
-} from '@ai-toolkit/anthropic/internal';
+import { anthropicTools, AnthropicMessagesLanguageModel } from '@ai-toolkit/anthropic/internal';
 import { GoogleVertexAnthropicMessagesModelId } from './google-vertex-anthropic-messages-options';
 
 /**
@@ -181,9 +174,7 @@ export function createVertexAnthropic(
 
   const provider = function (modelId: GoogleVertexAnthropicMessagesModelId) {
     if (new.target) {
-      throw new Error(
-        'The Anthropic model function cannot be called with the new keyword.',
-      );
+      throw new Error('The Anthropic model function cannot be called with the new keyword.');
     }
 
     return createChatModel(modelId);

@@ -10,8 +10,7 @@ run(async () => {
 
   console.log('INPUT IMAGES: cat and dog');
 
-  const prompt =
-    'Create a scene with both animals together, a cat and a dog playing as friends';
+  const prompt = 'Create a scene with both animals together, a cat and a dog playing as friends';
   console.log(`PROMPT: ${prompt}`);
 
   const { images } = await generateImage({

@@ -1,15 +1,7 @@
-import {
-  AbstractChat,
-  ChatInit,
-  ChatState,
-  ChatStatus,
-  UIMessage,
-} from '@ai-toolkit/ai';
+import { AbstractChat, ChatInit, ChatState, ChatStatus, UIMessage } from '@ai-toolkit/ai';
 import { throttle } from './throttle';
 
-class ReactChatState<UI_MESSAGE extends UIMessage>
-  implements ChatState<UI_MESSAGE>
-{
+class ReactChatState<UI_MESSAGE extends UIMessage> implements ChatState<UI_MESSAGE> {
   #messages: UI_MESSAGE[];
   #status: ChatStatus = 'ready';
   #error: Error | undefined = undefined;
@@ -71,13 +63,8 @@ class ReactChatState<UI_MESSAGE extends UIMessage>
 
   snapshot = <T>(value: T): T => structuredClone(value);
 
-  '~registerMessagesCallback' = (
-    onChange: () => void,
-    throttleWaitMs?: number,
-  ): (() => void) => {
-    const callback = throttleWaitMs
-      ? throttle(onChange, throttleWaitMs)
-      : onChange;
+  '~registerMessagesCallback' = (onChange: () => void, throttleWaitMs?: number): (() => void) => {
+    const callback = throttleWaitMs ? throttle(onChange, throttleWaitMs) : onChange;
     this.#messagesCallbacks.add(callback);
     return () => {
       this.#messagesCallbacks.delete(callback);
@@ -111,9 +98,7 @@ class ReactChatState<UI_MESSAGE extends UIMessage>
   };
 }
 
-export class Chat<
-  UI_MESSAGE extends UIMessage,
-> extends AbstractChat<UI_MESSAGE> {
+export class Chat<UI_MESSAGE extends UIMessage> extends AbstractChat<UI_MESSAGE> {
   #state: ReactChatState<UI_MESSAGE>;
 
   constructor({ messages, ...init }: ChatInit<UI_MESSAGE>) {
@@ -122,10 +107,7 @@ export class Chat<
     this.#state = state;
   }
 
-  '~registerMessagesCallback' = (
-    onChange: () => void,
-    throttleWaitMs?: number,
-  ): (() => void) =>
+  '~registerMessagesCallback' = (onChange: () => void, throttleWaitMs?: number): (() => void) =>
     this.#state['~registerMessagesCallback'](onChange, throttleWaitMs);
 
   '~registerStatusCallback' = (onChange: () => void): (() => void) =>

@@ -1,12 +1,5 @@
-import {
-  UnsupportedFunctionalityError,
-  type LanguageModelV4FilePart,
-} from '@ai-toolkit/provider';
-import {
-  detectMediaType,
-  getTopLevelMediaType,
-  isFullMediaType,
-} from './detect-media-type';
+import { UnsupportedFunctionalityError, type LanguageModelV4FilePart } from '@ai-toolkit/provider';
+import { detectMediaType, getTopLevelMediaType, isFullMediaType } from './detect-media-type';
 
 /**
  * Resolves a file part's media type to a full `type/subtype` form required by
@@ -20,11 +13,7 @@ import {
  * - When neither applies (e.g. top-level-only with a URL source, or bytes that
  *   cannot be detected), an `UnsupportedFunctionalityError` is thrown.
  */
-export function resolveFullMediaType({
-  part,
-}: {
-  part: LanguageModelV4FilePart;
-}): string {
+export function resolveFullMediaType({ part }: { part: LanguageModelV4FilePart }): string {
   if (isFullMediaType(part.mediaType)) {
     return part.mediaType;
   }

@@ -27,10 +27,7 @@ export function setAbortTimeout({
   return setTimeout(
     () =>
       abortController.abort(
-        new DOMException(
-          `${label} timeout of ${timeoutMs}ms exceeded`,
-          'TimeoutError',
-        ),
+        new DOMException(`${label} timeout of ${timeoutMs}ms exceeded`, 'TimeoutError'),
       ),
     timeoutMs,
   );

@@ -1,9 +1,4 @@
-import {
-  AssistantContent,
-  AssistantModelMessage,
-  ToolContent,
-  ToolModelMessage,
-} from '../prompt';
+import { AssistantContent, AssistantModelMessage, ToolContent, ToolModelMessage } from '../prompt';
 import { createToolModelOutput } from '../prompt/create-tool-model-output';
 import { ContentPart } from './content-part';
 import { ToolSet } from './tool-set';
@@ -28,10 +23,7 @@ export async function toResponseMessages<TOOLS extends ToolSet>({
     }
 
     // Skip non-provider-executed tool results/errors (they go in the tool message)
-    if (
-      (part.type === 'tool-result' || part.type === 'tool-error') &&
-      !part.providerExecuted
-    ) {
+    if ((part.type === 'tool-result' || part.type === 'tool-error') && !part.providerExecuted) {
       continue;
     }
 
@@ -126,10 +118,7 @@ export async function toResponseMessages<TOOLS extends ToolSet>({
 
   const toolResultContent: ToolContent = [];
   for (const part of inputContent) {
-    if (
-      !(part.type === 'tool-result' || part.type === 'tool-error') ||
-      part.providerExecuted
-    ) {
+    if (!(part.type === 'tool-result' || part.type === 'tool-error') || part.providerExecuted) {
       continue;
     }
 
@@ -146,9 +135,7 @@ export async function toResponseMessages<TOOLS extends ToolSet>({
       toolCallId: part.toolCallId,
       toolName: part.toolName,
       output,
-      ...(part.providerMetadata != null
-        ? { providerOptions: part.providerMetadata }
-        : {}),
+      ...(part.providerMetadata != null ? { providerOptions: part.providerMetadata } : {}),
     });
   }
 

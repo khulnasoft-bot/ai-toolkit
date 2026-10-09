@@ -10,10 +10,7 @@ import type {
 } from './generate-text-events';
 import type { Output } from './output';
 import { createRestrictedTelemetryDispatcher } from './restricted-telemetry-dispatcher';
-import type {
-  ToolExecutionEndEvent,
-  ToolExecutionStartEvent,
-} from './tool-execution-events';
+import type { ToolExecutionEndEvent, ToolExecutionStartEvent } from './tool-execution-events';
 
 describe('createRestrictedTelemetryDispatcher types', () => {
   type RuntimeContext = {
@@ -33,22 +30,16 @@ describe('createRestrictedTelemetryDispatcher types', () => {
 
   type Tools = typeof tools;
 
-  const telemetryDispatcher = createRestrictedTelemetryDispatcher<
-    ToolSet,
-    RuntimeContext,
-    Output
-  >({
+  const telemetryDispatcher = createRestrictedTelemetryDispatcher<ToolSet, RuntimeContext, Output>({
     includeRuntimeContext: { userId: true },
   });
 
   it('exposes text telemetry callbacks with the original runtimeContext type', () => {
     expectTypeOf(telemetryDispatcher.onStart).toMatchTypeOf<
-      | Callback<GenerateTextStartEvent<ToolSet, RuntimeContext, Output>>
-      | undefined
+      Callback<GenerateTextStartEvent<ToolSet, RuntimeContext, Output>> | undefined
     >();
     expectTypeOf(telemetryDispatcher.onStepStart).toMatchTypeOf<
-      | Callback<GenerateTextStepStartEvent<ToolSet, RuntimeContext, Output>>
-      | undefined
+      Callback<GenerateTextStepStartEvent<ToolSet, RuntimeContext, Output>> | undefined
     >();
     expectTypeOf(telemetryDispatcher.onStepEnd).toMatchTypeOf<
       Callback<GenerateTextStepEndEvent<ToolSet, RuntimeContext>> | undefined
@@ -62,11 +53,7 @@ describe('createRestrictedTelemetryDispatcher types', () => {
   });
 
   it('exposes tool execution callbacks with the original tool set type', () => {
-    const telemetryDispatcher = createRestrictedTelemetryDispatcher<
-      Tools,
-      RuntimeContext,
-      Output
-    >({
+    const telemetryDispatcher = createRestrictedTelemetryDispatcher<Tools, RuntimeContext, Output>({
       includeRuntimeContext: { userId: true },
     });
 

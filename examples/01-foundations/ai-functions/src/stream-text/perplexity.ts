@@ -21,8 +21,5 @@ run(async () => {
   console.log('Sources:', await result.sources);
   console.log('Finish reason:', await result.finishReason);
   console.log('Usage:', await result.usage);
-  console.log(
-    'Metadata:',
-    JSON.stringify(await result.providerMetadata, null, 2),
-  );
+  console.log('Metadata:', JSON.stringify(await result.providerMetadata, null, 2));
 });

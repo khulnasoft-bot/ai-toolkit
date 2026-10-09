@@ -10,9 +10,7 @@ describe('processTextStream', () => {
 
     // Create stream using utility
     const encoder = new TextEncoder();
-    const stream = convertArrayToReadableStream(
-      testData.map(chunk => encoder.encode(chunk)),
-    );
+    const stream = convertArrayToReadableStream(testData.map(chunk => encoder.encode(chunk)));
 
     // Mock callback function
     const onChunk = vi.fn((chunk: string) => {

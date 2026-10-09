@@ -1,7 +1,4 @@
-import {
-  McpServer,
-  ResourceTemplate,
-} from '@modelcontextprotocol/sdk/server/mcp.js';
+import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import express from 'express';
 
@@ -75,7 +72,5 @@ app.post('/messages', async (req, res) => {
 });
 
 app.listen(8082, () => {
-  console.log(
-    'MCP resources example server listening on http://localhost:8082',
-  );
+  console.log('MCP resources example server listening on http://localhost:8082');
 });

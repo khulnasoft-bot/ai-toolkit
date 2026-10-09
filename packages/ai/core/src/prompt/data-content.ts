@@ -1,7 +1,4 @@
-import {
-  AITOOLKITError,
-  LanguageModelV3DataContent,
-} from '@ai-toolkit/provider';
+import { AITOOLKITError, LanguageModelV3DataContent } from '@ai-toolkit/provider';
 import {
   convertBase64ToUint8Array,
   convertUint8ArrayToBase64,
@@ -20,15 +17,12 @@ export const dataContentSchema: z.ZodType<DataContent> = z.union([
   z.instanceof(ArrayBuffer),
   z.custom<Buffer>(
     // Buffer might not be available in some environments such as CloudFlare:
-    (value: unknown): value is Buffer =>
-      globalThis.Buffer?.isBuffer(value) ?? false,
+    (value: unknown): value is Buffer => globalThis.Buffer?.isBuffer(value) ?? false,
     { message: 'Must be a Buffer' },
   ),
 ]);
 
-export function convertToLanguageModelV3DataContent(
-  content: DataContent | URL,
-): {
+export function convertToLanguageModelV3DataContent(content: DataContent | URL): {
   data: LanguageModelV3DataContent;
   mediaType: string | undefined;
 } {
@@ -54,9 +48,7 @@ export function convertToLanguageModelV3DataContent(
 
   // Extract data from data URL:
   if (content instanceof URL && content.protocol === 'data:') {
-    const { mediaType: dataUrlMediaType, base64Content } = splitDataUrl(
-      content.toString(),
-    );
+    const { mediaType: dataUrlMediaType, base64Content } = splitDataUrl(content.toString());
 
     if (dataUrlMediaType == null || base64Content == null) {
       throw new AITOOLKITError({
@@ -95,9 +87,7 @@ Converts data content to a Uint8Array.
 @param content - Data content to convert.
 @returns Uint8Array.
  */
-export function convertDataContentToUint8Array(
-  content: DataContent,
-): Uint8Array {
+export function convertDataContentToUint8Array(content: DataContent): Uint8Array {
   if (content instanceof Uint8Array) {
     return content;
   }
@@ -107,8 +97,7 @@ export function convertDataContentToUint8Array(
       return convertBase64ToUint8Array(content);
     } catch (error) {
       throw new InvalidDataContentError({
-        message:
-          'Invalid data content. Content string is not a base64-encoded media.',
+        message: 'Invalid data content. Content string is not a base64-encoded media.',
         content,
         cause: error,
       });

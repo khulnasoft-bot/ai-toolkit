@@ -66,9 +66,6 @@ run(async () => {
     }
   }
   for await (const containerFile of containerfileList) {
-    await downloadAzureContainerFile(
-      containerFile.containerId,
-      containerFile.fileId,
-    );
+    await downloadAzureContainerFile(containerFile.containerId, containerFile.fileId);
   }
 });

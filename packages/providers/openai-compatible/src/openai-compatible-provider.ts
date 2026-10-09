@@ -1,9 +1,4 @@
-import {
-  EmbeddingModelV3,
-  ImageModelV3,
-  LanguageModelV3,
-  ProviderV3,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, ImageModelV3, LanguageModelV3, ProviderV3 } from '@ai-toolkit/provider';
 import {
   FetchFunction,
   withoutTrailingSlash,
@@ -129,8 +124,7 @@ export function createOpenAICompatible<
     ...options.headers,
   };
 
-  const getHeaders = () =>
-    withUserAgentSuffix(headers, `ai-toolkit/openai-compatible/${VERSION}`);
+  const getHeaders = () => withUserAgentSuffix(headers, `ai-toolkit/openai-compatible/${VERSION}`);
 
   const getCommonModelConfig = (modelType: string): CommonModelConfig => ({
     provider: `${providerName}.${modelType}`,
@@ -145,8 +139,7 @@ export function createOpenAICompatible<
     fetch: options.fetch,
   });
 
-  const createLanguageModel = (modelId: CHAT_MODEL_IDS) =>
-    createChatModel(modelId);
+  const createLanguageModel = (modelId: CHAT_MODEL_IDS) => createChatModel(modelId);
 
   const createChatModel = (modelId: CHAT_MODEL_IDS) =>
     new OpenAICompatibleChatLanguageModel(modelId, {

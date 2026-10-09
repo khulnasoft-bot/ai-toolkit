@@ -30,10 +30,7 @@ export class TogetherAIRerankingModel implements RerankingModelV3 {
 
   private readonly config: TogetherAIRerankingConfig;
 
-  constructor(
-    modelId: TogetherAIRerankingModelId,
-    config: TogetherAIRerankingConfig,
-  ) {
+  constructor(modelId: TogetherAIRerankingModelId, config: TogetherAIRerankingConfig) {
     this.modelId = modelId;
     this.config = config;
   }
@@ -78,9 +75,7 @@ export class TogetherAIRerankingModel implements RerankingModelV3 {
         errorSchema: togetheraiErrorSchema,
         errorToMessage: data => data.error.message,
       }),
-      successfulResponseHandler: createJsonResponseHandler(
-        togetheraiRerankingResponseSchema,
-      ),
+      successfulResponseHandler: createJsonResponseHandler(togetheraiRerankingResponseSchema),
       abortSignal,
       fetch: this.config.fetch,
     });

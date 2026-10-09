@@ -5,9 +5,7 @@ import { CodeBlock, CodeBlockCopyButton } from './code-block';
 
 describe('codeBlock', () => {
   it('renders code content', async () => {
-    const { container } = render(
-      <CodeBlock code="const foo = 'bar';" language="javascript" />,
-    );
+    const { container } = render(<CodeBlock code="const foo = 'bar';" language="javascript" />);
     await waitFor(() => {
       expect(container.textContent).toContain('const foo');
     });
@@ -15,11 +13,7 @@ describe('codeBlock', () => {
 
   it('renders with line numbers', async () => {
     const { container } = render(
-      <CodeBlock
-        code="line1\nline2"
-        language="javascript"
-        showLineNumbers={true}
-      />,
+      <CodeBlock code="line1\nline2" language="javascript" showLineNumbers={true} />,
     );
     await waitFor(() => {
       expect(container.textContent).toContain('line1');

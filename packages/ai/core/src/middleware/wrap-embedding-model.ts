@@ -1,7 +1,4 @@
-import {
-  EmbeddingModelV3,
-  EmbeddingModelV3CallOptions,
-} from '@ai-toolkit/provider';
+import { EmbeddingModelV3, EmbeddingModelV3CallOptions } from '@ai-toolkit/provider';
 import { EmbeddingModelMiddleware } from '../types';
 import { asArray } from '../util/as-array';
 
@@ -28,11 +25,9 @@ export const wrapEmbeddingModel = ({
   modelId?: string;
   providerId?: string;
 }): EmbeddingModelV3 => {
-  return [...asArray(middlewareArg)]
-    .reverse()
-    .reduce((wrappedModel, middleware) => {
-      return doWrap({ model: wrappedModel, middleware, modelId, providerId });
-    }, model);
+  return [...asArray(middlewareArg)].reverse().reduce((wrappedModel, middleware) => {
+    return doWrap({ model: wrappedModel, middleware, modelId, providerId });
+  }, model);
 };
 
 const doWrap = ({
@@ -53,11 +48,7 @@ const doWrap = ({
   modelId?: string;
   providerId?: string;
 }): EmbeddingModelV3 => {
-  async function doTransform({
-    params,
-  }: {
-    params: EmbeddingModelV3CallOptions;
-  }) {
+  async function doTransform({ params }: { params: EmbeddingModelV3CallOptions }) {
     return transformParams ? await transformParams({ params, model }) : params;
   }
 
@@ -65,8 +56,7 @@ const doWrap = ({
     specificationVersion: 'v3',
     provider: providerId ?? overrideProvider?.({ model }) ?? model.provider,
     modelId: modelId ?? overrideModelId?.({ model }) ?? model.modelId,
-    maxEmbeddingsPerCall:
-      overrideMaxEmbeddingsPerCall?.({ model }) ?? model.maxEmbeddingsPerCall,
+    maxEmbeddingsPerCall: overrideMaxEmbeddingsPerCall?.({ model }) ?? model.maxEmbeddingsPerCall,
     supportsParallelCalls:
       overrideSupportsParallelCalls?.({ model }) ?? model.supportsParallelCalls,
     async doEmbed(

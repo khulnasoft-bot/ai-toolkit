@@ -25,18 +25,10 @@ import { prepareToolChoice } from '../prompt/prepare-tool-choice';
 import { prepareTools } from '../prompt/prepare-tools';
 import { standardizePrompt } from '../prompt/standardize-prompt';
 import type { Telemetry } from '../telemetry/telemetry';
-import type {
-  CallWarning,
-  FinishReason,
-  LanguageModel,
-  ToolChoice,
-} from '../types/language-model';
+import type { CallWarning, FinishReason, LanguageModel, ToolChoice } from '../types/language-model';
 import type { ProviderMetadata } from '../types/provider-metadata';
 import { asLanguageModelUsage, type LanguageModelUsage } from '../types/usage';
-import {
-  createAsyncIterableStream,
-  type AsyncIterableStream,
-} from '../util/async-iterable-stream';
+import { createAsyncIterableStream, type AsyncIterableStream } from '../util/async-iterable-stream';
 import type { DownloadFunction } from '../util/download/download-function';
 import { notify } from '../util/notify';
 import { now as originalNow } from '../util/now';
@@ -212,8 +204,7 @@ export async function streamLanguageModelCall<
   providerOptions,
   repairToolCall,
   refineToolInput,
-  executeLanguageModelCallInTelemetryContext = async ({ execute }) =>
-    await execute(),
+  executeLanguageModelCallInTelemetryContext = async ({ execute }) => await execute(),
   callId,
   toolsContext,
   experimental_sandbox: sandbox,
@@ -266,9 +257,7 @@ export async function streamLanguageModelCall<
   //
   // TODO explore decoupling by changing the telemetry callbacks to accept
   // a Prompt or a standardized Prompt.
-  onStart?: (args: {
-    promptMessages: LanguageModelV4Prompt;
-  }) => Promise<void> | void;
+  onStart?: (args: { promptMessages: LanguageModelV4Prompt }) => Promise<void> | void;
 } & Prompt &
   LanguageModelCallOptions): Promise<{
   stream: AsyncIterableStream<LanguageModelStreamPart<TOOLS>>;
@@ -387,9 +376,7 @@ export async function streamLanguageModelCall<
 }
 
 // Java Loves You.
-function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
-  TOOLS extends ToolSet,
->({
+function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<TOOLS extends ToolSet>({
   tools,
   instructions,
   messages,
@@ -428,10 +415,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
   let previousOutputChunkTimestampMs: number | undefined;
   const timeBetweenOutputChunksMs: number[] = [];
 
-  return new TransformStream<
-    LanguageModelV4StreamPart,
-    LanguageModelStreamPart<TOOLS>
-  >({
+  return new TransformStream<LanguageModelV4StreamPart, LanguageModelStreamPart<TOOLS>>({
     async transform(chunk, controller) {
       if (isOutputChunk(chunk)) {
         const outputChunkTimestampMs = now();
@@ -439,9 +423,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
         if (timeToFirstOutputMs == null) {
           timeToFirstOutputMs = outputChunkTimestampMs - callStartTimestampMs;
         } else if (previousOutputChunkTimestampMs != null) {
-          timeBetweenOutputChunksMs.push(
-            outputChunkTimestampMs - previousOutputChunkTimestampMs,
-          );
+          timeBetweenOutputChunksMs.push(outputChunkTimestampMs - previousOutputChunkTimestampMs);
         }
 
         previousOutputChunkTimestampMs = outputChunkTimestampMs;
@@ -538,19 +520,14 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
         case 'file':
         case 'reasoning-file': {
           const file = new DefaultGeneratedFileWithType({
-            data:
-              chunk.data.type === 'data'
-                ? chunk.data.data
-                : chunk.data.url.toString(),
+            data: chunk.data.type === 'data' ? chunk.data.data : chunk.data.url.toString(),
             mediaType: chunk.mediaType,
           });
 
           modelCallContent.push({
             type: chunk.type,
             file,
-            ...(chunk.providerMetadata != null
-              ? { providerMetadata: chunk.providerMetadata }
-              : {}),
+            ...(chunk.providerMetadata != null ? { providerMetadata: chunk.providerMetadata } : {}),
           });
 
           controller.enqueue({
@@ -648,9 +625,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
                   error: getErrorMessage(toolCall.error!),
                   dynamic: true,
                   title: toolCall.title,
-                  ...(toolCall.toolMetadata != null
-                    ? { toolMetadata: toolCall.toolMetadata }
-                    : {}),
+                  ...(toolCall.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
                 });
               }
               break;
@@ -703,9 +678,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
                 ...(chunk.providerMetadata != null
                   ? { providerMetadata: chunk.providerMetadata }
                   : {}),
-                ...(toolCall?.toolMetadata != null
-                  ? { toolMetadata: toolCall.toolMetadata }
-                  : {}),
+                ...(toolCall?.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
               } as TypedToolError<TOOLS>)
             : ({
                 type: 'tool-result',
@@ -718,9 +691,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
                 ...(chunk.providerMetadata != null
                   ? { providerMetadata: chunk.providerMetadata }
                   : {}),
-                ...(toolCall?.toolMetadata != null
-                  ? { toolMetadata: toolCall.toolMetadata }
-                  : {}),
+                ...(toolCall?.toolMetadata != null ? { toolMetadata: toolCall.toolMetadata } : {}),
               } as TypedToolResult<TOOLS>);
 
           controller.enqueue(toolResultPart);
@@ -790,9 +761,7 @@ function isOutputChunk(chunk: LanguageModelV4StreamPart): boolean {
   );
 }
 
-function calculateOutputChunkTimingStats(
-  timingsMs: number[],
-): OutputChunkTimingStats {
+function calculateOutputChunkTimingStats(timingsMs: number[]): OutputChunkTimingStats {
   const sortedTimingsMs = [...timingsMs].sort((a, b) => a - b);
   const sum = timingsMs.reduce((sum, timingMs) => sum + timingMs, 0);
 
@@ -806,10 +775,7 @@ function calculateOutputChunkTimingStats(
   };
 }
 
-function calculateNearestRankPercentile(
-  sortedValues: number[],
-  percentile: number,
-): number {
+function calculateNearestRankPercentile(sortedValues: number[], percentile: number): number {
   return sortedValues[Math.ceil(percentile * sortedValues.length) - 1];
 }
 

@@ -21,6 +21,4 @@ export const anthropicWebSearchAgent = new ToolLoopAgent({
   },
 });
 
-export type AnthropicWebSearchMessage = InferAgentUIMessage<
-  typeof anthropicWebSearchAgent
->;
+export type AnthropicWebSearchMessage = InferAgentUIMessage<typeof anthropicWebSearchAgent>;

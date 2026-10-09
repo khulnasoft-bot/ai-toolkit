@@ -150,10 +150,7 @@ export class HumeSpeechModel implements SpeechModelV3 {
 
     // Add provider-specific options
     if (humeOptions) {
-      const speechModelOptions: Omit<
-        HumeSpeechAPITypes,
-        'utterances' | 'format'
-      > = {};
+      const speechModelOptions: Omit<HumeSpeechAPITypes, 'utterances' | 'format'> = {};
 
       if (humeOptions.context) {
         if ('generationId' in humeOptions.context) {
@@ -175,9 +172,7 @@ export class HumeSpeechModel implements SpeechModelV3 {
 
       for (const key in speechModelOptions) {
         const value =
-          speechModelOptions[
-            key as keyof Omit<HumeSpeechAPITypes, 'utterances' | 'format'>
-          ];
+          speechModelOptions[key as keyof Omit<HumeSpeechAPITypes, 'utterances' | 'format'>];
         if (value !== undefined) {
           (requestBody as Record<string, unknown>)[key] = value;
         }

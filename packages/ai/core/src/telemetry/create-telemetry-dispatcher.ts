@@ -1,11 +1,7 @@
 import { asArray } from '@ai-toolkit/provider-utils';
 import type { Callback } from '../util/callback';
 import { mergeCallbacks } from '../util/merge-callbacks';
-import type {
-  InferTelemetryEvent,
-  Telemetry,
-  TelemetryDispatcher,
-} from './telemetry';
+import type { InferTelemetryEvent, Telemetry, TelemetryDispatcher } from './telemetry';
 import {
   openTelemetryChannelSpanContext,
   runWithTracingChannelSpan,
@@ -20,9 +16,7 @@ import type { TelemetryOptions } from './telemetry-options';
  */
 type TelemetryCallbackKey = Exclude<
   keyof {
-    [K in keyof TelemetryDispatcher as TelemetryDispatcher[K] extends
-      | Callback<any>
-      | undefined
+    [K in keyof TelemetryDispatcher as TelemetryDispatcher[K] extends Callback<any> | undefined
       ? K
       : never]: true;
   },
@@ -32,23 +26,17 @@ type TelemetryCallbackKey = Exclude<
 /**
  * Resolves the public  event type accepted by a telemetry callback key.
  */
-type TelemetryEvent<K extends TelemetryCallbackKey> =
-  TelemetryDispatcher[K] extends Callback<infer EVENT> | undefined
-    ? EVENT
-    : never;
+type TelemetryEvent<K extends TelemetryCallbackKey> = TelemetryDispatcher[K] extends
+  | Callback<infer EVENT>
+  | undefined
+  ? EVENT
+  : never;
 
 function augmentEvent<EVENT>(
   event: EVENT,
-  telemetry: Pick<
-    TelemetryOptions,
-    'recordInputs' | 'recordOutputs' | 'functionId'
-  >,
+  telemetry: Pick<TelemetryOptions, 'recordInputs' | 'recordOutputs' | 'functionId'>,
 ): InferTelemetryEvent<EVENT> {
-  return Object.assign(
-    Object.create(Object.getPrototypeOf(event)),
-    event,
-    telemetry,
-  );
+  return Object.assign(Object.create(Object.getPrototypeOf(event)), event, telemetry);
 }
 
 /**
@@ -78,9 +66,7 @@ export function createTelemetryDispatcher({
 
   const localIntegrations = telemetry?.integrations;
   const integrations: Array<Telemetry> =
-    localIntegrations != null
-      ? asArray(localIntegrations)
-      : getGlobalTelemetryIntegrations();
+    localIntegrations != null ? asArray(localIntegrations) : getGlobalTelemetryIntegrations();
 
   const telemetryMetadata = {
     recordInputs: telemetry?.recordInputs,
@@ -92,17 +78,13 @@ export function createTelemetryDispatcher({
     key: KEY,
   ): Callback<TelemetryEvent<KEY>> => {
     const integrationCallbacks = (
-      integrations
-        .map(integration => integration[key]?.bind(integration))
-        .filter(Boolean) as Array<
+      integrations.map(integration => integration[key]?.bind(integration)).filter(Boolean) as Array<
         Callback<InferTelemetryEvent<TelemetryEvent<KEY>>>
       >
     ).map(
       callback =>
         ((event: TelemetryEvent<KEY>) =>
-          callback(augmentEvent(event, telemetryMetadata))) as Callback<
-          TelemetryEvent<KEY>
-        >,
+          callback(augmentEvent(event, telemetryMetadata))) as Callback<TelemetryEvent<KEY>>,
     );
 
     const mergedIntegrationCallback = mergeCallbacks(...integrationCallbacks);
@@ -114,9 +96,7 @@ export function createTelemetryDispatcher({
 
   const executeLanguageModelCallWrappers = integrations
     .map(integration => integration.executeLanguageModelCall?.bind(integration))
-    .filter(Boolean) as Array<
-    NonNullable<Telemetry['executeLanguageModelCall']>
-  >;
+    .filter(Boolean) as Array<NonNullable<Telemetry['executeLanguageModelCall']>>;
 
   const executeToolWrappers = integrations
     .map(integration => integration.executeTool?.bind(integration))
@@ -143,9 +123,7 @@ export function createTelemetryDispatcher({
 
     onStart: mergeTelemetryCallback('onStart'),
     onStepStart: mergeTelemetryCallback('onStepStart'),
-    onLanguageModelCallStart: mergeTelemetryCallback(
-      'onLanguageModelCallStart',
-    ),
+    onLanguageModelCallStart: mergeTelemetryCallback('onLanguageModelCallStart'),
     onLanguageModelCallEnd: mergeTelemetryCallback('onLanguageModelCallEnd'),
     onToolExecutionStart: mergeTelemetryCallback('onToolExecutionStart'),
     onToolExecutionEnd: mergeTelemetryCallback('onToolExecutionEnd'),
@@ -177,8 +155,7 @@ export function createTelemetryDispatcher({
       let wrappedExecute = execute;
       for (const executeWrapper of executeLanguageModelCallWrappers) {
         const innerExecute = wrappedExecute;
-        wrappedExecute = () =>
-          executeWrapper({ ...augmentedEvent, execute: innerExecute });
+        wrappedExecute = () => executeWrapper({ ...augmentedEvent, execute: innerExecute });
       }
 
       return await runWithTracingChannelSpan(
@@ -199,8 +176,7 @@ export function createTelemetryDispatcher({
       let wrappedExecute = execute;
       for (const executeWrapper of executeToolWrappers) {
         const innerExecute = wrappedExecute;
-        wrappedExecute = () =>
-          executeWrapper({ ...augmentedEvent, execute: innerExecute });
+        wrappedExecute = () => executeWrapper({ ...augmentedEvent, execute: innerExecute });
       }
 
       return await wrappedExecute();

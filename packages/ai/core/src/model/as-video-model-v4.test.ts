@@ -70,9 +70,7 @@ describe('asVideoModelV4', () => {
         provider: 'test-provider',
         modelId: 'test-model-id',
         doGenerate: async () => ({
-          videos: [
-            { type: 'base64' as const, data: 'abc', mediaType: 'video/mp4' },
-          ],
+          videos: [{ type: 'base64' as const, data: 'abc', mediaType: 'video/mp4' }],
           warnings: [],
           response: {
             timestamp: new Date(),

@@ -35,9 +35,7 @@ const server = createTestServer({
 });
 
 describe('doGenerate', () => {
-  function prepareJsonResponse({
-    headers,
-  }: { headers?: Record<string, string> } = {}) {
+  function prepareJsonResponse({ headers }: { headers?: Record<string, string> } = {}) {
     // No need to set the upload response here as it's already set in the server creation
     server.urls['https://api.gladia.io/v2/pre-recorded'].response = {
       type: 'json-value',
@@ -154,9 +152,7 @@ describe('doGenerate', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(
-      `ai-toolkit/gladia/0.0.0-test`,
-    );
+    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/gladia/0.0.0-test`);
   });
 
   it('should extract the transcription text', async () => {

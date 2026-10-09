@@ -10,15 +10,11 @@ vi.mock('./version', () => ({
   VERSION: '0.0.0-test',
 }));
 
-const OpenAICompatibleChatLanguageModelMock = vi.mocked(
-  OpenAICompatibleChatLanguageModel,
-);
+const OpenAICompatibleChatLanguageModelMock = vi.mocked(OpenAICompatibleChatLanguageModel);
 const OpenAICompatibleCompletionLanguageModelMock = vi.mocked(
   OpenAICompatibleCompletionLanguageModel,
 );
-const OpenAICompatibleEmbeddingModelMock = vi.mocked(
-  OpenAICompatibleEmbeddingModel,
-);
+const OpenAICompatibleEmbeddingModelMock = vi.mocked(OpenAICompatibleEmbeddingModel);
 
 const OpenAICompatibleImageModelMock = vi.mocked(OpenAICompatibleImageModel);
 
@@ -56,8 +52,7 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
       provider('model-id');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       const headers = config.headers();
 
@@ -82,8 +77,7 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
       provider('model-id');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       const headers = config.headers();
 
@@ -108,8 +102,7 @@ describe('OpenAICompatibleProvider', () => {
 
       provider.chatModel('chat-model');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       const headers = config.headers();
 
@@ -129,8 +122,7 @@ describe('OpenAICompatibleProvider', () => {
 
       provider.completionModel('completion-model');
 
-      const constructorCall =
-        OpenAICompatibleCompletionLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleCompletionLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       const headers = config.headers();
 
@@ -140,9 +132,9 @@ describe('OpenAICompatibleProvider', () => {
         'user-agent': 'ai-toolkit/openai-compatible/0.0.0-test',
       });
       expect(config.provider).toBe('test-provider.completion');
-      expect(
-        config.url({ modelId: 'completion-model', path: '/v1/completions' }),
-      ).toBe('https://api.example.com/v1/completions?Custom-Param=value');
+      expect(config.url({ modelId: 'completion-model', path: '/v1/completions' })).toBe(
+        'https://api.example.com/v1/completions?Custom-Param=value',
+      );
     });
 
     it('should create embedding model with correct configuration', () => {
@@ -160,9 +152,9 @@ describe('OpenAICompatibleProvider', () => {
         'user-agent': 'ai-toolkit/openai-compatible/0.0.0-test',
       });
       expect(config.provider).toBe('test-provider.embedding');
-      expect(
-        config.url({ modelId: 'embedding-model', path: '/v1/embeddings' }),
-      ).toBe('https://api.example.com/v1/embeddings?Custom-Param=value');
+      expect(config.url({ modelId: 'embedding-model', path: '/v1/embeddings' })).toBe(
+        'https://api.example.com/v1/embeddings?Custom-Param=value',
+      );
     });
 
     it('should use languageModel as default when called as function', () => {
@@ -188,8 +180,7 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
       provider('model-id');
 
-      const constructorCall =
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
 
       expect(config.url({ modelId: 'model-id', path: '/v1/chat' })).toBe(
@@ -208,20 +199,13 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
 
       provider.chatModel('chat-model');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].includeUsage,
-      ).toBe(true);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].includeUsage).toBe(true);
 
       provider.completionModel('completion-model');
-      expect(
-        OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1]
-          .includeUsage,
-      ).toBe(true);
+      expect(OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1].includeUsage).toBe(true);
 
       provider('model-id');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].includeUsage,
-      ).toBe(true);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].includeUsage).toBe(true);
     });
 
     it('should pass includeUsage: false to all model types when specified in provider settings', () => {
@@ -233,20 +217,13 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
 
       provider.chatModel('chat-model');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].includeUsage,
-      ).toBe(false);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].includeUsage).toBe(false);
 
       provider.completionModel('completion-model');
-      expect(
-        OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1]
-          .includeUsage,
-      ).toBe(false);
+      expect(OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1].includeUsage).toBe(false);
 
       provider('model-id');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].includeUsage,
-      ).toBe(false);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].includeUsage).toBe(false);
     });
 
     it('should pass includeUsage: undefined to all model types when not specified in provider settings', () => {
@@ -257,20 +234,15 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
 
       provider.chatModel('chat-model');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].includeUsage,
-      ).toBeUndefined();
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].includeUsage).toBeUndefined();
 
       provider.completionModel('completion-model');
       expect(
-        OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1]
-          .includeUsage,
+        OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1].includeUsage,
       ).toBeUndefined();
 
       provider('model-id');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].includeUsage,
-      ).toBeUndefined();
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].includeUsage).toBeUndefined();
     });
   });
 
@@ -284,42 +256,36 @@ describe('OpenAICompatibleProvider', () => {
       const provider = createOpenAICompatible(options);
 
       provider('model-id');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[0][1]
-          .supportsStructuredOutputs,
-      ).toBe(true);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[0][1].supportsStructuredOutputs).toBe(
+        true,
+      );
 
       provider.chatModel('chat-model');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[1][1]
-          .supportsStructuredOutputs,
-      ).toBe(true);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[1][1].supportsStructuredOutputs).toBe(
+        true,
+      );
 
       provider.languageModel('completion-model');
-      expect(
-        OpenAICompatibleChatLanguageModelMock.mock.calls[2][1]
-          .supportsStructuredOutputs,
-      ).toBe(true);
+      expect(OpenAICompatibleChatLanguageModelMock.mock.calls[2][1].supportsStructuredOutputs).toBe(
+        true,
+      );
 
       provider.completionModel('completion-model');
-      const completionModelConfigArg =
-        OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1];
+      const completionModelConfigArg = OpenAICompatibleCompletionLanguageModelMock.mock.calls[0][1];
       expect(
         // @ts-expect-error - testing
         completionModelConfigArg.supportsStructuredOutputs,
       ).toBe(undefined);
 
       provider.embeddingModel('embedding-model');
-      const embeddingModelConfigArg =
-        OpenAICompatibleEmbeddingModelMock.mock.calls[0][1];
+      const embeddingModelConfigArg = OpenAICompatibleEmbeddingModelMock.mock.calls[0][1];
       expect(
         // @ts-expect-error - testing
         embeddingModelConfigArg.supportsStructuredOutputs,
       ).toBe(undefined);
 
       provider.imageModel('image-model');
-      const imageModelConfigArg =
-        OpenAICompatibleImageModelMock.mock.calls[0][1];
+      const imageModelConfigArg = OpenAICompatibleImageModelMock.mock.calls[0][1];
       expect(
         // @ts-expect-error - testing
         imageModelConfigArg.supportsStructuredOutputs,

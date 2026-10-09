@@ -41,10 +41,7 @@ export async function parseToolCall<TOOLS extends ToolSet>({
     } catch (error) {
       if (
         repairToolCall == null ||
-        !(
-          NoSuchToolError.isInstance(error) ||
-          InvalidToolInputError.isInstance(error)
-        )
+        !(NoSuchToolError.isInstance(error) || InvalidToolInputError.isInstance(error))
       ) {
         throw error;
       }

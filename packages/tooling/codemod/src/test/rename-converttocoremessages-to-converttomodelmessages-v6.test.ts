@@ -4,9 +4,6 @@ import { testTransform } from './test-utils';
 
 describe('rename-converttocoremessages-to-converttomodelmessages (v6)', () => {
   it('transforms correctly', () => {
-    testTransform(
-      transformer,
-      'rename-converttocoremessages-to-converttomodelmessages',
-    );
+    testTransform(transformer, 'rename-converttocoremessages-to-converttomodelmessages');
   });
 });

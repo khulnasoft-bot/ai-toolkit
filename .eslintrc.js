@@ -2,9 +2,7 @@ const { builtinModules } = require('module');
 
 // Bare specifiers that resolve to Node.js builtins (mirrors the
 // NODE_BUILTINS set in tools/scripts/validate-structure.mjs).
-const nodeBuiltinSpecifiers = builtinModules.filter(
-  name => !name.startsWith('node:'),
-);
+const nodeBuiltinSpecifiers = builtinModules.filter(name => !name.startsWith('node:'));
 
 module.exports = {
   root: true,

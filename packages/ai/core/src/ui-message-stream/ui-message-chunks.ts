@@ -1,8 +1,5 @@
 import { z } from 'zod/v4';
-import {
-  ProviderMetadata,
-  providerMetadataSchema,
-} from '../types/provider-metadata';
+import { ProviderMetadata, providerMetadataSchema } from '../types/provider-metadata';
 import { FinishReason } from '../types/language-model';
 import {
   InferUIMessageData,
@@ -188,10 +185,7 @@ export type DataUIMessageChunk<DATA_TYPES extends UIDataTypes> = ValueOf<{
   };
 }>;
 
-export type UIMessageChunk<
-  METADATA = unknown,
-  DATA_TYPES extends UIDataTypes = UIDataTypes,
-> =
+export type UIMessageChunk<METADATA = unknown, DATA_TYPES extends UIDataTypes = UIDataTypes> =
   | {
       type: 'text-start';
       id: string;

@@ -47,11 +47,7 @@ export function validateDownloadUrl(url: string): void {
   }
 
   // Block localhost and .local domains
-  if (
-    hostname === 'localhost' ||
-    hostname.endsWith('.local') ||
-    hostname.endsWith('.localhost')
-  ) {
+  if (hostname === 'localhost' || hostname.endsWith('.local') || hostname.endsWith('.localhost')) {
     throw new DownloadError({
       url,
       message: `URL with hostname ${hostname} is not allowed`,
@@ -115,9 +111,7 @@ function isIPv4(hostname: string): boolean {
   if (parts.length !== 4) return false;
   return parts.every(part => {
     const num = Number(part);
-    return (
-      Number.isInteger(num) && num >= 0 && num <= 255 && String(num) === part
-    );
+    return Number.isInteger(num) && num >= 0 && num <= 255 && String(num) === part;
   });
 }
 
@@ -213,8 +207,7 @@ function isPrivateIPv6(ip: string): boolean {
   // Fail closed: if the address cannot be parsed, treat it as unsafe.
   if (groups === null) return true;
 
-  const topZero = (count: number) =>
-    groups.slice(0, count).every(group => group === 0);
+  const topZero = (count: number) => groups.slice(0, count).every(group => group === 0);
 
   // ::1 (loopback) and :: (unspecified)
   if (topZero(7) && (groups[7] === 0 || groups[7] === 1)) return true;

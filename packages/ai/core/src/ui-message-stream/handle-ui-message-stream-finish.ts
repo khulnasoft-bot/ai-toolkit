@@ -33,8 +33,7 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   onFinish?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 }): ReadableStream<InferUIMessageChunk<UI_MESSAGE>> {
   // last message is only relevant for assistant messages
-  let lastMessage: UI_MESSAGE | undefined =
-    originalMessages?.[originalMessages.length - 1];
+  let lastMessage: UI_MESSAGE | undefined = originalMessages?.[originalMessages.length - 1];
   if (lastMessage?.role !== 'assistant') {
     lastMessage = undefined;
   } else {
@@ -45,10 +44,7 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   let isAborted = false;
 
   const idInjectedStream = stream.pipeThrough(
-    new TransformStream<
-      InferUIMessageChunk<UI_MESSAGE>,
-      InferUIMessageChunk<UI_MESSAGE>
-    >({
+    new TransformStream<InferUIMessageChunk<UI_MESSAGE>, InferUIMessageChunk<UI_MESSAGE>>({
       transform(chunk, controller) {
         // when there is no messageId in the start chunk,
         // but the user checked for persistence,
@@ -74,9 +70,7 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   }
 
   const state = createStreamingUIMessageState<UI_MESSAGE>({
-    lastMessage: lastMessage
-      ? (structuredClone(lastMessage) as UI_MESSAGE)
-      : undefined,
+    lastMessage: lastMessage ? (structuredClone(lastMessage) as UI_MESSAGE) : undefined,
     messageId: messageId ?? '', // will be overridden by the stream
   });
 
@@ -115,10 +109,7 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
     runUpdateMessageJob,
     onError,
   }).pipeThrough(
-    new TransformStream<
-      InferUIMessageChunk<UI_MESSAGE>,
-      InferUIMessageChunk<UI_MESSAGE>
-    >({
+    new TransformStream<InferUIMessageChunk<UI_MESSAGE>, InferUIMessageChunk<UI_MESSAGE>>({
       transform(chunk, controller) {
         controller.enqueue(chunk);
       },

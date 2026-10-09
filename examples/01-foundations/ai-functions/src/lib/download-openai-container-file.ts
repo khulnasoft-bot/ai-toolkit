@@ -1,10 +1,7 @@
 import 'dotenv/config';
 import * as fs from 'fs';
 
-export async function downloadOpenaiContainerFile(
-  container: string,
-  file: string,
-) {
+export async function downloadOpenaiContainerFile(container: string, file: string) {
   try {
     const apiKey = process.env.OPENAI_API_KEY;
 
@@ -20,9 +17,7 @@ export async function downloadOpenaiContainerFile(
       },
     });
     if (!infoResponse.ok) {
-      throw new Error(
-        `HTTP Error: ${infoResponse.status} ${infoResponse.statusText}`,
-      );
+      throw new Error(`HTTP Error: ${infoResponse.status} ${infoResponse.statusText}`);
     }
     const {
       path,
@@ -47,9 +42,7 @@ export async function downloadOpenaiContainerFile(
     });
 
     if (!downloadResponse.ok) {
-      throw new Error(
-        `HTTP Error: ${downloadResponse.status} ${downloadResponse.statusText}`,
-      );
+      throw new Error(`HTTP Error: ${downloadResponse.status} ${downloadResponse.statusText}`);
     }
 
     // get as binary data

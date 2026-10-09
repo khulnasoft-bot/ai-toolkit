@@ -46,10 +46,7 @@ run(async () => {
       case 'tool-call':
         console.log('\nTool call:', chunk.toolName, chunk.input);
         if (chunk.providerMetadata?.google?.thoughtSignature) {
-          console.log(
-            '[Tool signature]:',
-            chunk.providerMetadata.google.thoughtSignature,
-          );
+          console.log('[Tool signature]:', chunk.providerMetadata.google.thoughtSignature);
         }
         break;
     }

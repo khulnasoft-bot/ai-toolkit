@@ -33,9 +33,7 @@ export type LanguageModelV3 = {
    *
    * @returns A map of supported URL patterns by media type (as a promise or a plain object).
    */
-  supportedUrls:
-    | PromiseLike<Record<string, RegExp[]>>
-    | Record<string, RegExp[]>;
+  supportedUrls: PromiseLike<Record<string, RegExp[]>> | Record<string, RegExp[]>;
 
   /**
    * Generates a language model output (non-streaming).
@@ -43,9 +41,7 @@ export type LanguageModelV3 = {
    * Naming: "do" prefix to prevent accidental direct usage of the method
    * by the user.
    */
-  doGenerate(
-    options: LanguageModelV3CallOptions,
-  ): PromiseLike<LanguageModelV3GenerateResult>;
+  doGenerate(options: LanguageModelV3CallOptions): PromiseLike<LanguageModelV3GenerateResult>;
 
   /**
    * Generates a language model output (streaming).
@@ -55,7 +51,5 @@ export type LanguageModelV3 = {
    *
    * @return A stream of higher-level language model output parts.
    */
-  doStream(
-    options: LanguageModelV3CallOptions,
-  ): PromiseLike<LanguageModelV3StreamResult>;
+  doStream(options: LanguageModelV3CallOptions): PromiseLike<LanguageModelV3StreamResult>;
 };

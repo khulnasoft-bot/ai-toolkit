@@ -56,9 +56,7 @@ describe('native enum', () => {
       val3: 2,
     } as const;
 
-    const parsedSchema = parseNativeEnumDef(
-      z.nativeEnum(MyConstAssertionObject)._def,
-    );
+    const parsedSchema = parseNativeEnumDef(z.nativeEnum(MyConstAssertionObject)._def);
 
     expect(parsedSchema).toStrictEqual({
       type: 'number',
@@ -73,9 +71,7 @@ describe('native enum', () => {
       val3: 'c',
     } as const;
 
-    const parsedSchema = parseNativeEnumDef(
-      z.nativeEnum(MyConstAssertionObject)._def,
-    );
+    const parsedSchema = parseNativeEnumDef(z.nativeEnum(MyConstAssertionObject)._def);
 
     expect(parsedSchema).toStrictEqual({
       type: 'string',
@@ -90,9 +86,7 @@ describe('native enum', () => {
       val3: 'c',
     } as const;
 
-    const parsedSchema = parseNativeEnumDef(
-      z.nativeEnum(MyConstAssertionObject)._def,
-    );
+    const parsedSchema = parseNativeEnumDef(z.nativeEnum(MyConstAssertionObject)._def);
 
     expect(parsedSchema).toStrictEqual({
       type: ['string', 'number'],

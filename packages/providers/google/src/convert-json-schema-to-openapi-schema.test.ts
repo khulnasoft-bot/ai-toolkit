@@ -496,10 +496,7 @@ it('should handle descriptions', () => {
 });
 
 it('should return undefined for empty object schemas at root level', () => {
-  const emptyObjectSchemas = [
-    { type: 'object' },
-    { type: 'object', properties: {} },
-  ] as const;
+  const emptyObjectSchemas = [{ type: 'object' }, { type: 'object', properties: {} }] as const;
 
   emptyObjectSchemas.forEach(schema => {
     expect(convertJSONSchemaToOpenAPISchema(schema)).toBeUndefined();

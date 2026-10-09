@@ -42,13 +42,7 @@ run(async () => {
     },
     prompt: 'What are the tourist attractions in San Francisco?',
 
-    experimental_repairToolCall: async ({
-      toolCall,
-      tools,
-      error,
-      messages,
-      system,
-    }) => {
+    experimental_repairToolCall: async ({ toolCall, tools, error, messages, system }) => {
       const result = await generateText({
         model: openai('gpt-4o'),
         system,

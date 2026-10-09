@@ -1,12 +1,5 @@
-import type {
-  FilesV4,
-  FilesV4UploadFileCallOptions,
-  ProviderV4,
-} from '@ai-toolkit/provider';
-import {
-  convertBase64ToUint8Array,
-  detectMediaType,
-} from '@ai-toolkit/provider-utils';
+import type { FilesV4, FilesV4UploadFileCallOptions, ProviderV4 } from '@ai-toolkit/provider';
+import { convertBase64ToUint8Array, detectMediaType } from '@ai-toolkit/provider-utils';
 import type { SharedV4Warning } from '@ai-toolkit/provider';
 import type { ProviderMetadata } from '../types/provider-metadata';
 import type { ProviderReference } from '../types/provider-reference';
@@ -74,9 +67,7 @@ export async function uploadFile({
       : data.type === 'stream'
         ? 'application/octet-stream'
         : (detectMediaType({ data: data.data }) ??
-          (isLikelyText(data.data)
-            ? 'text/plain'
-            : 'application/octet-stream')));
+          (isLikelyText(data.data) ? 'text/plain' : 'application/octet-stream')));
 
   let result;
   try {
@@ -161,9 +152,7 @@ function isLikelyText(data: Uint8Array | string): boolean {
 
   const bytes =
     typeof data === 'string'
-      ? convertBase64ToUint8Array(
-          data.substring(0, Math.min(data.length, BASE64_CHECK_LENGTH)),
-        )
+      ? convertBase64ToUint8Array(data.substring(0, Math.min(data.length, BASE64_CHECK_LENGTH)))
       : data;
 
   const checkLength = Math.min(bytes.length, CHECK_LENGTH);
@@ -171,10 +160,7 @@ function isLikelyText(data: Uint8Array | string): boolean {
 
   for (let i = 0; i < checkLength; i++) {
     const byte = bytes[i];
-    if (
-      byte === 0x00 ||
-      (byte < 0x20 && byte !== 0x09 && byte !== 0x0a && byte !== 0x0d)
-    ) {
+    if (byte === 0x00 || (byte < 0x20 && byte !== 0x09 && byte !== 0x0a && byte !== 0x0d)) {
       return false;
     }
   }

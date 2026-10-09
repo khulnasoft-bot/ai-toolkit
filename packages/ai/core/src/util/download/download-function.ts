@@ -38,8 +38,6 @@ export const createDefaultDownloadFunction =
   requestedDownloads =>
     Promise.all(
       requestedDownloads.map(async requestedDownload =>
-        requestedDownload.isUrlSupportedByModel
-          ? null
-          : download(requestedDownload),
+        requestedDownload.isUrlSupportedByModel ? null : download(requestedDownload),
       ),
     );

@@ -25,10 +25,7 @@ describe('array', () => {
   });
 
   it('should be possible to describe a string array with a minimum and maximum length', () => {
-    const parsedSchema = parseArrayDef(
-      z.array(z.string()).min(2).max(4)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseArrayDef(z.array(z.string()).min(2).max(4)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'array',
@@ -41,10 +38,7 @@ describe('array', () => {
   });
 
   it('should be possible to describe a string array with an exact length', () => {
-    const parsedSchema = parseArrayDef(
-      z.array(z.string()).length(5)._def,
-      getRefs(),
-    );
+    const parsedSchema = parseArrayDef(z.array(z.string()).length(5)._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'array',
@@ -57,10 +51,7 @@ describe('array', () => {
   });
 
   it('should be possible to describe a string array with a minimum length of 1 by using nonempty', () => {
-    const parsedSchema = parseArrayDef(
-      z.array(z.any()).nonempty()._def,
-      getRefs(),
-    );
+    const parsedSchema = parseArrayDef(z.array(z.any()).nonempty()._def, getRefs());
 
     expect(parsedSchema).toStrictEqual({
       type: 'array',

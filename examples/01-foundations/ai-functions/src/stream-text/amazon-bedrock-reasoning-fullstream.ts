@@ -1,10 +1,5 @@
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
-import {
-  stepCountIs,
-  streamText,
-  ToolCallPart,
-  ToolResultPart,
-} from '@ai-toolkit/ai';
+import { stepCountIs, streamText, ToolCallPart, ToolResultPart } from '@ai-toolkit/ai';
 import { weatherTool } from '../tools/weather-tool';
 import { run } from '../lib/run';
 
@@ -52,9 +47,7 @@ run(async () => {
       case 'tool-call': {
         toolCalls.push(part);
 
-        process.stdout.write(
-          `\nTool call: '${part.toolName}' ${JSON.stringify(part.input)}`,
-        );
+        process.stdout.write(`\nTool call: '${part.toolName}' ${JSON.stringify(part.input)}`);
         break;
       }
 
@@ -69,9 +62,7 @@ run(async () => {
         };
         toolResponses.push(transformedPart);
 
-        process.stdout.write(
-          `\nTool response: '${part.toolName}' ${JSON.stringify(part.output)}`,
-        );
+        process.stdout.write(`\nTool response: '${part.toolName}' ${JSON.stringify(part.output)}`);
         break;
       }
     }

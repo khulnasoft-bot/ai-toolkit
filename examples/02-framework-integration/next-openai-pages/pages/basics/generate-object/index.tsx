@@ -31,10 +31,7 @@ export default function Page() {
       {isLoading ? (
         'Loading...'
       ) : (
-        <pre
-          className="text-sm w-full whitespace-pre-wrap"
-          data-testid="generation"
-        >
+        <pre className="text-sm w-full whitespace-pre-wrap" data-testid="generation">
           {generation}
         </pre>
       )}

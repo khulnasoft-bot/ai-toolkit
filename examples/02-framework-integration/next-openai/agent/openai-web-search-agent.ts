@@ -26,6 +26,4 @@ export const openaiWebSearchAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAIWebSearchMessage = InferAgentUIMessage<
-  typeof openaiWebSearchAgent
->;
+export type OpenAIWebSearchMessage = InferAgentUIMessage<typeof openaiWebSearchAgent>;

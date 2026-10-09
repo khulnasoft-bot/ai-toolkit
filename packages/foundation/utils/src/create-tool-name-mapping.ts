@@ -1,7 +1,4 @@
-import {
-  LanguageModelV3FunctionTool,
-  LanguageModelV3ProviderTool,
-} from '@ai-toolkit/provider';
+import { LanguageModelV3FunctionTool, LanguageModelV3ProviderTool } from '@ai-toolkit/provider';
 
 /**
  * Interface for mapping between custom tool names and provider tool names.
@@ -37,9 +34,7 @@ export function createToolNameMapping({
   /**
    * Tools that were passed to the language model.
    */
-  tools:
-    | Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool>
-    | undefined;
+  tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> | undefined;
 
   /**
    * Maps the provider tool ids to the provider tool names.

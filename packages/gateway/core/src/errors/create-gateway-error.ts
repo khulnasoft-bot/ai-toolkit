@@ -38,9 +38,7 @@ export async function createGatewayErrorFromResponse({
   if (!parseResult.success) {
     // Try to extract generationId even if validation failed
     const rawGenerationId =
-      typeof response === 'object' &&
-      response !== null &&
-      'generationId' in response
+      typeof response === 'object' && response !== null && 'generationId' in response
         ? (response as { generationId?: string }).generationId
         : undefined;
 
@@ -127,6 +125,4 @@ const gatewayErrorResponseSchema = lazySchema(() =>
   ),
 );
 
-export type GatewayErrorResponse = InferSchema<
-  typeof gatewayErrorResponseSchema
->;
+export type GatewayErrorResponse = InferSchema<typeof gatewayErrorResponseSchema>;

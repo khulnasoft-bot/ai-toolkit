@@ -43,10 +43,7 @@ describe('isUrlSupported', () => {
           mediaType: 'image/png',
           url: 'https://another.com/img.png',
           supportedUrls: {
-            'image/png': [
-              /https:\/\/images\.example\.com\/.+/,
-              /https:\/\/another\.com\/img\.png/,
-            ],
+            'image/png': [/https:\/\/images\.example\.com\/.+/, /https:\/\/another\.com\/img\.png/],
           },
         }),
       ).toBe(true);

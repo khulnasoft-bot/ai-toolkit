@@ -9,10 +9,7 @@ import { z } from 'zod/v4';
 import { ElevenLabsConfig } from './elevenlabs-config';
 import { elevenlabsFailedResponseHandler } from './elevenlabs-error';
 import { ElevenLabsSpeechAPITypes } from './elevenlabs-speech-api-types';
-import {
-  ElevenLabsSpeechModelId,
-  ElevenLabsSpeechVoiceId,
-} from './elevenlabs-speech-options';
+import { ElevenLabsSpeechModelId, ElevenLabsSpeechVoiceId } from './elevenlabs-speech-options';
 
 // Schema for camelCase input from users
 const ElevenLabsProviderOptionsSchema = z.object({
@@ -44,9 +41,7 @@ const ElevenLabsProviderOptionsSchema = z.object({
   enableLogging: z.boolean().optional(),
 });
 
-export type ElevenLabsSpeechCallOptions = z.infer<
-  typeof ElevenLabsProviderOptionsSchema
->;
+export type ElevenLabsSpeechCallOptions = z.infer<typeof ElevenLabsProviderOptionsSchema>;
 
 interface ElevenLabsSpeechModelConfig extends ElevenLabsConfig {
   _internal?: {
@@ -133,15 +128,13 @@ export class ElevenLabsSpeechModel implements SpeechModelV3 {
           voiceSettings.stability = elevenLabsOptions.voiceSettings.stability;
         }
         if (elevenLabsOptions.voiceSettings.similarityBoost != null) {
-          voiceSettings.similarity_boost =
-            elevenLabsOptions.voiceSettings.similarityBoost;
+          voiceSettings.similarity_boost = elevenLabsOptions.voiceSettings.similarityBoost;
         }
         if (elevenLabsOptions.voiceSettings.style != null) {
           voiceSettings.style = elevenLabsOptions.voiceSettings.style;
         }
         if (elevenLabsOptions.voiceSettings.useSpeakerBoost != null) {
-          voiceSettings.use_speaker_boost =
-            elevenLabsOptions.voiceSettings.useSpeakerBoost;
+          voiceSettings.use_speaker_boost = elevenLabsOptions.voiceSettings.useSpeakerBoost;
         }
       }
       // Add language code from provider options if not already set
@@ -178,8 +171,7 @@ export class ElevenLabsSpeechModel implements SpeechModelV3 {
 
       // Add text normalization options
       if (elevenLabsOptions.applyTextNormalization) {
-        requestBody.apply_text_normalization =
-          elevenLabsOptions.applyTextNormalization;
+        requestBody.apply_text_normalization = elevenLabsOptions.applyTextNormalization;
       }
       if (elevenLabsOptions.applyLanguageTextNormalization != null) {
         requestBody.apply_language_text_normalization =
@@ -217,8 +209,7 @@ export class ElevenLabsSpeechModel implements SpeechModelV3 {
     options: Parameters<SpeechModelV3['doGenerate']>[0],
   ): Promise<Awaited<ReturnType<SpeechModelV3['doGenerate']>>> {
     const currentDate = this.config._internal?.currentDate?.() ?? new Date();
-    const { requestBody, queryParams, warnings, voiceId } =
-      await this.getArgs(options);
+    const { requestBody, queryParams, warnings, voiceId } = await this.getArgs(options);
 
     const {
       value: audio,

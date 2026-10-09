@@ -1,8 +1,4 @@
-import {
-  JSONParseError,
-  JSONValue,
-  TypeValidationError,
-} from '@ai-toolkit/provider';
+import { JSONParseError, JSONValue, TypeValidationError } from '@ai-toolkit/provider';
 import { secureJsonParse } from './secure-json-parse';
 import { safeValidateTypes, validateTypes } from './validate-types';
 import { FlexibleSchema } from './schema';
@@ -13,10 +9,7 @@ import { FlexibleSchema } from './schema';
  * @param text - The JSON string to parse.
  * @returns {JSONValue} - The parsed JSON object.
  */
-export async function parseJSON(options: {
-  text: string;
-  schema?: undefined;
-}): Promise<JSONValue>;
+export async function parseJSON(options: { text: string; schema?: undefined }): Promise<JSONValue>;
 /**
  * Parses a JSON string into a strongly-typed object using the provided schema.
  *
@@ -45,10 +38,7 @@ export async function parseJSON<T>({
 
     return validateTypes<T>({ value, schema });
   } catch (error) {
-    if (
-      JSONParseError.isInstance(error) ||
-      TypeValidationError.isInstance(error)
-    ) {
+    if (JSONParseError.isInstance(error) || TypeValidationError.isInstance(error)) {
       throw error;
     }
 
@@ -104,9 +94,7 @@ export async function safeParseJSON<T>({
   } catch (error) {
     return {
       success: false,
-      error: JSONParseError.isInstance(error)
-        ? error
-        : new JSONParseError({ text, cause: error }),
+      error: JSONParseError.isInstance(error) ? error : new JSONParseError({ text, cause: error }),
       rawValue: undefined,
     };
   }

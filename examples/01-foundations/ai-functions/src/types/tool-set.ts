@@ -1,10 +1,5 @@
 import { openai } from '@ai-toolkit/openai';
-import {
-  StaticToolCall,
-  StaticToolResult,
-  generateText,
-  tool,
-} from '@ai-toolkit/ai';
+import { StaticToolCall, StaticToolResult, generateText, tool } from '@ai-toolkit/ai';
 import { z } from 'zod';
 
 const myToolSet = {
@@ -35,5 +30,4 @@ async function generateSomething(prompt: string): Promise<{
   });
 }
 
-const { text, staticToolCalls, staticToolResults } =
-  await generateSomething('...');
+const { text, staticToolCalls, staticToolResults } = await generateSomething('...');

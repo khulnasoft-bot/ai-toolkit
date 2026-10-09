@@ -47,8 +47,7 @@ export default createTransformer((fileInfo, api, options, context) => {
         // Found providerOptions, now look for fal property
         prop.value.properties.forEach((providerProp: any) => {
           if (
-            (providerProp.type === 'ObjectProperty' ||
-              providerProp.type === 'Property') &&
+            (providerProp.type === 'ObjectProperty' || providerProp.type === 'Property') &&
             providerProp.key.type === 'Identifier' &&
             providerProp.key.name === 'fal' &&
             providerProp.value.type === 'ObjectExpression'

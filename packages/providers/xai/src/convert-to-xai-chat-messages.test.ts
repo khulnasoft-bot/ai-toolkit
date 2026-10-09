@@ -17,9 +17,7 @@ describe('convertToXaiChatMessages', () => {
     ]);
 
     expect(warnings).toEqual([]);
-    expect(messages).toEqual([
-      { role: 'system', content: 'You are a helpful assistant.' },
-    ]);
+    expect(messages).toEqual([{ role: 'system', content: 'You are a helpful assistant.' }]);
   });
 
   it('should convert assistant messages', () => {
