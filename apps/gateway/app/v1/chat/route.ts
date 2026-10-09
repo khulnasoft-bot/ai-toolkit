@@ -1,15 +1,17 @@
 import {
   consumeStream,
   convertToModelMessages,
+  createUIMessageStreamResponse,
   streamText,
   type UIMessage,
 } from '@ai-toolkit/ai';
-import { resolveRoute } from '@ai-toolkit/gateway-router';
+import { resolveCandidates } from '@ai-toolkit/gateway-router';
 import { InvalidKeyError, validateKey } from '@ai-toolkit/security-auth';
 import { loadPolicy } from '@/lib/config';
+import { streamWithFailover } from '@/lib/executor';
 import { FileKeyStore } from '@/lib/keys';
 import { recordUsage } from '@/lib/ledger';
-import { createProviderModel } from '@/lib/providers';
+import { createProviderModel, supportedProviders } from '@/lib/providers';
 
 export const maxDuration = 60;
 
@@ -76,17 +78,32 @@ export async function POST(req: Request) {
   }
 
   const modelId = body.model ?? 'openai/gpt-4o-mini';
-  const decision = resolveRoute(loadPolicy(), modelId);
-  if (!decision) {
+  const routed = resolveCandidates(loadPolicy(), modelId);
+  if (!routed) {
     return Response.json(
       { error: `no route for model "${modelId}"` },
       { status: 400 },
     );
   }
-
-  let model;
+  if (
+    !routed.candidates.some(candidate =>
+      supportedProviders().includes(candidate.provider),
+    )
+  ) {
+    return Response.json(
+      {
+        error: `no configured provider for model "${modelId}" (supported: ${supportedProviders().join(', ')})`,
+      },
+      { status: 502 },
+    );
+  }
+  // Fail fast on config errors (missing credentials, unknown provider) so
+  // clients get a JSON error instead of a truncated stream.
   try {
-    model = createProviderModel(decision.provider, decision.model);
+    const first = routed.candidates.find(candidate =>
+      supportedProviders().includes(candidate.provider),
+    );
+    if (first) createProviderModel(first.provider, first.model);
   } catch (error) {
     return Response.json(
       {
@@ -96,32 +113,48 @@ export async function POST(req: Request) {
     );
   }
 
-  const result = streamText({
-    model,
-    messages: await convertToModelMessages(body.messages),
-    ...(typeof body.system === 'string' && body.system
-      ? { system: body.system }
-      : {}),
-    ...(typeof body.temperature === 'number'
-      ? { temperature: body.temperature }
-      : {}),
-    ...(typeof body.maxOutputTokens === 'number'
-      ? { maxOutputTokens: body.maxOutputTokens }
-      : {}),
-    abortSignal: req.signal,
-    onFinish: async ({ totalUsage }) => {
-      recordUsage({
-        tenantId: keyContext.tenantId,
-        keyId: keyContext.keyId,
-        model: modelId,
-        provider: decision.provider,
-        promptTokens: totalUsage.inputTokens ?? 0,
-        completionTokens: totalUsage.outputTokens ?? 0,
+  const modelMessages = await convertToModelMessages(body.messages);
+  const stream = streamWithFailover({
+    candidates: routed.candidates,
+    attemptsRemaining: routed.attemptsRemaining,
+    signal: req.signal,
+    onAttemptFailure: ({ candidate, attemptNumber, kind, error }) => {
+      console.warn(
+        `gateway attempt ${attemptNumber} failed (${kind}): ${candidate.provider}/${candidate.model} for "${modelId}" — ${error instanceof Error ? error.message : String(error)}`,
+      );
+    },
+    startAttempt: candidate => {
+      const model = createProviderModel(candidate.provider, candidate.model);
+      const result = streamText({
+        model,
+        messages: modelMessages,
+        ...(typeof body.system === 'string' && body.system
+          ? { system: body.system }
+          : {}),
+        ...(typeof body.temperature === 'number'
+          ? { temperature: body.temperature }
+          : {}),
+        ...(typeof body.maxOutputTokens === 'number'
+          ? { maxOutputTokens: body.maxOutputTokens }
+          : {}),
+        abortSignal: req.signal,
+        onFinish: async ({ totalUsage }) => {
+          recordUsage({
+            tenantId: keyContext.tenantId,
+            keyId: keyContext.keyId,
+            model: modelId,
+            provider: candidate.provider,
+            promptTokens: totalUsage.inputTokens ?? 0,
+            completionTokens: totalUsage.outputTokens ?? 0,
+          });
+        },
       });
+      return result.toUIMessageStream();
     },
   });
 
-  return result.toUIMessageStreamResponse({
+  return createUIMessageStreamResponse({
+    stream,
     consumeSseStream: consumeStream,
   });
 }

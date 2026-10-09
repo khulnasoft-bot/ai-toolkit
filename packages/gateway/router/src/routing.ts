@@ -167,3 +167,37 @@ export function resolveRoute(
   }
   return undefined;
 }
+
+/** Ordered candidate list for a model — what the executor fails over through. */
+export interface RouteCandidates {
+  readonly candidates: readonly ProviderRoute[];
+  readonly attemptsRemaining: number;
+  readonly isFallback: boolean;
+}
+
+/**
+ * Resolve the full ordered candidate list for a model ID.
+ * Returns `undefined` when no route matches and the policy has no fallback.
+ */
+export function resolveCandidates(
+  policy: RoutingPolicy,
+  modelId: string,
+): RouteCandidates | undefined {
+  for (const route of policy.routes) {
+    if (!matchModelPattern(route.modelPattern, modelId)) continue;
+    if (route.providers.length === 0) continue;
+    return {
+      candidates: route.providers,
+      attemptsRemaining: route.retryBudget,
+      isFallback: false,
+    };
+  }
+  if (policy.fallback) {
+    return {
+      candidates: [policy.fallback],
+      attemptsRemaining: 1,
+      isFallback: true,
+    };
+  }
+  return undefined;
+}

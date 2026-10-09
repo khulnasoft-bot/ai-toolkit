@@ -28,8 +28,16 @@ export function createRouterEngine(): RouterEngine {
 export type {
   ModelRoute,
   ProviderRoute,
+  RouteCandidates,
   RoutingDecision,
   RoutingPolicy,
   RoutingStrategy,
 } from './routing';
-export { matchModelPattern, resolveRoute, validatePolicy } from './routing';
+export {
+  matchModelPattern,
+  resolveCandidates,
+  resolveRoute,
+  validatePolicy,
+} from './routing';
+export type { FailureKind } from './failure';
+export { classifyFailure } from './failure';

@@ -29,8 +29,11 @@ curl -N http://localhost:3000/v1/chat \
 - **One key**: `Authorization: Bearer ak_…` validated by `@ai-toolkit/security-auth`
   against `data/keys.json` (scrypt hashes only). Scopes enforced per route.
 - **Routing**: `config/policy.json` → `@ai-toolkit/gateway-router`
-  (`resolveRoute`). Phase 1 attempts the first provider; ordered failover
-  arrives in Phase 2.
+  (`resolveCandidates`). The executor (`lib/executor.ts`) walks the ordered
+  candidates and fails over on retryable errors (429/5xx/timeouts, see
+  `classifyFailure`) — but only before the first chunk is streamed. After
+  streaming starts, errors propagate to the client. Config errors (missing
+  credentials) fail fast with a JSON 502. Policy edits reload without restart.
 - **Spend**: every completed stream appends `{tenant, key, model, provider,
 tokens, cost}` to `data/usage.jsonl`, priced via
   `@ai-toolkit/observability-cost` against `config/prices.json`.

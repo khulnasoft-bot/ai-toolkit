@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   matchModelPattern,
+  resolveCandidates,
   resolveRoute,
   validatePolicy,
   type RoutingPolicy,
@@ -93,6 +94,28 @@ describe('resolveRoute', () => {
       routes: [{ modelPattern: '*', providers: [], retryBudget: 1 }],
     };
     expect(resolveRoute(broken, 'openai/gpt-4o')).toBeUndefined();
+  });
+});
+
+describe('resolveCandidates', () => {
+  it('returns the ordered list with budget', () => {
+    expect(resolveCandidates(policy, 'openai/gpt-4o')).toEqual({
+      candidates: [
+        { provider: 'openai', model: 'gpt-4o' },
+        { provider: 'azure', model: 'gpt-4o' },
+      ],
+      attemptsRemaining: 3,
+      isFallback: false,
+    });
+  });
+
+  it('falls back and reports unroutable', () => {
+    expect(resolveCandidates(policy, 'unknown/model')?.isFallback).toBe(true);
+    const withoutFallback: RoutingPolicy = {
+      version: 1,
+      routes: policy.routes,
+    };
+    expect(resolveCandidates(withoutFallback, 'unknown/model')).toBeUndefined();
   });
 });
 
