@@ -29,3 +29,11 @@ export function createCostEngine(): CostEngine {
     recordCost: async () => {},
   };
 }
+
+export type {
+  PriceEntry,
+  PriceTable,
+  PricedUsage,
+  TokenUsage,
+} from './pricing';
+export { loadPriceTable, priceUsage } from './pricing';

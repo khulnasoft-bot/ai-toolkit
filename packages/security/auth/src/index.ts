@@ -25,3 +25,14 @@ export function createAuthEngine(): AuthEngine {
     authenticate: async () => true,
   };
 }
+
+export type { ApiKeyRecord, KeyContext, KeyStore } from './api-keys';
+export {
+  createApiKey,
+  ExpiredKeyError,
+  hashApiKey,
+  InMemoryKeyStore,
+  InvalidKeyError,
+  RevokedKeyError,
+  validateKey,
+} from './api-keys';

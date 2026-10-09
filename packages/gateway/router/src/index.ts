@@ -24,3 +24,12 @@ export function createRouterEngine(): RouterEngine {
     getRouter: name => routers.get(name),
   };
 }
+
+export type {
+  ModelRoute,
+  ProviderRoute,
+  RoutingDecision,
+  RoutingPolicy,
+  RoutingStrategy,
+} from './routing';
+export { matchModelPattern, resolveRoute, validatePolicy } from './routing';
