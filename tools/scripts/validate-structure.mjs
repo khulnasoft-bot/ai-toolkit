@@ -394,36 +394,43 @@ function collectFiles(dir, base = dir, out = new Map()) {
   return out;
 }
 
+const SITE_CONTENT_DIR = path.join(ROOT, 'apps/docs/content');
 const contentFiles = collectFiles(path.join(ROOT, 'content'));
-const siteContentFiles = collectFiles(path.join(ROOT, 'apps/docs/content'));
-// Map canonical path -> site path via numeric-prefix stripping.
-const siteByStripped = new Map();
-for (const rel of siteContentFiles.keys()) siteByStripped.set(rel, rel);
-const contentToSite = new Map();
-for (const rel of contentFiles.keys()) contentToSite.set(rel, stripNumericPrefix(rel));
-for (const [rel, siteRel] of contentToSite) {
-  if (!siteContentFiles.has(siteRel)) {
-    if (path.basename(rel) === 'index.mdx')
-      reportWarning(`Docs index page has no site counterpart (nav uses meta.json): ${rel}`);
-    else reportError(`Docs page missing in apps/docs/content: ${rel} (expected ${siteRel})`);
-  } else if (
-    normalizeDocsContent(contentFiles.get(rel).toString('utf8')) !==
-    normalizeDocsContent(siteContentFiles.get(siteRel).toString('utf8'))
-  ) {
-    reportError(`Docs mirror content drift (beyond site transform): ${rel} <-> ${siteRel}`);
-  }
-}
-for (const rel of siteContentFiles.keys()) {
-  if (isSiteOnlyFile(rel)) continue;
-  let covered = false;
-  for (const siteRel of contentToSite.values()) {
-    if (siteRel === rel) {
-      covered = true;
-      break;
+const siteContentFiles = collectFiles(SITE_CONTENT_DIR);
+// The docs site (apps/docs) was removed; content/ remains canonical. Skip the
+// mirror check when the site tree is absent instead of erroring on every page.
+if (!fs.existsSync(SITE_CONTENT_DIR)) {
+  reportWarning('Docs site tree missing (apps/docs/content): skipping mirror check');
+} else {
+  // Map canonical path -> site path via numeric-prefix stripping.
+  const siteByStripped = new Map();
+  for (const rel of siteContentFiles.keys()) siteByStripped.set(rel, rel);
+  const contentToSite = new Map();
+  for (const rel of contentFiles.keys()) contentToSite.set(rel, stripNumericPrefix(rel));
+  for (const [rel, siteRel] of contentToSite) {
+    if (!siteContentFiles.has(siteRel)) {
+      if (path.basename(rel) === 'index.mdx')
+        reportWarning(`Docs index page has no site counterpart (nav uses meta.json): ${rel}`);
+      else reportError(`Docs page missing in apps/docs/content: ${rel} (expected ${siteRel})`);
+    } else if (
+      normalizeDocsContent(contentFiles.get(rel).toString('utf8')) !==
+      normalizeDocsContent(siteContentFiles.get(siteRel).toString('utf8'))
+    ) {
+      reportError(`Docs mirror content drift (beyond site transform): ${rel} <-> ${siteRel}`);
     }
   }
-  if (!covered)
-    reportError(`File only in apps/docs/content, missing in canonical content/: ${rel}`);
+  for (const rel of siteContentFiles.keys()) {
+    if (isSiteOnlyFile(rel)) continue;
+    let covered = false;
+    for (const siteRel of contentToSite.values()) {
+      if (siteRel === rel) {
+        covered = true;
+        break;
+      }
+    }
+    if (!covered)
+      reportError(`File only in apps/docs/content, missing in canonical content/: ${rel}`);
+  }
 }
 
 // Example metadata (ADR-009): every examples/<category>/<name>/ dir carries an

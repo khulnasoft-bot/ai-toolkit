@@ -8,6 +8,7 @@
   "files": {
     "includes": [
       "**",
+      "!build/**",
       "!packages/providers/azure/src/__fixtures__",
       "!**/next-env.d.ts",
       "!packages/tooling/codemod/src/test/__testfixtures__",

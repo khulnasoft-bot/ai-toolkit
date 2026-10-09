@@ -43,8 +43,10 @@ AIStream will throw an error if response doesn't have a 2xx status code. This is
           type: 'AIStreamParser',
           parameters: [
             {
-              name: '',
+              name: 'parser',
               type: '(data: string) => string | void',
+              description:
+                'Parses a stringified chunk from the LLM and extracts the message content.',
             },
           ],
         },
@@ -53,6 +55,8 @@ AIStream will throw an error if response doesn't have a 2xx status code. This is
     {
       name: 'callbacks',
       type: 'AIStreamCallbacksAndOptions',
+      description:
+        'Optional callback functions that are called during stream processing.',
       properties: [
         {
           type: 'AIStreamCallbacksAndOptions',

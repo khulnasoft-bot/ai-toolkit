@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-09-14T23:31:10.529Z",
+  "generatedAt": "2026-10-09T15:59:02.103Z",
   "sources": [
     {
       "id": "gateways",
@@ -42,7 +42,7 @@
       "kind": "package-source",
       "path": "packages/core/gateway/src",
       "entity": "Model",
-      "count": 187
+      "count": 0
     }
   ],
   "appReaders": []

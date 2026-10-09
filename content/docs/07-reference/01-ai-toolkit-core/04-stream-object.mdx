@@ -895,6 +895,7 @@ To see `streamObject` in action, check out the [additional examples](#more-examp
             {
               name: 'type',
               type: "'object'",
+              description: 'The type to identify the object as object.',
             },
             {
               name: 'object',
@@ -909,6 +910,7 @@ To see `streamObject` in action, check out the [additional examples](#more-examp
             {
               name: 'type',
               type: "'text-delta'",
+              description: 'The type to identify the object as text delta.',
             },
             {
               name: 'textDelta',
@@ -923,6 +925,7 @@ To see `streamObject` in action, check out the [additional examples](#more-examp
             {
               name: 'type',
               type: "'error'",
+              description: 'The type to identify the object as error.',
             },
             {
               name: 'error',
@@ -937,15 +940,18 @@ To see `streamObject` in action, check out the [additional examples](#more-examp
             {
               name: 'type',
               type: "'finish'",
+              description: 'The type to identify the object as finish.',
             },
             {
               name: 'finishReason',
               type: 'FinishReason',
+              description: 'The reason the model finished generating the object.',
             },
             {
               name: 'logprobs',
               type: 'Logprobs',
               isOptional: true,
+              description: 'The log probabilities of the tokens.',
             },
             {
               name: 'usage',

@@ -7,13 +7,12 @@ export function BotMessage({ textStream }: { textStream: StreamableValue }) {
   return <Message>{text}</Message>;
 }
 
-export function Message({
-  role,
-  children,
-}: {
+type MessageProps = {
   role?: string;
   children: React.ReactNode;
-}) {
+};
+
+export function Message({ role, children }: MessageProps) {
   return (
     <div className="flex flex-col gap-1 border-b p-2">
       {role != null ? <div className="text-sm text-zinc-500">{role}</div> : null}

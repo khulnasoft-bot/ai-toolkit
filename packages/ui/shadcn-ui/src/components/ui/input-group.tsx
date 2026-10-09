@@ -10,6 +10,7 @@ import { Textarea } from './textarea';
 
 function InputGroup({ className, ...props }: React.ComponentProps<'div'>) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: shadcn primitive keeps div[role=group] to preserve div props API and avoid fieldset UA styles
     <div
       data-slot="input-group"
       role="group"
@@ -61,6 +62,8 @@ function InputGroupAddon({
   ...props
 }: React.ComponentProps<'div'> & VariantProps<typeof inputGroupAddonVariants>) {
   return (
+    // biome-ignore lint/a11y/useKeyWithClickEvents: decorative addon focuses the input on mouse click only; it is not keyboard-operable by design
+    // biome-ignore lint/a11y/useSemanticElements: shadcn primitive keeps div[role=group] to preserve div props API and avoid fieldset UA styles
     <div
       role="group"
       data-slot="input-group-addon"

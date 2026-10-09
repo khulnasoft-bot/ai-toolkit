@@ -52,12 +52,15 @@ export function CodeBlock({ lines, title, code, language, filename, className }:
         </div>
       </div>
       <ol className="overflow-x-auto p-3 font-mono text-[12px] leading-6">
-        {source.map((line, index) => (
-          <li key={index} className="grid grid-cols-[2ch_1fr] gap-3 whitespace-pre-wrap">
-            <span className="select-none text-right text-muted-foreground/60">{index + 1}</span>
-            <span className="min-w-0 text-foreground/90">{line}</span>
-          </li>
-        ))}
+        {source.map((line, index) => {
+          const lineNumber = index + 1;
+          return (
+            <li key={lineNumber} className="grid grid-cols-[2ch_1fr] gap-3 whitespace-pre-wrap">
+              <span className="select-none text-right text-muted-foreground/60">{lineNumber}</span>
+              <span className="min-w-0 text-foreground/90">{line}</span>
+            </li>
+          );
+        })}
       </ol>
     </div>
   );

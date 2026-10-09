@@ -856,7 +856,7 @@ function StepConfigBar({
         <>
           <span className="text-muted-foreground/30">·</span>
           {params.map((p, i) => (
-            <span key={i}>
+            <span key={p.label}>
               {p.label}: <span className="text-foreground">{p.value}</span>
               {i < params.length - 1 && <span className="text-muted-foreground/30 mx-1">·</span>}
             </span>
@@ -883,8 +883,8 @@ function StepConfigBar({
               </DrawerHeader>
               <div className="flex-1 overflow-y-auto p-4">
                 <div className="space-y-3">
-                  {input?.tools?.map((tool: any, i: number) => (
-                    <ToolItem key={i} tool={tool} />
+                  {input?.tools?.map((tool: any) => (
+                    <ToolItem key={tool.name} tool={tool} />
                   ))}
                 </div>
               </div>
@@ -975,9 +975,10 @@ function InputPanel({ input }: { input: any }) {
             )}
 
             {/* Last two messages displayed inline */}
-            {lastTwoMessages.map((msg: any, i: number) => (
-              <InputMessagePreview key={i} message={msg} index={previousMessageCount + i + 1} />
-            ))}
+            {lastTwoMessages.map((msg: any, i: number) => {
+              const messageIndex = previousMessageCount + i + 1;
+              return <InputMessagePreview key={messageIndex} message={msg} index={messageIndex} />;
+            })}
 
             {/* Empty state */}
             {messageCount === 0 && <p className="text-sm text-muted-foreground">No messages</p>}
@@ -990,9 +991,10 @@ function InputPanel({ input }: { input: any }) {
         </DrawerHeader>
         <div className="flex-1 overflow-y-auto p-4">
           <div className="space-y-3">
-            {messages.map((msg: any, i: number) => (
-              <MessageBubble key={i} message={msg} index={i + 1} />
-            ))}
+            {messages.map((msg: any, i: number) => {
+              const messageIndex = i + 1;
+              return <MessageBubble key={messageIndex} message={msg} index={messageIndex} />;
+            })}
           </div>
         </div>
       </DrawerContent>
@@ -1083,8 +1085,9 @@ function InputMessagePreview({ message, index }: { message: any; index?: number 
           {toolCalls.slice(0, 3).map((call: any, i: number) => {
             const args = call.args ?? call.input;
             const parsedArgs = typeof args === 'string' ? safeParseJson(args) : args;
+            const key = call.toolCallId ?? `${call.toolName}-${i}`;
             return (
-              <div key={i} className="text-[11px] font-mono text-muted-foreground truncate">
+              <div key={key} className="text-[11px] font-mono text-muted-foreground truncate">
                 {call.toolName}({formatToolParamsInline(parsedArgs)})
               </div>
             );
@@ -1103,8 +1106,9 @@ function InputMessagePreview({ message, index }: { message: any; index?: number 
           {toolResults.slice(0, 3).map((result: any, i: number) => {
             const resultContent = result.result ?? result.output ?? result;
             const resultPreview = formatResultPreview(resultContent);
+            const key = result.toolCallId ?? `${result.toolName}-${i}`;
             return (
-              <div key={i} className="text-[11px] font-mono text-muted-foreground truncate">
+              <div key={key} className="text-[11px] font-mono text-muted-foreground truncate">
                 {result.toolName || 'tool'}(…) =&gt; {resultPreview}
               </div>
             );
@@ -1334,7 +1338,7 @@ function MessageBubble({ message, index }: { message: any; index?: number }) {
         <div className="space-y-2">
           {toolCalls.map((call: any, i: number) => (
             <CollapsibleToolCall
-              key={i}
+              key={call.toolCallId ?? `${call.toolName}-${i}`}
               toolName={call.toolName}
               toolCallId={call.toolCallId}
               data={call.args ?? call.input}
@@ -1348,7 +1352,7 @@ function MessageBubble({ message, index }: { message: any; index?: number }) {
         <div className="space-y-2">
           {toolResults.map((result: any, i: number) => (
             <CollapsibleToolResult
-              key={i}
+              key={result.toolCallId ?? `${result.toolName}-${i}`}
               toolName={result.toolName}
               toolCallId={result.toolCallId}
               data={result.result ?? result.output ?? result}
@@ -1401,7 +1405,7 @@ function OutputDisplay({ output, toolResults = [] }: { output: any; toolResults?
         const result = getToolResult(call.toolCallId);
         return (
           <ToolCallCard
-            key={i}
+            key={call.toolCallId ?? `${call.toolName}-${i}`}
             toolName={call.toolName}
             args={call.args ?? call.input}
             result={result?.output ?? result?.result}

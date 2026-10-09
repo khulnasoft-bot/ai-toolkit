@@ -1,7 +1,7 @@
 'use client';
 
 import { Copy, Download, Play, X } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 interface CodeEditorProps {
@@ -21,6 +21,7 @@ export function CodeEditor({
 }: CodeEditorProps) {
   const [code, setCode] = useState(initialCode);
   const [prompt, setPrompt] = useState('');
+  const promptId = useId();
 
   useEffect(() => {
     setCode(initialCode);
@@ -103,9 +104,12 @@ export function CodeEditor({
 
         <div className="space-y-4">
           <div>
-            <label className="text-sm font-medium">Generate Code Prompt</label>
+            <label htmlFor={promptId} className="text-sm font-medium">
+              Generate Code Prompt
+            </label>
             <div className="flex space-x-2 mt-1">
               <input
+                id={promptId}
                 type="text"
                 value={prompt}
                 onChange={e => setPrompt(e.target.value)}

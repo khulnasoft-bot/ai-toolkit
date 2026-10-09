@@ -135,6 +135,7 @@ const handleActionsClick = (e: React.MouseEvent) => e.stopPropagation();
 const handleActionsKeyDown = (e: React.KeyboardEvent) => e.stopPropagation();
 
 export const CommitActions = ({ className, children, ...props }: CommitActionsProps) => (
+  // biome-ignore lint/a11y/useSemanticElements: action toolbar grouping needs div[role=group]; fieldset is form-only and would change public div props
   <div
     className={cn('flex items-center gap-1', className)}
     onClick={handleActionsClick}

@@ -272,6 +272,7 @@ const handleActionsKeyDown = (e: React.KeyboardEvent) => {
 
 export const StackTraceActions = memo(
   ({ className, children, ...props }: StackTraceActionsProps) => (
+    // biome-ignore lint/a11y/useSemanticElements: action toolbar grouping needs div[role=group]; fieldset is form-only and would change public div props
     <div
       className={cn('flex shrink-0 items-center gap-1', className)}
       onClick={handleActionsClick}

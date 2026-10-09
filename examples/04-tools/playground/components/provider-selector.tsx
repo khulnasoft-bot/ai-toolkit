@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronDown } from 'lucide-react';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { aiProviders } from '@/lib/providers';
 
@@ -20,6 +20,8 @@ export function ProviderSelector({
 }: ProviderSelectorProps) {
   const [isProviderOpen, setIsProviderOpen] = useState(false);
   const [isModelOpen, setIsModelOpen] = useState(false);
+  const providerId = useId();
+  const modelId = useId();
 
   const currentProvider = aiProviders.find(p => p.id === selectedProvider);
   const currentModels = currentProvider?.models || [];
@@ -27,8 +29,11 @@ export function ProviderSelector({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <label className="text-sm font-medium">AI Provider</label>
+        <label htmlFor={providerId} className="text-sm font-medium">
+          AI Provider
+        </label>
         <Button
+          id={providerId}
           variant="outline"
           onClick={() => setIsProviderOpen(!isProviderOpen)}
           className="w-full justify-between mt-1"
@@ -60,8 +65,11 @@ export function ProviderSelector({
       </div>
 
       <div className="relative">
-        <label className="text-sm font-medium">Model</label>
+        <label htmlFor={modelId} className="text-sm font-medium">
+          Model
+        </label>
         <Button
+          id={modelId}
           variant="outline"
           onClick={() => setIsModelOpen(!isModelOpen)}
           className="w-full justify-between mt-1"

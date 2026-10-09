@@ -115,6 +115,7 @@ function Carousel({
         canScrollNext,
       }}
     >
+      {/* biome-ignore lint/a11y/useSemanticElements: W3C APG carousel pattern requires region role with aria-roledescription */}
       <div
         onKeyDownCapture={handleKeyDown}
         className={cn('relative', className)}
@@ -146,6 +147,7 @@ function CarouselItem({ className, ...props }: React.ComponentProps<'div'>) {
   const { orientation } = useCarousel();
 
   return (
+    // biome-ignore lint/a11y/useSemanticElements: W3C APG carousel pattern requires group role with aria-roledescription=slide
     <div
       role="group"
       aria-roledescription="slide"

@@ -27,6 +27,7 @@ function ButtonGroup({
   ...props
 }: React.ComponentProps<'div'> & VariantProps<typeof buttonGroupVariants>) {
   return (
+    // biome-ignore lint/a11y/useSemanticElements: shadcn primitive keeps div[role=group] to preserve div props API and avoid fieldset UA styles
     <div
       role="group"
       data-slot="button-group"
