@@ -52,3 +52,11 @@ apps/gateway/
 
 `data/` is gitignored. Swap `FileKeyStore` for a database behind the same
 `KeyStore` interface for production.
+
+## Deploy
+
+Import the repo in Vercel, set **Root Directory** to `apps/gateway`.
+`apps/gateway/vercel.json` scopes install/build to this app and its workspace
+dependencies. Add provider credentials (`OPENAI_API_KEY`, …) as environment
+variables. The playground talks to it via `AI_GATEWAY_URL` + `AI_GATEWAY_API_KEY`
+(see `examples/04-tools/playground/.env.example`).
