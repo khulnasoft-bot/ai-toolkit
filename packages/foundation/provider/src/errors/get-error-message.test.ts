@@ -44,12 +44,10 @@ describe('getErrorMessage', () => {
     });
 
     it('should return just the error name when message is empty', () => {
-      // eslint-disable-next-line unicorn/error-message
       expect(getErrorMessage(new Error(''))).toBe('Error');
     });
 
     it('should return just the type name when TypeError message is empty', () => {
-      // eslint-disable-next-line unicorn/error-message
       expect(getErrorMessage(new TypeError(''))).toBe('TypeError');
     });
 
