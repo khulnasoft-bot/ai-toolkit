@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "models": [
+    {
+      "id": "openai/gpt-4o",
+      "type": "chat",
+      "context": "128K",
+      "tags": ["tool-use", "vision", "structured-output"],
+      "description": "OpenAI flagship multimodal model for text, vision, and structured outputs."
+    },
+    {
+      "id": "openai/gpt-4o-mini",
+      "type": "chat",
+      "context": "128K",
+      "tags": ["tool-use", "vision", "structured-output"],
+      "description": "Fast, cheap OpenAI model for high-volume chat and tool-calling workloads."
+    },
+    {
+      "id": "openai/gpt-4.1",
+      "type": "chat",
+      "context": "1M",
+      "tags": ["tool-use", "vision", "structured-output"],
+      "description": "OpenAI model with a 1M-token window for long-document and coding tasks."
+    },
+    {
+      "id": "anthropic/claude-3-7-sonnet",
+      "type": "chat",
+      "context": "200K",
+      "tags": ["reasoning", "tool-use", "vision", "structured-output"],
+      "description": "Anthropic hybrid-reasoning model for coding, writing, and agentic work."
+    },
+    {
+      "id": "anthropic/claude-3-5-sonnet",
+      "type": "chat",
+      "context": "200K",
+      "tags": ["tool-use", "vision", "structured-output"],
+      "description": "Anthropic workhorse for reasoning, writing, and software engineering."
+    },
+    {
+      "id": "anthropic/claude-3-5-haiku",
+      "type": "chat",
+      "context": "200K",
+      "tags": ["tool-use", "vision", "structured-output"],
+      "description": "Fastest Anthropic model for latency-sensitive chat and extraction."
+    },
+    {
+      "id": "google/gemini-2.5-pro",
+      "type": "chat",
+      "context": "1M",
+      "tags": ["reasoning", "tool-use", "vision", "structured-output"],
+      "description": "Google reasoning model with a 1M-token window for complex tasks."
+    },
+    {
+      "id": "google/gemini-2.0-flash",
+      "type": "chat",
+      "context": "1M",
+      "tags": ["tool-use", "vision", "structured-output"],
+      "description": "Google low-latency workhorse for chat, agents, and multimodal input."
+    },
+    {
+      "id": "groq/llama-3.3-70b-versatile",
+      "type": "chat",
+      "context": "128K",
+      "tags": ["tool-use", "structured-output"],
+      "description": "Meta Llama served on Groq LPUs for very low-latency inference."
+    },
+    {
+      "id": "groq/mixtral-8x7b-32768",
+      "type": "chat",
+      "context": "32K",
+      "tags": ["tool-use"],
+      "description": "Mistral MoE model on Groq for cheap, fast chat completions."
+    },
+    {
+      "id": "mistral/mistral-large-latest",
+      "type": "chat",
+      "context": "128K",
+      "tags": ["reasoning", "tool-use", "vision", "structured-output"],
+      "description": "Mistral flagship for reasoning, code, and multilingual chat."
+    },
+    {
+      "id": "mistral/mixtral-8x7b-instruct",
+      "type": "chat",
+      "context": "32K",
+      "tags": ["tool-use", "structured-output"],
+      "description": "Mistral MoE instruction model, strong price/performance for chat."
+    }
+  ]
+}

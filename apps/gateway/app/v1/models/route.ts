@@ -1,3 +1,4 @@
+import { loadCatalog } from '@/lib/catalog';
 import { loadPolicy, loadPrices } from '@/lib/config';
 import { supportedProviders } from '@/lib/providers';
 
@@ -29,6 +30,7 @@ export async function GET() {
           : null,
       };
     }),
+    catalog: loadCatalog(),
     supportedProviders: supportedProviders(),
   });
 }

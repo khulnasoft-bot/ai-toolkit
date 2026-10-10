@@ -2,41 +2,21 @@
   "version": 1,
   "currency": "USD",
   "entries": [
-    {
-      "modelPattern": "openai/gpt-4o",
-      "inputPer1k": 2.5,
-      "outputPer1k": 10,
-      "currency": "USD"
-    },
-    {
-      "modelPattern": "openai/gpt-4o-mini",
-      "inputPer1k": 0.15,
-      "outputPer1k": 0.6,
-      "currency": "USD"
-    },
-    {
-      "modelPattern": "anthropic/*",
-      "inputPer1k": 3,
-      "outputPer1k": 15,
-      "currency": "USD"
-    },
-    {
-      "modelPattern": "google/*",
-      "inputPer1k": 0.1,
-      "outputPer1k": 0.4,
-      "currency": "USD"
-    },
-    {
-      "modelPattern": "groq/*",
-      "inputPer1k": 0.59,
-      "outputPer1k": 0.79,
-      "currency": "USD"
-    },
-    {
-      "modelPattern": "mistral/*",
-      "inputPer1k": 2,
-      "outputPer1k": 6,
-      "currency": "USD"
-    }
+    { "modelPattern": "openai/gpt-4o", "inputPer1k": 2.5, "outputPer1k": 10, "currency": "USD" },
+    { "modelPattern": "openai/gpt-4o-mini", "inputPer1k": 0.15, "outputPer1k": 0.6, "currency": "USD" },
+    { "modelPattern": "openai/gpt-4.1", "inputPer1k": 2, "outputPer1k": 8, "currency": "USD" },
+    { "modelPattern": "anthropic/claude-3-7-sonnet", "inputPer1k": 3, "outputPer1k": 15, "currency": "USD" },
+    { "modelPattern": "anthropic/claude-3-5-sonnet", "inputPer1k": 3, "outputPer1k": 15, "currency": "USD" },
+    { "modelPattern": "anthropic/claude-3-5-haiku", "inputPer1k": 0.8, "outputPer1k": 4, "currency": "USD" },
+    { "modelPattern": "google/gemini-2.5-pro", "inputPer1k": 1.25, "outputPer1k": 10, "currency": "USD" },
+    { "modelPattern": "google/gemini-2.0-flash", "inputPer1k": 0.1, "outputPer1k": 0.4, "currency": "USD" },
+    { "modelPattern": "groq/llama-3.3-70b-versatile", "inputPer1k": 0.59, "outputPer1k": 0.79, "currency": "USD" },
+    { "modelPattern": "groq/mixtral-8x7b-32768", "inputPer1k": 0.24, "outputPer1k": 0.24, "currency": "USD" },
+    { "modelPattern": "mistral/mistral-large-latest", "inputPer1k": 2, "outputPer1k": 6, "currency": "USD" },
+    { "modelPattern": "mistral/mixtral-8x7b-instruct", "inputPer1k": 0.7, "outputPer1k": 0.7, "currency": "USD" },
+    { "modelPattern": "anthropic/*", "inputPer1k": 3, "outputPer1k": 15, "currency": "USD" },
+    { "modelPattern": "google/*", "inputPer1k": 0.1, "outputPer1k": 0.4, "currency": "USD" },
+    { "modelPattern": "groq/*", "inputPer1k": 0.59, "outputPer1k": 0.79, "currency": "USD" },
+    { "modelPattern": "mistral/*", "inputPer1k": 2, "outputPer1k": 6, "currency": "USD" }
   ]
 }

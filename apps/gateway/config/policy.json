@@ -17,6 +17,66 @@
       "retryBudget": 2
     },
     {
+      "modelPattern": "openai/gpt-4.1",
+      "providers": [{ "provider": "openai", "model": "gpt-4.1" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "anthropic/claude-3-7-sonnet",
+      "providers": [{ "provider": "anthropic", "model": "claude-3-7-sonnet" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "anthropic/claude-3-5-sonnet",
+      "providers": [{ "provider": "anthropic", "model": "claude-3-5-sonnet-20241022" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "anthropic/claude-3-5-haiku",
+      "providers": [{ "provider": "anthropic", "model": "claude-3-5-haiku-20241022" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "google/gemini-2.5-pro",
+      "providers": [{ "provider": "google", "model": "gemini-2.5-pro" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "google/gemini-2.0-flash",
+      "providers": [{ "provider": "google", "model": "gemini-2.0-flash" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "groq/llama-3.3-70b-versatile",
+      "providers": [{ "provider": "groq", "model": "llama-3.3-70b-versatile" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "groq/mixtral-8x7b-32768",
+      "providers": [{ "provider": "groq", "model": "mixtral-8x7b-32768" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "mistral/mistral-large-latest",
+      "providers": [{ "provider": "mistral", "model": "mistral-large-latest" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
+      "modelPattern": "mistral/mixtral-8x7b-instruct",
+      "providers": [{ "provider": "mistral", "model": "open-mixtral-8x7b" }],
+      "strategy": "ordered",
+      "retryBudget": 2
+    },
+    {
       "modelPattern": "anthropic/*",
       "providers": [{ "provider": "anthropic", "model": "claude-3-7-sonnet" }],
       "strategy": "ordered",

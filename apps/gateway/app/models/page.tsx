@@ -1,23 +1,21 @@
-import { loadPolicy, loadPrices } from '@/lib/config';
-import { Code, Container, Eyebrow, line, muted } from '../site';
+import { loadCatalog } from '@/lib/catalog';
+import { Code, Container, Eyebrow, muted } from '../site';
+import { ModelsBrowser } from './browser';
 
 export const metadata = {
   title: 'Models — AI Gateway',
   description:
-    'Live routing catalog: models, providers, retry budgets, and prices.',
+    'Browse every model: search, filter by provider and capability, compare prices.',
 };
 
 export default function ModelsPage() {
-  const policy = loadPolicy();
-  const prices = loadPrices();
-  const priceFor = (pattern: string) =>
-    prices.entries.find(entry => entry.modelPattern === pattern);
+  const catalog = loadCatalog();
 
   return (
     <main>
       <Container>
         <div style={{ padding: '64px 0' }}>
-          <Eyebrow>Live catalog</Eyebrow>
+          <Eyebrow>Live catalog · {catalog.length} models</Eyebrow>
           <h1
             style={{
               fontSize: 44,
@@ -25,107 +23,15 @@ export default function ModelsPage() {
               margin: '0 0 12px',
             }}
           >
-            Models
+            Browse models
           </h1>
           <p style={{ color: muted, maxWidth: 640, margin: '0 0 32px' }}>
-            Served live from this gateway&apos;s <code>config/policy.json</code>{' '}
-            and <code>config/prices.json</code> — what you see is what routes.
-            Prices in {prices.currency} per 1k tokens.
+            Served live from this gateway&apos;s <code>config/models.json</code>
+            , <code>config/policy.json</code>, and{' '}
+            <code>config/prices.json</code> — what you see is what routes. Click
+            a row for failover order and copyable snippets.
           </p>
-          <div
-            style={{
-              border: `1px solid ${line}`,
-              borderRadius: 8,
-              overflow: 'hidden',
-            }}
-          >
-            <div style={{ overflowX: 'auto' }}>
-              <table
-                style={{
-                  width: '100%',
-                  borderCollapse: 'collapse',
-                  fontSize: 14,
-                  minWidth: 720,
-                }}
-              >
-                <thead>
-                  <tr style={{ background: '#fafafa', textAlign: 'left' }}>
-                    {[
-                      'Model pattern',
-                      'Providers (failover order)',
-                      'Strategy',
-                      'Budget',
-                      'In / 1k',
-                      'Out / 1k',
-                    ].map(h => (
-                      <th
-                        key={h}
-                        style={{
-                          padding: '12px 16px',
-                          fontWeight: 600,
-                          borderBottom: `1px solid ${line}`,
-                          whiteSpace: 'nowrap',
-                        }}
-                      >
-                        {h}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {policy.routes.map(route => {
-                    const price = priceFor(route.modelPattern);
-                    return (
-                      <tr
-                        key={route.modelPattern}
-                        style={{ borderBottom: `1px solid ${line}` }}
-                      >
-                        <td
-                          style={{
-                            padding: '12px 16px',
-                            fontFamily: 'monospace',
-                            fontSize: 13,
-                          }}
-                        >
-                          {route.modelPattern}
-                        </td>
-                        <td style={{ padding: '12px 16px', color: muted }}>
-                          {route.providers
-                            .map(p => `${p.provider}/${p.model}`)
-                            .join('  →  ')}
-                        </td>
-                        <td style={{ padding: '12px 16px' }}>
-                          {route.strategy ?? 'ordered'}
-                        </td>
-                        <td
-                          style={{
-                            padding: '12px 16px',
-                            fontFamily: 'monospace',
-                          }}
-                        >
-                          {route.retryBudget}
-                        </td>
-                        <td style={{ padding: '12px 16px' }}>
-                          {price ? `$${price.inputPer1k}` : 'unpriced'}
-                        </td>
-                        <td style={{ padding: '12px 16px' }}>
-                          {price ? `$${price.outputPer1k}` : 'unpriced'}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          {policy.fallback && (
-            <p style={{ color: muted, marginTop: 16 }}>
-              Fallback for unmatched models:{' '}
-              <code>
-                {policy.fallback.provider}/{policy.fallback.model}
-              </code>
-            </p>
-          )}
+          <ModelsBrowser models={catalog} />
           <div style={{ marginTop: 32 }}>
             <Code label="GET /v1/models">
               {`curl http://localhost:3000/v1/models`}
