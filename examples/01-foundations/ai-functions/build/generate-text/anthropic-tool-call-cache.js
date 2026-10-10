@@ -1,0 +1,22 @@
+import { generateText, tool } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
+import { z } from 'zod';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateText({
+        model: anthropic('claude-3-5-haiku-latest'),
+        tools: {
+            cityAttractions: tool({
+                inputSchema: z.object({ city: z.string() }),
+                providerOptions: {
+                    anthropic: {
+                        cacheControl: { type: 'ephemeral' },
+                    },
+                },
+            }),
+        },
+        prompt: 'What attractions should I visit in San Francisco?',
+    });
+    console.log(JSON.stringify(result.request.body, null, 2));
+});
+//# sourceMappingURL=anthropic-tool-call-cache.js.map

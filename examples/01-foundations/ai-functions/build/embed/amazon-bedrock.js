@@ -1,0 +1,13 @@
+import { embed } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { run } from '../lib/run';
+run(async () => {
+    const { embedding, usage, warnings } = await embed({
+        model: bedrock.embedding('amazon.titan-embed-text-v2:0'),
+        value: 'sunny day at the beach',
+    });
+    console.log(embedding);
+    console.log(usage);
+    console.log(warnings);
+});
+//# sourceMappingURL=amazon-bedrock.js.map

@@ -1,0 +1,26 @@
+import fs from 'node:fs';
+import { streamText } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { run } from '../lib/run';
+run(async () => {
+    const result = streamText({
+        model: bedrock('anthropic.claude-3-haiku-20240307-v1:0'),
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    { type: 'text', text: 'Describe the pdf in detail.' },
+                    {
+                        type: 'file',
+                        data: fs.readFileSync('./data/ai.pdf'),
+                        mediaType: 'application/pdf',
+                    },
+                ],
+            },
+        ],
+    });
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+});
+//# sourceMappingURL=amazon-bedrock-pdf.js.map

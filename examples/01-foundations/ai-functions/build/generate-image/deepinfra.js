@@ -1,0 +1,12 @@
+import { generateImage } from '@ai-toolkit/ai';
+import { deepinfra } from '@ai-toolkit/deepinfra';
+import { presentImages } from '../lib/present-image';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateImage({
+        model: deepinfra.image('black-forest-labs/FLUX-1-schnell'),
+        prompt: 'A resplendent quetzal mid flight amidst raindrops',
+    });
+    await presentImages(result.images);
+});
+//# sourceMappingURL=deepinfra.js.map

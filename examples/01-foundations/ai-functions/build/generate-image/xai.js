@@ -1,0 +1,12 @@
+import { generateImage } from '@ai-toolkit/ai';
+import { xai } from '@ai-toolkit/xai';
+import { presentImages } from '../lib/present-image';
+import { run } from '../lib/run';
+run(async () => {
+    const { image } = await generateImage({
+        model: xai.image('grok-2-image'),
+        prompt: 'A salamander at dusk in a forest pond surrounded by fireflies.',
+    });
+    await presentImages([image]);
+});
+//# sourceMappingURL=xai.js.map

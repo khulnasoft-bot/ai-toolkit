@@ -1,0 +1,25 @@
+import { embedMany } from '@ai-toolkit/ai';
+import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
+import { run } from '../lib/run';
+run(async () => {
+    const togetherai = createOpenAICompatible({
+        baseURL: 'https://api.together.xyz/v1',
+        name: 'togetherai',
+        headers: {
+            Authorization: `Bearer ${process.env.TOGETHER_AI_API_KEY}`,
+        },
+    });
+    const model = togetherai.embeddingModel('BAAI/bge-large-en-v1.5');
+    const { embeddings, usage, warnings } = await embedMany({
+        model,
+        values: [
+            'sunny day at the beach',
+            'rainy afternoon in the city',
+            'snowy night in the mountains',
+        ],
+    });
+    console.log(embeddings);
+    console.log(usage);
+    console.log(warnings);
+});
+//# sourceMappingURL=openai-compatible-togetherai.js.map

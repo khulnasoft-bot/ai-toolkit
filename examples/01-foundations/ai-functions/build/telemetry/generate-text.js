@@ -1,0 +1,29 @@
+import { generateText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { NodeSDK } from '@opentelemetry/sdk-node';
+import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
+import { run } from '../lib/run';
+const sdk = new NodeSDK({
+    traceExporter: new ConsoleSpanExporter(),
+    instrumentations: [getNodeAutoInstrumentations()],
+});
+sdk.start();
+run(async () => {
+    const result = await generateText({
+        model: openai('gpt-4o'),
+        maxOutputTokens: 50,
+        prompt: 'Invent a new holiday and describe its traditions.',
+        experimental_telemetry: {
+            isEnabled: true,
+            functionId: 'my-awesome-function',
+            metadata: {
+                something: 'custom',
+                someOtherThing: 'other-value',
+            },
+        },
+    });
+    console.log(result.text);
+    await sdk.shutdown();
+});
+//# sourceMappingURL=generate-text.js.map

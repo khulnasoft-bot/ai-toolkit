@@ -1,0 +1,20 @@
+import { generateText } from '@ai-toolkit/ai';
+import { createAzure } from '@ai-toolkit/azure';
+import { run } from '../lib/run';
+const azure = createAzure({
+    // example fetch wrapper that logs the input to the API call:
+    fetch: async (url, options) => {
+        console.log('URL', url);
+        console.log('Headers', JSON.stringify(options?.headers, null, 2));
+        console.log(`Body ${JSON.stringify(JSON.parse(options?.body), null, 2)}`);
+        return await fetch(url, options);
+    },
+});
+run(async () => {
+    const result = await generateText({
+        model: azure('gpt-4.1-mini'), // use your own deployment
+        prompt: 'Invent a new holiday and describe its traditions.',
+    });
+    console.log(result.text);
+});
+//# sourceMappingURL=azure-custom-fetch.js.map

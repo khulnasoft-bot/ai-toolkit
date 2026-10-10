@@ -1,0 +1,15 @@
+import { generateObject } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateObject({
+        model: openai('gpt-4o-2024-08-06'),
+        output: 'no-schema',
+        prompt: 'Generate a lasagna recipe.',
+    });
+    console.log(JSON.stringify(result.object, null, 2));
+    console.log();
+    console.log('Token usage:', result.usage);
+    console.log('Finish reason:', result.finishReason);
+});
+//# sourceMappingURL=openai-no-schema.js.map

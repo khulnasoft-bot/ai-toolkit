@@ -1,0 +1,13 @@
+import { embed } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { run } from '../lib/run';
+run(async () => {
+    const { embedding, usage, warnings } = await embed({
+        model: openai.embedding('text-embedding-3-small'),
+        value: 'sunny day at the beach',
+    });
+    console.log(embedding);
+    console.log(usage);
+    console.log(warnings);
+});
+//# sourceMappingURL=openai.js.map

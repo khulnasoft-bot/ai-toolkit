@@ -1,0 +1,17 @@
+import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
+import { elevenlabs } from '@ai-toolkit/elevenlabs';
+import { run } from '../lib/run';
+import { saveAudioFile } from '../lib/save-audio';
+run(async () => {
+    const result = await generateSpeech({
+        model: elevenlabs.speech('eleven_flash_v2_5'),
+        text: 'This is using the ultra-low latency Flash model for real-time applications.',
+    });
+    console.log('Audio:', result.audio);
+    console.log('Warnings:', result.warnings);
+    console.log('Responses:', result.responses);
+    console.log('Provider Metadata:', result.providerMetadata);
+    console.log('Model used: eleven_flash_v2_5 (ultra-low latency ~75ms)');
+    await saveAudioFile(result.audio);
+});
+//# sourceMappingURL=elevenlabs-flash.js.map

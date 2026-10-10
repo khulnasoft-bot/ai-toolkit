@@ -1,0 +1,11 @@
+import { generateText } from '@ai-toolkit/ai';
+import { anthropic } from '@ai-toolkit/anthropic';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateText({
+        model: anthropic('claude-3-5-sonnet-20240620'),
+        prompt: 'Invent a new holiday and describe its traditions.',
+    });
+    console.log(JSON.stringify(result, null, 2));
+});
+//# sourceMappingURL=anthropic-full-result.js.map

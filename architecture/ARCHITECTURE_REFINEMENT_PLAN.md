@@ -66,7 +66,7 @@ Responsibilities:
 
 Repository alignment:
 
-- `packages/core/ai-toolkit`
+- `packages/core/ai`
 - `packages/core/runtime`
 - `packages/core/provider-utils` for shared runtime utilities
 

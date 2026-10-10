@@ -1,0 +1,57 @@
+import { streamText, } from '@ai-toolkit/ai';
+import { groq } from '@ai-toolkit/groq';
+import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
+const messages = [];
+run(async () => {
+    let _toolResponseAvailable = false;
+    const result = streamText({
+        model: groq('moonshotai/kimi-k2-instruct-0905'),
+        maxOutputTokens: 512,
+        tools: {
+            weather: weatherTool,
+        },
+        toolChoice: 'auto',
+        prompt: 'What is the weather in San Francisco?',
+    });
+    let fullResponse = '';
+    const toolCalls = [];
+    const toolResponses = [];
+    for await (const delta of result.fullStream) {
+        switch (delta.type) {
+            case 'text-delta': {
+                fullResponse += delta.text;
+                process.stdout.write(delta.text);
+                break;
+            }
+            case 'tool-call': {
+                toolCalls.push(delta);
+                process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
+                break;
+            }
+            case 'tool-result': {
+                if (delta.dynamic) {
+                    continue;
+                }
+                const transformedDelta = {
+                    ...delta,
+                    output: { type: 'json', value: delta.output },
+                };
+                toolResponses.push(transformedDelta);
+                process.stdout.write(`\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`);
+                break;
+            }
+        }
+    }
+    process.stdout.write('\n\n');
+    messages.push({
+        role: 'assistant',
+        content: [{ type: 'text', text: fullResponse }, ...toolCalls],
+    });
+    if (toolResponses.length > 0) {
+        messages.push({ role: 'tool', content: toolResponses });
+    }
+    _toolResponseAvailable = toolCalls.length > 0;
+    console.log('Messages:', messages[0].content);
+});
+//# sourceMappingURL=groq-kimi-k2-tool-call.js.map

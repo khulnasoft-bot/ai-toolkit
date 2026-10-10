@@ -1,0 +1,15 @@
+import { stepCountIs, streamText } from '@ai-toolkit/ai';
+import { deepseek } from '@ai-toolkit/deepseek';
+import { printFullStream } from '../lib/print-full-stream';
+import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
+run(async () => {
+    const result = streamText({
+        model: deepseek('deepseek-reasoner'),
+        tools: { weather: weatherTool },
+        stopWhen: stepCountIs(2),
+        prompt: 'What is the weather in San Francisco?',
+    });
+    printFullStream({ result });
+});
+//# sourceMappingURL=deepseek-tool-call.js.map

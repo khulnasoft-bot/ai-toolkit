@@ -6,12 +6,12 @@
 
 ## 1. Objective
 
-Rename the core SDK package from unscoped `ai` to scoped `@ai-toolkit/ai` (referred to by user as `ai-toolkit`) and, optionally, rename the directory `packages/core/ai` → `packages/core/ai-toolkit` for symmetry. Aligns with ADR-012 / `architecture/domain-mapping.md` and repository-wide move to `@ai-toolkit/*` scope.
+Rename the core SDK package from unscoped `ai` to scoped `@ai-toolkit/ai` (referred to by user as `ai-toolkit`) and, optionally, rename the directory `packages/core/ai` → `packages/core/ai` for symmetry. Aligns with ADR-012 / `architecture/domain-mapping.md` and repository-wide move to `@ai-toolkit/*` scope.
 
 Two naming interpretations:
 
 - **Interpretation A (implemented)**: npm name `@ai-toolkit/ai`, directory stays `packages/core/ai` (suffix matches dir). This is what `packages/core/ai/package.json:2` now declares.
-- **Interpretation B (user literal)**: npm name `ai-toolkit` (unscoped) or `@ai-toolkit/ai-toolkit`, directory `packages/core/ai-toolkit`. Requires extra decision — not recommended (breaks `@ai-toolkit/*` consistency, see `architecture/domain-mapping.md`).
+- **Interpretation B (user literal)**: npm name `ai-toolkit` (unscoped) or `@ai-toolkit/ai-toolkit`, directory `packages/core/ai`. Requires extra decision — not recommended (breaks `@ai-toolkit/*` consistency, see `architecture/domain-mapping.md`).
 
 **Recommendation: proceed with A** — `@ai-toolkit/ai` — and keep directory `packages/core/ai` unless product wants `ai-toolkit` as public alias (then add re-export package, not rename dir).
 
@@ -62,7 +62,7 @@ sourceMapping:14
 
 It handles `ImportDeclaration`, `ExportNamedDeclaration`, `ExportAllDeclaration`, dynamic `import()`, and `require()` — covers all 2811 matches.
 
-**Directory rename decision**: _Do not_ rename `packages/core/ai` → `packages/core/ai-toolkit` in this phase unless product confirms. The scoped name suffix is `ai` (`@ai-toolkit/ai`), so dir `ai` is correct. If symmetry with `ai-toolkit` literal is required, perform `git mv packages/core/ai packages/core/ai-toolkit` and update `pnpm-workspace.yaml` (no-op, glob covers) + all `tsconfig.json` paths. Keep as separate Phase 2 to limit blast radius.
+**Directory rename decision**: _Do not_ rename `packages/core/ai` → `packages/core/ai` in this phase unless product confirms. The scoped name suffix is `ai` (`@ai-toolkit/ai`), so dir `ai` is correct. If symmetry with `ai-toolkit` literal is required, perform `git mv packages/core/ai packages/core/ai` and update `pnpm-workspace.yaml` (no-op, glob covers) + all `tsconfig.json` paths. Keep as separate Phase 2 to limit blast radius.
 
 Exclude from codemod:
 
@@ -117,9 +117,9 @@ Post-edit: `pnpm install` → regenerates `pnpm-lock.yaml:78`, `pnpm update-refe
 ### Phase 3 — Directory rename (only if Interpretation B approved)
 
 ```bash
-git mv packages/core/ai packages/core/ai-toolkit
+git mv packages/core/ai packages/core/ai
 # update
-# - tsconfig.json:4  path: packages/core/ai-toolkit
+# - tsconfig.json:4  path: packages/core/ai
 # - all examples/**/tsconfig.json paths
 # - architecture/domain-mapping.md table
 # - CODEOWNERS path

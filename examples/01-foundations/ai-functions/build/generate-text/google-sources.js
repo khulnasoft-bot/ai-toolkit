@@ -1,0 +1,23 @@
+import { generateText } from '@ai-toolkit/ai';
+import { google, } from '@ai-toolkit/google';
+import { run } from '../lib/run';
+run(async () => {
+    const { text, sources, providerMetadata } = await generateText({
+        model: google('gemini-2.5-flash'),
+        tools: {
+            google_search: google.tools.googleSearch({}),
+        },
+        prompt: 'List the top 5 San Francisco news from the past week.' +
+            'You must include the date of each article.',
+    });
+    const metadata = providerMetadata?.google;
+    const groundingMetadata = metadata?.groundingMetadata;
+    console.log(text);
+    console.log();
+    console.log('SOURCES');
+    console.log(sources);
+    console.log();
+    console.log('PROVIDER METADATA');
+    console.log(groundingMetadata);
+});
+//# sourceMappingURL=google-sources.js.map

@@ -1,0 +1,27 @@
+import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { google } from '@ai-toolkit/google';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateText({
+        model: google('gemini-1.5-flash'),
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'text',
+                        text: 'What is an embedding model according to this document?',
+                    },
+                    {
+                        type: 'file',
+                        data: fs.readFileSync('./data/ai.pdf'),
+                        mediaType: 'application/pdf',
+                    },
+                ],
+            },
+        ],
+    });
+    console.log(result.text);
+});
+//# sourceMappingURL=google-pdf.js.map

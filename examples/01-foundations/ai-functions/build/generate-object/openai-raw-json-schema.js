@@ -1,0 +1,42 @@
+import { generateObject, jsonSchema } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateObject({
+        model: openai('gpt-4-turbo'),
+        schema: jsonSchema({
+            type: 'object',
+            properties: {
+                recipe: {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string' },
+                        ingredients: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: { type: 'string' },
+                                    amount: { type: 'string' },
+                                },
+                                required: ['name', 'amount'],
+                            },
+                        },
+                        steps: {
+                            type: 'array',
+                            items: { type: 'string' },
+                        },
+                    },
+                    required: ['name', 'ingredients', 'steps'],
+                },
+            },
+            required: ['recipe'],
+        }),
+        prompt: 'Generate a lasagna recipe.',
+    });
+    console.log(JSON.stringify(result.object.recipe, null, 2));
+    console.log();
+    console.log('Token usage:', result.usage);
+    console.log('Finish reason:', result.finishReason);
+});
+//# sourceMappingURL=openai-raw-json-schema.js.map

@@ -1,0 +1,31 @@
+import { generateText } from '@ai-toolkit/ai';
+import { createAnthropic } from '@ai-toolkit/anthropic';
+import { getNodeAutoInstrumentations } from '@opentelemetry/auto-instrumentations-node';
+import { NodeSDK } from '@opentelemetry/sdk-node';
+import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
+import { run } from '../lib/run';
+const sdk = new NodeSDK({
+    traceExporter: new ConsoleSpanExporter(),
+    instrumentations: [getNodeAutoInstrumentations()],
+});
+sdk.start();
+run(async () => {
+    const myCustomProvider = createAnthropic({
+        name: 'my-anthropic-proxy',
+    });
+    await generateText({
+        model: myCustomProvider('claude-sonnet-4-20250514'),
+        prompt: 'Say hello in 5 words',
+        experimental_telemetry: {
+            isEnabled: true,
+            functionId: 'anthropic-custom-provider-demo',
+            metadata: {
+                environment: 'demo',
+                endpoint_type: 'my-anthropic-proxy',
+                cost_tracking: 'enabled',
+            },
+        },
+    });
+    await sdk.shutdown();
+});
+//# sourceMappingURL=anthropic-custom-provider-with-telemetry.js.map

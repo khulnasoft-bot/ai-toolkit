@@ -1,0 +1,53 @@
+import { streamText } from '@ai-toolkit/ai';
+import { openai, } from '@ai-toolkit/openai';
+import { downloadOpenaiContainerFile } from '../lib/download-openai-container-file';
+import { run } from '../lib/run';
+run(async () => {
+    // Basic text generation
+    const result = streamText({
+        model: openai.responses('gpt-4.1-mini'),
+        prompt: 'Create a program that generates five random numbers between 1 and 100 with two decimal places, and show me the execution results. Also save the result to a file.',
+        tools: {
+            code_interpreter: openai.tools.codeInterpreter(),
+        },
+    });
+    console.log('\n=== Basic Text Generation ===');
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+    console.log('\n=== Other Outputs ===');
+    console.log(await result.toolCalls);
+    console.log(await result.toolResults);
+    console.log('\n=== Code Interpreter Annotations ===');
+    const containerfileList = [];
+    for await (const part of result.fullStream) {
+        if (part.type === 'text-end') {
+            const providerMetadata = part.providerMetadata;
+            if (!providerMetadata)
+                continue;
+            const { openai } = providerMetadata;
+            console.log('-- text-part-- ');
+            console.dir({ openai }, { depth: Infinity });
+        }
+        else if (part.type === 'source') {
+            if (part.sourceType === 'document') {
+                const providerMetadata = part.providerMetadata;
+                if (!providerMetadata)
+                    continue;
+                const { openai } = providerMetadata;
+                console.log('-- source-document-part-- ');
+                console.dir({ openai }, { depth: Infinity });
+                if (openai.type === 'container_file_citation') {
+                    containerfileList.push({
+                        containerId: openai.containerId,
+                        fileId: openai.fileId,
+                    });
+                }
+            }
+        }
+    }
+    for await (const containerFile of containerfileList) {
+        await downloadOpenaiContainerFile(containerFile.containerId, containerFile.fileId);
+    }
+});
+//# sourceMappingURL=openai-responses-code-interpreter.js.map

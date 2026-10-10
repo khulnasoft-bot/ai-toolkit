@@ -23,7 +23,7 @@ Proposed architecture and executable migration plan.
 
 | File                                                             | Broken Reference                      | Fixed To                         |
 | ---------------------------------------------------------------- | ------------------------------------- | -------------------------------- |
-| `examples/02-framework-integration/angular/tsconfig.server.json` | `packages/core/ai-toolkit`            | `packages/ai/core`               |
+| `examples/02-framework-integration/angular/tsconfig.server.json` | `packages/core/ai`            | `packages/ai/core`               |
 | `examples/01-foundations/ai-functions/tsconfig.json`             | `packages/special/gateway`            | `packages/gateway/core`          |
 | `examples/01-foundations/ai-functions/tsconfig.json`             | `packages/special/khulnasoft`         | `packages/foundation/khulnasoft` |
 | `examples/01-foundations/ai-functions/tsconfig.json`             | `packages/foundation/schema/provider` | `packages/foundation/provider`   |

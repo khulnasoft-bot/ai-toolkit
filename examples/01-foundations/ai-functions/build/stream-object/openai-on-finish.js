@@ -1,0 +1,35 @@
+import { streamObject } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { z } from 'zod';
+import { run } from '../lib/run';
+run(async () => {
+    const result = streamObject({
+        model: openai('gpt-4-turbo'),
+        schema: z.object({
+            characters: z.array(z.object({
+                name: z.string(),
+                class: z
+                    .string()
+                    .describe('Character class, e.g. warrior, mage, or thief.'),
+                description: z.string(),
+            })),
+        }),
+        prompt: 'Generate 3 character descriptions for a fantasy role playing game.',
+        onFinish({ usage, object, error }) {
+            console.log();
+            console.log('onFinish');
+            console.log('Token usage:', usage);
+            // handle type validation failure (when the object does not match the schema):
+            if (object === undefined) {
+                console.error('Error:', error);
+            }
+            else {
+                console.log('Final object:', JSON.stringify(object, null, 2));
+            }
+        },
+    });
+    // consume the partialObjectStream:
+    for await (const _partialObject of result.partialObjectStream) {
+    }
+});
+//# sourceMappingURL=openai-on-finish.js.map

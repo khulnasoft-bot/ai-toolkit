@@ -1,0 +1,28 @@
+import fs from 'node:fs';
+import { generateText } from '@ai-toolkit/ai';
+import { createOpenAICompatible } from '@ai-toolkit/openai-compatible';
+import { run } from '../lib/run';
+run(async () => {
+    const openai = createOpenAICompatible({
+        baseURL: 'https://api.openai.com/v1',
+        name: 'openai',
+        headers: {
+            Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+        },
+    });
+    const model = openai.chatModel('gpt-4o-mini');
+    const result = await generateText({
+        model,
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    { type: 'text', text: 'Describe the image in detail.' },
+                    { type: 'image', image: fs.readFileSync('./data/comic-cat.png') },
+                ],
+            },
+        ],
+    });
+    console.log(result.text);
+});
+//# sourceMappingURL=openai-compatible-openai-image.js.map

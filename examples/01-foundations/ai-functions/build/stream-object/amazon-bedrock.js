@@ -1,0 +1,24 @@
+import { streamObject } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { z } from 'zod';
+import { run } from '../lib/run';
+run(async () => {
+    const result = streamObject({
+        model: bedrock('anthropic.claude-3-5-sonnet-20240620-v1:0'),
+        schema: z.object({
+            characters: z.array(z.object({
+                name: z.string(),
+                class: z
+                    .string()
+                    .describe('Character class, e.g. warrior, mage, or thief.'),
+                description: z.string(),
+            })),
+        }),
+        prompt: 'Generate 3 character descriptions for a fantasy role playing game.',
+    });
+    for await (const partialObject of result.partialObjectStream) {
+        console.clear();
+        console.log(partialObject);
+    }
+});
+//# sourceMappingURL=amazon-bedrock.js.map

@@ -1,0 +1,20 @@
+import { generateText } from '@ai-toolkit/ai';
+import { createGoogleGenerativeAI } from '@ai-toolkit/google';
+import { run } from '../lib/run';
+const google = createGoogleGenerativeAI({
+    // example fetch wrapper that logs the input to the API call:
+    fetch: async (url, options) => {
+        console.log('URL', url);
+        console.log('Headers', JSON.stringify(options?.headers, null, 2));
+        console.log(`Body ${JSON.stringify(JSON.parse(options?.body), null, 2)}`);
+        return await fetch(url, options);
+    },
+});
+run(async () => {
+    const result = await generateText({
+        model: google('gemini-1.5-pro-latest'),
+        prompt: 'Invent a new holiday and describe its traditions.',
+    });
+    console.log(result.text);
+});
+//# sourceMappingURL=google-custom-fetch.js.map

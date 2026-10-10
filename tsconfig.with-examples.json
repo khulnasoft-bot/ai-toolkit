@@ -1,0 +1,77 @@
+{
+  "compilerOptions": {
+    "composite": true
+  },
+  "references": [
+    {
+      "path": "./"
+    },
+    {
+      "path": "examples/01-foundations/ai-functions"
+    },
+    {
+      "path": "examples/01-foundations/express"
+    },
+    {
+      "path": "examples/01-foundations/fastify"
+    },
+    {
+      "path": "examples/01-foundations/hono"
+    },
+    {
+      "path": "examples/01-foundations/node-http-server"
+    },
+    {
+      "path": "examples/02-framework-integration/angular"
+    },
+    {
+      "path": "examples/02-framework-integration/nest"
+    },
+    {
+      "path": "examples/02-framework-integration/next"
+    },
+    {
+      "path": "examples/02-framework-integration/next-agent"
+    },
+    {
+      "path": "examples/02-framework-integration/next-fastapi"
+    },
+    {
+      "path": "examples/02-framework-integration/next-langchain"
+    },
+    {
+      "path": "examples/02-framework-integration/next-openai"
+    },
+    {
+      "path": "examples/02-framework-integration/next-openai-pages"
+    },
+    {
+      "path": "examples/02-framework-integration/nuxt-openai"
+    },
+    {
+      "path": "examples/03-integrations/mcp"
+    },
+    {
+      "path": "examples/03-integrations/next-google-vertex"
+    },
+    {
+      "path": "examples/03-integrations/next-openai-kasada-bot-protection"
+    },
+    {
+      "path": "examples/03-integrations/next-openai-telemetry"
+    },
+    {
+      "path": "examples/03-integrations/next-openai-telemetry-sentry"
+    },
+    {
+      "path": "examples/03-integrations/next-openai-upstash-rate-limits"
+    },
+    {
+      "path": "examples/04-tools/harness-profiles"
+    },
+    {
+      "path": "examples/04-tools/playground"
+    }
+  ],
+  "include": []
+}

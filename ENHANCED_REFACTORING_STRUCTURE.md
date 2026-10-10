@@ -429,7 +429,7 @@ packages:
 
 **Outdated references in architecture documents:**
 
-- `architecture/domain-mapping.md` references old paths like `packages/core/ai-toolkit`, `packages/validation/provider`, etc.
+- `architecture/domain-mapping.md` references old paths like `packages/core/ai`, `packages/validation/provider`, etc.
 - These paths have been migrated to `packages/ai/core`, `packages/foundation/provider`, etc.
 - The document needs to be updated to reflect the new structure.
 

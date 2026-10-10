@@ -1,0 +1,19 @@
+import { Output, stepCountIs, streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { run } from '../lib/run';
+import { weatherTool } from '../tools/weather-tool';
+run(async () => {
+    const result = streamText({
+        model: openai('gpt-4o-mini'),
+        tools: { weather: weatherTool },
+        stopWhen: stepCountIs(5),
+        output: Output.json(),
+        system: 'Return JSON only, no other text.',
+        prompt: 'What is the weather in San Francisco, London, Paris, and Berlin?',
+    });
+    for await (const partialOutput of result.partialOutputStream) {
+        console.clear();
+        console.log(partialOutput);
+    }
+});
+//# sourceMappingURL=openai-output-json.js.map

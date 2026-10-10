@@ -1,0 +1,24 @@
+import { streamText } from '@ai-toolkit/ai';
+import { run } from '../lib/run';
+run(async () => {
+    const result = streamText({
+        headers: {
+            'X-Simulate-Model-Failures': 'anthropic/claude-4-sonnet',
+        },
+        model: 'anthropic/claude-4-sonnet',
+        prompt: 'Tell me a short tale of the krakens of the deep.',
+        providerOptions: {
+            gateway: {
+                models: ['openai/gpt-5-nano', 'zai/glm-4.6'],
+            },
+        },
+    });
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+    console.log();
+    console.log('Provider metadata:', JSON.stringify(await result.providerMetadata, null, 2));
+    console.log('Token usage:', await result.usage);
+    console.log('Finish reason:', await result.finishReason);
+});
+//# sourceMappingURL=gateway-provider-options-models.js.map

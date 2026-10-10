@@ -1,0 +1,18 @@
+import { generateObject } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateObject({
+        model: openai('gpt-4o-mini'),
+        output: 'enum',
+        enum: ['action', 'comedy', 'drama', 'horror', 'sci-fi'],
+        prompt: 'Classify the genre of this movie plot: ' +
+            '"A group of astronauts travel through a wormhole in search of a ' +
+            'new habitable planet for humanity."',
+    });
+    console.log(result.object);
+    console.log();
+    console.log('Token usage:', result.usage);
+    console.log('Finish reason:', result.finishReason);
+});
+//# sourceMappingURL=openai-enum.js.map

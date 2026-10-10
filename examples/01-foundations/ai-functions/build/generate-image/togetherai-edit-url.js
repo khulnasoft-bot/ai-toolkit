@@ -1,0 +1,24 @@
+import { generateImage } from '@ai-toolkit/ai';
+import { togetherai, } from '@ai-toolkit/togetherai';
+import { presentImages } from '../lib/present-image';
+import { run } from '../lib/run';
+run(async () => {
+    const prompt = 'Make the background a lush rainforest';
+    console.log(`PROMPT: ${prompt}`);
+    const { images } = await generateImage({
+        model: togetherai.image('black-forest-labs/FLUX.1-kontext-pro'),
+        prompt: {
+            text: prompt,
+            images: ['https://github.com/gr2m.png'],
+        },
+        size: '1024x1024',
+        providerOptions: {
+            togetherai: {
+                steps: 28,
+            },
+        },
+    });
+    console.log('OUTPUT IMAGE:');
+    await presentImages(images);
+});
+//# sourceMappingURL=togetherai-edit-url.js.map

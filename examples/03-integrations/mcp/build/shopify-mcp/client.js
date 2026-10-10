@@ -1,0 +1,39 @@
+import { streamText } from '@ai-toolkit/ai';
+import { openai } from '@ai-toolkit/openai';
+import { StreamableHTTPClientTransport } from '@modelcontextprotocol/sdk/client/streamableHttp.js';
+import 'dotenv/config';
+import { createMCPClient } from '@ai-toolkit/mcp';
+async function main() {
+    const _transport = new StreamableHTTPClientTransport(new URL('https://cowboy.com/api/mcp'));
+    const mcpClient = await createMCPClient({
+        transport: {
+            type: 'http',
+            url: 'https://cowboy.com/api/mcp',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        },
+    });
+    try {
+        const tools = await mcpClient.tools();
+        const result = streamText({
+            model: openai('gpt-4o-mini'),
+            tools,
+            system: 'You are a helpful chatbot',
+            prompt: 'What tools are available for me to call?',
+            onFinish: async () => {
+                await mcpClient.close();
+            },
+        });
+        for await (const chunk of result.textStream) {
+            process.stdout.write(chunk);
+        }
+        console.log();
+    }
+    catch (error) {
+        console.error('Error:', error);
+        await mcpClient.close();
+    }
+}
+main();
+//# sourceMappingURL=client.js.map

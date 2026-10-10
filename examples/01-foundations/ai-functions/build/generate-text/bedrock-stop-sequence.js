@@ -1,0 +1,16 @@
+import { generateText } from '@ai-toolkit/ai';
+import { bedrock } from '@ai-toolkit/amazon-bedrock';
+import { run } from '../lib/run';
+run(async () => {
+    const result = await generateText({
+        model: bedrock('anthropic.claude-3-5-sonnet-20240620-v1:0'),
+        prompt: 'Write a short story and end it with the word END.',
+        stopSequences: ['END'],
+    });
+    console.log(result.text);
+    console.log();
+    console.log('Token usage:', result.usage);
+    console.log('Finish reason:', result.finishReason);
+    console.log('Stop sequence:', result.providerMetadata?.bedrock?.stopSequence);
+});
+//# sourceMappingURL=bedrock-stop-sequence.js.map
