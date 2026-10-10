@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-09T15:59:00.739Z",
+  "generatedAt": "2026-10-10T06:22:42.078Z",
   "packages": [
     {
       "name": "@ai-toolkit/apps",
@@ -19,7 +19,10 @@
       "publicApi": [],
       "dependencies": [],
       "runtimeAssumptions": {
-        "nodeBuiltins": [],
+        "nodeBuiltins": [
+          "node:fs",
+          "node:path"
+        ],
         "usesGlobalFetch": false
       },
       "stability": null,
@@ -10514,6 +10517,179 @@
         {
           "name": "zod",
           "version": "3.25.76",
+          "kind": "external",
+          "direction": "external"
+        }
+      ]
+    },
+    {
+      "name": "gateway",
+      "dir": "apps/gateway",
+      "domain": "apps",
+      "workspaceGlobs": [
+        "apps/gateway"
+      ],
+      "version": "0.1.0",
+      "private": true,
+      "source": null,
+      "main": null,
+      "module": null,
+      "types": null,
+      "exports": [],
+      "conditions": [],
+      "publicApi": [],
+      "dependencies": [
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/anthropic",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/gateway-router",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/google",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/groq",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/mistral",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/observability-cost",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/provider-utils",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/security-auth",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "next",
+          "version": "16.3.6",
+          "kind": "external"
+        },
+        {
+          "name": "react",
+          "version": "^19.2.0",
+          "kind": "external"
+        },
+        {
+          "name": "react-dom",
+          "version": "^19.2.0",
+          "kind": "external"
+        }
+      ],
+      "runtimeAssumptions": {
+        "nodeBuiltins": [
+          "node:fs",
+          "node:path"
+        ],
+        "usesGlobalFetch": false
+      },
+      "stability": null,
+      "owners": null,
+      "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/anthropic",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        },
+        {
+          "name": "@ai-toolkit/gateway-router",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/google",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        },
+        {
+          "name": "@ai-toolkit/groq",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        },
+        {
+          "name": "@ai-toolkit/mistral",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        },
+        {
+          "name": "@ai-toolkit/observability-cost",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        },
+        {
+          "name": "@ai-toolkit/provider-utils",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/security-auth",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "next",
+          "version": "16.3.6",
+          "kind": "external",
+          "direction": "external"
+        },
+        {
+          "name": "react",
+          "version": "^19.2.0",
+          "kind": "external",
+          "direction": "external"
+        },
+        {
+          "name": "react-dom",
+          "version": "^19.2.0",
           "kind": "external",
           "direction": "external"
         }

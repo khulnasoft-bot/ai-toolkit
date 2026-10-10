@@ -22,6 +22,8 @@ const _symbol = Symbol.for(marker);
  * (e.g. permission mode, structured output, sandbox feature).
  */
 export class HarnessCapabilityUnsupportedError extends AITOOLKITError {
+  private readonly [_symbol] = true;
+
   constructor({ message, cause }: { message: string; cause?: unknown }) {
     super({ name, message, cause });
   }
