@@ -8,6 +8,15 @@ One API key for every model, with provider routing and spend tracking.
 | ---------------- | ------ | -------------------------------------------------------- |
 | `POST /v1/chat`  | Bearer | Chat streaming (UIMessage SSE, same shape as playground) |
 | `GET /v1/models` | —      | Public routing catalog                                   |
+| `GET /v1/usage`  | Bearer | Spend summary for your key (`scope=tenant` for the team) |
+
+## Guardrails
+
+- **Budgets**: `pnpm keys:create --budget 25` caps a key. Over-cap chat calls
+  get `402` with current spend echoed. Uncapped keys skip the check.
+- **Rate limits**: 120 req/min per key by default
+  (`GATEWAY_RATE_LIMIT_PER_MIN=` overrides). Over-limit calls get `429` with
+  `X-RateLimit-*` headers. In-memory per instance.
 
 ## Setup
 

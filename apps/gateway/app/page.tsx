@@ -387,7 +387,7 @@ curl -N http://localhost:3000/v1/chat \\
               ],
               [
                 'Where does usage data go?',
-                'data/usage.jsonl — tenant, key, model, provider, tokens, and cost per completed stream. Query it with jq today, a database tomorrow.',
+                'data/usage.jsonl — tenant, key, model, provider, tokens, and cost per completed stream, queryable via GET /v1/usage. Query it with jq today, a database tomorrow.',
               ],
               [
                 'Does it speak OpenAI-compatible protocols?',

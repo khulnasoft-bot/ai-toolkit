@@ -94,6 +94,9 @@ importers:
       '@ai-toolkit/openai':
         specifier: workspace:*
         version: link:../../packages/providers/openai
+      '@ai-toolkit/provider-utils':
+        specifier: workspace:*
+        version: link:../../packages/foundation/utils
       '@ai-toolkit/security-auth':
         specifier: workspace:*
         version: link:../../packages/security/auth

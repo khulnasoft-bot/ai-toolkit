@@ -6,14 +6,17 @@ import {
   type UIMessage,
 } from '@ai-toolkit/ai';
 import { resolveCandidates } from '@ai-toolkit/gateway-router';
-import { InvalidKeyError, validateKey } from '@ai-toolkit/security-auth';
 import { loadPolicy } from '@/lib/config';
 import { streamWithFailover } from '@/lib/executor';
-import { FileKeyStore } from '@/lib/keys';
-import { recordUsage } from '@/lib/ledger';
 import { createProviderModel, supportedProviders } from '@/lib/providers';
+import { rateLimitFromEnv, RateLimiter } from '@/lib/ratelimit';
+import { requireKey } from '@/lib/request';
+import { recordUsage } from '@/lib/ledger';
+import { readUsage, spendForKey } from '@/lib/usage';
 
 export const maxDuration = 60;
+
+const limiter = new RateLimiter(rateLimitFromEnv());
 
 interface ChatRequestBody {
   messages: UIMessage[];
@@ -34,24 +37,33 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 }
 
 export async function POST(req: Request) {
-  const secret = extractBearer(req);
-  if (!secret) {
-    return Response.json({ error: 'missing bearer API key' }, { status: 401 });
-  }
+  const auth = await requireKey(req, 'gateway:chat');
+  if (!auth.ok) return auth.response;
+  const keyContext = auth.context;
 
-  let keyContext;
-  try {
-    keyContext = await validateKey(new FileKeyStore(), secret);
-  } catch (error) {
-    const status = error instanceof InvalidKeyError ? 401 : 500;
-    return Response.json({ error: 'invalid API key' }, { status });
-  }
-
-  if (!keyContext.scopes.includes('gateway:chat')) {
+  const rate = limiter.check(keyContext.keyId);
+  if (!rate.allowed) {
     return Response.json(
-      { error: 'API key lacks gateway:chat scope' },
-      { status: 403 },
+      { error: 'rate limit exceeded', resetMs: rate.resetMs },
+      {
+        status: 429,
+        headers: {
+          'X-RateLimit-Limit': String(rateLimitFromEnv().maxRequests),
+          'X-RateLimit-Remaining': '0',
+          'X-RateLimit-Reset': String(rate.resetMs),
+        },
+      },
     );
+  }
+
+  if (keyContext.budgetCap !== undefined) {
+    const spend = spendForKey(await readUsage(), keyContext.keyId);
+    if (spend >= keyContext.budgetCap) {
+      return Response.json(
+        { error: 'budget exhausted', spend, budgetCap: keyContext.budgetCap },
+        { status: 402 },
+      );
+    }
   }
 
   let body: ChatRequestBody;

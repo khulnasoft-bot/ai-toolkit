@@ -19,6 +19,7 @@
     "@ai-toolkit/mistral": "workspace:*",
     "@ai-toolkit/observability-cost": "workspace:*",
     "@ai-toolkit/openai": "workspace:*",
+    "@ai-toolkit/provider-utils": "workspace:*",
     "@ai-toolkit/security-auth": "workspace:*",
     "next": "16.3.6",
     "react": "^19.2.0",
