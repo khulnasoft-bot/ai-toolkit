@@ -19,6 +19,7 @@ import {
 } from '@ai-toolkit/ai/internal';
 import type {
   LanguageModelV3,
+  LanguageModelV3Prompt,
   LanguageModelV3StreamResult,
   LanguageModelV3Usage,
   SharedV3Warning,
@@ -278,11 +279,11 @@ functionality that can be fully encapsulated in the provider.
         toolChoice,
         activeTools: undefined,
       }),
-      prompt: await convertToLanguageModelPrompt({
+      prompt: (await convertToLanguageModelPrompt({
         prompt: validatedPrompt,
         supportedUrls: await model.supportedUrls,
         download: undefined,
-      }),
+      })) as LanguageModelV3Prompt,
       providerOptions,
       abortSignal,
       headers,

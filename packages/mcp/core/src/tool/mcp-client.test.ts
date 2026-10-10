@@ -1119,7 +1119,7 @@ describe('MCPClient', () => {
 
       const result = await tools['complex-tool'].execute(
         {},
-        { messages: [], toolCallId: '1' },
+        { messages: [], toolCallId: '1', context: undefined },
       );
 
       expect(result).toEqual({

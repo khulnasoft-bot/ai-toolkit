@@ -96,6 +96,13 @@ export const uiMessageChunkSchema = lazySchema(() =>
         toolCallId: z.string(),
       }),
       z.strictObject({
+        type: z.literal('tool-approval-response'),
+        approvalId: z.string(),
+        approved: z.boolean(),
+        reason: z.string().optional(),
+        providerExecuted: z.boolean().optional(),
+      }),
+      z.strictObject({
         type: z.literal('reasoning-start'),
         id: z.string(),
         providerMetadata: providerMetadataSchema.optional(),
@@ -274,6 +281,13 @@ export type UIMessageChunk<
       toolCallId: string;
     }
   | {
+      type: 'tool-approval-response';
+      approvalId: string;
+      approved: boolean;
+      reason?: string;
+      providerExecuted?: boolean;
+    }
+  | {
       type: 'tool-input-start';
       toolCallId: string;
       toolName: string;
@@ -306,6 +320,17 @@ export type UIMessageChunk<
       type: 'file';
       url: string;
       mediaType: string;
+      providerMetadata?: ProviderMetadata;
+    }
+  | {
+      type: 'reasoning-file';
+      url: string;
+      mediaType: string;
+      providerMetadata?: ProviderMetadata;
+    }
+  | {
+      type: 'custom';
+      kind: string;
       providerMetadata?: ProviderMetadata;
     }
   | DataUIMessageChunk<DATA_TYPES>

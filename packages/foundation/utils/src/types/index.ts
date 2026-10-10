@@ -21,6 +21,8 @@ export type { InferToolSetContext } from './infer-tool-set-context';
 export type { ModelMessage } from './model-message';
 export type { ProviderOptions } from './provider-options';
 export type {
+  SandboxProcess,
+  SandboxProcess as Experimental_SandboxProcess,
   SandboxSession,
   SandboxSession as Experimental_SandboxSession,
 } from './sandbox';

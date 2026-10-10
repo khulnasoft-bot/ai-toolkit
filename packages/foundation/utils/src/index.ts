@@ -8,6 +8,7 @@ export { type Arrayable, asArray } from './as-array';
 export * from './combine-headers';
 export { convertAsyncIteratorToReadableStream } from './convert-async-iterator-to-readable-stream';
 export { convertImageModelFileToDataUri } from './convert-image-model-file-to-data-uri';
+export { EXPERIMENTAL_EMBEDDING_MODEL_MAX_INPUT_BYTES_PER_CALL } from './embedding-model-max-input-bytes-per-call';
 export { convertToFormData } from './convert-to-form-data';
 export {
   createProviderStreamError,

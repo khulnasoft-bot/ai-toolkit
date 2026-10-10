@@ -15,6 +15,7 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   onFinish,
   onError,
   stream,
+  getOutcome,
 }: {
   stream: ReadableStream<InferUIMessageChunk<UI_MESSAGE>>;
 
@@ -37,6 +38,11 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   onEnd?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 
   onFinish?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
+
+  /**
+   * Returns the outcome of the stream processing.
+   */
+  getOutcome?: () => unknown;
 }): ReadableStream<InferUIMessageChunk<UI_MESSAGE>> {
   // last message is only relevant for assistant messages
   let lastMessage: UI_MESSAGE | undefined =

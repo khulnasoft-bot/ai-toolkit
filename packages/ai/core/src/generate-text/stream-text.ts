@@ -2,6 +2,7 @@ import type { ServerResponse } from 'node:http';
 import {
   getErrorMessage,
   type LanguageModelV3,
+  type LanguageModelV4,
   type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
@@ -915,8 +916,8 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
           const currentStepResult: StepResult<TOOLS> = new DefaultStepResult({
             callId: callId,
             stepNumber: recordedSteps.length,
-            provider: model.provider,
-            modelId: model.modelId,
+            provider: (model as LanguageModelV4).provider,
+            modelId: (model as LanguageModelV4).modelId,
             runtimeContext: experimental_context as any,
             toolsContext,
             content: recordedContent,
@@ -936,8 +937,8 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
 
           logWarnings({
             warnings: recordedWarnings,
-            provider: model.provider,
-            model: model.modelId,
+            provider: (model as LanguageModelV4).provider,
+            model: (model as LanguageModelV4).modelId,
           });
 
           recordedSteps.push(currentStepResult);
@@ -1119,7 +1120,7 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
     const callId = originalGenerateId();
 
     const baseTelemetryAttributes = getBaseTelemetryAttributes({
-      model,
+      model: model as LanguageModelV4,
       telemetry,
       headers,
       settings: { ...callSettings, maxRetries },
@@ -1449,7 +1450,7 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
 
           const streamWithToolResults = runToolsTransformation({
             tools,
-            generatorStream: stream,
+            generatorStream: stream as any,
             tracer,
             telemetry,
             system,
@@ -1477,7 +1478,7 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
           let stepResponse: { id: string; timestamp: Date; modelId: string } = {
             id: generateId(),
             timestamp: new Date(),
-            modelId: model.modelId,
+            modelId: (model as LanguageModelV4).modelId,
           };
 
           // raw text as it comes from the provider. recorded for telemetry.
@@ -2416,6 +2417,21 @@ However, the LLM results are expected to be small enough to not cause issues.
             case 'raw': {
               // Raw chunks are not included in UI message streams
               // as they contain provider-specific data for developer use
+              break;
+            }
+
+            case 'reasoning-file': {
+              // reasoning-file chunks are not included in UI message streams
+              break;
+            }
+
+            case 'custom': {
+              // custom chunks are not included in UI message streams
+              break;
+            }
+
+            case 'tool-approval-response': {
+              // tool-approval-response chunks are not included in UI message streams
               break;
             }
 

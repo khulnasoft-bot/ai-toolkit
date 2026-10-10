@@ -35,7 +35,7 @@ describe('writeToServerResponse', () => {
   it('should respect backpressure and wait for drain event', async () => {
     const mockResponse = createBackpressureMockResponse();
     let drainEventCount = 0;
-    let readyToEnqueue: ((value: unknown) => void) | null = null;
+    let readyToEnqueue: ((value: unknown) => void) | undefined;
 
     // Track drain events
     mockResponse.on('drain', () => {

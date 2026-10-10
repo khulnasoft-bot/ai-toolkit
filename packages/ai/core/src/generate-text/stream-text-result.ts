@@ -450,6 +450,7 @@ export type TextStreamPart<TOOLS extends ToolSet> =
       providerExecuted?: boolean;
       dynamic?: boolean;
       title?: string;
+      toolMetadata?: Record<string, unknown>;
     }
   | {
       type: 'tool-input-end';
@@ -463,7 +464,9 @@ export type TextStreamPart<TOOLS extends ToolSet> =
       providerMetadata?: ProviderMetadata;
     }
   | ({ type: 'source' } & Source)
-  | { type: 'file'; file: GeneratedFile } // different because of GeneratedFile object
+  | { type: 'file'; file: GeneratedFile }
+  | { type: 'reasoning-file'; file: GeneratedFile; providerMetadata?: ProviderMetadata }
+  | { type: 'custom'; kind: string; providerMetadata?: ProviderMetadata }
   | ({ type: 'tool-call' } & TypedToolCall<TOOLS>)
   | ({ type: 'tool-result' } & TypedToolResult<TOOLS>)
   | ({ type: 'tool-error' } & TypedToolError<TOOLS>)
@@ -482,6 +485,16 @@ export type TextStreamPart<TOOLS extends ToolSet> =
       finishReason: FinishReason;
       rawFinishReason: string | undefined;
       providerMetadata: ProviderMetadata | undefined;
+      performance?: {
+        effectiveOutputTokensPerSecond?: number;
+        outputTokensPerSecond?: number;
+        inputTokensPerSecond?: number;
+        effectiveTotalTokensPerSecond?: number;
+        stepTimeMs?: number;
+        responseTimeMs?: number;
+        toolExecutionMs?: Record<string, number>;
+        timeToFirstOutputMs?: number;
+      };
     }
   | {
       type: 'start';

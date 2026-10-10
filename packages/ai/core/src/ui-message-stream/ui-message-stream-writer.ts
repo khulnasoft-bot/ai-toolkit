@@ -1,6 +1,7 @@
 import type { UIMessage } from '../ui';
 import type { ErrorHandler } from '../util/error-handler';
 import type { InferUIMessageChunk } from './ui-message-chunks';
+import type { UIMessageStreamOutcome } from './ui-message-stream-outcome';
 
 export interface UIMessageStreamWriter<
   UI_MESSAGE extends UIMessage = UIMessage,
@@ -21,4 +22,10 @@ export interface UIMessageStreamWriter<
    * to prevent duplicated error masking.
    */
   onError: ErrorHandler | undefined;
+}
+
+export interface UIMessageStreamWriterWithOutcome<
+  UI_MESSAGE extends UIMessage = UIMessage,
+> extends UIMessageStreamWriter<UI_MESSAGE> {
+  setOutcome(outcome: UIMessageStreamOutcome): void;
 }

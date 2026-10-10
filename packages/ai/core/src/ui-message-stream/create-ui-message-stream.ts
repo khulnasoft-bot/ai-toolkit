@@ -7,7 +7,11 @@ import type { UIMessage } from '../ui/ui-messages';
 import { handleUIMessageStreamFinish } from './handle-ui-message-stream-finish';
 import type { InferUIMessageChunk } from './ui-message-chunks';
 import type { UIMessageStreamOnFinishCallback } from './ui-message-stream-on-finish-callback';
-import type { UIMessageStreamWriter } from './ui-message-stream-writer';
+import type {
+  UIMessageStreamWriter,
+  UIMessageStreamWriterWithOutcome,
+} from './ui-message-stream-writer';
+import type { UIMessageStreamOutcome } from './ui-message-stream-outcome';
 
 export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   execute,
@@ -18,7 +22,7 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   generateId = generateIdFunc,
 }: {
   execute: (options: {
-    writer: UIMessageStreamWriter<UI_MESSAGE>;
+    writer: UIMessageStreamWriterWithOutcome<UI_MESSAGE>;
   }) => Promise<void> | void;
   onError?: (error: unknown) => string;
 
@@ -57,6 +61,8 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
     }
   }
 
+  let outcome: UIMessageStreamOutcome = { status: 'unknown' };
+
   try {
     const result = execute({
       writer: {
@@ -81,6 +87,9 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
           );
         },
         onError,
+        setOutcome(newOutcome: UIMessageStreamOutcome) {
+          outcome = newOutcome;
+        },
       },
     });
 
@@ -126,5 +135,6 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
     onEnd,
     onFinish,
     onError,
+    getOutcome: () => outcome,
   });
 }

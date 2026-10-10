@@ -13,7 +13,13 @@ import { VERSION } from '../../version';
  *
  * @throws DownloadError if the download fails.
  */
-export const download = async ({ url }: { url: URL }) => {
+export const download = async ({
+  url,
+  maxBytes,
+}: {
+  url: URL;
+  maxBytes?: number;
+}) => {
   const urlText = url.toString();
   try {
     const response = await fetch(urlText, {
@@ -30,6 +36,17 @@ export const download = async ({ url }: { url: URL }) => {
         statusCode: response.status,
         statusText: response.statusText,
       });
+    }
+
+    if (maxBytes != null) {
+      const contentLength = response.headers.get('content-length');
+      if (contentLength != null && Number(contentLength) > maxBytes) {
+        throw new DownloadError({
+          url: urlText,
+          statusCode: response.status,
+          statusText: `Content-Length ${Number(contentLength)} exceeds maximum allowed size of ${maxBytes} bytes`,
+        });
+      }
     }
 
     return {

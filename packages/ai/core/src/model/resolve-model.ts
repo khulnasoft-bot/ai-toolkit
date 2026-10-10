@@ -14,6 +14,7 @@ import type { EmbeddingModel } from '../types/embedding-model';
 import type { ImageModel } from '../types/image-model';
 import type { LanguageModel } from '../types/language-model';
 import type { SpeechModel } from '../types/speech-model';
+import type { SpeechTranslationModel } from '../types/speech-translation-model';
 import type { TranscriptionModel } from '../types/transcription-model';
 import type { VideoModel } from '../types/video-model';
 import { asEmbeddingModelV3 } from './as-embedding-model-v3';
@@ -159,6 +160,39 @@ export function resolveVideoModel(
   }
 
   return asVideoModelV4(model);
+}
+
+export function resolveSpeechTranslationModel(
+  model: SpeechTranslationModel,
+): SpeechTranslationModel {
+  if (typeof model !== 'string') {
+    if (
+      model.specificationVersion !== 'v4' &&
+      model.specificationVersion !== 'v3'
+    ) {
+      const unsupportedModel: any = model;
+      throw new UnsupportedModelVersionError({
+        version: unsupportedModel.specificationVersion,
+        provider: unsupportedModel.provider,
+        modelId: unsupportedModel.modelId,
+      });
+    }
+
+    return model;
+  }
+
+  const speechTranslationModel = getGlobalProvider().speechTranslationModel?.(
+    model,
+  );
+
+  if (!speechTranslationModel) {
+    throw new Error(
+      `The default provider does not support speech translation models. ` +
+        `Please use a SpeechTranslationModel object from a provider (e.g., provider.speechTranslationModel("model-id")).`,
+    );
+  }
+
+  return speechTranslationModel;
 }
 
 function getGlobalProvider(): ProviderV3 {

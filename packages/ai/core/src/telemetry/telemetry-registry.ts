@@ -1,8 +1,10 @@
 import type { Telemetry } from './telemetry';
 
-/**
- * Registers one or more telemetry integrations globally.
- */
+declare global {
+  // eslint-disable-next-line no-var
+  var AI_SDK_TELEMETRY_INTEGRATIONS: Telemetry[] | undefined;
+}
+
 export function registerTelemetry(...integrations: Telemetry[]): void {
   if (!globalThis.AI_SDK_TELEMETRY_INTEGRATIONS) {
     globalThis.AI_SDK_TELEMETRY_INTEGRATIONS = [];

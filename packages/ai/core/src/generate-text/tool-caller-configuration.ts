@@ -1,6 +1,6 @@
 import {
-  type Experimental_ToolCallerTool,
-  experimental_getToolCaller,
+  type ToolCallerTool,
+  getToolCaller,
   type Tool,
   type ToolSet,
 } from '@ai-toolkit/provider-utils';
