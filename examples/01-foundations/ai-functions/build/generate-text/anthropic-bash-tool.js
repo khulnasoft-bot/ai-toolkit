@@ -2,27 +2,27 @@ import { generateText, stepCountIs } from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateText({
-    model: anthropic('claude-3-5-sonnet-20241022'),
-    tools: {
-      bash: anthropic.tools.bash_20241022({
-        async execute({ command }) {
-          console.log('COMMAND', command);
-          return [
-            {
-              type: 'text',
-              text: `
+    const result = await generateText({
+        model: anthropic('claude-3-5-sonnet-20241022'),
+        tools: {
+            bash: anthropic.tools.bash_20241022({
+                async execute({ command }) {
+                    console.log('COMMAND', command);
+                    return [
+                        {
+                            type: 'text',
+                            text: `
           ❯ ls
           README.md     build         data          node_modules  package.json  src           tsconfig.json
           `,
-            },
-          ];
+                        },
+                    ];
+                },
+            }),
         },
-      }),
-    },
-    prompt: 'List the files in my home directory.',
-    stopWhen: stepCountIs(2),
-  });
-  console.log(result.text);
+        prompt: 'List the files in my home directory.',
+        stopWhen: stepCountIs(2),
+    });
+    console.log(result.text);
 });
 //# sourceMappingURL=anthropic-bash-tool.js.map

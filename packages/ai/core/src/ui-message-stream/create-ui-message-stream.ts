@@ -13,6 +13,7 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
   execute,
   onError = getErrorMessage,
   originalMessages,
+  onEnd,
   onFinish,
   generateId = generateIdFunc,
 }: {
@@ -26,6 +27,11 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
    * and a message ID is provided for the response message.
    */
   originalMessages?: UI_MESSAGE[];
+
+  /**
+   * @deprecated Use `onFinish` instead.
+   */
+  onEnd?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 
   onFinish?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 
@@ -117,6 +123,7 @@ export function createUIMessageStream<UI_MESSAGE extends UIMessage>({
     stream,
     messageId: generateId(),
     originalMessages,
+    onEnd,
     onFinish,
     onError,
   });

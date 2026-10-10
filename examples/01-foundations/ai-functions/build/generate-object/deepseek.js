@@ -3,14 +3,14 @@ import { deepseek } from '@ai-toolkit/deepseek';
 import { z } from 'zod';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateObject({
-    model: deepseek('deepseek-chat'),
-    prompt: `Generate a random person`,
-    schema: z.object({
-      name: z.string().describe('The name of the person'),
-      age: z.number().describe('The age of the person'),
-    }),
-  });
-  console.log(JSON.stringify(result, null, 2));
+    const result = await generateObject({
+        model: deepseek('deepseek-chat'),
+        prompt: `Generate a random person`,
+        schema: z.object({
+            name: z.string().describe('The name of the person'),
+            age: z.number().describe('The age of the person'),
+        }),
+    });
+    console.log(JSON.stringify(result, null, 2));
 });
 //# sourceMappingURL=deepseek.js.map

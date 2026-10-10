@@ -2,11 +2,11 @@ import { experimental_generateSpeech as generateSpeech } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 import { registry } from './setup-registry';
 run(async () => {
-  const { audio } = await generateSpeech({
-    model: registry.speechModel('elevenlabs:eleven_multilingual_v2'),
-    text: 'Hello, this is a test of ElevenLabs speech synthesis using the provider registry!',
-    voice: process.env.ELEVENLABS_VOICE_ID || 'your-voice-id-here',
-  });
-  console.log('Generated audio:', audio);
+    const { audio } = await generateSpeech({
+        model: registry.speechModel('elevenlabs:eleven_multilingual_v2'),
+        text: 'Hello, this is a test of ElevenLabs speech synthesis using the provider registry!',
+        voice: process.env.ELEVENLABS_VOICE_ID || 'your-voice-id-here',
+    });
+    console.log('Generated audio:', audio);
 });
 //# sourceMappingURL=generate-speech-elevenlabs.js.map

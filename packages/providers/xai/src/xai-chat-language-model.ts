@@ -229,6 +229,16 @@ export class XaiChatLanguageModel implements LanguageModelV3 {
     }
 
     const choice = response.choices?.[0];
+    if (choice == null) {
+      throw new APICallError({
+        message: 'No completion choice was returned by the xAI API.',
+        url,
+        requestBodyValues: body,
+        statusCode: 200,
+        responseHeaders,
+        responseBody: JSON.stringify(rawResponse),
+      });
+    }
     const content: Array<LanguageModelV3Content> = [];
 
     // extract text content

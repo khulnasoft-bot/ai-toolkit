@@ -90,7 +90,6 @@ describe('paths', () => {
     };
 
     // cast to z.ZodSchema<Category>
-    // @ts-expect-error
     const categorySchema: z.ZodSchema<Category> = z.lazy(() =>
       z.object({
         name: z.string(),
@@ -128,7 +127,6 @@ describe('paths', () => {
     };
 
     // cast to z.ZodSchema<Category>
-    // @ts-expect-error
     const categorySchema: z.ZodSchema<Category> = z.lazy(() =>
       z.object({
         name: z.string(),
@@ -310,7 +308,6 @@ describe('paths', () => {
     };
 
     // cast to z.ZodSchema<Category>
-    // @ts-expect-error
     const categorySchema: z.ZodSchema<Category> = z.lazy(() =>
       z.object({
         name: z.string(),

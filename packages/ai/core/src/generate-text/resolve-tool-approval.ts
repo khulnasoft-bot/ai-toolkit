@@ -99,6 +99,11 @@ export async function resolveToolApproval<
               contextSchema: tool?.contextSchema,
             }),
             runtimeContext,
+            experimental_context: await validateToolContext({
+              toolName,
+              context: getOwn(toolsContext, toolName),
+              contextSchema: tool?.contextSchema,
+            }),
           })
         : userDefinedToolApprovalStatus;
 
@@ -115,7 +120,7 @@ export async function resolveToolApproval<
       ? await tool.needsApproval(input, {
           toolCallId: toolCall.toolCallId,
           messages,
-          context: await validateToolContext({
+          experimental_context: await validateToolContext({
             toolName,
             context: getOwn(toolsContext, toolName),
             contextSchema: tool?.contextSchema,

@@ -3,6 +3,11 @@ import type {
   SystemModelMessage,
 } from '@ai-toolkit/provider-utils';
 
+export type Instructions =
+  | string
+  | SystemModelMessage
+  | Array<SystemModelMessage>;
+
 /**
 Prompt part of the AI function options.
 It contains a system message, a simple text prompt, or a list of messages.
@@ -11,7 +16,17 @@ export type Prompt = {
   /**
 System message to include in the prompt. Can be used with `prompt` or `messages`.
    */
-  system?: string | SystemModelMessage | Array<SystemModelMessage>;
+  system?: Instructions;
+
+  /**
+Legacy alias for `system` used by the streaming and middleware APIs.
+   */
+  instructions?: Instructions;
+
+  /**
+Whether system messages are allowed inside `prompt` or `messages`.
+   */
+  allowSystemInMessages?: boolean;
 } & (
   | {
       /**

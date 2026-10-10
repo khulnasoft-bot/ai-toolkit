@@ -430,6 +430,10 @@ describe('StandardSchema (StandardJSONSchemaV1)', () => {
         age: 'not a number',
       });
 
+      expect(result).toBeDefined();
+      if (result == null) {
+        throw new Error('Expected the schema to validate the input');
+      }
       expect(result.success).toBe(false);
       if (!result.success) {
         expect(result.error).toBeInstanceOf(Error);

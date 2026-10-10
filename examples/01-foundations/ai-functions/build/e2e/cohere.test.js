@@ -1,22 +1,18 @@
 import 'dotenv/config';
 import { cohere as provider } from '@ai-toolkit/cohere';
-import {
-  createFeatureTestSuite,
-  createLanguageModelWithCapabilities,
-} from './feature-test-suite';
-const createChatModel = modelId =>
-  createLanguageModelWithCapabilities(provider.languageModel(modelId));
+import { createFeatureTestSuite, createLanguageModelWithCapabilities, } from './feature-test-suite';
+const createChatModel = (modelId) => createLanguageModelWithCapabilities(provider.languageModel(modelId));
 createFeatureTestSuite({
-  name: 'Cohere',
-  models: {
-    languageModels: [
-      createChatModel('command-a-03-2025'),
-      createChatModel('command-r-plus'),
-      createChatModel('command-r'),
-      createChatModel('command'),
-      createChatModel('command-light'),
-    ],
-  },
-  timeout: 30000,
+    name: 'Cohere',
+    models: {
+        languageModels: [
+            createChatModel('command-a-03-2025'),
+            createChatModel('command-r-plus'),
+            createChatModel('command-r'),
+            createChatModel('command'),
+            createChatModel('command-light'),
+        ],
+    },
+    timeout: 30000,
 })();
 //# sourceMappingURL=cohere.test.js.map

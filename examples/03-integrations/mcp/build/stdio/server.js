@@ -3,64 +3,60 @@ import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js'
 import { z } from 'zod';
 const POKE_API_BASE = 'https://pokeapi.co/api/v2';
 const server = new McpServer({
-  name: 'pokemon',
-  version: '1.0.0',
+    name: 'pokemon',
+    version: '1.0.0',
 });
-server.tool(
-  'get-pokemon',
-  'Get Pokemon details by name',
-  {
+server.tool('get-pokemon', 'Get Pokemon details by name', {
     name: z.string(),
-  },
-  async ({ name }) => {
+}, async ({ name }) => {
     const path = `/pokemon/${name.toLowerCase()}`;
     const pokemon = await makePokeApiRequest(path);
     if (!pokemon) {
-      return {
-        content: [
-          {
-            type: 'text',
-            text: 'Failed to retrieve Pokemon data',
-          },
-        ],
-      };
+        return {
+            content: [
+                {
+                    type: 'text',
+                    text: 'Failed to retrieve Pokemon data',
+                },
+            ],
+        };
     }
     return {
-      content: [
-        {
-          type: 'text',
-          text: formatPokemonData(pokemon),
-        },
-      ],
+        content: [
+            {
+                type: 'text',
+                text: formatPokemonData(pokemon),
+            },
+        ],
     };
-  },
-);
+});
 async function main() {
-  const transport = new StdioServerTransport();
-  await server.connect(transport);
-  console.log('Pokemon MCP Server running on stdio');
+    const transport = new StdioServerTransport();
+    await server.connect(transport);
+    console.log('Pokemon MCP Server running on stdio');
 }
 main().catch(error => {
-  console.error('Fatal error in main():', error);
-  process.exit(1);
+    console.error('Fatal error in main():', error);
+    process.exit(1);
 });
 async function makePokeApiRequest(path) {
-  try {
-    const url = `${POKE_API_BASE}${path}`;
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP Error Status: ${response.status}`);
+    try {
+        const url = `${POKE_API_BASE}${path}`;
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP Error Status: ${response.status}`);
+        }
+        return (await response.json());
     }
-    return await response.json();
-  } catch (error) {
-    console.error('[ERROR] Failed to make PokeAPI request:', error);
-    return null;
-  }
+    catch (error) {
+        console.error('[ERROR] Failed to make PokeAPI request:', error);
+        return null;
+    }
 }
 function formatPokemonData(pokemon) {
-  return [
-    `Name: ${pokemon.name}`,
-    `Abilities: ${pokemon.abilities.map(ability => ability.ability.name).join(', ')}`,
-  ].join('\n');
+    return [
+        `Name: ${pokemon.name}`,
+        `Abilities: ${pokemon.abilities.map(ability => ability.ability.name).join(', ')}`,
+    ].join('\n');
 }
 //# sourceMappingURL=server.js.map

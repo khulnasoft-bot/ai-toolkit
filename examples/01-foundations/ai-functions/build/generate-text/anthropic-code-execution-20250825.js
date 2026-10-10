@@ -2,15 +2,14 @@ import { generateText } from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateText({
-    model: anthropic('claude-sonnet-4-5'),
-    prompt:
-      'Write a Python script to calculate fibonacci number' +
-      ' and then execute it to find the 10th fibonacci number',
-    tools: {
-      code_execution: anthropic.tools.codeExecution_20250825(),
-    },
-  });
-  console.dir(result.content, { depth: Infinity });
+    const result = await generateText({
+        model: anthropic('claude-sonnet-4-5'),
+        prompt: 'Write a Python script to calculate fibonacci number' +
+            ' and then execute it to find the 10th fibonacci number',
+        tools: {
+            code_execution: anthropic.tools.codeExecution_20250825(),
+        },
+    });
+    console.dir(result.content, { depth: Infinity });
 });
 //# sourceMappingURL=anthropic-code-execution-20250825.js.map

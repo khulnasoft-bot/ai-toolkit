@@ -1,11 +1,10 @@
 import { UnsupportedFunctionalityError } from '@ai-toolkit/provider';
-import type { FilePart } from './types/content-part';
+import type { DataContent } from './types/data-content';
 import { convertBase64ToUint8Array } from './uint8-utils';
 
-type InlineFileData = Extract<
-  FilePart['data'],
-  { type: 'data' } | { type: 'text' }
->;
+type InlineFileData =
+  | { type: 'data'; data: DataContent }
+  | { type: 'text'; text: string };
 
 /**
  * Converts inline file data (a tagged `data` or `text` shape) into raw bytes.

@@ -1,28 +1,23 @@
 import { experimental_generateVideo as generateVideo } from '@ai-toolkit/ai';
-import { byteDance } from '@ai-toolkit/bytedance';
+import { byteDance, } from '@ai-toolkit/bytedance';
 import { presentVideos } from '../../lib/present-video';
 import { run } from '../../lib/run';
 import { withSpinner } from '../../lib/spinner';
 run(async () => {
-  const { video, warnings, providerMetadata } = await withSpinner(
-    'Generating text-to-video with seedance-1-0-pro...',
-    () =>
-      generateVideo({
+    const { video, warnings, providerMetadata } = await withSpinner('Generating text-to-video with seedance-1-0-pro...', () => generateVideo({
         model: byteDance.video('seedance-1-0-pro-250528'),
-        prompt:
-          'Photorealistic style: Under a clear blue sky, a vast expanse of white daisy fields stretches out. The camera gradually zooms in and finally fixates on a close-up of a single daisy, with several glistening dewdrops resting on its petals.',
+        prompt: 'Photorealistic style: Under a clear blue sky, a vast expanse of white daisy fields stretches out. The camera gradually zooms in and finally fixates on a close-up of a single daisy, with several glistening dewdrops resting on its petals.',
         aspectRatio: '16:9',
         duration: 5,
         providerOptions: {
-          bytedance: {
-            watermark: false,
-          },
+            bytedance: {
+                watermark: false,
+            },
         },
-      }),
-  );
-  console.log('Warnings:', warnings);
-  // `bytedance.taskId` and `bytedance.usage` come from the completed task.
-  console.log('Provider metadata:', providerMetadata);
-  await presentVideos([video]);
+    }));
+    console.log('Warnings:', warnings);
+    // `bytedance.taskId` and `bytedance.usage` come from the completed task.
+    console.log('Provider metadata:', providerMetadata);
+    await presentVideos([video]);
 });
 //# sourceMappingURL=basic.js.map

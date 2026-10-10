@@ -1,6 +1,6 @@
 import type { LanguageModelV4Prompt } from '@ai-toolkit/provider';
 import type { ModelMessage, ProviderOptions } from '@ai-toolkit/provider-utils';
-import type { Instructions } from '../prompt';
+import type { Prompt } from '../prompt';
 import type {
   CallWarning,
   FinishReason,
@@ -32,7 +32,7 @@ export interface GenerateObjectStartEvent {
   readonly modelId: string;
 
   /** The system message(s) provided to the model. */
-  readonly system: Instructions | undefined;
+  readonly system: Prompt['system'] | undefined;
 
   /** The prompt string or array of messages if using the prompt option. */
   readonly prompt: string | Array<ModelMessage> | undefined;

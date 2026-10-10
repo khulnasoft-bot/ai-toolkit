@@ -4,8 +4,13 @@ import type {
   LanguageModelV3FinishReason,
   LanguageModelV3StreamPart,
   LanguageModelV3Usage,
+  LanguageModelV4FinishReason,
+  LanguageModelV4StreamPart,
+  LanguageModelV4Usage,
   SharedV3ProviderMetadata,
   SharedV3Warning,
+  SharedV4ProviderMetadata,
+  SharedV4Warning,
 } from '@ai-toolkit/provider';
 import {
   createIdGenerator,
@@ -512,7 +517,7 @@ class DefaultStreamObjectResult<PARTIAL, RESULT, ELEMENT_STREAM>
         };
 
         const transformer: Transformer<
-          LanguageModelV3StreamPart,
+          LanguageModelV3StreamPart | LanguageModelV4StreamPart,
           ObjectStreamInputPart
         > = {
           transform: (chunk, controller) => {
@@ -574,7 +579,7 @@ class DefaultStreamObjectResult<PARTIAL, RESULT, ELEMENT_STREAM>
         self._request.resolve(request ?? {});
 
         // store information for onFinish callback:
-        let warnings: SharedV3Warning[] | undefined;
+        let warnings: Array<SharedV3Warning | SharedV4Warning> | undefined;
         let usage: LanguageModelUsage = createNullLanguageModelUsage();
         let finishReason: FinishReason | undefined;
         let providerMetadata: ProviderMetadata | undefined;
@@ -969,7 +974,7 @@ export type ObjectStreamInputPart =
   | string
   | {
       type: 'stream-start';
-      warnings: SharedV3Warning[];
+      warnings: Array<SharedV3Warning | SharedV4Warning>;
     }
   | {
       type: 'error';
@@ -983,7 +988,7 @@ export type ObjectStreamInputPart =
     }
   | {
       type: 'finish';
-      finishReason: LanguageModelV3FinishReason;
-      usage: LanguageModelV3Usage;
-      providerMetadata?: SharedV3ProviderMetadata;
+      finishReason: LanguageModelV3FinishReason | LanguageModelV4FinishReason;
+      usage: LanguageModelV3Usage | LanguageModelV4Usage;
+      providerMetadata?: SharedV3ProviderMetadata | SharedV4ProviderMetadata;
     };

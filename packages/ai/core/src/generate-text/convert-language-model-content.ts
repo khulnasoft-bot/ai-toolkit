@@ -88,6 +88,8 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
           const tool = getOwn(tools, part.toolName);
           const supportsDeferredResults =
             tool?.type === 'provider' && tool.supportsDeferredResults;
+          const toolMetadata =
+            tool != null && 'metadata' in tool ? tool.metadata : undefined;
 
           if (!supportsDeferredResults) {
             throw new Error(`Tool call ${part.toolCallId} not found.`);
@@ -106,9 +108,7 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
               ...(part.providerMetadata != null
                 ? { providerMetadata: part.providerMetadata }
                 : {}),
-              ...(tool?.metadata != null
-                ? { toolMetadata: tool.metadata }
-                : {}),
+              ...(toolMetadata != null ? { toolMetadata } : {}),
             } as TypedToolError<TOOLS>);
           } else {
             contentParts.push({
@@ -122,9 +122,7 @@ export function convertLanguageModelContent<TOOLS extends ToolSet>({
               ...(part.providerMetadata != null
                 ? { providerMetadata: part.providerMetadata }
                 : {}),
-              ...(tool?.metadata != null
-                ? { toolMetadata: tool.metadata }
-                : {}),
+              ...(toolMetadata != null ? { toolMetadata } : {}),
             } as TypedToolResult<TOOLS>);
           }
           break;

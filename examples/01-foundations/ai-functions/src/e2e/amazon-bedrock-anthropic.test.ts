@@ -88,6 +88,7 @@ describe('Bedrock Anthropic E2E Tests', () => {
 const stopSequenceTests = (model: LanguageModelV3) => {
   it(
     'should return stop_sequence in provider metadata when stopped by stop sequence',
+    { timeout: LONG_TEST_MILLIS },
     async () => {
       const result = await generateText({
         model,
@@ -100,11 +101,11 @@ const stopSequenceTests = (model: LanguageModelV3) => {
       expect(result.finishReason).toBe('stop');
       expect(result.providerMetadata?.anthropic?.stopSequence).toBe('5');
     },
-    { timeout: LONG_TEST_MILLIS },
   );
 
   it(
     'should return null stopSequence when not stopped by stop sequence',
+    { timeout: LONG_TEST_MILLIS },
     async () => {
       const result = await generateText({
         model,
@@ -115,13 +116,13 @@ const stopSequenceTests = (model: LanguageModelV3) => {
       expect(result.text).toBeTruthy();
       expect(result.providerMetadata?.anthropic?.stopSequence).toBeNull();
     },
-    { timeout: LONG_TEST_MILLIS },
   );
 };
 
 const toolTests = (model: LanguageModelV3) => {
   it(
     'should execute computer tool commands',
+    { timeout: COMPUTER_USE_TEST_MILLIS },
     async () => {
       const result = await generateText({
         model,
@@ -173,11 +174,11 @@ const toolTests = (model: LanguageModelV3) => {
       );
       expect(result.usage?.totalTokens).toBeGreaterThan(0);
     },
-    { timeout: COMPUTER_USE_TEST_MILLIS },
   );
 
   it(
     'should execute bash tool commands',
+    { timeout: COMPUTER_USE_TEST_MILLIS },
     async () => {
       const result = await generateText({
         model,
@@ -206,11 +207,11 @@ README.md     build         data          node_modules  package.json  src       
       expect(result.text).toContain('node_modules');
       expect(result.usage?.totalTokens).toBeGreaterThan(0);
     },
-    { timeout: COMPUTER_USE_TEST_MILLIS },
   );
 
   it(
     'should execute text editor tool commands',
+    { timeout: COMPUTER_USE_TEST_MILLIS },
     async () => {
       let editorContent = '## README\nThis is a test file.';
 
@@ -246,6 +247,5 @@ README.md     build         data          node_modules  package.json  src       
       expect(editorContent).not.toBe('## README\nThis is a test file.');
       expect(result.usage?.totalTokens).toBeGreaterThan(0);
     },
-    { timeout: COMPUTER_USE_TEST_MILLIS },
   );
 };

@@ -64,7 +64,7 @@ const provider = createOpenAI({
   apiKey: 'test-api-key',
 });
 
-const ctx: ConformanceContext = { server };
+const ctx: ConformanceContext = {};
 
 describe('OpenAI provider conformance', () => {
   runConformanceTests(

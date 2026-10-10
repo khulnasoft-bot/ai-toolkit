@@ -2,6 +2,7 @@ import {
   convertBase64ToUint8Array,
   convertUint8ArrayToBase64,
 } from '@ai-toolkit/provider-utils';
+import type { ProviderMetadata } from '../types';
 
 /**
  * A generated file.
@@ -23,6 +24,11 @@ The IANA media type of the file.
 @see https://www.iana.org/assignments/media-types/media-types.xhtml
    */
   readonly mediaType: string;
+
+  /**
+Provider-specific metadata for the file payload.
+   */
+  readonly providerMetadata?: ProviderMetadata;
 }
 
 export class DefaultGeneratedFile implements GeneratedFile {
@@ -30,18 +36,41 @@ export class DefaultGeneratedFile implements GeneratedFile {
   private uint8ArrayData: Uint8Array | undefined;
 
   readonly mediaType: string;
+  readonly providerMetadata?: ProviderMetadata;
 
   constructor({
     data,
     mediaType,
+    providerMetadata,
   }: {
-    data: string | Uint8Array;
+    data: unknown;
     mediaType: string;
+    providerMetadata?: ProviderMetadata;
   }) {
-    const isUint8Array = data instanceof Uint8Array;
-    this.base64Data = isUint8Array ? undefined : data;
-    this.uint8ArrayData = isUint8Array ? data : undefined;
+    const record = typeof data === 'object' && data != null ? data : undefined;
+    const normalizedData =
+      record != null && 'type' in record
+        ? record.type === 'data'
+          ? (record as Record<string, unknown>).data
+          : record.type === 'text'
+            ? new TextEncoder().encode(String((record as Record<string, unknown>).text ?? ''))
+            : record.type === 'url'
+              ? String((record as Record<string, unknown>).url ?? '')
+              : undefined
+        : data;
+
+    const resolvedData =
+      normalizedData instanceof Uint8Array
+        ? normalizedData
+        : normalizedData instanceof URL
+          ? normalizedData.toString()
+          : normalizedData;
+
+    const isUint8Array = resolvedData instanceof Uint8Array;
+    this.base64Data = isUint8Array ? undefined : String(resolvedData ?? '');
+    this.uint8ArrayData = isUint8Array ? resolvedData : undefined;
     this.mediaType = mediaType;
+    this.providerMetadata = providerMetadata;
   }
 
   // lazy conversion with caching to avoid unnecessary conversion overhead:

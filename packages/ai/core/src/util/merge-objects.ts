@@ -35,7 +35,7 @@ export function mergeObjects<T extends object, U extends object>(
 
   // Iterate through all keys in the source object
   for (const key in overrides) {
-    if (Object.hasOwn(overrides, key)) {
+    if (Object.prototype.hasOwnProperty.call(overrides, key)) {
       const overridesValue = overrides[key];
 
       // Skip if the overrides value is undefined

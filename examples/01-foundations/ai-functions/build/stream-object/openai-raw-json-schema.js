@@ -2,41 +2,41 @@ import { jsonSchema, streamObject } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 run(async () => {
-  const result = streamObject({
-    model: openai('gpt-4-turbo'),
-    schema: jsonSchema({
-      type: 'object',
-      properties: {
-        recipe: {
-          type: 'object',
-          properties: {
-            name: { type: 'string' },
-            ingredients: {
-              type: 'array',
-              items: {
-                type: 'object',
-                properties: {
-                  name: { type: 'string' },
-                  amount: { type: 'string' },
+    const result = streamObject({
+        model: openai('gpt-4-turbo'),
+        schema: jsonSchema({
+            type: 'object',
+            properties: {
+                recipe: {
+                    type: 'object',
+                    properties: {
+                        name: { type: 'string' },
+                        ingredients: {
+                            type: 'array',
+                            items: {
+                                type: 'object',
+                                properties: {
+                                    name: { type: 'string' },
+                                    amount: { type: 'string' },
+                                },
+                                required: ['name', 'amount'],
+                            },
+                        },
+                        steps: {
+                            type: 'array',
+                            items: { type: 'string' },
+                        },
+                    },
+                    required: ['name', 'ingredients', 'steps'],
                 },
-                required: ['name', 'amount'],
-              },
             },
-            steps: {
-              type: 'array',
-              items: { type: 'string' },
-            },
-          },
-          required: ['name', 'ingredients', 'steps'],
-        },
-      },
-      required: ['recipe'],
-    }),
-    prompt: 'Generate a lasagna recipe.',
-  });
-  for await (const partialObject of result.partialObjectStream) {
-    console.clear();
-    console.log(JSON.stringify(partialObject, null, 2));
-  }
+            required: ['recipe'],
+        }),
+        prompt: 'Generate a lasagna recipe.',
+    });
+    for await (const partialObject of result.partialObjectStream) {
+        console.clear();
+        console.log(JSON.stringify(partialObject, null, 2));
+    }
 });
 //# sourceMappingURL=openai-raw-json-schema.js.map

@@ -1,5 +1,6 @@
 import { cleanup, render } from '@testing-library/react';
 import { SWRConfig } from 'swr';
+import { createElement } from 'react';
 import { afterEach, beforeEach, vi } from 'vitest';
 
 export const setupTestComponent = (
@@ -13,9 +14,11 @@ export const setupTestComponent = (
   beforeEach(() => {
     // reset SWR cache to isolate tests:
     render(
-      <SWRConfig value={{ provider: () => new Map() }}>
-        {init?.(TestComponent) ?? <TestComponent />}
-      </SWRConfig>,
+      createElement(
+        SWRConfig,
+        { value: { provider: () => new Map() } },
+        init?.(TestComponent) ?? createElement(TestComponent),
+      ),
     );
   });
 

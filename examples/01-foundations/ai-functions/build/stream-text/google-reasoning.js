@@ -1,33 +1,34 @@
 import { stepCountIs, streamText } from '@ai-toolkit/ai';
-import { google } from '@ai-toolkit/google';
+import { google, } from '@ai-toolkit/google';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 run(async () => {
-  const result = streamText({
-    model: google('gemini-2.5-flash-preview-05-20'),
-    tools: { weather: weatherTool },
-    prompt: 'What is the weather in San Francisco?',
-    stopWhen: stepCountIs(2),
-    providerOptions: {
-      google: {
-        thinkingConfig: {
-          thinkingBudget: 1024,
+    const result = streamText({
+        model: google('gemini-2.5-flash-preview-05-20'),
+        tools: { weather: weatherTool },
+        prompt: 'What is the weather in San Francisco?',
+        stopWhen: stepCountIs(2),
+        providerOptions: {
+            google: {
+                thinkingConfig: {
+                    thinkingBudget: 1024,
+                },
+            },
         },
-      },
-    },
-    onError: console.error,
-  });
-  for await (const part of result.fullStream) {
-    if (part.type === 'reasoning-delta') {
-      process.stdout.write(`\x1b[34m${part.text}\x1b[0m`);
-    } else if (part.type === 'text-delta') {
-      process.stdout.write(part.text);
+        onError: console.error,
+    });
+    for await (const part of result.fullStream) {
+        if (part.type === 'reasoning-delta') {
+            process.stdout.write(`\x1b[34m${part.text}\x1b[0m`);
+        }
+        else if (part.type === 'text-delta') {
+            process.stdout.write(part.text);
+        }
     }
-  }
-  console.log();
-  console.log('Warnings:', await result.warnings);
-  console.log();
-  console.log('Token usage:', await result.usage);
-  console.log('Finish reason:', await result.finishReason);
+    console.log();
+    console.log('Warnings:', await result.warnings);
+    console.log();
+    console.log('Token usage:', await result.usage);
+    console.log('Finish reason:', await result.finishReason);
 });
 //# sourceMappingURL=google-reasoning.js.map

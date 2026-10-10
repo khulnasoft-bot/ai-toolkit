@@ -3,7 +3,9 @@ import type {
   LanguageModelV2,
   LanguageModelV3,
   LanguageModelV3Source,
+  LanguageModelV4,
   SharedV3Warning,
+  SharedV4Warning,
 } from '@ai-toolkit/provider';
 
 declare global {
@@ -56,6 +58,7 @@ Language model that is used by the AI TOOLKIT.
 */
 export type LanguageModel =
   | GlobalProviderModelId
+  | LanguageModelV4
   | LanguageModelV3
   | LanguageModelV2;
 
@@ -82,7 +85,7 @@ export type FinishReason =
 Warning from the model provider for this call. The call will proceed, but e.g.
 some settings might not be supported, which can lead to suboptimal results.
 */
-export type CallWarning = SharedV3Warning;
+export type CallWarning = SharedV3Warning | SharedV4Warning;
 
 /**
 A source that has been used as input to generate the response.

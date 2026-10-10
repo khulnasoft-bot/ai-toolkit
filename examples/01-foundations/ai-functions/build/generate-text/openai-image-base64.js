@@ -3,22 +3,22 @@ import { generateText } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateText({
-    model: openai('gpt-4-turbo'),
-    maxOutputTokens: 512,
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: 'Describe the image in detail.' },
-          {
-            type: 'image',
-            image: fs.readFileSync('./data/comic-cat.png').toString('base64'),
-          },
+    const result = await generateText({
+        model: openai('gpt-4-turbo'),
+        maxOutputTokens: 512,
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    { type: 'text', text: 'Describe the image in detail.' },
+                    {
+                        type: 'image',
+                        image: fs.readFileSync('./data/comic-cat.png').toString('base64'),
+                    },
+                ],
+            },
         ],
-      },
-    ],
-  });
-  console.log(result.text);
+    });
+    console.log(result.text);
 });
 //# sourceMappingURL=openai-image-base64.js.map

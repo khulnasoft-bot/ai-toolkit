@@ -4,6 +4,7 @@ import type {
   Experimental_VideoModelV4,
   ImageModelV3,
   LanguageModelV3,
+  LanguageModelV4,
   ProviderV3,
   SpeechModelV3,
   TranscriptionModelV3,
@@ -18,13 +19,15 @@ import type { VideoModel } from '../types/video-model';
 import { asEmbeddingModelV3 } from './as-embedding-model-v3';
 import { asImageModelV3 } from './as-image-model-v3';
 import { asLanguageModelV3 } from './as-language-model-v3';
+import { asLanguageModelV4 } from './as-language-model-v4';
 import { asSpeechModelV3 } from './as-speech-model-v3';
 import { asTranscriptionModelV3 } from './as-transcription-model-v3';
 import { asVideoModelV4 } from './as-video-model-v4';
 
-export function resolveLanguageModel(model: LanguageModel): LanguageModelV3 {
+export function resolveLanguageModel(model: LanguageModel): LanguageModelV4 {
   if (typeof model !== 'string') {
     if (
+      model.specificationVersion !== 'v4' &&
       model.specificationVersion !== 'v3' &&
       model.specificationVersion !== 'v2'
     ) {
@@ -36,10 +39,10 @@ export function resolveLanguageModel(model: LanguageModel): LanguageModelV3 {
       });
     }
 
-    return asLanguageModelV3(model);
+    return asLanguageModelV4(model);
   }
 
-  return getGlobalProvider().languageModel(model);
+  return asLanguageModelV4(getGlobalProvider().languageModel(model));
 }
 
 export function resolveEmbeddingModel(model: EmbeddingModel): EmbeddingModelV3 {

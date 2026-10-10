@@ -74,7 +74,7 @@ const provider = createGoogleGenerativeAI({
   apiKey: 'test-api-key',
 });
 
-const ctx: ConformanceContext = { server };
+const ctx: ConformanceContext = {};
 
 describe('Google provider conformance', () => {
   runConformanceTests(

@@ -201,7 +201,9 @@ describe('SseMCPTransport', () => {
     const error = await errorPromise;
     expect(error).toBeInstanceOf(MCPClientError);
     expect((error as Error).message).toContain('Error: POSTing to endpoint');
-    expect(transport.connected).toBe(true);
+    const requestCount = server.calls.length;
+    await transport.start();
+    expect(server.calls).toHaveLength(requestCount);
 
     await transport.close();
   });

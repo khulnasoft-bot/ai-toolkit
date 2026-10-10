@@ -90,7 +90,7 @@ function restrictStepResult<
   includeRuntimeContext,
   includeToolsContext,
 }: {
-  step: StepResult<TOOLS, RUNTIME_CONTEXT>;
+  step: StepResult<TOOLS>;
   includeRuntimeContext: IncludedContext<RUNTIME_CONTEXT>;
   includeToolsContext: IncludedToolsContext<TOOLS>;
 }) {
@@ -240,7 +240,7 @@ export function createRestrictedTelemetryDispatcher<
       ),
     onEnd: event =>
       telemetryDispatcher.onEnd?.(
-        ((restrictedSteps: StepResult<TOOLS, Context>[]) => {
+        ((restrictedSteps: StepResult<TOOLS>[]) => {
           return {
             ...event,
             runtimeContext: filterIncludedContext({

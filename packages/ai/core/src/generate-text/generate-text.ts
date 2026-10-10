@@ -2,6 +2,9 @@ import type {
   LanguageModelV3,
   LanguageModelV3Content,
   LanguageModelV3ToolCall,
+  LanguageModelV4,
+  LanguageModelV4Content,
+  LanguageModelV4ToolCall,
 } from '@ai-toolkit/provider';
 import {
   createIdGenerator,
@@ -349,6 +352,7 @@ A function that attempts to repair a tool call that failed to parse.
   });
 
   const callSettings = prepareCallSettings(settings);
+  const callId = originalGenerateId();
 
   const headersWithUserAgent = withUserAgentSuffix(
     headers ?? {},
@@ -505,7 +509,7 @@ A function that attempts to repair a tool call that failed to parse.
         const callSettings = prepareCallSettings(settings);
 
         let currentModelResponse: Awaited<
-          ReturnType<LanguageModelV3['doGenerate']>
+          ReturnType<LanguageModelV4['doGenerate']>
         > & {
           response: { id: string; timestamp: Date; modelId: string };
         };
@@ -838,6 +842,12 @@ A function that attempts to repair a tool call that failed to parse.
 
             // Add step information (after response messages are updated):
             const currentStepResult: StepResult<TOOLS> = new DefaultStepResult({
+              callId: callId,
+              stepNumber: steps.length,
+              provider: stepModel.provider,
+              modelId: stepModel.modelId,
+              runtimeContext: experimental_context as any,
+              toolsContext,
               content: stepContent,
               finishReason: currentModelResponse.finishReason.unified,
               rawFinishReason: currentModelResponse.finishReason.raw,
@@ -923,25 +933,13 @@ A function that attempts to repair a tool call that failed to parse.
         );
 
         await onFinish?.({
-          finishReason: lastStep.finishReason,
-          rawFinishReason: lastStep.rawFinishReason,
-          usage: lastStep.usage,
-          content: lastStep.content,
-          text: lastStep.text,
-          reasoningText: lastStep.reasoningText,
-          reasoning: lastStep.reasoning,
-          files: lastStep.files,
-          sources: lastStep.sources,
-          toolCalls: lastStep.toolCalls,
-          staticToolCalls: lastStep.staticToolCalls,
-          dynamicToolCalls: lastStep.dynamicToolCalls,
-          toolResults: lastStep.toolResults,
-          staticToolResults: lastStep.staticToolResults,
-          dynamicToolResults: lastStep.dynamicToolResults,
-          request: lastStep.request,
-          response: lastStep.response,
-          warnings: lastStep.warnings,
-          providerMetadata: lastStep.providerMetadata,
+          ...lastStep,
+          callId,
+          stepNumber: steps.length - 1,
+          model: {
+            provider: lastStep.provider,
+            modelId: lastStep.modelId,
+          },
           steps,
           totalUsage,
           experimental_context,
@@ -1122,9 +1120,14 @@ class DefaultGenerateTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
   }
 }
 
-function asToolCalls(content: Array<LanguageModelV3Content>) {
+function asToolCalls(
+  content: Array<LanguageModelV3Content | LanguageModelV4Content>,
+) {
   const parts = content.filter(
-    (part): part is LanguageModelV3ToolCall => part.type === 'tool-call',
+    (
+      part,
+    ): part is LanguageModelV3ToolCall | LanguageModelV4ToolCall =>
+      part.type === 'tool-call',
   );
 
   if (parts.length === 0) {
@@ -1145,7 +1148,7 @@ function asContent<TOOLS extends ToolSet>({
   toolApprovalRequests,
   tools,
 }: {
-  content: Array<LanguageModelV3Content>;
+  content: Array<LanguageModelV3Content | LanguageModelV4Content>;
   toolCalls: Array<TypedToolCall<TOOLS>>;
   toolOutputs: Array<ToolOutput<TOOLS>>;
   toolApprovalRequests: Array<ToolApprovalRequestOutput<TOOLS>>;

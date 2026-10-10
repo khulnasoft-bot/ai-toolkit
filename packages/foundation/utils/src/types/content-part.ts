@@ -1,6 +1,7 @@
 import type { JSONValue } from '@ai-toolkit/provider';
 import type { DataContent } from './data-content';
 import type { ProviderOptions } from './provider-options';
+import type { ProviderReference } from './provider-reference';
 
 /**
 Text content part of a prompt. It contains a string of text.
@@ -57,12 +58,22 @@ export interface FilePart {
   type: 'file';
 
   /**
-File data. Can either be:
+File data. Can be passed as a tagged value or using a legacy shorthand:
 
-- data: a base64-encoded string, a Uint8Array, an ArrayBuffer, or a Buffer
-- URL: a URL that points to the image
+- `{ type: 'data', data }`: base64-encoded string, Uint8Array, ArrayBuffer, or Buffer
+- `{ type: 'url', url }`: a URL
+- `{ type: 'reference', reference }`: a provider reference
+- `{ type: 'text', text }`: UTF-8 text
+- legacy shorthand: DataContent, URL, or ProviderReference
    */
-  data: DataContent | URL;
+  data:
+    | DataContent
+    | URL
+    | ProviderReference
+    | { type: 'data'; data: DataContent }
+    | { type: 'url'; url: URL }
+    | { type: 'reference'; reference: ProviderReference }
+    | { type: 'text'; text: string };
 
   /**
 Optional filename of the file.
@@ -81,6 +92,21 @@ Additional provider-specific metadata. They are passed through
 to the provider from the AI TOOLKIT and enable provider-specific
 functionality that can be fully encapsulated in the provider.
  */
+  providerOptions?: ProviderOptions;
+}
+
+/**
+ * Reasoning file content. Supports tagged data and URL values as well as
+ * their legacy shorthand forms.
+ */
+export interface ReasoningFilePart {
+  type: 'reasoning-file';
+  data:
+    | DataContent
+    | URL
+    | { type: 'data'; data: DataContent }
+    | { type: 'url'; url: URL };
+  mediaType: string;
   providerOptions?: ProviderOptions;
 }
 
@@ -274,6 +300,17 @@ IANA media type.
             providerOptions?: ProviderOptions;
           }
         | {
+            type: 'file';
+            data:
+              | { type: 'data'; data: DataContent }
+              | { type: 'url'; url: URL }
+              | { type: 'reference'; reference: ProviderReference }
+              | { type: 'text'; text: string };
+            mediaType: string;
+            filename?: string;
+            providerOptions?: ProviderOptions;
+          }
+        | {
             type: 'file-url';
 
             /**
@@ -303,6 +340,10 @@ IANA media type.
              * Provider-specific options.
              */
             providerOptions?: ProviderOptions;
+          }
+        | {
+            type: 'file-reference';
+            providerReference: ProviderReference;
           }
         | {
             /**

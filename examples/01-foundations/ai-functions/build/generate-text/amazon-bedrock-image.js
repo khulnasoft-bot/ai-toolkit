@@ -3,19 +3,19 @@ import { generateText } from '@ai-toolkit/ai';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateText({
-    model: bedrock('anthropic.claude-3-haiku-20240307-v1:0'),
-    maxOutputTokens: 512,
-    messages: [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: 'Describe the image in detail.' },
-          { type: 'image', image: fs.readFileSync('./data/comic-cat.png') },
+    const result = await generateText({
+        model: bedrock('anthropic.claude-3-haiku-20240307-v1:0'),
+        maxOutputTokens: 512,
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    { type: 'text', text: 'Describe the image in detail.' },
+                    { type: 'image', image: fs.readFileSync('./data/comic-cat.png') },
+                ],
+            },
         ],
-      },
-    ],
-  });
-  console.log(result.text);
+    });
+    console.log(result.text);
 });
 //# sourceMappingURL=amazon-bedrock-image.js.map

@@ -668,7 +668,7 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
     toolsContext,
     download,
   }: {
-    model: LanguageModelV3;
+    model: LanguageModel;
     telemetry: TelemetrySettings | undefined;
     headers: Record<string, string | undefined> | undefined;
     settings: Omit<CallSettings, 'abortSignal' | 'headers'>;
@@ -913,6 +913,12 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
 
           // Add step information (after response messages are updated):
           const currentStepResult: StepResult<TOOLS> = new DefaultStepResult({
+            callId: callId,
+            stepNumber: recordedSteps.length,
+            provider: model.provider,
+            modelId: model.modelId,
+            runtimeContext: experimental_context as any,
+            toolsContext,
             content: recordedContent,
             finishReason: part.finishReason,
             rawFinishReason: part.rawFinishReason,
@@ -983,26 +989,14 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
           // call onFinish callback:
           const finalStep = recordedSteps[recordedSteps.length - 1];
           await onFinish?.({
-            finishReason: finalStep.finishReason,
-            rawFinishReason: finalStep.rawFinishReason,
+            ...finalStep,
+            callId,
+            stepNumber: recordedSteps.length - 1,
+            model: {
+              provider: finalStep.provider,
+              modelId: finalStep.modelId,
+            },
             totalUsage,
-            usage: finalStep.usage,
-            content: finalStep.content,
-            text: finalStep.text,
-            reasoningText: finalStep.reasoningText,
-            reasoning: finalStep.reasoning,
-            files: finalStep.files,
-            sources: finalStep.sources,
-            toolCalls: finalStep.toolCalls,
-            staticToolCalls: finalStep.staticToolCalls,
-            dynamicToolCalls: finalStep.dynamicToolCalls,
-            toolResults: finalStep.toolResults,
-            staticToolResults: finalStep.staticToolResults,
-            dynamicToolResults: finalStep.dynamicToolResults,
-            request: finalStep.request,
-            response: finalStep.response,
-            warnings: finalStep.warnings,
-            providerMetadata: finalStep.providerMetadata,
             steps: recordedSteps,
             experimental_context,
           });
@@ -1122,6 +1116,7 @@ class DefaultStreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output>
     const tracer = getTracer(telemetry);
 
     const callSettings = prepareCallSettings(settings);
+    const callId = originalGenerateId();
 
     const baseTelemetryAttributes = getBaseTelemetryAttributes({
       model,

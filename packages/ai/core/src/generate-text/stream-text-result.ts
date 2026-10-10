@@ -27,6 +27,7 @@ import type { ReasoningOutput } from './reasoning-output';
 import type { ResponseMessage } from './response-message';
 import type { StepResult } from './step-result';
 import type { ToolApprovalRequestOutput } from './tool-approval-request-output';
+import type { ToolApprovalResponseOutput } from './tool-approval-response-output';
 import type {
   DynamicToolCall,
   StaticToolCall,
@@ -55,6 +56,13 @@ export type UIMessageStreamOptions<UI_MESSAGE extends UIMessage> = {
    * the original messages are provided and the last message is an assistant message).
    */
   generateMessageId?: IdGenerator;
+
+  /**
+   * Callback for when the UI message stream completes.
+   *
+   * @deprecated Use `onFinish` instead.
+   */
+  onEnd?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 
   onFinish?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 
@@ -371,6 +379,36 @@ Converts the result to a streamed response object with a stream data part stream
   toTextStreamResponse(init?: ResponseInit): Response;
 }
 
+export type TextStreamFilePart = { type: 'file'; file: GeneratedFile };
+export type TextStreamTextDeltaPart = {
+  type: 'text-delta';
+  id: string;
+  providerMetadata?: ProviderMetadata;
+  text: string;
+};
+export type TextStreamReasoningDeltaPart = {
+  type: 'reasoning-delta';
+  providerMetadata?: ProviderMetadata;
+  id: string;
+  text: string;
+};
+export type TextStreamReasoningFilePart = {
+  type: 'reasoning-file';
+  id?: string;
+  providerMetadata?: ProviderMetadata;
+  file: GeneratedFile;
+};
+export type TextStreamToolApprovalRequestPart<TOOLS extends ToolSet = ToolSet> =
+  Extract<TextStreamPart<TOOLS>, { type: 'tool-approval-request' }>;
+export type TextStreamToolApprovalResponsePart<TOOLS extends ToolSet = ToolSet> =
+  Extract<TextStreamPart<TOOLS>, { type: 'tool-approval-response' }>;
+export type TextStreamToolCallPart<TOOLS extends ToolSet = ToolSet> =
+  Extract<TextStreamPart<TOOLS>, { type: 'tool-call' }>;
+export type TextStreamToolResultPart<TOOLS extends ToolSet = ToolSet> =
+  Extract<TextStreamPart<TOOLS>, { type: 'tool-result' }>;
+export type TextStreamToolErrorPart<TOOLS extends ToolSet = ToolSet> =
+  Extract<TextStreamPart<TOOLS>, { type: 'tool-error' }>;
+
 export type TextStreamPart<TOOLS extends ToolSet> =
   | {
       type: 'text-start';
@@ -431,6 +469,7 @@ export type TextStreamPart<TOOLS extends ToolSet> =
   | ({ type: 'tool-error' } & TypedToolError<TOOLS>)
   | ({ type: 'tool-output-denied' } & StaticToolOutputDenied<TOOLS>)
   | ToolApprovalRequestOutput<TOOLS>
+  | ToolApprovalResponseOutput<TOOLS>
   | {
       type: 'start-step';
       request: LanguageModelRequestMetadata;

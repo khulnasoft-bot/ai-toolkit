@@ -1,32 +1,26 @@
-import {
-  extractJsonMiddleware,
-  gateway,
-  generateText,
-  Output,
-  wrapLanguageModel,
-} from '@ai-toolkit/ai';
+import { extractJsonMiddleware, gateway, generateText, Output, wrapLanguageModel, } from '@ai-toolkit/ai';
 import { google } from '@ai-toolkit/google';
 import { z } from 'zod';
 import { run } from '../lib/run';
 run(async () => {
-  const { output } = await generateText({
-    model: wrapLanguageModel({
-      model: gateway('google/gemini-3-flash'),
-      middleware: extractJsonMiddleware(),
-    }),
-    tools: {
-      google_search: google.tools.googleSearch({}),
-    },
-    output: Output.object({
-      schema: z.object({
-        recipe: z.object({
-          name: z.string(),
-          steps: z.array(z.string()),
+    const { output } = await generateText({
+        model: wrapLanguageModel({
+            model: gateway('google/gemini-3-flash'),
+            middleware: extractJsonMiddleware(),
         }),
-      }),
-    }),
-    prompt: 'Generate a lasagna recipe.',
-  });
-  console.log(output);
+        tools: {
+            google_search: google.tools.googleSearch({}),
+        },
+        output: Output.object({
+            schema: z.object({
+                recipe: z.object({
+                    name: z.string(),
+                    steps: z.array(z.string()),
+                }),
+            }),
+        }),
+        prompt: 'Generate a lasagna recipe.',
+    });
+    console.log(output);
 });
 //# sourceMappingURL=google-output-object-repairtext.js.map

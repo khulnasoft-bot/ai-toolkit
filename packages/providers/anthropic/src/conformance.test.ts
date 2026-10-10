@@ -32,7 +32,7 @@ const provider = createAnthropic({
   apiKey: 'test-api-key',
 });
 
-const ctx: ConformanceContext = { server };
+const ctx: ConformanceContext = {};
 
 describe('Anthropic provider conformance', () => {
   runConformanceTests(

@@ -52,13 +52,13 @@ function filter(obj: any) {
     next = [];
 
     for (const node of nodes) {
-      if (Object.hasOwn(node, '__proto__')) {
+      if (Object.prototype.hasOwnProperty.call(node, '__proto__')) {
         throw new SyntaxError('Object contains forbidden prototype property');
       }
 
       if (
-        Object.hasOwn(node, 'constructor') &&
-        Object.hasOwn(node.constructor, 'prototype')
+        Object.prototype.hasOwnProperty.call(node, 'constructor') &&
+        Object.prototype.hasOwnProperty.call(node.constructor, 'prototype')
       ) {
         throw new SyntaxError('Object contains forbidden prototype property');
       }

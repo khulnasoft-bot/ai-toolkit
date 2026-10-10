@@ -2,16 +2,16 @@ import { generateText } from '@ai-toolkit/ai';
 import { createVertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 run(async () => {
-  const vertex = createVertex({
-    apiKey: process.env.GOOGLE_VERTEX_API_KEY,
-  });
-  const result = await generateText({
-    model: vertex('gemini-2.0-flash'),
-    prompt: 'Invent a new holiday and describe its traditions.',
-  });
-  console.log(result.text);
-  console.log();
-  console.log('Token usage:', result.usage);
-  console.log('Finish reason:', result.finishReason);
+    const vertex = createVertex({
+        apiKey: process.env.GOOGLE_VERTEX_API_KEY,
+    });
+    const result = await generateText({
+        model: vertex('gemini-2.0-flash'),
+        prompt: 'Invent a new holiday and describe its traditions.',
+    });
+    console.log(result.text);
+    console.log();
+    console.log('Token usage:', result.usage);
+    console.log('Finish reason:', result.finishReason);
 });
 //# sourceMappingURL=google-vertex-express.js.map

@@ -21,6 +21,7 @@ export { RetryError } from '../util/retry-error';
 export { InvalidArgumentError } from './invalid-argument-error';
 export { InvalidStreamPartError } from './invalid-stream-part-error';
 export { InvalidToolApprovalError } from './invalid-tool-approval-error';
+export { StreamProviderError } from './stream-provider-error';
 export { InvalidToolInputError } from './invalid-tool-input-error';
 export { MissingToolResultsError } from './missing-tool-result-error';
 export { NoImageGeneratedError } from './no-image-generated-error';

@@ -1,42 +1,42 @@
 import * as readline from 'node:readline/promises';
-import { stepCountIs, streamText, tool } from '@ai-toolkit/ai';
+import { stepCountIs, streamText, tool, } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 const terminal = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
 });
 const messages = [];
 run(async () => {
-  while (true) {
-    const userInput = await terminal.question('You: ');
-    messages.push({ role: 'user', content: userInput });
-    const result = streamText({
-      model: openai.responses('gpt-4o-mini'),
-      tools: {
-        weather: tool({
-          description: 'Get the weather in a location',
-          inputSchema: z.object({
-            location: z
-              .string()
-              .describe('The location to get the weather for'),
-          }),
-          execute: async ({ location }) => ({
-            location,
-            temperature: 72 + Math.floor(Math.random() * 21) - 10,
-          }),
-        }),
-      },
-      stopWhen: stepCountIs(5),
-      messages,
-    });
-    process.stdout.write('\nAssistant: ');
-    for await (const delta of result.textStream) {
-      process.stdout.write(delta);
+    while (true) {
+        const userInput = await terminal.question('You: ');
+        messages.push({ role: 'user', content: userInput });
+        const result = streamText({
+            model: openai.responses('gpt-4o-mini'),
+            tools: {
+                weather: tool({
+                    description: 'Get the weather in a location',
+                    inputSchema: z.object({
+                        location: z
+                            .string()
+                            .describe('The location to get the weather for'),
+                    }),
+                    execute: async ({ location }) => ({
+                        location,
+                        temperature: 72 + Math.floor(Math.random() * 21) - 10,
+                    }),
+                }),
+            },
+            stopWhen: stepCountIs(5),
+            messages,
+        });
+        process.stdout.write('\nAssistant: ');
+        for await (const delta of result.textStream) {
+            process.stdout.write(delta);
+        }
+        process.stdout.write('\n\n');
+        messages.push(...(await result.response).messages);
     }
-    process.stdout.write('\n\n');
-    messages.push(...(await result.response).messages);
-  }
 });
 //# sourceMappingURL=openai-responses-chatbot.js.map

@@ -37,7 +37,7 @@ export function resolveToolCallerConfiguration<TOOLS extends ToolSet>({
   const resolved: ResolvedToolCallers = {};
 
   for (const [toolName, callers] of Object.entries(toolCallers)) {
-    if (!Object.hasOwn(tools, toolName)) {
+    if (!Object.prototype.hasOwnProperty.call(tools, toolName)) {
       throw new InvalidArgumentError({
         parameter: 'experimental_toolCallers',
         value: toolCallers,
@@ -60,7 +60,7 @@ export function resolveToolCallerConfiguration<TOOLS extends ToolSet>({
 
       if (
         typeof caller !== 'string' ||
-        !Object.hasOwn(tools, caller) ||
+        !Object.prototype.hasOwnProperty.call(tools, caller) ||
         experimental_getToolCaller(tools[caller]) == null
       ) {
         throw new InvalidArgumentError({
@@ -149,7 +149,7 @@ export function prepareToolsForToolCallers({
     const boundCaller = caller.bind(localToolsByCaller.get(callerName) ?? {});
     executionTools[callerName] = boundCaller;
 
-    if (Object.hasOwn(modelTools, callerName)) {
+    if (Object.prototype.hasOwnProperty.call(modelTools, callerName)) {
       modelTools[callerName] = boundCaller;
     }
   }

@@ -14,26 +14,26 @@ import { run } from '../lib/run';
  */
 const fileId = 'assistant-xxxxxxxxxxxxxxxxxxxxxx'; // put your vector store id.
 run(async () => {
-  const result = await generateText({
-    model: azure.responses('gpt-4.1-mini'), // please question about your documents.
-    messages: [
-      {
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: 'Plese give me the short summary in the document.',
-          },
-          {
-            type: 'file',
-            data: fileId,
-            mediaType: 'application/pdf',
-            // filename: 'ai.pdf',
-          },
+    const result = await generateText({
+        model: azure.responses('gpt-4.1-mini'), // please question about your documents.
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'text',
+                        text: 'Plese give me the short summary in the document.',
+                    },
+                    {
+                        type: 'file',
+                        data: fileId,
+                        mediaType: 'application/pdf',
+                        // filename: 'ai.pdf',
+                    },
+                ],
+            },
         ],
-      },
-    ],
-  });
-  console.log(result.text);
+    });
+    console.log(result.text);
 });
 //# sourceMappingURL=azure-responses-file-id.js.map

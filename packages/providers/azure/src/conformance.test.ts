@@ -65,7 +65,7 @@ const provider = createAzure({
   apiKey: 'test-api-key',
 });
 
-const ctx: ConformanceContext = { server };
+const ctx: ConformanceContext = {};
 
 describe('Azure provider conformance', () => {
   runConformanceTests(

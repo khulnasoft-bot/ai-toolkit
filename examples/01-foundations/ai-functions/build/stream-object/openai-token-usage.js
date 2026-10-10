@@ -3,31 +3,31 @@ import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 run(async () => {
-  const result = streamObject({
-    model: openai('gpt-4-turbo'),
-    schema: z.object({
-      recipe: z.object({
-        name: z.string(),
-        ingredients: z.array(z.string()),
-        steps: z.array(z.string()),
-      }),
-    }),
-    prompt: 'Generate a lasagna recipe.',
-  });
-  // your custom function to record usage:
-  function recordUsage(usage) {
-    console.log('Input tokens:', usage.inputTokens);
-    console.log('Cached input tokens:', usage.cachedInputTokens);
-    console.log('Reasoning tokens:', usage.reasoningTokens);
-    console.log('Output tokens:', usage.outputTokens);
-    console.log('Total tokens:', usage.totalTokens);
-  }
-  // use as promise:
-  result.usage.then(recordUsage);
-  // use with async/await:
-  recordUsage(await result.usage);
-  // note: the stream needs to be consumed because of backpressure
-  for await (const _partialObject of result.partialObjectStream) {
-  }
+    const result = streamObject({
+        model: openai('gpt-4-turbo'),
+        schema: z.object({
+            recipe: z.object({
+                name: z.string(),
+                ingredients: z.array(z.string()),
+                steps: z.array(z.string()),
+            }),
+        }),
+        prompt: 'Generate a lasagna recipe.',
+    });
+    // your custom function to record usage:
+    function recordUsage(usage) {
+        console.log('Input tokens:', usage.inputTokens);
+        console.log('Cached input tokens:', usage.cachedInputTokens);
+        console.log('Reasoning tokens:', usage.reasoningTokens);
+        console.log('Output tokens:', usage.outputTokens);
+        console.log('Total tokens:', usage.totalTokens);
+    }
+    // use as promise:
+    result.usage.then(recordUsage);
+    // use with async/await:
+    recordUsage(await result.usage);
+    // note: the stream needs to be consumed because of backpressure
+    for await (const _partialObject of result.partialObjectStream) {
+    }
 });
 //# sourceMappingURL=openai-token-usage.js.map

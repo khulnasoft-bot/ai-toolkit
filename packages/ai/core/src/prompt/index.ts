@@ -23,4 +23,5 @@ export {
   toolModelMessageSchema,
   userModelMessageSchema,
 } from './message';
-export type { Prompt } from './prompt';
+export type { Instructions, Prompt } from './prompt';
+export type { LanguageModelCallOptions } from './language-model-call-options';

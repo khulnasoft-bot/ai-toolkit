@@ -30,7 +30,8 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
     .filter(path => {
       const typeName = path.node.typeName;
       return (
-        typeName.type === 'Identifier' && Object.hasOwn(typeMap, typeName.name)
+        typeName.type === 'Identifier' &&
+        Object.prototype.hasOwnProperty.call(typeMap, typeName.name)
       );
     })
     .forEach(path => {

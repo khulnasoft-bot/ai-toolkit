@@ -4,6 +4,7 @@ import type {
   LanguageModelV3Prompt,
   LanguageModelV3TextPart,
   LanguageModelV3ToolResultOutput,
+  LanguageModelV4Prompt,
 } from '@ai-toolkit/provider';
 import {
   type DataContent,
@@ -35,11 +36,13 @@ export async function convertToLanguageModelPrompt({
   prompt,
   supportedUrls,
   download = createDefaultDownloadFunction(),
+  provider,
 }: {
   prompt: StandardizedPrompt;
   supportedUrls: Record<string, RegExp[]>;
   download: DownloadFunction | undefined;
-}): Promise<LanguageModelV3Prompt> {
+  provider?: string;
+}): Promise<LanguageModelV4Prompt> {
   const downloadedAssets = await downloadAssets(
     prompt.messages,
     download,
@@ -160,7 +163,7 @@ export async function convertToLanguageModelPrompt({
     // This prevents sending invalid empty messages to the provider.
     // Note: provider-executed tool-approval-response parts are preserved.
     message => message.role !== 'tool' || message.content.length > 0,
-  );
+  ) as LanguageModelV4Prompt;
 }
 
 /**

@@ -1,34 +1,34 @@
 import { Output, stepCountIs, streamText } from '@ai-toolkit/ai';
-import { openai } from '@ai-toolkit/openai';
+import { openai, } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 run(async () => {
-  const result = streamText({
-    model: openai('gpt-4o-mini'),
-    providerOptions: {
-      openai: {
-        strictJsonSchema: true,
-      },
-    },
-    tools: {
-      weather: weatherTool,
-    },
-    stopWhen: stepCountIs(5),
-    output: Output.array({
-      element: z.object({
-        location: z.string(),
-        temperature: z.number(),
-        condition: z.string(),
-      }),
-    }),
-    prompt: 'What is the weather in San Francisco, London, Paris, and Berlin?',
-  });
-  // elementStream streams individual completed elements one at a time,
-  // unlike partialOutputStream which streams the entire partial array
-  for await (const element of result.elementStream) {
-    console.log('New element:', element);
-  }
-  console.log('Usage:', await result.usage);
+    const result = streamText({
+        model: openai('gpt-4o-mini'),
+        providerOptions: {
+            openai: {
+                strictJsonSchema: true,
+            },
+        },
+        tools: {
+            weather: weatherTool,
+        },
+        stopWhen: stepCountIs(5),
+        output: Output.array({
+            element: z.object({
+                location: z.string(),
+                temperature: z.number(),
+                condition: z.string(),
+            }),
+        }),
+        prompt: 'What is the weather in San Francisco, London, Paris, and Berlin?',
+    });
+    // elementStream streams individual completed elements one at a time,
+    // unlike partialOutputStream which streams the entire partial array
+    for await (const element of result.elementStream) {
+        console.log('New element:', element);
+    }
+    console.log('Usage:', await result.usage);
 });
 //# sourceMappingURL=openai-output-array-element-stream.js.map

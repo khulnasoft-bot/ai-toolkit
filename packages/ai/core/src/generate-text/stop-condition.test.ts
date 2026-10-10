@@ -10,11 +10,11 @@ import {
 function createStepResult({
   toolCalls = [],
 }: {
-  toolCalls?: StepResult<any, any>['toolCalls'];
-} = {}): StepResult<any, any> {
+  toolCalls?: StepResult<any>['toolCalls'];
+} = {}): StepResult<any> {
   return {
     toolCalls,
-  } as StepResult<any, any>;
+  } as StepResult<any>;
 }
 
 describe('stop conditions', () => {

@@ -1,6 +1,7 @@
 import {
   type Experimental_BatchLanguageModelV4 as BatchLanguageModelV4,
   type Experimental_BatchV4ItemResult as BatchV4ItemResult,
+  type Experimental_LanguageModelV4BatchRequest as LanguageModelV4BatchRequest,
   type LanguageModelV4,
   type LanguageModelV4GenerateResult,
   type LanguageModelV4ToolCall,
@@ -54,9 +55,10 @@ export async function startTextBatch<TOOLS extends ToolSet>({
   validateRequests(requests);
 
   const model = resolveBatchLanguageModel(modelArg);
+  const totalTimeoutMs = getTotalTimeoutMs(timeout);
   const operationAbortSignal = mergeAbortSignals(
     abortSignal,
-    getTotalTimeoutMs(timeout),
+    totalTimeoutMs != null ? AbortSignal.timeout(totalTimeoutMs) : undefined,
   );
   const supportedUrls = await model.supportedUrls;
   const preparedTools = await prepareTools({
@@ -66,7 +68,7 @@ export async function startTextBatch<TOOLS extends ToolSet>({
   });
   const preparedToolChoice = prepareToolChoice({ toolChoice });
   operationAbortSignal?.throwIfAborted();
-  const normalizedRequests = [];
+  const normalizedRequests: LanguageModelV4BatchRequest[] = [];
 
   for (const request of requests) {
     const standardizedPrompt = await standardizePrompt(request);
@@ -75,16 +77,15 @@ export async function startTextBatch<TOOLS extends ToolSet>({
       id: request.id,
       options: {
         ...prepareLanguageModelCallOptions(request),
-        prompt: await convertToLanguageModelPrompt({
+        prompt: (await convertToLanguageModelPrompt({
           prompt: standardizedPrompt,
           supportedUrls,
           download: undefined,
-          provider: model.provider.split('.')[0],
-        }),
+        })) as LanguageModelV4BatchRequest['options']['prompt'],
         tools: preparedTools,
         toolChoice: preparedToolChoice,
         providerOptions: request.providerOptions,
-      },
+      } satisfies LanguageModelV4BatchRequest['options'],
     });
     operationAbortSignal?.throwIfAborted();
   }
@@ -138,9 +139,10 @@ export async function getBatchStatus({
   const model = resolveBatchLanguageModel(modelArg);
   validateBatchReference({ model, batch });
 
+  const totalTimeoutMs = getTotalTimeoutMs(timeout);
   const operationAbortSignal = mergeAbortSignals(
     abortSignal,
-    getTotalTimeoutMs(timeout),
+    totalTimeoutMs != null ? AbortSignal.timeout(totalTimeoutMs) : undefined,
   );
   const { retry } = prepareRetries({
     maxRetries,
@@ -179,10 +181,11 @@ export function getBatchResults<TOOLS extends ToolSet>({
   const model = resolveBatchLanguageModel(modelArg);
   validateBatchReference({ model, batch });
 
+  const totalTimeoutMs = getTotalTimeoutMs(timeout);
   const streamAbortController = new AbortController();
   const operationAbortSignal = mergeAbortSignals(
     abortSignal,
-    getTotalTimeoutMs(timeout),
+    totalTimeoutMs != null ? AbortSignal.timeout(totalTimeoutMs) : undefined,
     streamAbortController.signal,
   );
   const { retry } = prepareRetries({
@@ -349,8 +352,7 @@ async function convertGenerateResult<TOOLS extends ToolSet>({
           toolCall,
           tools,
           repairToolCall: undefined,
-          refineToolInput: undefined,
-          instructions: undefined,
+          system: undefined,
           messages: [],
         }),
       ),

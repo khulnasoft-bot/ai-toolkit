@@ -67,7 +67,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
       toolCallId: string;
       execute: () => PromiseLike<T>;
     },
-  ) => Promise<T>;
+  ) => PromiseLike<T>;
   runInTracingChannelSpan?: NonNullable<
     TelemetryDispatcher['runInTracingChannelSpan']
   >;
@@ -75,7 +75,9 @@ export async function executeToolCall<TOOLS extends ToolSet>({
   { output: ToolOutput<TOOLS>; toolExecutionMs: number } | undefined
 > {
   const { toolName, toolCallId, input } = toolCall;
-  const tool = tools?.[toolName];
+  const tool = tools?.[toolName] as any;
+  const toolMetadata =
+    tool != null && 'metadata' in tool ? tool.metadata : undefined;
 
   if (tool?.execute == null) {
     return undefined;
@@ -146,6 +148,8 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         }
       }
 
+      const resolvedToolMetadata = toolCall.toolMetadata ?? toolMetadata;
+
       output = {
         type: 'tool-result',
         toolCallId,
@@ -156,11 +160,13 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         ...(toolCall.providerMetadata != null
           ? { providerMetadata: toolCall.providerMetadata }
           : {}),
-        ...(toolCall.toolMetadata != null
-          ? { toolMetadata: toolCall.toolMetadata }
+        ...(resolvedToolMetadata != null
+          ? { toolMetadata: resolvedToolMetadata }
           : {}),
       } as TypedToolResult<TOOLS>;
     } catch (error) {
+      const resolvedToolMetadata = toolCall.toolMetadata ?? toolMetadata;
+
       output = {
         type: 'tool-error',
         toolCallId,
@@ -171,8 +177,8 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         ...(toolCall.providerMetadata != null
           ? { providerMetadata: toolCall.providerMetadata }
           : {}),
-        ...(toolCall.toolMetadata != null
-          ? { toolMetadata: toolCall.toolMetadata }
+        ...(resolvedToolMetadata != null
+          ? { toolMetadata: resolvedToolMetadata }
           : {}),
       } as TypedToolError<TOOLS>;
     }
@@ -203,7 +209,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
         toolCall,
         toolContext,
         execute: run,
-      });
+      } as any);
     }
 
     if (runInTracingChannelSpan != null) {
@@ -240,8 +246,9 @@ export async function executeToolCall<TOOLS extends ToolSet>({
 
         // Errors are recorded on the span; only successful results record
         // output attributes (matching historical behavior).
-        if (result.output.type === 'tool-error') {
-          recordErrorOnSpan(span, result.output.error);
+        const toolOutput = result.output;
+        if (toolOutput.type === 'tool-error') {
+          recordErrorOnSpan(span, toolOutput.error);
         } else {
           try {
             span.setAttributes(
@@ -249,7 +256,7 @@ export async function executeToolCall<TOOLS extends ToolSet>({
                 telemetry,
                 attributes: {
                   'ai.toolCall.result': {
-                    output: () => JSON.stringify(result.output.output),
+                    output: () => JSON.stringify(toolOutput.output),
                   },
                 },
               }),

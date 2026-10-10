@@ -2,30 +2,30 @@ import { streamText } from '@ai-toolkit/ai';
 import { vertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 run(async () => {
-  const result = streamText({
-    model: vertex('gemini-pro-experimental'),
-    messages: [
-      {
-        role: 'user',
-        content: [
-          {
-            type: 'text',
-            text: 'What is an embedding model according to this document?',
-          },
-          {
-            type: 'file',
-            data: 'https://github.com/khulnasoft/ai-toolkit/blob/main/examples/ai-functions/data/ai.pdf?raw=true',
-            mediaType: 'application/pdf',
-          },
+    const result = streamText({
+        model: vertex('gemini-pro-experimental'),
+        messages: [
+            {
+                role: 'user',
+                content: [
+                    {
+                        type: 'text',
+                        text: 'What is an embedding model according to this document?',
+                    },
+                    {
+                        type: 'file',
+                        data: 'https://github.com/khulnasoft/ai-toolkit/blob/main/examples/ai-functions/data/ai.pdf?raw=true',
+                        mediaType: 'application/pdf',
+                    },
+                ],
+            },
         ],
-      },
-    ],
-  });
-  for await (const textPart of result.textStream) {
-    process.stdout.write(textPart);
-  }
-  console.log();
-  console.log('Token usage:', await result.usage);
-  console.log('Finish reason:', await result.finishReason);
+    });
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+    console.log();
+    console.log('Token usage:', await result.usage);
+    console.log('Finish reason:', await result.finishReason);
 });
 //# sourceMappingURL=google-vertex-pdf-url.js.map

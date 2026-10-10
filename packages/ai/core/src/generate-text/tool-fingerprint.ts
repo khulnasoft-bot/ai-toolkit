@@ -59,7 +59,7 @@ export function detectToolDrift(
   const changed: string[] = [];
 
   for (const name of Object.keys(current)) {
-    if (!Object.hasOwn(baseline, name)) {
+    if (!Object.prototype.hasOwnProperty.call(baseline, name)) {
       added.push(name);
     } else if (current[name] !== baseline[name]) {
       changed.push(name);
@@ -67,7 +67,7 @@ export function detectToolDrift(
   }
 
   for (const name of Object.keys(baseline)) {
-    if (!Object.hasOwn(current, name)) {
+    if (!Object.prototype.hasOwnProperty.call(current, name)) {
       removed.push(name);
     }
   }

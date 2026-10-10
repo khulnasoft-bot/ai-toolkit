@@ -24,39 +24,38 @@ public class User
 }
 `;
 run(async () => {
-  const result = streamText({
-    model: openai('gpt-4o'),
-    messages: [
-      {
-        role: 'user',
-        content:
-          'Replace the Username property with an Email property. Respond only with code, and with no markdown formatting.',
-      },
-      {
-        role: 'user',
-        content: code,
-      },
-    ],
-    providerOptions: {
-      openai: {
-        prediction: {
-          type: 'content',
-          content: code,
+    const result = streamText({
+        model: openai('gpt-4o'),
+        messages: [
+            {
+                role: 'user',
+                content: 'Replace the Username property with an Email property. Respond only with code, and with no markdown formatting.',
+            },
+            {
+                role: 'user',
+                content: code,
+            },
+        ],
+        providerOptions: {
+            openai: {
+                prediction: {
+                    type: 'content',
+                    content: code,
+                },
+            },
         },
-      },
-    },
-  });
-  for await (const textPart of result.textStream) {
-    process.stdout.write(textPart);
-  }
-  const usage = await result.usage;
-  const openaiMetadata = (await result.providerMetadata)?.openai;
-  console.log();
-  console.log('Token usage:', {
-    ...usage,
-    acceptedPredictionTokens: openaiMetadata?.acceptedPredictionTokens,
-    rejectedPredictionTokens: openaiMetadata?.rejectedPredictionTokens,
-  });
-  console.log('Finish reason:', await result.finishReason);
+    });
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+    const usage = await result.usage;
+    const openaiMetadata = (await result.providerMetadata)?.openai;
+    console.log();
+    console.log('Token usage:', {
+        ...usage,
+        acceptedPredictionTokens: openaiMetadata?.acceptedPredictionTokens,
+        rejectedPredictionTokens: openaiMetadata?.rejectedPredictionTokens,
+    });
+    console.log('Finish reason:', await result.finishReason);
 });
 //# sourceMappingURL=openai-predicted-output.js.map

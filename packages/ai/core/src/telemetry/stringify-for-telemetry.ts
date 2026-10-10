@@ -1,6 +1,8 @@
 import type {
   LanguageModelV3Message,
   LanguageModelV3Prompt,
+  LanguageModelV4Message,
+  LanguageModelV4Prompt,
 } from '@ai-toolkit/provider';
 import { convertDataContentToBase64String } from '../prompt/data-content';
 
@@ -10,9 +12,11 @@ import { convertDataContentToBase64String } from '../prompt/data-content';
  * images as Uint8Arrays, on which JSON.stringify acts weirdly, converting
  * them to objects with stringified indices as keys, e.g. {"0": 42, "1": 69 }.
  */
-export function stringifyForTelemetry(prompt: LanguageModelV3Prompt): string {
+export function stringifyForTelemetry(
+  prompt: LanguageModelV3Prompt | LanguageModelV4Prompt,
+): string {
   return JSON.stringify(
-    prompt.map((message: LanguageModelV3Message) => ({
+    prompt.map((message: LanguageModelV3Message | LanguageModelV4Message) => ({
       ...message,
       content:
         typeof message.content === 'string'

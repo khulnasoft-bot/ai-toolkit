@@ -4,17 +4,17 @@ import { print } from '../lib/print';
 import { run } from '../lib/run';
 import { documents } from './documents';
 run(async () => {
-  const result = await rerank({
-    model: cohere.reranking('rerank-v3.5'),
-    documents,
-    query: 'Which pricing did we get from Oracle?',
-    topN: 2,
-    providerOptions: {
-      cohere: {
-        priority: 1,
-      },
-    },
-  });
-  print('Reranking:', result.ranking);
+    const result = await rerank({
+        model: cohere.reranking('rerank-v3.5'),
+        documents,
+        query: 'Which pricing did we get from Oracle?',
+        topN: 2,
+        providerOptions: {
+            cohere: {
+                priority: 1,
+            },
+        },
+    });
+    print('Reranking:', result.ranking);
 });
 //# sourceMappingURL=cohere-object.js.map

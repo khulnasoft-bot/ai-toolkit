@@ -625,12 +625,11 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
 
         case 'tool-call': {
           try {
-            const toolCall = await parseToolCall({
+            const toolCall = await parseToolCall<TOOLS>({
               toolCall: chunk,
               tools,
-              repairToolCall,
-              refineToolInput,
-              instructions,
+              repairToolCall: repairToolCall as ToolCallRepairFunction<TOOLS> | undefined,
+              system: instructions,
               messages,
             });
 
@@ -731,12 +730,14 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
 
         case 'tool-input-start': {
           const tool = getOwn(tools, chunk.toolName);
+          const toolMetadata =
+            tool != null && 'metadata' in tool ? tool.metadata : undefined;
 
           controller.enqueue({
             ...chunk,
             dynamic: chunk.dynamic ?? tool?.type === 'dynamic',
             title: tool?.title,
-            ...(tool?.metadata != null ? { toolMetadata: tool.metadata } : {}),
+            ...(toolMetadata != null ? { toolMetadata } : {}),
           });
           break;
         }
@@ -767,7 +768,7 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
             modelCallContent.push(chunk);
           }
 
-          controller.enqueue(chunk);
+          controller.enqueue(chunk as LanguageModelStreamPart<TOOLS>);
           break;
       }
     },

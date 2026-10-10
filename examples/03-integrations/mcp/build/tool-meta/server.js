@@ -5,99 +5,84 @@ import { z } from 'zod';
 const app = express();
 app.use(express.json());
 const WEATHER_WIDGET_URI = 'ui://widgets/weather.html';
-const mcpServer = new McpServer(
-  {
+const mcpServer = new McpServer({
     name: 'tool-meta-example-server',
     version: '1.0.0',
-  },
-  {
+}, {
     capabilities: {
-      resources: {},
+        resources: {},
     },
-  },
-);
-mcpServer.registerTool(
-  'get-weather',
-  {
+});
+mcpServer.registerTool('get-weather', {
     description: 'Get weather information for a location',
     inputSchema: {
-      location: z.string().describe('City name'),
+        location: z.string().describe('City name'),
     },
     _meta: {
-      'openai/outputTemplate': WEATHER_WIDGET_URI,
+        'openai/outputTemplate': WEATHER_WIDGET_URI,
     },
-  },
-  async ({ location }) => {
+}, async ({ location }) => {
     return {
-      content: [
-        {
-          type: 'text',
-          text: `Weather in ${location}: Sunny, 22°C`,
-        },
-      ],
+        content: [
+            {
+                type: 'text',
+                text: `Weather in ${location}: Sunny, 22°C`,
+            },
+        ],
     };
-  },
-);
-mcpServer.registerResource(
-  'weather-widget',
-  WEATHER_WIDGET_URI,
-  {},
-  async () => {
+});
+mcpServer.registerResource('weather-widget', WEATHER_WIDGET_URI, {}, async () => {
     return {
-      contents: [
-        {
-          uri: 'ui://widgets/weather.html',
-          mimeType: 'text/html+skybridge',
-          text: `<div>Weather widget</div>`,
-        },
-      ],
-      _meta: {},
+        contents: [
+            {
+                uri: 'ui://widgets/weather.html',
+                mimeType: 'text/html+skybridge',
+                text: `<div>Weather widget</div>`,
+            },
+        ],
+        _meta: {},
     };
-  },
-);
-mcpServer.registerTool(
-  'get-time',
-  {
+});
+mcpServer.registerTool('get-time', {
     description: 'Get current time',
     inputSchema: {},
-  },
-  async () => {
+}, async () => {
     return {
-      content: [
-        {
-          type: 'text',
-          text: `Current time: ${new Date().toISOString()}`,
-        },
-      ],
+        content: [
+            {
+                type: 'text',
+                text: `Current time: ${new Date().toISOString()}`,
+            },
+        ],
     };
-  },
-);
+});
 app.post('/mcp', async (req, res) => {
-  try {
-    const transport = new StreamableHTTPServerTransport({
-      sessionIdGenerator: undefined,
-    });
-    await mcpServer.connect(transport);
-    await transport.handleRequest(req, res, req.body);
-    res.on('close', () => {
-      transport.close();
-      mcpServer.close();
-    });
-  } catch (error) {
-    console.error('Error handling MCP request:', error);
-    if (!res.headersSent) {
-      res.status(500).json({
-        jsonrpc: '2.0',
-        error: {
-          code: -32603,
-          message: 'Internal server error',
-        },
-        id: null,
-      });
+    try {
+        const transport = new StreamableHTTPServerTransport({
+            sessionIdGenerator: undefined,
+        });
+        await mcpServer.connect(transport);
+        await transport.handleRequest(req, res, req.body);
+        res.on('close', () => {
+            transport.close();
+            mcpServer.close();
+        });
     }
-  }
+    catch (error) {
+        console.error('Error handling MCP request:', error);
+        if (!res.headersSent) {
+            res.status(500).json({
+                jsonrpc: '2.0',
+                error: {
+                    code: -32603,
+                    message: 'Internal server error',
+                },
+                id: null,
+            });
+        }
+    }
 });
 app.listen(8084, () => {
-  console.log('Tool meta example server listening on http://localhost:8084');
+    console.log('Tool meta example server listening on http://localhost:8084');
 });
 //# sourceMappingURL=server.js.map

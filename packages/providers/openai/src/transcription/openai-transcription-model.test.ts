@@ -19,6 +19,14 @@ const server = createTestServer({
   'https://api.openai.com/v1/audio/transcriptions': {},
 });
 
+async function getMultipartRequestBody() {
+  const multipart = await server.calls[0].requestBodyMultipart;
+  if (multipart == null) {
+    throw new Error('Expected a multipart request body');
+  }
+  return multipart;
+}
+
 describe('doGenerate', () => {
   function prepareJsonResponse({
     headers,
@@ -81,7 +89,7 @@ describe('doGenerate', () => {
       mediaType: 'audio/wav',
     });
 
-    expect(await server.calls[0].requestBodyMultipart).toMatchObject({
+    expect(await getMultipartRequestBody()).toMatchObject({
       model: 'whisper-1',
     });
   });
@@ -202,7 +210,7 @@ describe('doGenerate', () => {
       },
     });
 
-    const multipart = await server.calls[0].requestBodyMultipart;
+    const multipart = await getMultipartRequestBody();
 
     expect(multipart).toMatchObject({
       model: 'whisper-1',
@@ -230,7 +238,7 @@ describe('doGenerate', () => {
       },
     });
 
-    const multipart = await server.calls[0].requestBodyMultipart;
+    const multipart = await getMultipartRequestBody();
 
     expect(multipart).toMatchObject({
       model: 'gpt-4o-transcribe',
@@ -257,7 +265,7 @@ describe('doGenerate', () => {
       },
     });
 
-    const multipart = await server.calls[0].requestBodyMultipart;
+    const multipart = await getMultipartRequestBody();
 
     expect(multipart).toMatchObject({
       model: 'whisper-1',

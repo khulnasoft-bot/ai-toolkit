@@ -16,6 +16,11 @@ export type StandardizedPrompt = {
   system?: string | SystemModelMessage | Array<SystemModelMessage>;
 
   /**
+   * Legacy alias for the standardized system instructions.
+   */
+  instructions?: string | SystemModelMessage | Array<SystemModelMessage>;
+
+  /**
    * Messages.
    */
   messages: ModelMessage[];
@@ -24,6 +29,8 @@ export type StandardizedPrompt = {
 export async function standardizePrompt(
   prompt: Prompt,
 ): Promise<StandardizedPrompt> {
+  const instructions = prompt.instructions ?? prompt.system;
+
   if (prompt.prompt == null && prompt.messages == null) {
     throw new InvalidPromptError({
       prompt,
@@ -40,9 +47,9 @@ export async function standardizePrompt(
 
   // validate that system is a string or a SystemModelMessage
   if (
-    prompt.system != null &&
-    typeof prompt.system !== 'string' &&
-    !asArray(prompt.system).every(
+    instructions != null &&
+    typeof instructions !== 'string' &&
+    !asArray(instructions).every(
       message =>
         typeof message === 'object' &&
         message !== null &&
@@ -94,6 +101,7 @@ export async function standardizePrompt(
 
   return {
     messages,
-    system: prompt.system,
+    system: instructions,
+    instructions,
   };
 }

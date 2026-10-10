@@ -19,6 +19,13 @@ describe('createBedrockAnthropicFetch', () => {
     return vi.fn().mockResolvedValue(response);
   }
 
+  function getResponseBody(response: Response): ReadableStream<Uint8Array> {
+    if (response.body == null) {
+      throw new Error('Expected a response body');
+    }
+    return response.body;
+  }
+
   it('should pass through non-streaming responses unchanged', async () => {
     const jsonBody = JSON.stringify({ id: 'msg_123', content: [] });
     const mockResponse = new Response(jsonBody, {
@@ -75,7 +82,7 @@ describe('createBedrockAnthropicFetch', () => {
 
     expect(response.headers.get('content-type')).toBe('text/event-stream');
 
-    const reader = response.body?.getReader();
+    const reader = getResponseBody(response).getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
@@ -108,7 +115,7 @@ describe('createBedrockAnthropicFetch', () => {
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body?.getReader();
+    const reader = getResponseBody(response).getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
@@ -142,7 +149,7 @@ describe('createBedrockAnthropicFetch', () => {
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body?.getReader();
+    const reader = getResponseBody(response).getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 
@@ -204,7 +211,7 @@ describe('createBedrockAnthropicFetch', () => {
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body?.getReader();
+    const reader = getResponseBody(response).getReader();
 
     const chunks: string[] = [];
     while (true) {
@@ -256,7 +263,7 @@ describe('createBedrockAnthropicFetch', () => {
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body?.getReader();
+    const reader = getResponseBody(response).getReader();
 
     const chunks: string[] = [];
     while (true) {
@@ -334,7 +341,7 @@ describe('createBedrockAnthropicFetch', () => {
     const wrappedFetch = createBedrockAnthropicFetch(baseFetch);
 
     const response = await wrappedFetch('https://example.com', {});
-    const reader = response.body?.getReader();
+    const reader = getResponseBody(response).getReader();
     const { value } = await reader.read();
     const text = new TextDecoder().decode(value);
 

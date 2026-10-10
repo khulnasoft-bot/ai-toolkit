@@ -58,6 +58,8 @@ describe('createIdMap', () => {
     const missingTextPart = idMap[protoKey];
 
     expect(missingTextPart).toBeUndefined();
-    expect(Object.hasOwn(Object.prototype, 'text')).toBe(false);
+    expect(
+      Object.prototype.hasOwnProperty.call(Object.prototype, 'text'),
+    ).toBe(false);
   });
 });

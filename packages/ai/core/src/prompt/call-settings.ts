@@ -3,11 +3,17 @@ Timeout configuration for API calls. Can be specified as:
 - A number representing milliseconds
 - An object with `totalMs` property for the total timeout in milliseconds
 - An object with `stepMs` property for the timeout of each step in milliseconds
+- An object with `firstChunkMs` property for the timeout until the first content chunk of each step (streaming only)
 - An object with `chunkMs` property for the timeout between stream chunks (streaming only)
  */
 export type TimeoutConfiguration =
   | number
-  | { totalMs?: number; stepMs?: number; chunkMs?: number };
+  | {
+      totalMs?: number;
+      stepMs?: number;
+      firstChunkMs?: number;
+      chunkMs?: number;
+    };
 
 /**
 Extracts the total timeout value in milliseconds from a TimeoutConfiguration.
@@ -40,6 +46,22 @@ export function getStepTimeoutMs(
     return undefined;
   }
   return timeout.stepMs;
+}
+
+/**
+Extracts the chunk timeout value in milliseconds from a TimeoutConfiguration.
+This timeout is for streaming only - it aborts if no new chunk is received within the specified duration.
+
+@param timeout - The timeout configuration.
+@returns The chunk timeout in milliseconds, or undefined if no chunk timeout is configured.
+ */
+export function getFirstChunkTimeoutMs(
+  timeout: TimeoutConfiguration | undefined,
+): number | undefined {
+  if (timeout == null || typeof timeout === 'number') {
+    return undefined;
+  }
+  return timeout.firstChunkMs;
 }
 
 /**

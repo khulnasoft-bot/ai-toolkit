@@ -11,6 +11,7 @@ import type { UIMessageStreamOnFinishCallback } from './ui-message-stream-on-fin
 export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   messageId,
   originalMessages = [],
+  onEnd,
   onFinish,
   onError,
   stream,
@@ -29,6 +30,11 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   originalMessages?: UI_MESSAGE[];
 
   onError: ErrorHandler;
+
+  /**
+   * @deprecated Use `onFinish` instead.
+   */
+  onEnd?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 
   onFinish?: UIMessageStreamOnFinishCallback<UI_MESSAGE>;
 }): ReadableStream<InferUIMessageChunk<UI_MESSAGE>> {
@@ -69,7 +75,9 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
     }),
   );
 
-  if (onFinish == null) {
+  const finishCallback = onEnd ?? onFinish;
+
+  if (finishCallback == null) {
     return idInjectedStream;
   }
 
@@ -92,13 +100,13 @@ export function handleUIMessageStreamFinish<UI_MESSAGE extends UIMessage>({
   let finishCalled = false;
 
   const callOnFinish = async () => {
-    if (finishCalled || !onFinish) {
+    if (finishCalled || !finishCallback) {
       return;
     }
     finishCalled = true;
 
     const isContinuation = state.message.id === lastMessage?.id;
-    await onFinish({
+    await finishCallback({
       isAborted,
       isContinuation,
       responseMessage: state.message as UI_MESSAGE,

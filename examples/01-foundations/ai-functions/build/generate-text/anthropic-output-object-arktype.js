@@ -3,19 +3,19 @@ import { anthropic } from '@ai-toolkit/anthropic';
 import { type } from 'arktype';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateText({
-    model: anthropic('claude-3-7-sonnet-latest'),
-    output: Output.object({
-      schema: type({
-        recipe: {
-          name: 'string',
-          ingredients: type({ name: 'string', amount: 'string' }).array(),
-          steps: 'string[]',
-        },
-      }),
-    }),
-    prompt: 'Generate a lasagna recipe.',
-  });
-  console.dir(result.output.recipe, { depth: Infinity });
+    const result = await generateText({
+        model: anthropic('claude-3-7-sonnet-latest'),
+        output: Output.object({
+            schema: type({
+                recipe: {
+                    name: 'string',
+                    ingredients: type({ name: 'string', amount: 'string' }).array(),
+                    steps: 'string[]',
+                },
+            }),
+        }),
+        prompt: 'Generate a lasagna recipe.',
+    });
+    console.dir(result.output.recipe, { depth: Infinity });
 });
 //# sourceMappingURL=anthropic-output-object-arktype.js.map

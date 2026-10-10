@@ -1,66 +1,62 @@
-import { streamText, tool } from '@ai-toolkit/ai';
+import { streamText, tool, } from '@ai-toolkit/ai';
 import { cohere } from '@ai-toolkit/cohere';
 import { z } from 'zod';
 import { run } from '../lib/run';
 const messages = [];
 run(async () => {
-  let _toolResponseAvailable = false;
-  const result = streamText({
-    model: cohere('command-r-plus'),
-    maxOutputTokens: 512,
-    tools: {
-      currentTime: tool({
-        description: 'Get the current time',
-        inputSchema: z.object({}),
-        execute: async () => ({
-          currentTime: new Date().toLocaleTimeString(),
-        }),
-      }),
-    },
-    prompt: 'What is the current time?',
-  });
-  let fullResponse = '';
-  const toolCalls = [];
-  const toolResponses = [];
-  for await (const delta of result.fullStream) {
-    console.log(delta);
-    switch (delta.type) {
-      case 'text-delta': {
-        fullResponse += delta.text;
-        process.stdout.write(delta.text);
-        break;
-      }
-      case 'tool-call': {
-        toolCalls.push(delta);
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
-        break;
-      }
-      case 'tool-result': {
-        if (delta.dynamic) {
-          continue;
+    let _toolResponseAvailable = false;
+    const result = streamText({
+        model: cohere('command-r-plus'),
+        maxOutputTokens: 512,
+        tools: {
+            currentTime: tool({
+                description: 'Get the current time',
+                inputSchema: z.object({}),
+                execute: async () => ({
+                    currentTime: new Date().toLocaleTimeString(),
+                }),
+            }),
+        },
+        prompt: 'What is the current time?',
+    });
+    let fullResponse = '';
+    const toolCalls = [];
+    const toolResponses = [];
+    for await (const delta of result.fullStream) {
+        console.log(delta);
+        switch (delta.type) {
+            case 'text-delta': {
+                fullResponse += delta.text;
+                process.stdout.write(delta.text);
+                break;
+            }
+            case 'tool-call': {
+                toolCalls.push(delta);
+                process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
+                break;
+            }
+            case 'tool-result': {
+                if (delta.dynamic) {
+                    continue;
+                }
+                const transformedDelta = {
+                    ...delta,
+                    output: { type: 'json', value: delta.output },
+                };
+                toolResponses.push(transformedDelta);
+                process.stdout.write(`\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`);
+                break;
+            }
         }
-        const transformedDelta = {
-          ...delta,
-          output: { type: 'json', value: delta.output },
-        };
-        toolResponses.push(transformedDelta);
-        process.stdout.write(
-          `\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`,
-        );
-        break;
-      }
     }
-  }
-  process.stdout.write('\n\n');
-  messages.push({
-    role: 'assistant',
-    content: [{ type: 'text', text: fullResponse }, ...toolCalls],
-  });
-  if (toolResponses.length > 0) {
-    messages.push({ role: 'tool', content: toolResponses });
-  }
-  _toolResponseAvailable = toolCalls.length > 0;
+    process.stdout.write('\n\n');
+    messages.push({
+        role: 'assistant',
+        content: [{ type: 'text', text: fullResponse }, ...toolCalls],
+    });
+    if (toolResponses.length > 0) {
+        messages.push({ role: 'tool', content: toolResponses });
+    }
+    _toolResponseAvailable = toolCalls.length > 0;
 });
 //# sourceMappingURL=cohere-tool-call-empty-params.js.map

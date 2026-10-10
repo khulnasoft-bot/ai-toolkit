@@ -2,13 +2,13 @@ import { generateText } from '@ai-toolkit/ai';
 import { mistral } from '@ai-toolkit/mistral';
 import { run } from '../lib/run';
 run(async () => {
-  const result = await generateText({
-    model: mistral('mistral-medium-latest'),
-    prompt: 'Invent a new holiday and describe its traditions.',
-  });
-  console.log(result.text);
-  console.log();
-  console.log('Token usage:', result.usage);
-  console.log('Finish reason:', result.finishReason);
+    const result = await generateText({
+        model: mistral('mistral-medium-latest'),
+        prompt: 'Invent a new holiday and describe its traditions.',
+    });
+    console.log(result.text);
+    console.log();
+    console.log('Token usage:', result.usage);
+    console.log('Finish reason:', result.finishReason);
 });
 //# sourceMappingURL=mistral-medium.js.map

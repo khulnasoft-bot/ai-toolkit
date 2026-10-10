@@ -9,10 +9,18 @@ export function stepCountIs(stepCount: number): StopCondition<any> {
   return ({ steps }) => steps.length === stepCount;
 }
 
-export function hasToolCall(toolName: string): StopCondition<any> {
+export function isStepCount(stepCount: number): StopCondition<any> {
+  return stepCountIs(stepCount);
+}
+
+export function isLoopFinished(): StopCondition<any> {
+  return () => false;
+}
+
+export function hasToolCall(...toolNames: string[]): StopCondition<any> {
   return ({ steps }) =>
-    steps[steps.length - 1]?.toolCalls?.some(
-      toolCall => toolCall.toolName === toolName,
+    steps[steps.length - 1]?.toolCalls?.some(toolCall =>
+      toolNames.includes(toolCall.toolName),
     ) ?? false;
 }
 

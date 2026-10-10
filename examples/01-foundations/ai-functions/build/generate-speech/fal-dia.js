@@ -3,14 +3,14 @@ import { fal } from '@ai-toolkit/fal';
 import { run } from '../lib/run';
 import { saveAudioFile } from '../lib/save-audio';
 run(async () => {
-  const result = await generateSpeech({
-    model: fal.speech('fal-ai/dia-tts'),
-    text: '[S1] Dia is an open weights text to dialogue model... [S2] Try it now on Fal.',
-  });
-  console.log('Audio:', result.audio);
-  console.log('Warnings:', result.warnings);
-  console.log('Responses:', result.responses);
-  console.log('Provider Metadata:', result.providerMetadata);
-  await saveAudioFile(result.audio);
+    const result = await generateSpeech({
+        model: fal.speech('fal-ai/dia-tts'),
+        text: '[S1] Dia is an open weights text to dialogue model... [S2] Try it now on Fal.',
+    });
+    console.log('Audio:', result.audio);
+    console.log('Warnings:', result.warnings);
+    console.log('Responses:', result.responses);
+    console.log('Provider Metadata:', result.providerMetadata);
+    await saveAudioFile(result.audio);
 });
 //# sourceMappingURL=fal-dia.js.map

@@ -1011,7 +1011,10 @@ describe('webFetch_20250910OutputSchema', () => {
 
     const schema = webFetch_20250910OutputSchema();
 
-    const result = await schema.validate?.(problematicResponse);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(problematicResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1033,7 +1036,10 @@ describe('webFetch_20250910OutputSchema', () => {
     };
 
     const schema = webFetch_20250910OutputSchema();
-    const result = await schema.validate?.(validResponse);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(validResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1054,7 +1060,10 @@ describe('webSearch_20250305OutputSchema', () => {
 
     const schema = webSearch_20250305OutputSchema();
 
-    const result = await schema.validate?.(problematicResponse);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(problematicResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1072,7 +1081,10 @@ describe('webSearch_20250305OutputSchema', () => {
     ];
 
     const schema = webSearch_20250305OutputSchema();
-    const result = await schema.validate?.(validResponse);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(validResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1112,7 +1124,10 @@ describe('anthropicMessagesResponseSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesResponseSchema();
-    const result = await schema.validate?.(pdfResponse);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(pdfResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1150,7 +1165,10 @@ describe('anthropicMessagesResponseSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesResponseSchema();
-    const result = await schema.validate?.(textResponse);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(textResponse);
 
     expect(result.success).toBe(true);
   });
@@ -1182,7 +1200,10 @@ describe('anthropicMessagesChunkSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesChunkSchema();
-    const result = await schema.validate?.(pdfChunk);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(pdfChunk);
 
     expect(result.success).toBe(true);
   });
@@ -1212,7 +1233,10 @@ describe('anthropicMessagesChunkSchema - web_fetch_tool_result', () => {
     };
 
     const schema = anthropicMessagesChunkSchema();
-    const result = await schema.validate?.(pdfChunk);
+    if (schema.validate == null) {
+      throw new Error('Expected schema to support validation');
+    }
+    const result = await schema.validate(pdfChunk);
 
     expect(result.success).toBe(true);
   });

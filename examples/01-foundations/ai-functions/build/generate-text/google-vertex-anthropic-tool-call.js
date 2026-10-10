@@ -4,54 +4,53 @@ import { z } from 'zod';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 run(async () => {
-  const result = await generateText({
-    model: vertexAnthropic('claude-3-5-sonnet-v2@20241022'),
-    maxOutputTokens: 512,
-    tools: {
-      weather: weatherTool,
-      cityAttractions: tool({
-        inputSchema: z.object({ city: z.string() }),
-      }),
-    },
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
-  });
-  // typed tool calls:
-  for (const toolCall of result.toolCalls) {
-    if (toolCall.dynamic) {
-      continue;
+    const result = await generateText({
+        model: vertexAnthropic('claude-3-5-sonnet-v2@20241022'),
+        maxOutputTokens: 512,
+        tools: {
+            weather: weatherTool,
+            cityAttractions: tool({
+                inputSchema: z.object({ city: z.string() }),
+            }),
+        },
+        prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    });
+    // typed tool calls:
+    for (const toolCall of result.toolCalls) {
+        if (toolCall.dynamic) {
+            continue;
+        }
+        switch (toolCall.toolName) {
+            case 'cityAttractions': {
+                toolCall.input.city; // string
+                break;
+            }
+            case 'weather': {
+                toolCall.input.location; // string
+                break;
+            }
+        }
     }
-    switch (toolCall.toolName) {
-      case 'cityAttractions': {
-        toolCall.input.city; // string
-        break;
-      }
-      case 'weather': {
-        toolCall.input.location; // string
-        break;
-      }
+    // typed tool results for tools with execute method:
+    for (const toolResult of result.toolResults) {
+        if (toolResult.dynamic) {
+            continue;
+        }
+        switch (toolResult.toolName) {
+            // NOT AVAILABLE (NO EXECUTE METHOD)
+            // case 'cityAttractions': {
+            //   toolResult.input.city; // string
+            //   toolResult.result;
+            //   break;
+            // }
+            case 'weather': {
+                toolResult.input.location; // string
+                toolResult.output.location; // string
+                toolResult.output.temperature; // number
+                break;
+            }
+        }
     }
-  }
-  // typed tool results for tools with execute method:
-  for (const toolResult of result.toolResults) {
-    if (toolResult.dynamic) {
-      continue;
-    }
-    switch (toolResult.toolName) {
-      // NOT AVAILABLE (NO EXECUTE METHOD)
-      // case 'cityAttractions': {
-      //   toolResult.input.city; // string
-      //   toolResult.result;
-      //   break;
-      // }
-      case 'weather': {
-        toolResult.input.location; // string
-        toolResult.output.location; // string
-        toolResult.output.temperature; // number
-        break;
-      }
-    }
-  }
-  console.log(JSON.stringify(result, null, 2));
+    console.log(JSON.stringify(result, null, 2));
 });
 //# sourceMappingURL=google-vertex-anthropic-tool-call.js.map

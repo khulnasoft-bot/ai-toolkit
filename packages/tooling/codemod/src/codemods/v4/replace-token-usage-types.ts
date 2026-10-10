@@ -43,7 +43,7 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
         }
 
         const oldName = spec.imported.name;
-        if (!Object.hasOwn(renameMap, oldName)) {
+        if (!Object.prototype.hasOwnProperty.call(renameMap, oldName)) {
           // Retain specifiers that are not part of the renaming
           newSpecifiers.push(spec);
           return;

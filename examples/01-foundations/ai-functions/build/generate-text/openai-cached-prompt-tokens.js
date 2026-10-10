@@ -133,41 +133,36 @@ Night o’er the ocean broods; from sky to sky
 The thunder roll, the ceaseless lightnings glare;
 And all things mean swift death for mortal man.
 `;
-const runCompletion = async () =>
-  await generateText({
+const runCompletion = async () => await generateText({
     model: openai('gpt-4o-mini'),
     messages: [
-      {
-        role: 'user',
-        content: `What book is the following text from?: <text>${longPrompt}</text>`,
-      },
+        {
+            role: 'user',
+            content: `What book is the following text from?: <text>${longPrompt}</text>`,
+        },
     ],
     providerOptions: {
-      openai: { maxCompletionTokens: 100 },
+        openai: { maxCompletionTokens: 100 },
     },
-  });
+});
 run(async () => {
-  let start = performance.now();
-  const { text, usage, providerMetadata } = await runCompletion();
-  let end = performance.now();
-  console.log(`PLEASE NOTE caching behavior is transparent and difficult to test.
+    let start = performance.now();
+    const { text, usage, providerMetadata } = await runCompletion();
+    let end = performance.now();
+    console.log(`PLEASE NOTE caching behavior is transparent and difficult to test.
     If you don't get a cache hit the first time, try several additional times.`);
-  console.log(`First pass text:`, text);
-  console.log(`First pass usage:`, usage);
-  console.log(`First pass provider metadata:`, providerMetadata);
-  console.log(`First pass time: ${Math.floor(end - start)} ms`);
-  console.log();
-  await setTimeout(1000); // wait for it to be cached?g
-  start = performance.now();
-  const {
-    text: text2,
-    usage: usage2,
-    providerMetadata: providerMetadata2,
-  } = await runCompletion();
-  end = performance.now();
-  console.log(`Second pass text:`, text2);
-  console.log(`Second pass usage:`, usage2);
-  console.log(`Second pass provider metadata:`, providerMetadata2);
-  console.log(`First pass time: ${Math.floor(end - start)} ms`);
+    console.log(`First pass text:`, text);
+    console.log(`First pass usage:`, usage);
+    console.log(`First pass provider metadata:`, providerMetadata);
+    console.log(`First pass time: ${Math.floor(end - start)} ms`);
+    console.log();
+    await setTimeout(1000); // wait for it to be cached?g
+    start = performance.now();
+    const { text: text2, usage: usage2, providerMetadata: providerMetadata2, } = await runCompletion();
+    end = performance.now();
+    console.log(`Second pass text:`, text2);
+    console.log(`Second pass usage:`, usage2);
+    console.log(`Second pass provider metadata:`, providerMetadata2);
+    console.log(`First pass time: ${Math.floor(end - start)} ms`);
 });
 //# sourceMappingURL=openai-cached-prompt-tokens.js.map

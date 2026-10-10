@@ -1,24 +1,21 @@
 import { streamText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 run(async () => {
-  const result = streamText({
-    model: 'openai/gpt-oss-120b',
-    prompt: 'Tell me the history of the tenrec in a few sentences.',
-    providerOptions: {
-      gateway: {
-        zeroDataRetention: true,
-      },
-    },
-  });
-  for await (const textPart of result.textStream) {
-    process.stdout.write(textPart);
-  }
-  console.log();
-  console.log('Token usage:', await result.usage);
-  console.log('Finish reason:', await result.finishReason);
-  console.log(
-    'Provider metadata:',
-    JSON.stringify(await result.providerMetadata, null, 2),
-  );
+    const result = streamText({
+        model: 'openai/gpt-oss-120b',
+        prompt: 'Tell me the history of the tenrec in a few sentences.',
+        providerOptions: {
+            gateway: {
+                zeroDataRetention: true,
+            },
+        },
+    });
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+    console.log();
+    console.log('Token usage:', await result.usage);
+    console.log('Finish reason:', await result.finishReason);
+    console.log('Provider metadata:', JSON.stringify(await result.providerMetadata, null, 2));
 });
 //# sourceMappingURL=gateway-provider-options-zero-data-retention.js.map

@@ -118,7 +118,7 @@ export type GenerateTextStepStartEvent<
   readonly toolOrder: ToolOrder<TOOLS>;
 
   /** Array of results from previous steps (empty for first step). */
-  readonly steps: ReadonlyArray<StepResult<TOOLS, RUNTIME_CONTEXT>>;
+  readonly steps: ReadonlyArray<StepResult<TOOLS>>;
 
   /** Additional provider-specific options for this step. */
   readonly providerOptions: ProviderOptions | undefined;
@@ -146,7 +146,7 @@ export type GenerateTextStepStartEvent<
 export type GenerateTextStepEndEvent<
   TOOLS extends ToolSet = ToolSet,
   RUNTIME_CONTEXT extends Context = Context,
-> = StepResult<TOOLS, RUNTIME_CONTEXT>;
+> = StepResult<TOOLS>;
 
 /**
  * Event passed to the `onEnd` callback.
@@ -165,7 +165,7 @@ export type GenerateTextEndEvent<
   readonly stepNumber: number;
 
   /** Information about the model that produced the final step. */
-  readonly model: StepResult<TOOLS, RUNTIME_CONTEXT>['model'];
+  readonly model: StepResult<TOOLS>['model'];
 
   /**
    * Tool context from the final step.
@@ -182,69 +182,54 @@ export type GenerateTextEndEvent<
   readonly runtimeContext: RUNTIME_CONTEXT;
 
   /** The content that was generated in all steps. */
-  readonly content: StepResult<TOOLS, RUNTIME_CONTEXT>['content'];
+  readonly content: StepResult<TOOLS>['content'];
 
   /** The text that was generated in the final step. */
-  readonly text: StepResult<TOOLS, RUNTIME_CONTEXT>['text'];
+  readonly text: StepResult<TOOLS>['text'];
 
   /**
    * The reasoning that was generated in the final step.
    *
    * @deprecated Use `finalStep.reasoning` instead.
    */
-  readonly reasoning: StepResult<TOOLS, RUNTIME_CONTEXT>['reasoning'];
+  readonly reasoning: StepResult<TOOLS>['reasoning'];
 
   /**
    * The reasoning text that was generated in the final step.
    *
    * @deprecated Use `finalStep.reasoningText` instead.
    */
-  readonly reasoningText: StepResult<TOOLS, RUNTIME_CONTEXT>['reasoningText'];
+  readonly reasoningText: StepResult<TOOLS>['reasoningText'];
 
   /** Files that were generated in all steps. */
-  readonly files: StepResult<TOOLS, RUNTIME_CONTEXT>['files'];
+  readonly files: StepResult<TOOLS>['files'];
 
   /** Sources that were used as references in all steps. */
-  readonly sources: StepResult<TOOLS, RUNTIME_CONTEXT>['sources'];
+  readonly sources: StepResult<TOOLS>['sources'];
 
   /** Tool calls that were made in all steps. */
-  readonly toolCalls: StepResult<TOOLS, RUNTIME_CONTEXT>['toolCalls'];
+  readonly toolCalls: StepResult<TOOLS>['toolCalls'];
 
   /** Static tool calls that were made in all steps. */
-  readonly staticToolCalls: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['staticToolCalls'];
+  readonly staticToolCalls: StepResult<TOOLS>['staticToolCalls'];
 
   /** Dynamic tool calls that were made in all steps. */
-  readonly dynamicToolCalls: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['dynamicToolCalls'];
+  readonly dynamicToolCalls: StepResult<TOOLS>['dynamicToolCalls'];
 
   /** Tool results that were generated in all steps. */
-  readonly toolResults: StepResult<TOOLS, RUNTIME_CONTEXT>['toolResults'];
+  readonly toolResults: StepResult<TOOLS>['toolResults'];
 
   /** Static tool results that were generated in all steps. */
-  readonly staticToolResults: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['staticToolResults'];
+  readonly staticToolResults: StepResult<TOOLS>['staticToolResults'];
 
   /** Dynamic tool results that were generated in all steps. */
-  readonly dynamicToolResults: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['dynamicToolResults'];
+  readonly dynamicToolResults: StepResult<TOOLS>['dynamicToolResults'];
 
   /** The unified reason why the generation finished. Taken from the final step. */
-  readonly finishReason: StepResult<TOOLS, RUNTIME_CONTEXT>['finishReason'];
+  readonly finishReason: StepResult<TOOLS>['finishReason'];
 
   /** The raw reason why the generation finished. Taken from the final step. */
-  readonly rawFinishReason: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['rawFinishReason'];
+  readonly rawFinishReason: StepResult<TOOLS>['rawFinishReason'];
 
   /** Aggregated token usage across all steps. */
   readonly usage: LanguageModelUsage;
@@ -257,40 +242,37 @@ export type GenerateTextEndEvent<
   readonly totalUsage: LanguageModelUsage;
 
   /** Warnings from the model provider in all steps. */
-  readonly warnings: StepResult<TOOLS, RUNTIME_CONTEXT>['warnings'];
+  readonly warnings: StepResult<TOOLS>['warnings'];
 
   /**
    * Additional request information from the final step.
    *
    * @deprecated Use `finalStep.request` instead.
    */
-  readonly request: StepResult<TOOLS, RUNTIME_CONTEXT>['request'];
+  readonly request: StepResult<TOOLS>['request'];
 
   /**
    * Additional response information from the final step.
    *
    * @deprecated Use `finalStep.response` instead.
    */
-  readonly response: StepResult<TOOLS, RUNTIME_CONTEXT>['response'];
+  readonly response: StepResult<TOOLS>['response'];
 
   /**
    * Additional provider-specific metadata from the final step.
    *
    * @deprecated Use `finalStep.providerMetadata` instead.
    */
-  readonly providerMetadata: StepResult<
-    TOOLS,
-    RUNTIME_CONTEXT
-  >['providerMetadata'];
+  readonly providerMetadata: StepResult<TOOLS>['providerMetadata'];
 
   /** The response messages that were generated during the call. */
   readonly responseMessages: ResponseMessage[];
 
   /** Array containing results from all steps in the generation. */
-  readonly steps: StepResult<TOOLS, RUNTIME_CONTEXT>[];
+  readonly steps: StepResult<TOOLS>[];
 
   /** The final step. This is a shortcut for `steps.at(-1)`. */
-  readonly finalStep: StepResult<TOOLS, RUNTIME_CONTEXT>;
+  readonly finalStep: StepResult<TOOLS>;
 };
 
 /**
@@ -307,7 +289,7 @@ export type GenerateTextAbortEvent<
   readonly callId: string;
 
   /** Details for all previously finished steps. */
-  readonly steps: StepResult<TOOLS, RUNTIME_CONTEXT>[];
+  readonly steps: StepResult<TOOLS>[];
 
   /** The abort reason from the AbortSignal, when one is available. */
   readonly reason?: unknown;

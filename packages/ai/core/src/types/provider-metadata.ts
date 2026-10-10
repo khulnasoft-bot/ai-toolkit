@@ -10,6 +10,17 @@ fully encapsulated in the provider.
  */
 export type ProviderMetadata = SharedV3ProviderMetadata;
 
+/**
+ * Backwards-compatible alias used by batch APIs and UI integrations.
+ */
+export type GatewayProviderMetadata = {
+  readonly asyncJob?: {
+    readonly jobId?: string;
+    readonly webhookSigningSecret?: string;
+  };
+  [key: string]: unknown;
+};
+
 export const providerMetadataSchema: z.ZodType<ProviderMetadata> = z.record(
   z.string(),
   z.record(z.string(), jsonValueSchema.optional()),

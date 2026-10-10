@@ -292,9 +292,11 @@ describe('streamObject', () => {
           'text/plain; charset=utf-8',
         );
 
+        assert.ok(response.body, 'response body should exist');
+
         assert.deepStrictEqual(
           await convertReadableStreamToArray(
-            response.body?.pipeThrough(new TextDecoderStream()),
+            response.body.pipeThrough(new TextDecoderStream()),
           ),
           ['{ ', '"content": "Hello, ', 'world', '!"', ' }'],
         );

@@ -34,7 +34,7 @@ describe('config', () => {
       headers: () => ({}),
     });
 
-    expect(model.providerOptionsName).toBe('anthropic');
+    expect(Reflect.get(model, 'providerOptionsName')).toBe('anthropic');
   });
 
   it('should handle provider without dot notation', () => {
@@ -44,7 +44,7 @@ describe('config', () => {
       headers: () => ({}),
     });
 
-    expect(model.providerOptionsName).toBe('openai');
+    expect(Reflect.get(model, 'providerOptionsName')).toBe('openai');
   });
 
   it('should return empty for empty provider', () => {
@@ -58,7 +58,7 @@ describe('config', () => {
       },
     );
 
-    expect(model.providerOptionsName).toBe('');
+    expect(Reflect.get(model, 'providerOptionsName')).toBe('');
   });
 });
 

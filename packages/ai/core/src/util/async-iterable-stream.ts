@@ -12,6 +12,12 @@ export type AsyncIterableStream<T> = AsyncIterable<T> & ReadableStream<T>;
  * @param source The source ReadableStream to wrap.
  * @returns An AsyncIterableStream that can be used as both a ReadableStream and an AsyncIterable.
  */
+export function asAsyncIterableStream<T>(
+  source: ReadableStream<T>,
+): AsyncIterableStream<T> {
+  return createAsyncIterableStream(source);
+}
+
 export function createAsyncIterableStream<T>(
   source: ReadableStream<T>,
 ): AsyncIterableStream<T> {

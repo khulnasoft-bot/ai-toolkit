@@ -507,9 +507,11 @@ describe('generateObject', () => {
           'application/json; charset=utf-8',
         );
 
+        assert.ok(response.body != null);
+
         assert.deepStrictEqual(
           await convertReadableStreamToArray(
-            response.body?.pipeThrough(new TextDecoderStream()),
+            response.body.pipeThrough(new TextDecoderStream()),
           ),
           ['{"content":"Hello, world!"}'],
         );

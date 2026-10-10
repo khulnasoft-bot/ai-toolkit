@@ -2,12 +2,12 @@ import { generateText } from '@ai-toolkit/ai';
 import { deepinfra } from '@ai-toolkit/deepinfra';
 import { run } from '../lib/run';
 run(async () => {
-  const { text, usage } = await generateText({
-    model: deepinfra('mistralai/Mixtral-8x7B-Instruct-v0.1'),
-    prompt: 'Invent a new holiday and describe its traditions.',
-  });
-  console.log(text);
-  console.log();
-  console.log('Usage:', usage);
+    const { text, usage } = await generateText({
+        model: deepinfra('mistralai/Mixtral-8x7B-Instruct-v0.1'),
+        prompt: 'Invent a new holiday and describe its traditions.',
+    });
+    console.log(text);
+    console.log();
+    console.log('Usage:', usage);
 });
 //# sourceMappingURL=deepinfra.js.map

@@ -23,9 +23,19 @@ export type ToolApprovalResponseOutput<TOOLS extends ToolSet> = {
   approved: boolean;
 
   /**
+   * Whether this approval response was generated automatically.
+   */
+  isAutomatic?: boolean;
+
+  /**
    * Optional reason for the approval or denial.
    */
   reason?: string;
+
+  /**
+   * Optional signature used to validate the related approval request.
+   */
+  signature?: string;
 
   /**
    * Flag indicating whether the tool call is provider-executed.

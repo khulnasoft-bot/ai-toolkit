@@ -5,27 +5,27 @@ import { NodeSDK } from '@opentelemetry/sdk-node';
 import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { run } from '../lib/run';
 const sdk = new NodeSDK({
-  traceExporter: new ConsoleSpanExporter(),
-  instrumentations: [getNodeAutoInstrumentations()],
+    traceExporter: new ConsoleSpanExporter(),
+    instrumentations: [getNodeAutoInstrumentations()],
 });
 sdk.start();
 run(async () => {
-  const result = streamText({
-    model: anthropic('claude-3-5-sonnet-20240620'),
-    maxOutputTokens: 50,
-    prompt: 'Invent a new holiday and describe its traditions.',
-    experimental_telemetry: {
-      isEnabled: true,
-      functionId: 'my-awesome-function',
-      metadata: {
-        something: 'custom',
-        someOtherThing: 'other-value',
-      },
-    },
-  });
-  for await (const textPart of result.textStream) {
-    process.stdout.write(textPart);
-  }
-  await sdk.shutdown();
+    const result = streamText({
+        model: anthropic('claude-3-5-sonnet-20240620'),
+        maxOutputTokens: 50,
+        prompt: 'Invent a new holiday and describe its traditions.',
+        experimental_telemetry: {
+            isEnabled: true,
+            functionId: 'my-awesome-function',
+            metadata: {
+                something: 'custom',
+                someOtherThing: 'other-value',
+            },
+        },
+    });
+    for await (const textPart of result.textStream) {
+        process.stdout.write(textPart);
+    }
+    await sdk.shutdown();
 });
 //# sourceMappingURL=stream-text.js.map

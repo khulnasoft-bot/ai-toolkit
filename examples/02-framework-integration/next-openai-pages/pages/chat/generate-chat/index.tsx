@@ -17,7 +17,6 @@ export default function Page() {
                 : message.content
                     .filter(part => part.type === 'text')
                     .map(part => (
-                      // @ts-expect-error
                       <div key={part.text}>{part.text}</div>
                     ))}
             </div>

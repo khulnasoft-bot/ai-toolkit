@@ -1,62 +1,57 @@
-import { streamText } from '@ai-toolkit/ai';
+import { streamText, } from '@ai-toolkit/ai';
 import { cerebras } from '@ai-toolkit/cerebras';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 const messages = [];
 run(async () => {
-  let _toolResponseAvailable = false;
-  const result = streamText({
-    model: cerebras('llama3.1-8b'),
-    maxOutputTokens: 512,
-    tools: {
-      weather: weatherTool,
-    },
-    toolChoice: 'required',
-    prompt:
-      'What is the weather in San Francisco and what attractions should I visit?',
-  });
-  let fullResponse = '';
-  const toolCalls = [];
-  const toolResponses = [];
-  for await (const delta of result.fullStream) {
-    switch (delta.type) {
-      case 'text-delta': {
-        fullResponse += delta.text;
-        process.stdout.write(delta.text);
-        break;
-      }
-      case 'tool-call': {
-        toolCalls.push(delta);
-        process.stdout.write(
-          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
-        );
-        break;
-      }
-      case 'tool-result': {
-        if (delta.dynamic) {
-          continue;
+    let _toolResponseAvailable = false;
+    const result = streamText({
+        model: cerebras('llama3.1-8b'),
+        maxOutputTokens: 512,
+        tools: {
+            weather: weatherTool,
+        },
+        toolChoice: 'required',
+        prompt: 'What is the weather in San Francisco and what attractions should I visit?',
+    });
+    let fullResponse = '';
+    const toolCalls = [];
+    const toolResponses = [];
+    for await (const delta of result.fullStream) {
+        switch (delta.type) {
+            case 'text-delta': {
+                fullResponse += delta.text;
+                process.stdout.write(delta.text);
+                break;
+            }
+            case 'tool-call': {
+                toolCalls.push(delta);
+                process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
+                break;
+            }
+            case 'tool-result': {
+                if (delta.dynamic) {
+                    continue;
+                }
+                const transformedDelta = {
+                    ...delta,
+                    output: { type: 'json', value: delta.output },
+                };
+                toolResponses.push(transformedDelta);
+                process.stdout.write(`\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`);
+                break;
+            }
         }
-        const transformedDelta = {
-          ...delta,
-          output: { type: 'json', value: delta.output },
-        };
-        toolResponses.push(transformedDelta);
-        process.stdout.write(
-          `\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`,
-        );
-        break;
-      }
     }
-  }
-  process.stdout.write('\n\n');
-  messages.push({
-    role: 'assistant',
-    content: [{ type: 'text', text: fullResponse }, ...toolCalls],
-  });
-  if (toolResponses.length > 0) {
-    messages.push({ role: 'tool', content: toolResponses });
-  }
-  _toolResponseAvailable = toolCalls.length > 0;
-  console.log('Messages:', messages[0].content);
+    process.stdout.write('\n\n');
+    messages.push({
+        role: 'assistant',
+        content: [{ type: 'text', text: fullResponse }, ...toolCalls],
+    });
+    if (toolResponses.length > 0) {
+        messages.push({ role: 'tool', content: toolResponses });
+    }
+    _toolResponseAvailable = toolCalls.length > 0;
+    console.log('Messages:', messages[0].content);
 });
 //# sourceMappingURL=cerebras-tool-call.js.map

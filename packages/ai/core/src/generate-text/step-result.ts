@@ -1,4 +1,4 @@
-import type { ReasoningPart } from '@ai-toolkit/provider-utils';
+import type { Context, InferToolSetContext, ReasoningPart } from '@ai-toolkit/provider-utils';
 import type {
   CallWarning,
   FinishReason,
@@ -23,10 +23,43 @@ import type {
 } from './tool-result';
 import type { ToolSet } from './tool-set';
 
+export type OutputChunkTimingStats = {
+  min: number;
+  p10: number;
+  median: number;
+  avg: number;
+  p90: number;
+  max: number;
+};
+
+export type StepPerformance = {
+  responseTimeMs: number;
+  effectiveOutputTokensPerSecond: number;
+  outputTokensPerSecond: number | undefined;
+  inputTokensPerSecond: number | undefined;
+  effectiveTotalTokensPerSecond: number;
+  timeToFirstOutputMs: number | undefined;
+  timeBetweenOutputChunksMs?: OutputChunkTimingStats;
+  stepTimeMs?: number;
+  toolExecutionMs?: Record<string, number>;
+};
+
 /**
  * The result of a single step in the generation process.
  */
-export type StepResult<TOOLS extends ToolSet> = {
+export type StepResult<TOOLS extends ToolSet, RUNTIME_CONTEXT extends Context = Context> = {
+  readonly callId: string;
+  readonly stepNumber: number;
+  readonly provider: string;
+  readonly modelId: string;
+  readonly model: {
+    readonly provider: string;
+    readonly modelId: string;
+  };
+  readonly runtimeContext: RUNTIME_CONTEXT;
+  readonly toolsContext: InferToolSetContext<TOOLS>;
+  readonly performance: StepPerformance;
+
   /**
 The content that was generated in the last step.
    */
@@ -137,9 +170,15 @@ results that can be fully encapsulated in the provider.
   readonly providerMetadata: ProviderMetadata | undefined;
 };
 
-export class DefaultStepResult<TOOLS extends ToolSet>
-  implements StepResult<TOOLS>
-{
+export class DefaultStepResult<TOOLS extends ToolSet> implements StepResult<TOOLS> {
+  readonly callId: StepResult<TOOLS>['callId'];
+  readonly stepNumber: StepResult<TOOLS>['stepNumber'];
+  readonly provider: StepResult<TOOLS>['provider'];
+  readonly modelId: StepResult<TOOLS>['modelId'];
+  readonly model: StepResult<TOOLS>['model'];
+  readonly runtimeContext: StepResult<TOOLS>['runtimeContext'];
+  readonly toolsContext: StepResult<TOOLS>['toolsContext'];
+  readonly performance: StepResult<TOOLS>['performance'];
   readonly content: StepResult<TOOLS>['content'];
   readonly finishReason: StepResult<TOOLS>['finishReason'];
   readonly rawFinishReason: StepResult<TOOLS>['rawFinishReason'];
@@ -150,6 +189,22 @@ export class DefaultStepResult<TOOLS extends ToolSet>
   readonly providerMetadata: StepResult<TOOLS>['providerMetadata'];
 
   constructor({
+    callId = '',
+    stepNumber = 0,
+    provider = '',
+    modelId = '',
+    runtimeContext = {} as Context,
+    toolsContext = {} as InferToolSetContext<TOOLS>,
+    performance = {
+      responseTimeMs: 0,
+      effectiveOutputTokensPerSecond: 0,
+      outputTokensPerSecond: undefined,
+      inputTokensPerSecond: undefined,
+      effectiveTotalTokensPerSecond: 0,
+      timeToFirstOutputMs: undefined,
+      timeBetweenOutputChunksMs: undefined,
+      toolExecutionMs: {},
+    },
     content,
     finishReason,
     rawFinishReason,
@@ -159,6 +214,13 @@ export class DefaultStepResult<TOOLS extends ToolSet>
     response,
     providerMetadata,
   }: {
+    callId?: StepResult<TOOLS>['callId'];
+    stepNumber?: StepResult<TOOLS>['stepNumber'];
+    provider?: StepResult<TOOLS>['provider'];
+    modelId?: StepResult<TOOLS>['modelId'];
+    runtimeContext?: StepResult<TOOLS>['runtimeContext'];
+    toolsContext?: StepResult<TOOLS>['toolsContext'];
+    performance?: StepResult<TOOLS>['performance'];
     content: StepResult<TOOLS>['content'];
     finishReason: StepResult<TOOLS>['finishReason'];
     rawFinishReason: StepResult<TOOLS>['rawFinishReason'];
@@ -168,6 +230,14 @@ export class DefaultStepResult<TOOLS extends ToolSet>
     response: StepResult<TOOLS>['response'];
     providerMetadata: StepResult<TOOLS>['providerMetadata'];
   }) {
+    this.callId = callId;
+    this.stepNumber = stepNumber;
+    this.provider = provider;
+    this.modelId = modelId;
+    this.model = { provider, modelId };
+    this.runtimeContext = runtimeContext;
+    this.toolsContext = toolsContext;
+    this.performance = performance;
     this.content = content;
     this.finishReason = finishReason;
     this.rawFinishReason = rawFinishReason;

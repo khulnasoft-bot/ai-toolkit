@@ -18,4 +18,19 @@ export type ToolApprovalRequestOutput<TOOLS extends ToolSet> = {
    * Tool call that the approval request is for.
    */
   toolCall: TypedToolCall<TOOLS>;
+
+  /**
+   * Whether the tool call had a provider-level automatic approval/deny decision.
+   */
+  isAutomatic?: boolean;
+
+  /**
+   * Optional signature used to verify approval requests.
+   */
+  signature?: string;
+
+  /**
+   * Optional reason for the approval request.
+   */
+  reason?: string;
 };

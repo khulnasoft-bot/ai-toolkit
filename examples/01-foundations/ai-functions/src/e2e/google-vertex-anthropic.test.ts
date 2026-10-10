@@ -118,6 +118,7 @@ describe.each(Object.values(RUNTIME_VARIANTS))(
 const toolTests = (model: LanguageModelV3) => {
   it.skipIf(!['claude-3-5-sonnet-v2@20241022'].includes(model.modelId))(
     'should execute computer tool commands',
+    { timeout: COMPUTER_USE_TEST_MILLIS },
     async () => {
       const result = await generateText({
         model,
@@ -166,11 +167,11 @@ const toolTests = (model: LanguageModelV3) => {
       expect(result.text.toLowerCase()).toMatch(/color theme|dark mode/);
       expect(result.usage?.totalTokens).toBeGreaterThan(0);
     },
-    { timeout: COMPUTER_USE_TEST_MILLIS },
   );
 
   it.skipIf(!['claude-3-5-sonnet-v2@20241022'].includes(model.modelId))(
     'should execute computer use bash tool commands',
+    { timeout: COMPUTER_USE_TEST_MILLIS },
     async () => {
       const result = await generateText({
         model,
@@ -199,11 +200,11 @@ README.md     build         data          node_modules  package.json  src       
       expect(result.text).toContain('node_modules'); // Check for directory
       expect(result.usage?.totalTokens).toBeGreaterThan(0);
     },
-    { timeout: COMPUTER_USE_TEST_MILLIS },
   );
 
   it.skipIf(!['claude-3-5-sonnet-v2@20241022'].includes(model.modelId))(
     'should execute computer user editor tool commands',
+    { timeout: COMPUTER_USE_TEST_MILLIS },
     async () => {
       let editorContent = '## README\nThis is a test file.';
 
@@ -239,6 +240,5 @@ README.md     build         data          node_modules  package.json  src       
       expect(editorContent).not.toBe('## README\nThis is a test file.');
       expect(result.usage?.totalTokens).toBeGreaterThan(0);
     },
-    { timeout: COMPUTER_USE_TEST_MILLIS },
   );
 };

@@ -3,16 +3,16 @@ import { elevenlabs } from '@ai-toolkit/elevenlabs';
 import { run } from '../lib/run';
 import { saveAudioFile } from '../lib/save-audio';
 run(async () => {
-  const result = await generateSpeech({
-    model: elevenlabs.speech('eleven_turbo_v2_5'),
-    text: 'This uses the Turbo model which balances quality and speed, supporting 32 languages.',
-    language: 'en', // Can be any of the 32 supported languages
-  });
-  console.log('Audio:', result.audio);
-  console.log('Warnings:', result.warnings);
-  console.log('Responses:', result.responses);
-  console.log('Provider Metadata:', result.providerMetadata);
-  console.log('Model used: eleven_turbo_v2_5 (low latency, high quality)');
-  await saveAudioFile(result.audio);
+    const result = await generateSpeech({
+        model: elevenlabs.speech('eleven_turbo_v2_5'),
+        text: 'This uses the Turbo model which balances quality and speed, supporting 32 languages.',
+        language: 'en', // Can be any of the 32 supported languages
+    });
+    console.log('Audio:', result.audio);
+    console.log('Warnings:', result.warnings);
+    console.log('Responses:', result.responses);
+    console.log('Provider Metadata:', result.providerMetadata);
+    console.log('Model used: eleven_turbo_v2_5 (low latency, high quality)');
+    await saveAudioFile(result.audio);
 });
 //# sourceMappingURL=elevenlabs-turbo.js.map
