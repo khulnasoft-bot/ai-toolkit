@@ -178,7 +178,12 @@ describe('contextInputUsage', () => {
 
   it('renders input usage without modelId', () => {
     render(
-      <Context defaultOpen maxTokens={100} usage={usage({ inputTokens: 50 })} usedTokens={50}>
+      <Context
+        defaultOpen
+        maxTokens={100}
+        usage={usage({ inputTokens: 50 })}
+        usedTokens={50}
+      >
         <ContextContent>
           <ContextInputUsage />
         </ContextContent>
@@ -231,7 +236,12 @@ describe('contextOutputUsage', () => {
 
   it('renders output usage without modelId', () => {
     render(
-      <Context defaultOpen maxTokens={100} usage={usage({ outputTokens: 25 })} usedTokens={25}>
+      <Context
+        defaultOpen
+        maxTokens={100}
+        usage={usage({ outputTokens: 25 })}
+        usedTokens={25}
+      >
         <ContextContent>
           <ContextOutputUsage />
         </ContextContent>
@@ -283,7 +293,12 @@ describe('contextReasoningUsage', () => {
 
   it('renders reasoning usage without modelId', () => {
     render(
-      <Context defaultOpen maxTokens={100} usage={usage({ reasoningTokens: 10 })} usedTokens={10}>
+      <Context
+        defaultOpen
+        maxTokens={100}
+        usage={usage({ reasoningTokens: 10 })}
+        usedTokens={10}
+      >
         <ContextContent>
           <ContextReasoningUsage />
         </ContextContent>
@@ -335,7 +350,12 @@ describe('contextCacheUsage', () => {
 
   it('renders cache usage without modelId', () => {
     render(
-      <Context defaultOpen maxTokens={100} usage={usage({ cachedInputTokens: 20 })} usedTokens={20}>
+      <Context
+        defaultOpen
+        maxTokens={100}
+        usage={usage({ cachedInputTokens: 20 })}
+        usedTokens={20}
+      >
         <ContextContent>
           <ContextCacheUsage />
         </ContextContent>

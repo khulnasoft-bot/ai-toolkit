@@ -1,5 +1,8 @@
 import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 
 export const openaiWebSearchAgent = new ToolLoopAgent({
   model: openai('gpt-5-mini'),
@@ -26,4 +29,6 @@ export const openaiWebSearchAgent = new ToolLoopAgent({
   },
 });
 
-export type OpenAIWebSearchMessage = InferAgentUIMessage<typeof openaiWebSearchAgent>;
+export type OpenAIWebSearchMessage = InferAgentUIMessage<
+  typeof openaiWebSearchAgent
+>;

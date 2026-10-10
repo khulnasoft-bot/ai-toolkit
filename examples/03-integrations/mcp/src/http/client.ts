@@ -5,7 +5,9 @@ import 'dotenv/config';
 import { createMCPClient, type MCPClient } from '@ai-toolkit/mcp';
 
 async function main() {
-  const transport = new StreamableHTTPClientTransport(new URL('http://localhost:3000/mcp'));
+  const transport = new StreamableHTTPClientTransport(
+    new URL('http://localhost:3000/mcp'),
+  );
 
   const mcpClient: MCPClient = await createMCPClient({
     transport,

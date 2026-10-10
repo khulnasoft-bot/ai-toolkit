@@ -42,7 +42,9 @@ export function createProviderStreamError({
   return error;
 }
 
-export function isProviderStreamError(error: unknown): error is ProviderStreamError {
+export function isProviderStreamError(
+  error: unknown,
+): error is ProviderStreamError {
   return (
     typeof error === 'object' &&
     error != null &&

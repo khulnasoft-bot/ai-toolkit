@@ -9,7 +9,8 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
     .filter(path => {
       return (
         path.node.source.type === 'StringLiteral' &&
-        (path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit')
+        (path.node.source.value === 'ai-toolkit' ||
+          path.node.source.value === 'ai-toolkit')
       );
     })
     .forEach(path => {
@@ -35,9 +36,14 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
       return (
         path.node.name === 'convertToCoreMessages' &&
         parent.node.type !== 'ImportSpecifier' &&
-        !(parent.node.type === 'MemberExpression' && parent.node.property === path.node) &&
+        !(
+          parent.node.type === 'MemberExpression' &&
+          parent.node.property === path.node
+        ) &&
         !(parent.node.type === 'Property' && parent.node.key === path.node) &&
-        !(parent.node.type === 'ObjectProperty' && parent.node.key === path.node)
+        !(
+          parent.node.type === 'ObjectProperty' && parent.node.key === path.node
+        )
       );
     })
     .forEach(path => {

@@ -1,4 +1,8 @@
-import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import {
+  type InferSchema,
+  lazySchema,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 export const falImageProviderOptionsSchema = lazySchema(() =>
@@ -78,7 +82,10 @@ export const falImageProviderOptionsSchema = lazySchema(() =>
         if (data.acceleration !== undefined && data.acceleration !== null) {
           result.acceleration = data.acceleration;
         }
-        if (data.useMultipleImages !== undefined && data.useMultipleImages !== null) {
+        if (
+          data.useMultipleImages !== undefined &&
+          data.useMultipleImages !== null
+        ) {
           result.useMultipleImages = data.useMultipleImages;
         }
 
@@ -121,4 +128,6 @@ export const falImageProviderOptionsSchema = lazySchema(() =>
   ),
 );
 
-export type FalImageProviderOptions = InferSchema<typeof falImageProviderOptionsSchema>;
+export type FalImageProviderOptions = InferSchema<
+  typeof falImageProviderOptionsSchema
+>;

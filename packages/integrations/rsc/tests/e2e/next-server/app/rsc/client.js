@@ -31,10 +31,18 @@ export function Client({ actions }) {
 
       {/* Test suites */}
       <div style={{ display: 'inline-flex', flexDirection: 'column', gap: 5 }}>
-        <button type="button" id="test-streamable-value" onClick={testStreamableValue}>
+        <button
+          type="button"
+          id="test-streamable-value"
+          onClick={testStreamableValue}
+        >
           Test Streamable Value
         </button>
-        <button type="button" id="test-streamable-ui" onClick={testStreamableUI}>
+        <button
+          type="button"
+          id="test-streamable-ui"
+          onClick={testStreamableUI}
+        >
           Test Streamable UI
         </button>
       </div>

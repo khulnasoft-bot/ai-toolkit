@@ -4,7 +4,11 @@ import {
   type SpeechModelV3,
   type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
-import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  type FetchFunction,
+  loadApiKey,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { ElevenLabsSpeechModel } from './elevenlabs-speech-model';
 import type { ElevenLabsSpeechModelId } from './elevenlabs-speech-options';
 import { ElevenLabsTranscriptionModel } from './elevenlabs-transcription-model';
@@ -56,7 +60,9 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create an ElevenLabs provider instance.
  */
-export function createElevenLabs(options: ElevenLabsProviderSettings = {}): ElevenLabsProvider {
+export function createElevenLabs(
+  options: ElevenLabsProviderSettings = {},
+): ElevenLabsProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {

@@ -3,11 +3,20 @@ import { describe, expectTypeOf, it } from 'vitest';
 import { z } from 'zod/v4';
 import type { ToolSet } from '../generate-text/tool-set';
 import type { ChatInit } from './chat';
-import type { InferUITools, UIDataTypes, UIMessage, UITools } from './ui-messages';
+import type {
+  InferUITools,
+  UIDataTypes,
+  UIMessage,
+  UITools,
+} from './ui-messages';
 
 type ToolCallCallback<TOOLS extends ToolSet | UITools> = NonNullable<
   ChatInit<
-    UIMessage<never, UIDataTypes, TOOLS extends ToolSet ? InferUITools<TOOLS> : TOOLS>
+    UIMessage<
+      never,
+      UIDataTypes,
+      TOOLS extends ToolSet ? InferUITools<TOOLS> : TOOLS
+    >
   >['onToolCall']
 >;
 
@@ -25,7 +34,9 @@ describe('onToolCall', () => {
         };
       };
 
-      expectTypeOf<ToolCallArgument<Tools> & { dynamic?: false }>().toMatchTypeOf<{
+      expectTypeOf<
+        ToolCallArgument<Tools> & { dynamic?: false }
+      >().toMatchTypeOf<{
         toolName: 'simple';
         input: number;
       }>();
@@ -39,7 +50,9 @@ describe('onToolCall', () => {
         };
       };
 
-      expectTypeOf<ToolCallArgument<Tools> & { dynamic?: false }>().toMatchTypeOf<{
+      expectTypeOf<
+        ToolCallArgument<Tools> & { dynamic?: false }
+      >().toMatchTypeOf<{
         toolName: 'simple';
         input: number;
       }>();
@@ -62,7 +75,9 @@ describe('onToolCall', () => {
         };
       };
 
-      expectTypeOf<ToolCallArgument<Tools> & { dynamic?: false }>().toMatchTypeOf<
+      expectTypeOf<
+        ToolCallArgument<Tools> & { dynamic?: false }
+      >().toMatchTypeOf<
         | {
             toolName: 'simple';
             input: number;
@@ -92,7 +107,9 @@ describe('onToolCall', () => {
         };
       };
 
-      expectTypeOf<ToolCallArgument<Tools> & { dynamic?: false }>().toMatchTypeOf<
+      expectTypeOf<
+        ToolCallArgument<Tools> & { dynamic?: false }
+      >().toMatchTypeOf<
         | {
             toolName: 'simple';
             input: number;
@@ -119,7 +136,9 @@ describe('onToolCall', () => {
         simple,
       };
 
-      expectTypeOf<ToolCallArgument<typeof tools> & { dynamic?: false }>().toMatchTypeOf<{
+      expectTypeOf<
+        ToolCallArgument<typeof tools> & { dynamic?: false }
+      >().toMatchTypeOf<{
         toolName: 'simple';
         input: number;
       }>();
@@ -134,7 +153,9 @@ describe('onToolCall', () => {
         simple,
       };
 
-      expectTypeOf<ToolCallArgument<typeof tools> & { dynamic?: false }>().toMatchTypeOf<{
+      expectTypeOf<
+        ToolCallArgument<typeof tools> & { dynamic?: false }
+      >().toMatchTypeOf<{
         toolName: 'simple';
         input: number;
       }>();
@@ -163,7 +184,9 @@ describe('onToolCall', () => {
         complex,
       };
 
-      expectTypeOf<ToolCallArgument<typeof tools> & { dynamic?: false }>().toMatchTypeOf<
+      expectTypeOf<
+        ToolCallArgument<typeof tools> & { dynamic?: false }
+      >().toMatchTypeOf<
         | {
             toolName: 'simple';
             input: number;
@@ -195,7 +218,9 @@ describe('onToolCall', () => {
         complex,
       };
 
-      expectTypeOf<ToolCallArgument<typeof tools> & { dynamic?: false }>().toMatchTypeOf<
+      expectTypeOf<
+        ToolCallArgument<typeof tools> & { dynamic?: false }
+      >().toMatchTypeOf<
         | {
             toolName: 'simple';
             input: number;

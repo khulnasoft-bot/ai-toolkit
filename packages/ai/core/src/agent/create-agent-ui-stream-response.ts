@@ -1,4 +1,7 @@
-import type { StreamTextTransform, UIMessageStreamOptions } from '../generate-text';
+import type {
+  StreamTextTransform,
+  UIMessageStreamOptions,
+} from '../generate-text';
 import type { Output } from '../generate-text/output';
 import type { ToolSet } from '../generate-text/tool-set';
 import type { TimeoutConfiguration } from '../prompt/call-settings';
@@ -33,7 +36,9 @@ export async function createAgentUIStreamResponse<
   abortSignal?: AbortSignal;
   timeout?: TimeoutConfiguration;
   options?: CALL_OPTIONS;
-  experimental_transform?: StreamTextTransform<TOOLS> | Array<StreamTextTransform<TOOLS>>;
+  experimental_transform?:
+    | StreamTextTransform<TOOLS>
+    | Array<StreamTextTransform<TOOLS>>;
 } & UIMessageStreamResponseInit &
   UIMessageStreamOptions<
     UIMessage<MESSAGE_METADATA, never, InferUITools<TOOLS>>

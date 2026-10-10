@@ -38,7 +38,9 @@ describe('nodeHeader', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<NodeHeader className="custom-header">Header</NodeHeader>);
+    const { container } = render(
+      <NodeHeader className="custom-header">Header</NodeHeader>,
+    );
     expect(container.firstChild).toHaveClass('custom-header');
   });
 });
@@ -71,7 +73,9 @@ describe('nodeContent', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<NodeContent className="custom-content">Content</NodeContent>);
+    const { container } = render(
+      <NodeContent className="custom-content">Content</NodeContent>,
+    );
     expect(container.firstChild).toHaveClass('custom-content');
   });
 });
@@ -83,7 +87,9 @@ describe('nodeFooter', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<NodeFooter className="custom-footer">Footer</NodeFooter>);
+    const { container } = render(
+      <NodeFooter className="custom-footer">Footer</NodeFooter>,
+    );
     expect(container.firstChild).toHaveClass('custom-footer');
   });
 });

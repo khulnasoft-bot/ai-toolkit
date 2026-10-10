@@ -23,9 +23,16 @@ describe('isJSONSerializable', () => {
   });
 
   it('returns true for arrays when all values are serializable', () => {
-    expect(isJSONSerializable(['test', 42, true, null, undefined, { nested: ['value'] }])).toBe(
-      true,
-    );
+    expect(
+      isJSONSerializable([
+        'test',
+        42,
+        true,
+        null,
+        undefined,
+        { nested: ['value'] },
+      ]),
+    ).toBe(true);
   });
 
   it('returns false for arrays containing non-serializable values', () => {

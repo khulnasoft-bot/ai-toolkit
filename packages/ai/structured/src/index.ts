@@ -31,7 +31,8 @@ export function createStructuredEngine(): StructuredEngine {
   const generators = new Map<string, StructuredGenerator>();
 
   return {
-    registerGenerator: (modelId, generator) => generators.set(modelId, generator),
+    registerGenerator: (modelId, generator) =>
+      generators.set(modelId, generator),
     getGenerator: modelId => generators.get(modelId),
     listGenerators: () => [...generators.values()],
   };

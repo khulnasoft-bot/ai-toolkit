@@ -1,4 +1,7 @@
-import type { LanguageModelV3StreamPart, SharedV3Warning } from '@ai-toolkit/provider';
+import type {
+  LanguageModelV3StreamPart,
+  SharedV3Warning,
+} from '@ai-toolkit/provider';
 import {
   getErrorMessage,
   type IdGenerator,
@@ -9,11 +12,18 @@ import {
 import type { Tracer } from '@opentelemetry/api';
 import { ToolCallNotFoundForApprovalError } from '../error/tool-call-not-found-for-approval-error';
 import type { TelemetrySettings } from '../telemetry/telemetry-settings';
-import type { FinishReason, LanguageModelUsage, ProviderMetadata } from '../types';
+import type {
+  FinishReason,
+  LanguageModelUsage,
+  ProviderMetadata,
+} from '../types';
 import type { Source } from '../types/language-model';
 import { asLanguageModelUsage } from '../types/usage';
 import { executeToolCall } from './execute-tool-call';
-import { DefaultGeneratedFileWithType, type GeneratedFile } from './generated-file';
+import {
+  DefaultGeneratedFileWithType,
+  type GeneratedFile,
+} from './generated-file';
 import { isApprovalNeeded } from './is-approval-needed';
 import { parseToolCall } from './parse-tool-call';
 import type { ToolApprovalRequestOutput } from './tool-approval-request-output';
@@ -135,7 +145,9 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
   let toolResultsStreamController: ReadableStreamDefaultController<
     SingleRequestTextStreamPart<TOOLS>
   > | null = null;
-  const toolResultsStream = new ReadableStream<SingleRequestTextStreamPart<TOOLS>>({
+  const toolResultsStream = new ReadableStream<
+    SingleRequestTextStreamPart<TOOLS>
+  >({
     start(controller) {
       toolResultsStreamController = controller;
     },
@@ -151,7 +163,9 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
   const toolCallsByToolCallId = new Map<string, TypedToolCall<TOOLS>>();
 
   let canClose = false;
-  let finishChunk: (SingleRequestTextStreamPart<TOOLS> & { type: 'finish' }) | undefined;
+  let finishChunk:
+    | (SingleRequestTextStreamPart<TOOLS> & { type: 'finish' })
+    | undefined;
 
   function attemptClose() {
     // close the tool results controller if no more outstanding tool calls
@@ -174,7 +188,9 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
   >({
     async transform(
       chunk: LanguageModelV3StreamPart,
-      controller: TransformStreamDefaultController<SingleRequestTextStreamPart<TOOLS>>,
+      controller: TransformStreamDefaultController<
+        SingleRequestTextStreamPart<TOOLS>
+      >,
     ) {
       const chunkType = chunk.type;
 
@@ -283,8 +299,9 @@ export function runToolsTransformation<TOOLS extends ToolSet>({
                 messages,
                 abortSignal,
                 context:
-                  toolsContext[toolCall.toolName as keyof InferToolSetContext<TOOLS>] ??
-                  experimental_context,
+                  toolsContext[
+                    toolCall.toolName as keyof InferToolSetContext<TOOLS>
+                  ] ?? experimental_context,
                 experimental_context,
               });
             }

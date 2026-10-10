@@ -89,10 +89,12 @@ describe('MockLanguageModelV2', () => {
       doStream: [streamResult('first'), streamResult('second')],
     });
 
-    await expect(readStreamText((await model.doStream({} as never)).stream)).resolves.toBe('first');
-    await expect(readStreamText((await model.doStream({} as never)).stream)).resolves.toBe(
-      'second',
-    );
+    await expect(
+      readStreamText((await model.doStream({} as never)).stream),
+    ).resolves.toBe('first');
+    await expect(
+      readStreamText((await model.doStream({} as never)).stream),
+    ).resolves.toBe('second');
     expect(model.doStreamCalls).toHaveLength(2);
   });
 });
@@ -116,10 +118,12 @@ describe('MockLanguageModelV3', () => {
       doStream: [streamResult('first'), streamResult('second')],
     });
 
-    await expect(readStreamText((await model.doStream({} as never)).stream)).resolves.toBe('first');
-    await expect(readStreamText((await model.doStream({} as never)).stream)).resolves.toBe(
-      'second',
-    );
+    await expect(
+      readStreamText((await model.doStream({} as never)).stream),
+    ).resolves.toBe('first');
+    await expect(
+      readStreamText((await model.doStream({} as never)).stream),
+    ).resolves.toBe('second');
     expect(model.doStreamCalls).toHaveLength(2);
   });
 });
@@ -143,10 +147,12 @@ describe('MockLanguageModelV4', () => {
       doStream: [streamResult('first'), streamResult('second')],
     });
 
-    await expect(readStreamText((await model.doStream({} as never)).stream)).resolves.toBe('first');
-    await expect(readStreamText((await model.doStream({} as never)).stream)).resolves.toBe(
-      'second',
-    );
+    await expect(
+      readStreamText((await model.doStream({} as never)).stream),
+    ).resolves.toBe('first');
+    await expect(
+      readStreamText((await model.doStream({} as never)).stream),
+    ).resolves.toBe('second');
     expect(model.doStreamCalls).toHaveLength(2);
   });
 });

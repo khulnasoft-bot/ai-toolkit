@@ -15,7 +15,8 @@ import { injectFetchHeaders } from './inject-fetch-headers';
 const mockPrepareAnthropicTools = vi.mocked(prepareTools);
 
 vi.mock('@ai-toolkit/anthropic/internal', async importOriginal => {
-  const original = await importOriginal<typeof import('@ai-toolkit/anthropic/internal')>();
+  const original =
+    await importOriginal<typeof import('@ai-toolkit/anthropic/internal')>();
   return {
     ...original,
     prepareTools: vi.fn(),
@@ -100,7 +101,9 @@ const server = createTestServer({
 function prepareJsonFixtureResponse(filename: string) {
   server.urls[generateUrl].response = {
     type: 'json-value',
-    body: JSON.parse(fs.readFileSync(`src/__fixtures__/${filename}.json`, 'utf8')),
+    body: JSON.parse(
+      fs.readFileSync(`src/__fixtures__/${filename}.json`, 'utf8'),
+    ),
   };
   return;
 }
@@ -1075,7 +1078,8 @@ describe('doStream', () => {
 
     const chunks = await convertReadableStreamToArray(stream);
 
-    expect(chunks.filter(chunk => chunk.type === 'finish')).toMatchInlineSnapshot(`
+    expect(chunks.filter(chunk => chunk.type === 'finish'))
+      .toMatchInlineSnapshot(`
         [
           {
             "finishReason": {
@@ -1150,7 +1154,9 @@ describe('doStream', () => {
     const chunks = await convertReadableStreamToArray(stream);
     const finishChunk = chunks.find(chunk => chunk.type === 'finish');
 
-    expect(finishChunk?.providerMetadata?.bedrock?.stopSequence).toBe('CUSTOM_END');
+    expect(finishChunk?.providerMetadata?.bedrock?.stopSequence).toBe(
+      'CUSTOM_END',
+    );
     expect(finishChunk?.finishReason).toEqual({
       unified: 'stop',
       raw: 'stop_sequence',
@@ -1802,7 +1808,9 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-tool.1');
 
     const { stream } = await model.doStream({
-      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] }],
+      prompt: [
+        { role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] },
+      ],
       responseFormat: {
         type: 'json',
         schema: {
@@ -1869,7 +1877,9 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-tool.2');
 
     const { stream } = await model.doStream({
-      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] }],
+      prompt: [
+        { role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] },
+      ],
       responseFormat: {
         type: 'json',
         schema: {
@@ -1953,7 +1963,9 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-only-text-first.1');
 
     const { stream } = await model.doStream({
-      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Return name data' }] }],
+      prompt: [
+        { role: 'user', content: [{ type: 'text', text: 'Return name data' }] },
+      ],
       responseFormat: {
         type: 'json',
         schema: {
@@ -2042,7 +2054,9 @@ describe('doStream', () => {
     prepareChunksFixtureResponse('bedrock-json-tool.3');
 
     const { stream } = await model.doStream({
-      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate data' }] }],
+      prompt: [
+        { role: 'user', content: [{ type: 'text', text: 'Generate data' }] },
+      ],
       responseFormat: {
         type: 'json',
         schema: {
@@ -2401,7 +2415,9 @@ describe('doStream', () => {
 
   it('should stream text, then regular tool calls, with JSON response format available', async () => {
     setupMockEventStreamHandler();
-    prepareChunksFixtureResponse('bedrock-json-tool-text-then-weather-then-json.1');
+    prepareChunksFixtureResponse(
+      'bedrock-json-tool-text-then-weather-then-json.1',
+    );
 
     const { stream } = await model.doStream({
       prompt: [
@@ -2577,7 +2593,9 @@ describe('doStream', () => {
     await convertReadableStreamToArray(result.stream);
 
     const requestBody = await server.calls[0].requestBodyJson;
-    expect(requestBody.additionalModelRequestFields?.reasoningConfig).toBeUndefined();
+    expect(
+      requestBody.additionalModelRequestFields?.reasoningConfig,
+    ).toBeUndefined();
   });
 
   it('should support tool calls with empty input (no arguments)', async () => {
@@ -2647,7 +2665,9 @@ describe('doGenerate', () => {
     reasoningContent?:
       | BedrockReasoningContentBlock
       | BedrockRedactedReasoningContentBlock
-      | Array<BedrockReasoningContentBlock | BedrockRedactedReasoningContentBlock>;
+      | Array<
+          BedrockReasoningContentBlock | BedrockRedactedReasoningContentBlock
+        >;
   }) {
     server.urls[generateUrl].response = {
       type: 'json-value',
@@ -3095,22 +3115,36 @@ describe('doGenerate', () => {
     const requestBody = await server.calls[0].requestBodyJson;
 
     // Tool with empty description should not have description field
-    expect(requestBody.toolConfig.tools[0].toolSpec).not.toHaveProperty('description');
-    expect(requestBody.toolConfig.tools[0].toolSpec.name).toBe('tool-with-empty-desc');
+    expect(requestBody.toolConfig.tools[0].toolSpec).not.toHaveProperty(
+      'description',
+    );
+    expect(requestBody.toolConfig.tools[0].toolSpec.name).toBe(
+      'tool-with-empty-desc',
+    );
 
     // Tool with whitespace-only description should not have description field
-    expect(requestBody.toolConfig.tools[1].toolSpec).not.toHaveProperty('description');
-    expect(requestBody.toolConfig.tools[1].toolSpec.name).toBe('tool-with-whitespace-desc');
+    expect(requestBody.toolConfig.tools[1].toolSpec).not.toHaveProperty(
+      'description',
+    );
+    expect(requestBody.toolConfig.tools[1].toolSpec.name).toBe(
+      'tool-with-whitespace-desc',
+    );
 
     // Tool with valid description should have description field
-    expect(requestBody.toolConfig.tools[2].toolSpec.description).toBe('Valid description');
-    expect(requestBody.toolConfig.tools[2].toolSpec.name).toBe('tool-with-valid-desc');
+    expect(requestBody.toolConfig.tools[2].toolSpec.description).toBe(
+      'Valid description',
+    );
+    expect(requestBody.toolConfig.tools[2].toolSpec.name).toBe(
+      'tool-with-valid-desc',
+    );
   });
 
   it('should handle Anthropic provider-defined tools', async () => {
     mockPrepareAnthropicTools.mockReturnValue(
       Promise.resolve({
-        tools: [{ name: 'bash', type: 'bash_20241022', cache_control: undefined }],
+        tools: [
+          { name: 'bash', type: 'bash_20241022', cache_control: undefined },
+        ],
         toolChoice: { type: 'auto' },
         toolWarnings: [],
         betas: new Set(['computer-use-2024-10-22']),
@@ -3597,7 +3631,9 @@ describe('doGenerate', () => {
         reasoning_effort: 'medium',
       },
     });
-    expect(requestBody.additionalModelRequestFields?.reasoningConfig).toBeUndefined();
+    expect(
+      requestBody.additionalModelRequestFields?.reasoningConfig,
+    ).toBeUndefined();
     expect(requestBody.additionalModelRequestFields?.thinking).toBeUndefined();
   });
 
@@ -3617,7 +3653,9 @@ describe('doGenerate', () => {
     });
 
     const requestBody = await server.calls[0].requestBodyJson;
-    expect(requestBody.additionalModelRequestFields?.reasoningConfig).toBeUndefined();
+    expect(
+      requestBody.additionalModelRequestFields?.reasoningConfig,
+    ).toBeUndefined();
 
     expect(result.warnings).toContainEqual({
       type: 'unsupported',
@@ -4003,7 +4041,9 @@ describe('doGenerate', () => {
     });
 
     it('should set isJsonResponseFromTool in provider metadata', async () => {
-      expect(result.providerMetadata?.bedrock?.isJsonResponseFromTool).toBe(true);
+      expect(result.providerMetadata?.bedrock?.isJsonResponseFromTool).toBe(
+        true,
+      );
     });
   });
 
@@ -4223,7 +4263,9 @@ describe('doGenerate', () => {
     prepareJsonFixtureResponse('bedrock-json-tool.2');
 
     const result = await model.doGenerate({
-      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] }],
+      prompt: [
+        { role: 'user', content: [{ type: 'text', text: 'Generate JSON' }] },
+      ],
       responseFormat: {
         type: 'json',
         schema: {
@@ -4314,7 +4356,9 @@ describe('doGenerate', () => {
     prepareJsonFixtureResponse('bedrock-json-tool.3');
 
     const result = await model.doGenerate({
-      prompt: [{ role: 'user', content: [{ type: 'text', text: 'Generate data' }] }],
+      prompt: [
+        { role: 'user', content: [{ type: 'text', text: 'Generate data' }] },
+      ],
       responseFormat: {
         type: 'json',
         schema: {

@@ -1,19 +1,30 @@
 'use client';
 
-import { DefaultChatTransport, getStaticToolName, isStaticToolUIPart } from '@ai-toolkit/ai';
+import {
+  DefaultChatTransport,
+  getStaticToolName,
+  isStaticToolUIPart,
+} from '@ai-toolkit/ai';
 import { useChat } from '@ai-toolkit/react';
 import { useState } from 'react';
 import { tools } from '../api/use-chat-human-in-the-loop/tools';
-import type { HumanInTheLoopUIMessage, MyTools } from '../api/use-chat-human-in-the-loop/types';
-import { APPROVAL, getToolsRequiringConfirmation } from '../api/use-chat-human-in-the-loop/utils';
+import type {
+  HumanInTheLoopUIMessage,
+  MyTools,
+} from '../api/use-chat-human-in-the-loop/types';
+import {
+  APPROVAL,
+  getToolsRequiringConfirmation,
+} from '../api/use-chat-human-in-the-loop/utils';
 
 export default function Chat() {
   const [input, setInput] = useState('');
-  const { messages, sendMessage, addToolOutput } = useChat<HumanInTheLoopUIMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/use-chat-human-in-the-loop',
-    }),
-  });
+  const { messages, sendMessage, addToolOutput } =
+    useChat<HumanInTheLoopUIMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/use-chat-human-in-the-loop',
+      }),
+    });
 
   const toolsRequiringConfirmation = getToolsRequiringConfirmation(tools);
 
@@ -48,7 +59,8 @@ export default function Chat() {
               ) {
                 return (
                   <div key={toolCallId}>
-                    Run <span className={dynamicInfoStyles}>{toolName}</span> with args: <br />
+                    Run <span className={dynamicInfoStyles}>{toolName}</span>{' '}
+                    with args: <br />
                     <span className={dynamicInfoStyles}>
                       {JSON.stringify(toolInvocation.input, null, 2)}
                     </span>
@@ -93,8 +105,13 @@ export default function Chat() {
                 <div key={toolCallId}>
                   <div className="font-mono text-sm bg-zinc-100 w-fit">
                     call
-                    {toolInvocation.state === 'output-available' ? 'ed' : 'ing'} {toolName}
-                    {part.output && <div>{JSON.stringify(part.output, null, 2)}</div>}
+                    {toolInvocation.state === 'output-available'
+                      ? 'ed'
+                      : 'ing'}{' '}
+                    {toolName}
+                    {part.output && (
+                      <div>{JSON.stringify(part.output, null, 2)}</div>
+                    )}
                   </div>
                 </div>
               );

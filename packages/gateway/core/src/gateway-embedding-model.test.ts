@@ -1,6 +1,9 @@
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { describe, expect, it } from 'vitest';
-import { GatewayInternalServerError, GatewayInvalidRequestError } from './errors';
+import {
+  GatewayInternalServerError,
+  GatewayInvalidRequestError,
+} from './errors';
 import type { GatewayConfig } from './gateway-config';
 import { GatewayEmbeddingModel } from './gateway-embedding-model';
 
@@ -15,7 +18,9 @@ const server = createTestServer({
 });
 
 const createTestModel = (
-  config: Partial<GatewayConfig & { o11yHeaders?: Record<string, string> }> = {},
+  config: Partial<
+    GatewayConfig & { o11yHeaders?: Record<string, string> }
+  > = {},
 ) =>
   new GatewayEmbeddingModel('openai/text-embedding-3-small', {
     provider: 'gateway',
@@ -141,8 +146,11 @@ describe('GatewayEmbeddingModel', () => {
         }),
       };
 
-      await expect(createTestModel().doEmbed({ values: testValues })).rejects.toSatisfy(
-        err => GatewayInvalidRequestError.isInstance(err) && err.statusCode === 400,
+      await expect(
+        createTestModel().doEmbed({ values: testValues }),
+      ).rejects.toSatisfy(
+        err =>
+          GatewayInvalidRequestError.isInstance(err) && err.statusCode === 400,
       );
 
       server.urls['https://api.test.com/embedding-model'].response = {
@@ -156,8 +164,11 @@ describe('GatewayEmbeddingModel', () => {
         }),
       };
 
-      await expect(createTestModel().doEmbed({ values: testValues })).rejects.toSatisfy(
-        err => GatewayInternalServerError.isInstance(err) && err.statusCode === 500,
+      await expect(
+        createTestModel().doEmbed({ values: testValues }),
+      ).rejects.toSatisfy(
+        err =>
+          GatewayInternalServerError.isInstance(err) && err.statusCode === 500,
       );
     });
 

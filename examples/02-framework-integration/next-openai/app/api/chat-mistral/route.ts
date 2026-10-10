@@ -1,4 +1,8 @@
-import { convertToModelMessages, streamText, type UIMessage } from '@ai-toolkit/ai';
+import {
+  convertToModelMessages,
+  streamText,
+  type UIMessage,
+} from '@ai-toolkit/ai';
 import { mistral } from '@ai-toolkit/mistral';
 
 // Allow streaming responses up to 30 seconds

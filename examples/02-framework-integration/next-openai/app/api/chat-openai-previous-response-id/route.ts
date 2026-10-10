@@ -8,7 +8,10 @@ import {
   streamText,
   type UIMessage,
 } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { rollDieToolWithProgrammaticCalling } from '@/tool/roll-die-tool-with-programmatic-calling';
 
 const tools = {
@@ -30,7 +33,8 @@ export type PreviousResponseIdRequestBody = {
 export async function POST(req: Request) {
   const reqJson = await req.json();
 
-  const { message, previousProviderMetadata } = reqJson as PreviousResponseIdRequestBody;
+  const { message, previousProviderMetadata } =
+    reqJson as PreviousResponseIdRequestBody;
 
   // Extract the prior OpenAI responseId so the Responses API can replay history.
   const previousResponseId: string | undefined =

@@ -1,5 +1,8 @@
 import { generateImage } from '@ai-toolkit/ai';
-import { type GoogleGenerativeAIImageProviderOptions, google } from '@ai-toolkit/google';
+import {
+  type GoogleGenerativeAIImageProviderOptions,
+  google,
+} from '@ai-toolkit/google';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 

@@ -1,5 +1,8 @@
 import type { JSONObject } from '@ai-toolkit/provider';
-import { type ProviderOptions, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  type ProviderOptions,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { NoTranscriptGeneratedError } from '../error/no-transcript-generated-error';
 import { logWarnings } from '../logger/log-warnings';
 import { resolveTranscriptionModel } from '../model/resolve-model';
@@ -8,7 +11,10 @@ import { convertDataContentToUint8Array } from '../prompt/data-content';
 import type { Warning } from '../types';
 import type { TranscriptionModel } from '../types/transcription-model';
 import type { TranscriptionModelResponseMetadata } from '../types/transcription-model-response-metadata';
-import { audioMediaTypeSignatures, detectMediaType } from '../util/detect-media-type';
+import {
+  audioMediaTypeSignatures,
+  detectMediaType,
+} from '../util/detect-media-type';
 import { download } from '../util/download/download';
 import { prepareRetries } from '../util/prepare-retries';
 import { VERSION } from '../version';
@@ -88,7 +94,10 @@ Only applicable for HTTP-based providers.
     abortSignal,
   });
 
-  const headersWithUserAgent = withUserAgentSuffix(headers ?? {}, `ai/${VERSION}`);
+  const headersWithUserAgent = withUserAgentSuffix(
+    headers ?? {},
+    `ai/${VERSION}`,
+  );
 
   const audioData =
     audio instanceof URL

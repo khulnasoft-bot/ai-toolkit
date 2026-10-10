@@ -1,4 +1,7 @@
-import { createUIMessageStreamResponse, simulateReadableStream } from '@ai-toolkit/ai';
+import {
+  createUIMessageStreamResponse,
+  simulateReadableStream,
+} from '@ai-toolkit/ai';
 
 export async function POST(_req: Request) {
   return createUIMessageStreamResponse({

@@ -14,7 +14,8 @@ run(async () => {
       model: openai('gpt-4o'),
       middleware: addToolInputExamplesMiddleware({
         prefix: 'Examples:',
-        format: (example, index) => `${index + 1}. ${JSON.stringify(example.input)}`,
+        format: (example, index) =>
+          `${index + 1}. ${JSON.stringify(example.input)}`,
         remove: true,
       }),
     }),

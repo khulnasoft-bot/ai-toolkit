@@ -46,31 +46,34 @@ function createBasicModel({
 
 describe('ByteDanceVideoModel', () => {
   const server = createTestServer({
-    'https://ark.ap-southeast.bytepluses.com/api/v3/contents/generations/tasks': {
-      response: {
-        type: 'json-value',
-        body: {
-          id: 'test-task-id-123',
-        },
-      },
-    },
-    'https://ark.ap-southeast.bytepluses.com/api/v3/contents/generations/tasks/test-task-id-123': {
-      response: {
-        type: 'json-value',
-        body: {
-          id: 'test-task-id-123',
-          model: 'seedance-1-0-pro-250528',
-          status: 'succeeded',
-          content: {
-            video_url: 'https://bytedance.cdn/files/video-output.mp4',
-            last_frame_url: 'https://bytedance.cdn/files/video-output-last-frame.png',
-          },
-          usage: {
-            completion_tokens: 100,
+    'https://ark.ap-southeast.bytepluses.com/api/v3/contents/generations/tasks':
+      {
+        response: {
+          type: 'json-value',
+          body: {
+            id: 'test-task-id-123',
           },
         },
       },
-    },
+    'https://ark.ap-southeast.bytepluses.com/api/v3/contents/generations/tasks/test-task-id-123':
+      {
+        response: {
+          type: 'json-value',
+          body: {
+            id: 'test-task-id-123',
+            model: 'seedance-1-0-pro-250528',
+            status: 'succeeded',
+            content: {
+              video_url: 'https://bytedance.cdn/files/video-output.mp4',
+              last_frame_url:
+                'https://bytedance.cdn/files/video-output-last-frame.png',
+            },
+            usage: {
+              completion_tokens: 100,
+            },
+          },
+        },
+      },
   });
 
   describe('constructor', () => {
@@ -327,7 +330,8 @@ describe('ByteDanceVideoModel', () => {
       expect(result.warnings).toContainEqual({
         type: 'unsupported',
         feature: 'fps',
-        details: 'ByteDance video models do not support custom FPS. Frame rate is fixed at 24 fps.',
+        details:
+          'ByteDance video models do not support custom FPS. Frame rate is fixed at 24 fps.',
       });
     });
 
@@ -375,13 +379,16 @@ describe('ByteDanceVideoModel', () => {
       });
 
       expect(result.status).toBe('completed');
-      expect(result.status === 'completed' ? result.providerMetadata : undefined).toStrictEqual({
+      expect(
+        result.status === 'completed' ? result.providerMetadata : undefined,
+      ).toStrictEqual({
         bytedance: {
           taskId: 'test-task-id-123',
           usage: {
             completion_tokens: 100,
           },
-          lastFrameUrl: 'https://bytedance.cdn/files/video-output-last-frame.png',
+          lastFrameUrl:
+            'https://bytedance.cdn/files/video-output-last-frame.png',
         },
       });
     });
@@ -1028,7 +1035,9 @@ describe('ByteDanceVideoModel', () => {
 
       await model.doStart({
         ...defaultOptions,
-        inputReferences: [{ type: 'url', url: 'https://example.com/new-ref.png' }],
+        inputReferences: [
+          { type: 'url', url: 'https://example.com/new-ref.png' },
+        ],
         providerOptions: {
           bytedance: {
             referenceImages: ['https://example.com/legacy-ref.png'],
@@ -1100,7 +1109,10 @@ describe('ByteDanceVideoModel', () => {
         ...defaultOptions,
         providerOptions: {
           bytedance: {
-            referenceVideos: ['https://example.com/ref1.mp4', 'https://example.com/ref2.mp4'],
+            referenceVideos: [
+              'https://example.com/ref1.mp4',
+              'https://example.com/ref2.mp4',
+            ],
           },
         },
       });

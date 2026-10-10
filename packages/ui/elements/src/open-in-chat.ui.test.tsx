@@ -130,7 +130,10 @@ describe('openInChatGPT', () => {
     );
     expect(screen.getByText('Open in ChatGPT')).toBeInTheDocument();
     const link = screen.getByRole('menuitem', { name: CHATGPT_REGEX });
-    expect(link).toHaveAttribute('href', expect.stringContaining('chatgpt.com'));
+    expect(link).toHaveAttribute(
+      'href',
+      expect.stringContaining('chatgpt.com'),
+    );
     expect(link).toHaveAttribute('target', '_blank');
   });
 });

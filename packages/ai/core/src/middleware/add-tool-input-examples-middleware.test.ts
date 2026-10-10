@@ -1,10 +1,15 @@
-import type { JSONObject, LanguageModelV3CallOptions } from '@ai-toolkit/provider';
+import type {
+  JSONObject,
+  LanguageModelV3CallOptions,
+} from '@ai-toolkit/provider';
 import { describe, expect, it } from 'vitest';
 import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
 import { addToolInputExamplesMiddleware } from './add-tool-input-examples-middleware';
 
 const BASE_PARAMS: LanguageModelV3CallOptions = {
-  prompt: [{ role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] }],
+  prompt: [
+    { role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] },
+  ],
 };
 
 const MOCK_MODEL = new MockLanguageModelV3();
@@ -194,7 +199,10 @@ describe('addToolInputExamplesMiddleware', () => {
                 type: 'object',
                 properties: { location: { type: 'string' } },
               },
-              inputExamples: [{ input: { location: 'Paris' } }, { input: { location: 'Tokyo' } }],
+              inputExamples: [
+                { input: { location: 'Paris' } },
+                { input: { location: 'Tokyo' } },
+              ],
             },
           ],
         },

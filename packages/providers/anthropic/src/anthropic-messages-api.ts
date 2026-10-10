@@ -1,5 +1,9 @@
 import type { JSONSchema7 } from '@ai-toolkit/provider';
-import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import {
+  type InferSchema,
+  lazySchema,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 export type AnthropicMessagesPrompt = {
@@ -143,15 +147,24 @@ export interface AnthropicServerToolUseContent {
 
 // Nested content types for tool results (without cache_control)
 // Sub-content blocks cannot be cached directly according to Anthropic docs
-type AnthropicNestedTextContent = Omit<AnthropicTextContent, 'cache_control'> & {
+type AnthropicNestedTextContent = Omit<
+  AnthropicTextContent,
+  'cache_control'
+> & {
   cache_control?: never;
 };
 
-type AnthropicNestedImageContent = Omit<AnthropicImageContent, 'cache_control'> & {
+type AnthropicNestedImageContent = Omit<
+  AnthropicImageContent,
+  'cache_control'
+> & {
   cache_control?: never;
 };
 
-type AnthropicNestedDocumentContent = Omit<AnthropicDocumentContent, 'cache_control'> & {
+type AnthropicNestedDocumentContent = Omit<
+  AnthropicDocumentContent,
+  'cache_control'
+> & {
   cache_control?: never;
 };
 
@@ -161,7 +174,9 @@ export interface AnthropicToolResultContent {
   content:
     | string
     | Array<
-        AnthropicNestedTextContent | AnthropicNestedImageContent | AnthropicNestedDocumentContent
+        | AnthropicNestedTextContent
+        | AnthropicNestedImageContent
+        | AnthropicNestedDocumentContent
       >;
   is_error: boolean | undefined;
   cache_control: AnthropicCacheControl | undefined;
@@ -351,7 +366,10 @@ export type AnthropicTool =
     }
   | {
       name: string;
-      type: 'text_editor_20250124' | 'text_editor_20241022' | 'text_editor_20250429';
+      type:
+        | 'text_editor_20250124'
+        | 'text_editor_20241022'
+        | 'text_editor_20250429';
       cache_control: AnthropicCacheControl | undefined;
     }
   | {
@@ -566,7 +584,10 @@ export const anthropicMessagesResponseSchema = lazySchema(() =>
             tool_use_id: z.string(),
             is_error: z.boolean(),
             content: z.array(
-              z.union([z.string(), z.object({ type: z.literal('text'), text: z.string() })]),
+              z.union([
+                z.string(),
+                z.object({ type: z.literal('text'), text: z.string() }),
+              ]),
             ),
           }),
           z.object({
@@ -691,7 +712,9 @@ export const anthropicMessagesResponseSchema = lazySchema(() =>
                 is_file_update: z.boolean(),
               }),
               z.object({
-                type: z.literal('text_editor_code_execution_str_replace_result'),
+                type: z.literal(
+                  'text_editor_code_execution_str_replace_result',
+                ),
                 lines: z.array(z.string()).nullable(),
                 new_lines: z.number().nullable(),
                 new_start: z.number().nullable(),
@@ -869,7 +892,10 @@ export const anthropicMessagesChunkSchema = lazySchema(() =>
             tool_use_id: z.string(),
             is_error: z.boolean(),
             content: z.array(
-              z.union([z.string(), z.object({ type: z.literal('text'), text: z.string() })]),
+              z.union([
+                z.string(),
+                z.object({ type: z.literal('text'), text: z.string() }),
+              ]),
             ),
           }),
           z.object({
@@ -994,7 +1020,9 @@ export const anthropicMessagesChunkSchema = lazySchema(() =>
                 is_file_update: z.boolean(),
               }),
               z.object({
-                type: z.literal('text_editor_code_execution_str_replace_result'),
+                type: z.literal(
+                  'text_editor_code_execution_str_replace_result',
+                ),
                 lines: z.array(z.string()).nullable(),
                 new_lines: z.number().nullable(),
                 new_start: z.number().nullable(),
@@ -1098,7 +1126,10 @@ export const anthropicMessagesChunkSchema = lazySchema(() =>
               skills: z
                 .array(
                   z.object({
-                    type: z.union([z.literal('anthropic'), z.literal('custom')]),
+                    type: z.union([
+                      z.literal('anthropic'),
+                      z.literal('custom'),
+                    ]),
                     skill_id: z.string(),
                     version: z.string(),
                   }),
@@ -1150,7 +1181,9 @@ export const anthropicReasoningMetadataSchema = lazySchema(() =>
   ),
 );
 
-export type AnthropicReasoningMetadata = InferSchema<typeof anthropicReasoningMetadataSchema>;
+export type AnthropicReasoningMetadata = InferSchema<
+  typeof anthropicReasoningMetadataSchema
+>;
 
 export type Citation = NonNullable<
   (InferSchema<typeof anthropicMessagesResponseSchema>['content'][number] & {

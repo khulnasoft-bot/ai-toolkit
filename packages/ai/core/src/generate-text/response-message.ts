@@ -1,4 +1,7 @@
-import type { AssistantModelMessage, ToolModelMessage } from '@ai-toolkit/provider-utils';
+import type {
+  AssistantModelMessage,
+  ToolModelMessage,
+} from '@ai-toolkit/provider-utils';
 
 /**
 A message that was generated during the generation process.

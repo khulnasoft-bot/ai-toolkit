@@ -66,7 +66,9 @@ describe('messageContent', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<MessageContent className="custom">Text</MessageContent>);
+    const { container } = render(
+      <MessageContent className="custom">Text</MessageContent>,
+    );
     expect(container.firstChild).toHaveClass('custom');
   });
 });
@@ -133,7 +135,9 @@ describe('messageResponse', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<MessageResponse className="custom-class">Text</MessageResponse>);
+    const { container } = render(
+      <MessageResponse className="custom-class">Text</MessageResponse>,
+    );
     expect(container.firstChild).toHaveClass('custom-class');
   });
 
@@ -244,7 +248,9 @@ describe('messageBranchPrevious', () => {
       </MessageBranch>,
     );
 
-    expect(screen.getByRole('button', { name: PREVIOUS_REGEX })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: PREVIOUS_REGEX }),
+    ).toBeInTheDocument();
   });
 
   it('navigates to previous branch', async () => {
@@ -309,7 +315,9 @@ describe('messageBranchNext', () => {
       </MessageBranch>,
     );
 
-    expect(screen.getByRole('button', { name: NEXT_REGEX })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: NEXT_REGEX }),
+    ).toBeInTheDocument();
   });
 });
 

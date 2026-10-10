@@ -16,7 +16,10 @@ export async function presentVideos(videos: GeneratedFile[]) {
     const extension = mediaType.split('/')[1] || 'mp4';
 
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    const filePath = path.join(OUTPUT_DIR, `video-${timestamp}-${index}.${extension}`);
+    const filePath = path.join(
+      OUTPUT_DIR,
+      `video-${timestamp}-${index}.${extension}`,
+    );
 
     const videoData = video.uint8Array;
     await fs.promises.writeFile(filePath, videoData);

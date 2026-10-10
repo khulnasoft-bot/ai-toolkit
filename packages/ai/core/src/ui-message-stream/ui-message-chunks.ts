@@ -1,7 +1,10 @@
 import { lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import type { FinishReason } from '../types/language-model';
-import { type ProviderMetadata, providerMetadataSchema } from '../types/provider-metadata';
+import {
+  type ProviderMetadata,
+  providerMetadataSchema,
+} from '../types/provider-metadata';
 import type {
   InferUIMessageData,
   InferUIMessageMetadata,
@@ -185,7 +188,10 @@ export type DataUIMessageChunk<DATA_TYPES extends UIDataTypes> = ValueOf<{
   };
 }>;
 
-export type UIMessageChunk<METADATA = unknown, DATA_TYPES extends UIDataTypes = UIDataTypes> =
+export type UIMessageChunk<
+  METADATA = unknown,
+  DATA_TYPES extends UIDataTypes = UIDataTypes,
+> =
   | {
       type: 'text-start';
       id: string;

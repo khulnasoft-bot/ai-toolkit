@@ -8,6 +8,8 @@ describe('opencodeHarness', () => {
     expect(opencodeHarness.getBootstrapIdentity()).toContain(
       `harness:${opencodeHarness.harnessId}`,
     );
-    expect(opencodeHarness.clientAppId).toContain('ai-toolkit/harness-opencode');
+    expect(opencodeHarness.clientAppId).toContain(
+      'ai-toolkit/harness-opencode',
+    );
   });
 });

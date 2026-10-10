@@ -1,4 +1,8 @@
-import { convertToModelMessages, streamText, type UIMessage } from '@ai-toolkit/ai';
+import {
+  convertToModelMessages,
+  streamText,
+  type UIMessage,
+} from '@ai-toolkit/ai';
 import { cohere } from '@ai-toolkit/cohere';
 
 export const maxDuration = 30;

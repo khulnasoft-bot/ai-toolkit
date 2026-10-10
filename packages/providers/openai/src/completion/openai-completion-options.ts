@@ -1,4 +1,8 @@
-import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import {
+  type InferSchema,
+  lazySchema,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 // https://platform.openai.com/docs/models
@@ -53,4 +57,6 @@ tokens that were generated.
   ),
 );
 
-export type OpenAICompletionProviderOptions = InferSchema<typeof openaiCompletionProviderOptions>;
+export type OpenAICompletionProviderOptions = InferSchema<
+  typeof openaiCompletionProviderOptions
+>;

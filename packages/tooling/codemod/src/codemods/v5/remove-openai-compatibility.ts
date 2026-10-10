@@ -11,7 +11,8 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
     .find(j.ImportDeclaration)
     .filter(path => {
       return (
-        path.node.source.type === 'StringLiteral' && path.node.source.value === '@ai-toolkit/openai'
+        path.node.source.type === 'StringLiteral' &&
+        path.node.source.value === '@ai-toolkit/openai'
       );
     })
     .forEach(path => {

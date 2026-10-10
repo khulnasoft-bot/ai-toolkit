@@ -61,7 +61,9 @@ Creates a model for image generation.
   /**
    * @deprecated Use `embeddingModel` instead.
    */
-  textEmbeddingModel(modelId: GoogleGenerativeAIEmbeddingModelId): EmbeddingModelV3;
+  textEmbeddingModel(
+    modelId: GoogleGenerativeAIEmbeddingModelId,
+  ): EmbeddingModelV3;
 
   tools: typeof googleTools;
 }
@@ -109,7 +111,8 @@ export function createGoogleGenerativeAI(
   options: GoogleGenerativeAIProviderSettings = {},
 ): GoogleGenerativeAIProvider {
   const baseURL =
-    withoutTrailingSlash(options.baseURL) ?? 'https://generativelanguage.googleapis.com/v1beta';
+    withoutTrailingSlash(options.baseURL) ??
+    'https://generativelanguage.googleapis.com/v1beta';
 
   const providerName = options.name ?? 'google.generative-ai';
 

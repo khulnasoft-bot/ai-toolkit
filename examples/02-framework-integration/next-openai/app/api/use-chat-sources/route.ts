@@ -11,7 +11,9 @@ export type SourcesChatMessage = UIMessage<
   never,
   UIDataTypes,
   {
-    web_search: InferUITool<ReturnType<typeof anthropic.tools.webSearch_20250305>>;
+    web_search: InferUITool<
+      ReturnType<typeof anthropic.tools.webSearch_20250305>
+    >;
   }
 >;
 

@@ -1,7 +1,9 @@
 import type { LanguageModelV3Usage } from '@ai-toolkit/provider';
 import type { XaiResponsesUsage } from './xai-responses-api';
 
-export function convertXaiResponsesUsage(usage: XaiResponsesUsage): LanguageModelV3Usage {
+export function convertXaiResponsesUsage(
+  usage: XaiResponsesUsage,
+): LanguageModelV3Usage {
   const cacheReadTokens = usage.input_tokens_details?.cached_tokens ?? 0;
   const reasoningTokens = usage.output_tokens_details?.reasoning_tokens ?? 0;
 

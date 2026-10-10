@@ -82,13 +82,17 @@ export type SandboxSession = {
    * read primitive; prefer `readBinaryFile` or `readTextFile` unless you need
    * to stream bytes.
    */
-  readonly readFile: (options: ReadFileOptions) => PromiseLike<ReadableStream<Uint8Array> | null>;
+  readonly readFile: (
+    options: ReadFileOptions,
+  ) => PromiseLike<ReadableStream<Uint8Array> | null>;
 
   /**
    * Read one file from the sandbox as raw bytes. Resolves to `null` when the
    * file does not exist.
    */
-  readonly readBinaryFile: (options: ReadFileOptions) => PromiseLike<Uint8Array | null>;
+  readonly readBinaryFile: (
+    options: ReadFileOptions,
+  ) => PromiseLike<Uint8Array | null>;
 
   /**
    * Read one text file from the sandbox, decoded using the requested encoding.
@@ -124,13 +128,17 @@ export type SandboxSession = {
    * This is the lowest-level write primitive; prefer `writeBinaryFile` or
    * `writeTextFile` when the full content is already materialized in memory.
    */
-  readonly writeFile: (options: WriteFileOptions<ReadableStream<Uint8Array>>) => PromiseLike<void>;
+  readonly writeFile: (
+    options: WriteFileOptions<ReadableStream<Uint8Array>>,
+  ) => PromiseLike<void>;
 
   /**
    * Write one file to the sandbox from raw bytes. Creates parent directories
    * recursively and overwrites any existing file.
    */
-  readonly writeBinaryFile: (options: WriteFileOptions<Uint8Array>) => PromiseLike<void>;
+  readonly writeBinaryFile: (
+    options: WriteFileOptions<Uint8Array>,
+  ) => PromiseLike<void>;
 
   /**
    * Write one file to the sandbox from a string, encoded using the requested
@@ -153,7 +161,9 @@ export type SandboxSession = {
    * `run` is conceptually a thin wrapper over this primitive: spawn,
    * collect both streams to strings, await `wait()`, return the result.
    */
-  readonly spawn: (options: SandboxProcessOptions) => PromiseLike<SandboxProcess>;
+  readonly spawn: (
+    options: SandboxProcessOptions,
+  ) => PromiseLike<SandboxProcess>;
 
   /**
    * Run a command in the sandbox.

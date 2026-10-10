@@ -14,9 +14,16 @@ import type { ComponentProps, HTMLAttributes } from 'react';
 
 export type CheckpointProps = HTMLAttributes<HTMLDivElement>;
 
-export const Checkpoint = ({ className, children, ...props }: CheckpointProps) => (
+export const Checkpoint = ({
+  className,
+  children,
+  ...props
+}: CheckpointProps) => (
   <div
-    className={cn('flex items-center gap-0.5 overflow-hidden text-muted-foreground', className)}
+    className={cn(
+      'flex items-center gap-0.5 overflow-hidden text-muted-foreground',
+      className,
+    )}
     {...props}
   >
     {children}
@@ -26,8 +33,14 @@ export const Checkpoint = ({ className, children, ...props }: CheckpointProps) =
 
 export type CheckpointIconProps = LucideProps;
 
-export const CheckpointIcon = ({ className, children, ...props }: CheckpointIconProps) =>
-  children ?? <BookmarkIcon className={cn('size-4 shrink-0', className)} {...props} />;
+export const CheckpointIcon = ({
+  className,
+  children,
+  ...props
+}: CheckpointIconProps) =>
+  children ?? (
+    <BookmarkIcon className={cn('size-4 shrink-0', className)} {...props} />
+  );
 
 export type CheckpointTriggerProps = ComponentProps<typeof Button> & {
   tooltip?: string;

@@ -1,5 +1,5 @@
 {
-  "extends": "../../../tools/tsconfig/base.json",
+  "extends": "./node_modules/@khulnasoft/ai-tsconfig/base.json",
   "compilerOptions": {
     "target": "ES2018",
     "stripInternal": true,

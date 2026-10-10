@@ -15,7 +15,9 @@ describe('tool type', () => {
       expectTypeOf(aTool).toEqualTypeOf<Tool<{ number: number }, never>>();
       expectTypeOf(aTool.execute).toEqualTypeOf<undefined>();
       expectTypeOf(aTool.execute).not.toEqualTypeOf<Function>();
-      expectTypeOf(aTool.inputSchema).toEqualTypeOf<FlexibleSchema<{ number: number }>>();
+      expectTypeOf(aTool.inputSchema).toEqualTypeOf<
+        FlexibleSchema<{ number: number }>
+      >();
     });
 
     it('should work with flexible inputSchema', <T>() => {
@@ -38,7 +40,9 @@ describe('tool type', () => {
       tool({
         description: 'Get the weather for a location',
         inputSchema,
-        inputExamples: [{ input: { location: 'San Francisco', unit: 'celsius' } }],
+        inputExamples: [
+          { input: { location: 'San Francisco', unit: 'celsius' } },
+        ],
         execute: async input => {
           expectTypeOf(input).toEqualTypeOf<z.infer<typeof inputSchema>>();
           return { temperature: 20, unit: input.unit };
@@ -78,7 +82,9 @@ describe('tool type', () => {
         ToolExecuteFunction<{ number: number }, 'test'> | undefined
       >();
       expectTypeOf(aTool.execute).not.toEqualTypeOf<undefined>();
-      expectTypeOf(aTool.inputSchema).toEqualTypeOf<FlexibleSchema<{ number: number }>>();
+      expectTypeOf(aTool.inputSchema).toEqualTypeOf<
+        FlexibleSchema<{ number: number }>
+      >();
     });
 
     it('should derive const schema from async generator execute function', () => {
@@ -93,7 +99,9 @@ describe('tool type', () => {
       expectTypeOf(aTool.execute).toEqualTypeOf<
         ToolExecuteFunction<{ number: number }, 'test', any> | undefined
       >();
-      expectTypeOf(aTool.inputSchema).toEqualTypeOf<FlexibleSchema<{ number: number }>>();
+      expectTypeOf(aTool.inputSchema).toEqualTypeOf<
+        FlexibleSchema<{ number: number }>
+      >();
     });
   });
 

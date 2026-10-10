@@ -39,7 +39,9 @@ const createModelObject = (
 });
 
 const createLanguageModel = (
-  createVertexAnthropic: typeof createVertexAnthropicNode | typeof createVertexAnthropicEdge,
+  createVertexAnthropic:
+    | typeof createVertexAnthropicNode
+    | typeof createVertexAnthropicEdge,
   modelId: string,
   additionalTests: ((model: LanguageModelV3) => void)[] = [],
 ): ModelWithCapabilities<LanguageModelV3> => {
@@ -50,18 +52,23 @@ const createLanguageModel = (
   })(modelId);
 
   if (additionalTests.length > 0) {
-    describe.each([createModelObject(model)])('Provider-specific tests: $modelId', ({ model }) => {
-      for (const test of additionalTests) {
-        test(model);
-      }
-    });
+    describe.each([createModelObject(model)])(
+      'Provider-specific tests: $modelId',
+      ({ model }) => {
+        for (const test of additionalTests) {
+          test(model);
+        }
+      },
+    );
   }
 
   return createLanguageModelWithCapabilities(model);
 };
 
 const createModelVariants = (
-  createVertexAnthropic: typeof createVertexAnthropicNode | typeof createVertexAnthropicEdge,
+  createVertexAnthropic:
+    | typeof createVertexAnthropicNode
+    | typeof createVertexAnthropicEdge,
   modelId: string,
 ): ModelWithCapabilities<LanguageModelV3>[] => [
   createLanguageModel(createVertexAnthropic, modelId, [toolTests]),
@@ -79,7 +86,9 @@ const CHAT_MODELS = [
 ];
 
 const createModelsForRuntime = (
-  createVertexAnthropic: typeof createVertexAnthropicNode | typeof createVertexAnthropicEdge,
+  createVertexAnthropic:
+    | typeof createVertexAnthropicNode
+    | typeof createVertexAnthropicEdge,
 ) => ({
   languageModels: CHAT_MODELS.flatMap(modelId =>
     createModelVariants(createVertexAnthropic, modelId),
@@ -121,7 +130,9 @@ const toolTests = (model: LanguageModelV3) => {
                 case 'screenshot': {
                   return {
                     type: 'image',
-                    data: fs.readFileSync('./data/screenshot-editor.png').toString('base64'),
+                    data: fs
+                      .readFileSync('./data/screenshot-editor.png')
+                      .toString('base64'),
                   };
                 }
                 default: {
@@ -145,7 +156,8 @@ const toolTests = (model: LanguageModelV3) => {
             },
           }),
         },
-        prompt: 'How can I switch to dark mode? Take a look at the screen and tell me.',
+        prompt:
+          'How can I switch to dark mode? Take a look at the screen and tell me.',
         stopWhen: stepCountIs(5),
       });
 

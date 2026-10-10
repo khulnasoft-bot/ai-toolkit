@@ -1,4 +1,8 @@
-import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import {
+  type InferSchema,
+  lazySchema,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 // https://platform.openai.com/docs/models
@@ -83,7 +87,9 @@ export const openaiChatLanguageModelOptions = lazySchema(() =>
       /**
        * Reasoning effort for reasoning models. Defaults to `medium`.
        */
-      reasoningEffort: z.enum(['none', 'minimal', 'low', 'medium', 'high', 'xhigh']).optional(),
+      reasoningEffort: z
+        .enum(['none', 'minimal', 'low', 'medium', 'high', 'xhigh'])
+        .optional(),
 
       /**
        * Maximum number of completion tokens to generate. Useful for reasoning models.
@@ -179,4 +185,6 @@ export const openaiChatLanguageModelOptions = lazySchema(() =>
   ),
 );
 
-export type OpenAIChatLanguageModelOptions = InferSchema<typeof openaiChatLanguageModelOptions>;
+export type OpenAIChatLanguageModelOptions = InferSchema<
+  typeof openaiChatLanguageModelOptions
+>;

@@ -1,13 +1,24 @@
-import type { ChatRequestOptions, ChatTransport, UIMessage, UIMessageChunk } from '@ai-toolkit/ai';
+import type {
+  ChatRequestOptions,
+  ChatTransport,
+  UIMessage,
+  UIMessageChunk,
+} from '@ai-toolkit/ai';
 import type { AIMessageChunk } from '@langchain/core/messages';
-import { RemoteGraph, type RemoteGraphParams } from '@langchain/langgraph/remote';
+import {
+  RemoteGraph,
+  type RemoteGraphParams,
+} from '@langchain/langgraph/remote';
 import { toBaseMessages, toUIMessageStream } from './adapter';
 
 /**
  * Options for configuring a LangSmith deployment transport.
  * Extends RemoteGraphParams but makes graphId optional (defaults to 'agent').
  */
-export type LangSmithDeploymentTransportOptions = Omit<RemoteGraphParams, 'graphId'> & {
+export type LangSmithDeploymentTransportOptions = Omit<
+  RemoteGraphParams,
+  'graphId'
+> & {
   /**
    * The ID of the graph to connect to.
    * @default 'agent'
@@ -62,7 +73,9 @@ export class LangSmithDeploymentTransport<UI_MESSAGE extends UIMessage>
       { streamMode: ['values', 'messages'] },
     );
 
-    return toUIMessageStream(stream as AsyncIterable<AIMessageChunk> | ReadableStream);
+    return toUIMessageStream(
+      stream as AsyncIterable<AIMessageChunk> | ReadableStream,
+    );
   }
 
   async reconnectToStream(

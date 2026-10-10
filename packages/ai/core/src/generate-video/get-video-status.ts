@@ -12,7 +12,8 @@ import { VERSION } from '../version';
  * The result of an `experimental_getVideoStatus` call: the spec-level status
  * payload, discriminated by `status` (`pending` | `completed` | `error`).
  */
-export type GetVideoStatusResult = Experimental_VideoModelV4OperationStatusResult;
+export type GetVideoStatusResult =
+  Experimental_VideoModelV4OperationStatusResult;
 
 /**
  * Checks the status of an asynchronous video generation started with
@@ -47,7 +48,9 @@ export async function experimental_getVideoStatus(
   const { doStatus } = model;
 
   if (doStatus == null) {
-    throw new Error(`Video model ${model.modelId} does not implement doStatus.`);
+    throw new Error(
+      `Video model ${model.modelId} does not implement doStatus.`,
+    );
   }
 
   const { retry } = prepareRetries({

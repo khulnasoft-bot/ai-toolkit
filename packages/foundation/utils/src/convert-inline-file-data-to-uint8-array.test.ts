@@ -4,14 +4,16 @@ import { convertInlineFileDataToUint8Array } from './convert-inline-file-data-to
 
 describe('convertInlineFileDataToUint8Array', () => {
   it('converts text data to UTF-8 bytes', () => {
-    expect(convertInlineFileDataToUint8Array({ type: 'text', text: 'abc' })).toEqual(
-      new TextEncoder().encode('abc'),
-    );
+    expect(
+      convertInlineFileDataToUint8Array({ type: 'text', text: 'abc' }),
+    ).toEqual(new TextEncoder().encode('abc'));
   });
 
   it('returns Uint8Array data as-is', () => {
     const bytes = new Uint8Array([1, 2, 3]);
-    expect(convertInlineFileDataToUint8Array({ type: 'data', data: bytes })).toBe(bytes);
+    expect(
+      convertInlineFileDataToUint8Array({ type: 'data', data: bytes }),
+    ).toBe(bytes);
   });
 
   it('decodes base64 string data', () => {
@@ -27,9 +29,9 @@ describe('convertInlineFileDataToUint8Array', () => {
     const cancelSpy = vi.fn();
     const stream = new ReadableStream<Uint8Array>({ cancel: cancelSpy });
 
-    expect(() => convertInlineFileDataToUint8Array({ type: 'stream', stream })).toThrow(
-      UnsupportedFunctionalityError,
-    );
+    expect(() =>
+      convertInlineFileDataToUint8Array({ type: 'stream', stream }),
+    ).toThrow(UnsupportedFunctionalityError);
 
     await vi.waitFor(() => expect(cancelSpy).toHaveBeenCalled());
   });

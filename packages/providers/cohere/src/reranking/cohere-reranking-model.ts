@@ -7,7 +7,10 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { cohereFailedResponseHandler } from '../cohere-error';
-import { type CohereRerankingInput, cohereRerankingResponseSchema } from './cohere-reranking-api';
+import {
+  type CohereRerankingInput,
+  cohereRerankingResponseSchema,
+} from './cohere-reranking-api';
 import {
   type CohereRerankingModelId,
   cohereRerankingOptionsSchema,
@@ -81,7 +84,9 @@ export class CohereRerankingModel implements RerankingModelV3 {
         priority: rerankingOptions?.priority,
       } satisfies CohereRerankingInput,
       failedResponseHandler: cohereFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(cohereRerankingResponseSchema),
+      successfulResponseHandler: createJsonResponseHandler(
+        cohereRerankingResponseSchema,
+      ),
       abortSignal,
       fetch: this.config.fetch,
     });

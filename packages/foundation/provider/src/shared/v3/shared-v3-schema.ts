@@ -1,4 +1,7 @@
-import type { StandardJSONSchemaV1, StandardSchemaV1 } from '@standard-schema/spec';
+import type {
+  StandardJSONSchemaV1,
+  StandardSchemaV1,
+} from '@standard-schema/spec';
 import type { JSONSchema7 } from 'json-schema';
 
 export type { JSONSchema7, JSONSchema7Definition } from 'json-schema';
@@ -35,12 +38,13 @@ export type FlexibleSchema<SCHEMA = any> =
   | ZodSchema<SCHEMA>
   | StandardSchema<SCHEMA>;
 
-export type InferSchema<SCHEMA> = SCHEMA extends ZodSchema<infer T>
-  ? T
-  : SCHEMA extends StandardSchema<infer T>
+export type InferSchema<SCHEMA> =
+  SCHEMA extends ZodSchema<infer T>
     ? T
-    : SCHEMA extends LazySchema<infer T>
+    : SCHEMA extends StandardSchema<infer T>
       ? T
-      : SCHEMA extends Schema<infer T>
+      : SCHEMA extends LazySchema<infer T>
         ? T
-        : never;
+        : SCHEMA extends Schema<infer T>
+          ? T
+          : never;

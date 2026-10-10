@@ -24,7 +24,10 @@ export function createServerResponseAdapter(
     let shouldClose = false;
     let wroteHead = false;
 
-    const writeHead = (statusCode: number, headers?: Record<string, string>) => {
+    const writeHead = (
+      statusCode: number,
+      headers?: Record<string, string>,
+    ) => {
       if (typeof headers === 'string') {
         throw new Error('Status message of writeHead not supported');
       }
@@ -40,7 +43,10 @@ export function createServerResponseAdapter(
 
     const bufferedData: Uint8Array[] = [];
 
-    const write = (chunk: Buffer | string, encoding?: BufferEncoding): boolean => {
+    const write = (
+      chunk: Buffer | string,
+      encoding?: BufferEncoding,
+    ): boolean => {
       if (encoding) {
         throw new Error('Encoding not supported');
       }

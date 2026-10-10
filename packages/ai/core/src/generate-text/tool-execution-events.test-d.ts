@@ -1,4 +1,8 @@
-import { type ModelMessage, type ToolSet, tool } from '@ai-toolkit/provider-utils';
+import {
+  type ModelMessage,
+  type ToolSet,
+  tool,
+} from '@ai-toolkit/provider-utils';
 import { describe, expectTypeOf, it } from 'vitest';
 import { z } from 'zod/v4';
 import type { DynamicToolCall, StaticToolCall } from './tool-call';
@@ -60,7 +64,10 @@ describe('ToolExecutionStartEvent', () => {
   });
 
   it('types dynamic tool invocations with unknown toolContext', () => {
-    type Dynamic = Extract<ToolExecutionStartEvent<Tools>, { toolCall: { dynamic: true } }>;
+    type Dynamic = Extract<
+      ToolExecutionStartEvent<Tools>,
+      { toolCall: { dynamic: true } }
+    >;
 
     expectTypeOf<Dynamic['toolContext']>().toEqualTypeOf<unknown>();
     expectTypeOf<Dynamic['toolCall']>().toEqualTypeOf<DynamicToolCall>();
@@ -113,12 +120,16 @@ describe('ToolExecutionStartEvent', () => {
 
   describe('default ToolSet specialization (widened)', () => {
     it('types toolContext as unknown for generic consumers', () => {
-      expectTypeOf<ToolExecutionStartEvent<ToolSet>['toolContext']>().toEqualTypeOf<unknown>();
+      expectTypeOf<
+        ToolExecutionStartEvent<ToolSet>['toolContext']
+      >().toEqualTypeOf<unknown>();
     });
 
     it('allows any declared tool name on static calls in the widened toolCall union', () => {
       type TC = ToolExecutionStartEvent<ToolSet>['toolCall'];
-      expectTypeOf<TC>().toEqualTypeOf<StaticToolCall<ToolSet> | DynamicToolCall>();
+      expectTypeOf<TC>().toEqualTypeOf<
+        StaticToolCall<ToolSet> | DynamicToolCall
+      >();
     });
   });
 
@@ -178,7 +189,10 @@ describe('ToolExecutionEndEvent', () => {
   });
 
   it('types dynamic tool completion with unknown toolContext', () => {
-    type Dynamic = Extract<ToolExecutionEndEvent<Tools>, { toolCall: { dynamic: true } }>;
+    type Dynamic = Extract<
+      ToolExecutionEndEvent<Tools>,
+      { toolCall: { dynamic: true } }
+    >;
 
     expectTypeOf<Dynamic['toolContext']>().toEqualTypeOf<unknown>();
   });
@@ -213,13 +227,15 @@ describe('ToolExecutionEndEvent', () => {
 
   describe('default ToolSet specialization (widened)', () => {
     it('types toolContext as unknown', () => {
-      expectTypeOf<ToolExecutionEndEvent<ToolSet>['toolContext']>().toEqualTypeOf<unknown>();
+      expectTypeOf<
+        ToolExecutionEndEvent<ToolSet>['toolContext']
+      >().toEqualTypeOf<unknown>();
     });
 
     it('types toolOutput as ToolOutput<ToolSet>', () => {
-      expectTypeOf<ToolExecutionEndEvent<ToolSet>['toolOutput']>().toEqualTypeOf<
-        ToolOutput<ToolSet>
-      >();
+      expectTypeOf<
+        ToolExecutionEndEvent<ToolSet>['toolOutput']
+      >().toEqualTypeOf<ToolOutput<ToolSet>>();
     });
   });
 });
@@ -267,10 +283,14 @@ describe('deprecated aliases', () => {
   type Tools = typeof tools;
 
   it('OnToolCallStartEvent matches ToolExecutionStartEvent', () => {
-    expectTypeOf<OnToolCallStartEvent<Tools>>().toEqualTypeOf<ToolExecutionStartEvent<Tools>>();
+    expectTypeOf<OnToolCallStartEvent<Tools>>().toEqualTypeOf<
+      ToolExecutionStartEvent<Tools>
+    >();
   });
 
   it('OnToolCallFinishEvent matches ToolExecutionEndEvent', () => {
-    expectTypeOf<OnToolCallFinishEvent<Tools>>().toEqualTypeOf<ToolExecutionEndEvent<Tools>>();
+    expectTypeOf<OnToolCallFinishEvent<Tools>>().toEqualTypeOf<
+      ToolExecutionEndEvent<Tools>
+    >();
   });
 });

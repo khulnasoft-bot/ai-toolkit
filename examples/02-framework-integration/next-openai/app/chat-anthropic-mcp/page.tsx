@@ -8,11 +8,12 @@ import ChatInput from '@/components/chat-input';
 import DynamicToolView from '@/components/tool/dynamic-tool-view';
 
 export default function TestAnthropicCodeExecution() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<AnthropicMcpMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-anthropic-mcp',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<AnthropicMcpMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-anthropic-mcp',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -24,10 +25,16 @@ export default function TestAnthropicCodeExecution() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'dynamic-tool': {
-                return <DynamicToolView invocation={part} key={part.toolCallId} />;
+                return (
+                  <DynamicToolView invocation={part} key={part.toolCallId} />
+                );
               }
               default: {
                 return null;

@@ -72,7 +72,9 @@ function filterIncludedContext<CONTEXT extends Context>({
   }
 
   return Object.fromEntries(
-    Object.entries(context).filter(([key]) => includeContext?.[key as keyof CONTEXT] === true),
+    Object.entries(context).filter(
+      ([key]) => includeContext?.[key as keyof CONTEXT] === true,
+    ),
   );
 }
 
@@ -80,7 +82,10 @@ function filterIncludedContext<CONTEXT extends Context>({
  * Creates a copy of a step result whose runtime context only contains
  * top-level properties marked for telemetry inclusion.
  */
-function restrictStepResult<TOOLS extends ToolSet, RUNTIME_CONTEXT extends Context>({
+function restrictStepResult<
+  TOOLS extends ToolSet,
+  RUNTIME_CONTEXT extends Context,
+>({
   step,
   includeRuntimeContext,
   includeToolsContext,
@@ -152,7 +157,10 @@ function filterToolContext<TOOLS extends ToolSet>({
 }) {
   const includeToolContext = (
     includeToolsContext as
-      | Record<string, IncludedContext<InferToolContext<TOOLS[typeof toolName]>>>
+      | Record<
+          string,
+          IncludedContext<InferToolContext<TOOLS[typeof toolName]>>
+        >
       | undefined
   )?.[toolName];
 

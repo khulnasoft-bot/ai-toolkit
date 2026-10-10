@@ -29,7 +29,9 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
     .find(j.TSTypeReference)
     .filter(path => {
       const typeName = path.node.typeName;
-      return typeName.type === 'Identifier' && Object.hasOwn(typeMap, typeName.name);
+      return (
+        typeName.type === 'Identifier' && Object.hasOwn(typeMap, typeName.name)
+      );
     })
     .forEach(path => {
       context.hasChanges = true;

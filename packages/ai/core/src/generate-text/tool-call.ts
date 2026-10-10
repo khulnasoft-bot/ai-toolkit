@@ -43,4 +43,6 @@ export type DynamicToolCall = BaseToolCall & {
   error?: unknown;
 };
 
-export type TypedToolCall<TOOLS extends ToolSet> = StaticToolCall<TOOLS> | DynamicToolCall;
+export type TypedToolCall<TOOLS extends ToolSet> =
+  | StaticToolCall<TOOLS>
+  | DynamicToolCall;

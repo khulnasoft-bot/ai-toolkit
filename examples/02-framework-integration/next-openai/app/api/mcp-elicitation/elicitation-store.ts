@@ -50,9 +50,14 @@ function cleanupStaleElicitations() {
 // Run cleanup every minute
 setInterval(cleanupStaleElicitations, 60 * 1000);
 
-export function createPendingElicitation(id: string): Promise<ElicitationResponse> {
+export function createPendingElicitation(
+  id: string,
+): Promise<ElicitationResponse> {
   console.log('[store] Creating pending elicitation:', id);
-  console.log('[store] Current pending IDs:', Array.from(pendingElicitationsStore.keys()));
+  console.log(
+    '[store] Current pending IDs:',
+    Array.from(pendingElicitationsStore.keys()),
+  );
   console.log('[store] Current pending count:', pendingElicitationsStore.size);
 
   // Check if this ID already exists (shouldn't happen, but handle it)
@@ -81,13 +86,21 @@ export function createPendingElicitation(id: string): Promise<ElicitationRespons
       createdAt: Date.now(),
       timeoutId,
     });
-    console.log('[store] Added to map. New count:', pendingElicitationsStore.size);
+    console.log(
+      '[store] Added to map. New count:',
+      pendingElicitationsStore.size,
+    );
   });
 }
 
-export function resolvePendingElicitation(response: ElicitationResponse): boolean {
+export function resolvePendingElicitation(
+  response: ElicitationResponse,
+): boolean {
   console.log('[store] Attempting to resolve:', response.id);
-  console.log('[store] Current pending IDs:', Array.from(pendingElicitationsStore.keys()));
+  console.log(
+    '[store] Current pending IDs:',
+    Array.from(pendingElicitationsStore.keys()),
+  );
 
   const pending = pendingElicitationsStore.get(response.id);
 
@@ -100,7 +113,10 @@ export function resolvePendingElicitation(response: ElicitationResponse): boolea
   clearTimeout(pending.timeoutId);
   pending.resolve(response);
   pendingElicitationsStore.delete(response.id);
-  console.log('[store] Resolved and removed. Remaining count:', pendingElicitationsStore.size);
+  console.log(
+    '[store] Resolved and removed. Remaining count:',
+    pendingElicitationsStore.size,
+  );
   return true;
 }
 
@@ -117,6 +133,9 @@ export function rejectPendingElicitation(id: string, error: Error): boolean {
   clearTimeout(pending.timeoutId);
   pending.reject(error);
   pendingElicitationsStore.delete(id);
-  console.log('[store] Rejected and removed. Remaining count:', pendingElicitationsStore.size);
+  console.log(
+    '[store] Rejected and removed. Remaining count:',
+    pendingElicitationsStore.size,
+  );
   return true;
 }

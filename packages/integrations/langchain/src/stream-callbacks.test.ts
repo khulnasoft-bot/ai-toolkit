@@ -1,8 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
-import { createCallbacksTransformer, type StreamCallbacks } from './stream-callbacks';
+import {
+  createCallbacksTransformer,
+  type StreamCallbacks,
+} from './stream-callbacks';
 
 describe('createCallbacksTransformer', () => {
-  async function processStream(input: string[], callbacks?: StreamCallbacks): Promise<string[]> {
+  async function processStream(
+    input: string[],
+    callbacks?: StreamCallbacks,
+  ): Promise<string[]> {
     const transformer = createCallbacksTransformer(callbacks);
     const readable = new ReadableStream({
       start(controller) {
@@ -149,7 +155,14 @@ describe('createCallbacksTransformer', () => {
     const input = ['A', 'B'];
     await processStream(input, callbacks);
 
-    expect(callOrder).toEqual(['start', 'token:A', 'text:A', 'token:B', 'text:B', 'final:AB']);
+    expect(callOrder).toEqual([
+      'start',
+      'token:A',
+      'text:A',
+      'token:B',
+      'text:B',
+      'final:AB',
+    ]);
   });
 
   it('should handle single character messages', async () => {

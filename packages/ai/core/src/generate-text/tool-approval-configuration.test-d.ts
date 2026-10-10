@@ -60,7 +60,10 @@ describe('ToolApprovalConfiguration', () => {
 
     it('infers per-tool callback input, toolContext, execution options, and default runtimeContext', () => {
       const _config: ToolApprovalConfiguration<Tools, Context> = {
-        weather: (input, { toolContext, toolCallId, messages, runtimeContext }) => {
+        weather: (
+          input,
+          { toolContext, toolCallId, messages, runtimeContext },
+        ) => {
           expectTypeOf(input).toEqualTypeOf<{ location: string }>();
           expectTypeOf(toolContext).toEqualTypeOf<{ weatherApiKey: string }>();
           expectTypeOf(toolCallId).toEqualTypeOf<string>();
@@ -132,7 +135,10 @@ describe('ToolApprovalConfiguration', () => {
     });
 
     it('allows async generic approval functions (MaybePromiseLike)', () => {
-      const _config: ToolApprovalConfiguration<Tools, Context> = async options => {
+      const _config: ToolApprovalConfiguration<
+        Tools,
+        Context
+      > = async options => {
         expectTypeOf(options.toolsContext).toEqualTypeOf<ToolSetContext>();
         expectTypeOf(options.runtimeContext).toEqualTypeOf<Context>();
         return Promise.resolve('not-applicable' as const);
@@ -142,7 +148,9 @@ describe('ToolApprovalConfiguration', () => {
     it('uses the second type parameter for runtimeContext in generic and per-tool approval functions', () => {
       type CustomRuntime = { orgId: string; traceId: string };
 
-      const _generic: ToolApprovalConfiguration<Tools, CustomRuntime> = ({ runtimeContext }) => {
+      const _generic: ToolApprovalConfiguration<Tools, CustomRuntime> = ({
+        runtimeContext,
+      }) => {
         expectTypeOf(runtimeContext).toEqualTypeOf<CustomRuntime>();
         return 'user-approval';
       };

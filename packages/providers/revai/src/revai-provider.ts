@@ -1,5 +1,13 @@
-import { NoSuchModelError, type ProviderV3, type TranscriptionModelV3 } from '@ai-toolkit/provider';
-import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  NoSuchModelError,
+  type ProviderV3,
+  type TranscriptionModelV3,
+} from '@ai-toolkit/provider';
+import {
+  type FetchFunction,
+  loadApiKey,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { RevaiTranscriptionModel } from './revai-transcription-model';
 import type { RevaiTranscriptionModelId } from './revai-transcription-options';
 import { VERSION } from './version';
@@ -44,7 +52,9 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create a Rev.ai provider instance.
  */
-export function createRevai(options: RevaiProviderSettings = {}): RevaiProvider {
+export function createRevai(
+  options: RevaiProviderSettings = {},
+): RevaiProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {

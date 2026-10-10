@@ -1,4 +1,9 @@
-import { generateText, type StaticToolCall, type StaticToolResult, tool } from '@ai-toolkit/ai';
+import {
+  generateText,
+  type StaticToolCall,
+  type StaticToolResult,
+  tool,
+} from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 
@@ -30,4 +35,5 @@ async function generateSomething(prompt: string): Promise<{
   });
 }
 
-const { text, staticToolCalls, staticToolResults } = await generateSomething('...');
+const { text, staticToolCalls, staticToolResults } =
+  await generateSomething('...');

@@ -8,11 +8,12 @@ import ChatInput from '@/components/chat-input';
 import { ReasoningView } from '@/components/reasoning-view';
 
 export default function TestOpenAISmoothStream() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<OpenAIBasicMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-smooth-stream',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<OpenAIBasicMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-smooth-stream',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -24,10 +25,19 @@ export default function TestOpenAISmoothStream() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+                return (
+                  <ReasoningView
+                    part={part}
+                    key={`${part.type}-${part.text}`}
+                  />
+                );
               }
               default: {
                 return null;

@@ -1,11 +1,16 @@
-import { type LanguageModelV3Prompt, UnsupportedFunctionalityError } from '@ai-toolkit/provider';
+import {
+  type LanguageModelV3Prompt,
+  UnsupportedFunctionalityError,
+} from '@ai-toolkit/provider';
 import { convertUint8ArrayToBase64 } from '@ai-toolkit/provider-utils';
 import type {
   PerplexityMessageContent,
   PerplexityPrompt,
 } from './perplexity-language-model-prompt';
 
-export function convertToPerplexityMessages(prompt: LanguageModelV3Prompt): PerplexityPrompt {
+export function convertToPerplexityMessages(
+  prompt: LanguageModelV3Prompt,
+): PerplexityPrompt {
   const messages: PerplexityPrompt = [];
 
   for (const { role, content } of prompt) {

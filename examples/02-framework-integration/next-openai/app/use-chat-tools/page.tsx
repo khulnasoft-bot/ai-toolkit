@@ -1,31 +1,40 @@
 'use client';
 
-import { DefaultChatTransport, lastAssistantMessageIsCompleteWithToolCalls } from '@ai-toolkit/ai';
+import {
+  DefaultChatTransport,
+  lastAssistantMessageIsCompleteWithToolCalls,
+} from '@ai-toolkit/ai';
 import { useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';
 import type { UseChatToolsMessage } from '../api/use-chat-tools/route';
 
 export default function Chat() {
-  const { messages, sendMessage, addToolOutput, status } = useChat<UseChatToolsMessage>({
-    transport: new DefaultChatTransport({ api: '/api/use-chat-tools' }),
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
+  const { messages, sendMessage, addToolOutput, status } =
+    useChat<UseChatToolsMessage>({
+      transport: new DefaultChatTransport({ api: '/api/use-chat-tools' }),
+      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithToolCalls,
 
-    // run client-side tools that are automatically executed:
-    async onToolCall({ toolCall }) {
-      // artificial 2 second delay
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      // run client-side tools that are automatically executed:
+      async onToolCall({ toolCall }) {
+        // artificial 2 second delay
+        await new Promise(resolve => setTimeout(resolve, 2000));
 
-      if (toolCall.toolName === 'getLocation') {
-        const cities = ['New York', 'Los Angeles', 'Chicago', 'San Francisco'];
+        if (toolCall.toolName === 'getLocation') {
+          const cities = [
+            'New York',
+            'Los Angeles',
+            'Chicago',
+            'San Francisco',
+          ];
 
-        addToolOutput({
-          tool: 'getLocation',
-          toolCallId: toolCall.toolCallId,
-          output: cities[Math.floor(Math.random() * cities.length)],
-        });
-      }
-    },
-  });
+          addToolOutput({
+            tool: 'getLocation',
+            toolCallId: toolCall.toolCallId,
+            output: cities[Math.floor(Math.random() * cities.length)],
+          });
+        }
+      },
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -112,7 +121,11 @@ export default function Chat() {
                 switch (part.state) {
                   // example of pre-rendering streaming tool calls:
                   case 'input-streaming':
-                    return <pre key={part.toolCallId}>{JSON.stringify(part.input, null, 2)}</pre>;
+                    return (
+                      <pre key={part.toolCallId}>
+                        {JSON.stringify(part.input, null, 2)}
+                      </pre>
+                    );
                   case 'input-available':
                     return (
                       <div key={part.toolCallId} className="text-gray-500">

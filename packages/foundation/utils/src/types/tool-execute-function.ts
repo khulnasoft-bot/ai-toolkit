@@ -5,7 +5,9 @@ import type { SandboxSession } from './sandbox';
 /**
  * Additional options that are sent into each tool execution.
  */
-export interface ToolExecutionOptions<CONTEXT extends Context | unknown | never = unknown> {
+export interface ToolExecutionOptions<
+  CONTEXT extends Context | unknown | never = unknown,
+> {
   /**
    * The ID of the tool call. You can use it e.g. when sending tool-call related information with stream data.
    */

@@ -1,4 +1,7 @@
-import type { LanguageModelV4StreamPart, LanguageModelV4Usage } from '@ai-toolkit/provider';
+import type {
+  LanguageModelV4StreamPart,
+  LanguageModelV4Usage,
+} from '@ai-toolkit/provider';
 import { DelayedPromise } from '@ai-toolkit/provider-utils';
 import { convertArrayToReadableStream } from '@ai-toolkit/provider-utils/test';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -74,9 +77,13 @@ describe('streamText first chunk timeout', () => {
                 });
                 controller.enqueue({ type: 'raw', rawValue: ': ping' });
 
-                abortSignal?.addEventListener('abort', () => controller.error(abortSignal.reason), {
-                  once: true,
-                });
+                abortSignal?.addEventListener(
+                  'abort',
+                  () => controller.error(abortSignal.reason),
+                  {
+                    once: true,
+                  },
+                );
               },
             }),
           };
@@ -250,9 +257,13 @@ describe('streamText first chunk timeout', () => {
                 });
                 controller.enqueue({ type: 'text-start', id: '2' });
 
-                abortSignal?.addEventListener('abort', () => controller.error(abortSignal.reason), {
-                  once: true,
-                });
+                abortSignal?.addEventListener(
+                  'abort',
+                  () => controller.error(abortSignal.reason),
+                  {
+                    once: true,
+                  },
+                );
               },
             }),
           };
@@ -398,9 +409,13 @@ describe('streamText chunk timeout', () => {
                   controller.enqueue({ type: 'raw', rawValue: ': ping' });
                 }, 40);
 
-                abortSignal?.addEventListener('abort', () => controller.error(abortSignal.reason), {
-                  once: true,
-                });
+                abortSignal?.addEventListener(
+                  'abort',
+                  () => controller.error(abortSignal.reason),
+                  {
+                    once: true,
+                  },
+                );
               },
             }),
           };

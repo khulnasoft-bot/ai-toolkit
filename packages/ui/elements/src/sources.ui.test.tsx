@@ -102,7 +102,9 @@ describe('source', () => {
   });
 
   it('has book icon by default', () => {
-    const { container } = render(<Source href="https://example.com" title="Example" />);
+    const { container } = render(
+      <Source href="https://example.com" title="Example" />,
+    );
     expect(container.querySelector('svg')).toBeInTheDocument();
   });
 });

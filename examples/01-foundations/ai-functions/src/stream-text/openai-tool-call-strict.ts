@@ -1,5 +1,8 @@
 import { stepCountIs, streamText, tool } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';
@@ -32,13 +35,15 @@ run(async () => {
           temperature: z.number(),
         }),
         execute: async ({ location }) => {
-          const condition = conditions[Math.floor(Math.random() * conditions.length)];
+          const condition =
+            conditions[Math.floor(Math.random() * conditions.length)];
           return {
             location,
             condition: condition.name,
             temperature:
               Math.floor(
-                Math.random() * (condition.maxTemperature - condition.minTemperature + 1),
+                Math.random() *
+                  (condition.maxTemperature - condition.minTemperature + 1),
               ) + condition.minTemperature,
           };
         },

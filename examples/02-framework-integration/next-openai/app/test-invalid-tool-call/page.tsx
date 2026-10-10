@@ -34,23 +34,34 @@ export default function Chat() {
                   // example of pre-rendering streaming tool calls:
                   case 'input-streaming':
                     return (
-                      <pre key={`${part.type}-${index}`}>{JSON.stringify(part.input, null, 2)}</pre>
+                      <pre key={`${part.type}-${index}`}>
+                        {JSON.stringify(part.input, null, 2)}
+                      </pre>
                     );
                   case 'input-available':
                     return (
-                      <div key={`${part.type}-${index}`} className="text-gray-500">
+                      <div
+                        key={`${part.type}-${index}`}
+                        className="text-gray-500"
+                      >
                         Getting weather information for {part.input.city}...
                       </div>
                     );
                   case 'output-available':
                     return (
-                      <div key={`${part.type}-${index}`} className="text-gray-500">
+                      <div
+                        key={`${part.type}-${index}`}
+                        className="text-gray-500"
+                      >
                         Weather in {part.input.city}: {part.output}
                       </div>
                     );
                   case 'output-error':
                     return (
-                      <div key={`${part.type}-${index}`} className="text-red-500">
+                      <div
+                        key={`${part.type}-${index}`}
+                        className="text-red-500"
+                      >
                         Error: {part.errorText}
                       </div>
                     );

@@ -1,4 +1,8 @@
-import type { InferToolContext, ModelMessage, ToolSet } from '@ai-toolkit/provider-utils';
+import type {
+  InferToolContext,
+  ModelMessage,
+  ToolSet,
+} from '@ai-toolkit/provider-utils';
 import type { Callback } from '../util/callback';
 import type { ValueOf } from '../util/value-of';
 import type { DynamicToolCall, StaticToolCall } from './tool-call';
@@ -8,7 +12,9 @@ import type { ToolOutput } from './tool-output';
  * Resolves a single tool's context type, falling back to `undefined` when the
  * tool does not declare a `contextSchema`.
  */
-type ToolContextFor<TOOL extends ToolSet[keyof ToolSet]> = [InferToolContext<TOOL>] extends [never]
+type ToolContextFor<TOOL extends ToolSet[keyof ToolSet]> = [
+  InferToolContext<TOOL>,
+] extends [never]
   ? undefined
   : InferToolContext<TOOL>;
 
@@ -60,7 +66,9 @@ type WidenedToolExecutionStartEvent = BaseToolExecutionStartFields & {
  *
  * Called when a tool execution begins, before the tool's `execute` function is invoked.
  */
-export type ToolExecutionStartEvent<TOOLS extends ToolSet = ToolSet> = [ToolSet] extends [TOOLS]
+export type ToolExecutionStartEvent<TOOLS extends ToolSet = ToolSet> = [
+  ToolSet,
+] extends [TOOLS]
   ? WidenedToolExecutionStartEvent
   : StaticToolExecutionStartEvent<TOOLS> | DynamicToolExecutionStartEvent;
 
@@ -95,11 +103,12 @@ type StaticToolExecutionEndEvent<TOOLS extends ToolSet> = ValueOf<{
 /**
  * End event shape for dynamic or untyped tool calls.
  */
-type DynamicToolExecutionEndEvent<TOOLS extends ToolSet> = BaseToolExecutionEndFields & {
-  readonly toolCall: DynamicToolCall;
-  readonly toolContext: unknown;
-  readonly toolOutput: ToolOutput<TOOLS>;
-};
+type DynamicToolExecutionEndEvent<TOOLS extends ToolSet> =
+  BaseToolExecutionEndFields & {
+    readonly toolCall: DynamicToolCall;
+    readonly toolContext: unknown;
+    readonly toolOutput: ToolOutput<TOOLS>;
+  };
 
 /**
  * Broad end event shape used for the default `ToolSet` specialization.
@@ -119,7 +128,9 @@ type WidenedToolExecutionEndEvent = BaseToolExecutionEndFields & {
  * Called when a tool execution completes, either successfully or with an error.
  * Uses the `toolOutput.type` discriminator to distinguish success and error.
  */
-export type ToolExecutionEndEvent<TOOLS extends ToolSet = ToolSet> = [ToolSet] extends [TOOLS]
+export type ToolExecutionEndEvent<TOOLS extends ToolSet = ToolSet> = [
+  ToolSet,
+] extends [TOOLS]
   ? WidenedToolExecutionEndEvent
   : StaticToolExecutionEndEvent<TOOLS> | DynamicToolExecutionEndEvent<TOOLS>;
 
@@ -131,9 +142,8 @@ export type ToolExecutionEndEvent<TOOLS extends ToolSet = ToolSet> = [ToolSet] e
  *
  * @param event - The event object containing tool call information.
  */
-export type OnToolExecutionStartCallback<TOOLS extends ToolSet = ToolSet> = Callback<
-  ToolExecutionStartEvent<TOOLS>
->;
+export type OnToolExecutionStartCallback<TOOLS extends ToolSet = ToolSet> =
+  Callback<ToolExecutionStartEvent<TOOLS>>;
 
 /**
  * Callback that is set using the `onToolExecutionEnd` option.
@@ -147,12 +157,13 @@ export type OnToolExecutionStartCallback<TOOLS extends ToolSet = ToolSet> = Call
  *
  * @param event - The event object containing tool call result information.
  */
-export type OnToolExecutionEndCallback<TOOLS extends ToolSet = ToolSet> = Callback<
-  ToolExecutionEndEvent<TOOLS>
->;
+export type OnToolExecutionEndCallback<TOOLS extends ToolSet = ToolSet> =
+  Callback<ToolExecutionEndEvent<TOOLS>>;
 
 /** @deprecated Use `ToolExecutionStartEvent` instead. */
-export type OnToolCallStartEvent<TOOLS extends ToolSet = ToolSet> = ToolExecutionStartEvent<TOOLS>;
+export type OnToolCallStartEvent<TOOLS extends ToolSet = ToolSet> =
+  ToolExecutionStartEvent<TOOLS>;
 
 /** @deprecated Use `ToolExecutionEndEvent` instead. */
-export type OnToolCallFinishEvent<TOOLS extends ToolSet = ToolSet> = ToolExecutionEndEvent<TOOLS>;
+export type OnToolCallFinishEvent<TOOLS extends ToolSet = ToolSet> =
+  ToolExecutionEndEvent<TOOLS>;

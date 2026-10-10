@@ -9,7 +9,10 @@ export type AuditEntry = {
 
 export interface AuditLogger {
   log(entry: AuditEntry): Promise<void>;
-  query(filter: { action?: string; actor?: string }): Promise<readonly AuditEntry[]>;
+  query(filter: {
+    action?: string;
+    actor?: string;
+  }): Promise<readonly AuditEntry[]>;
 }
 
 export interface AuditEngine {

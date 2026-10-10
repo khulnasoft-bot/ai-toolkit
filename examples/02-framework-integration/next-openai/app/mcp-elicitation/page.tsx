@@ -3,7 +3,10 @@
 import { DefaultChatTransport, isDataUIPart } from '@ai-toolkit/ai';
 import { useChat } from '@ai-toolkit/react';
 import { useEffect, useRef, useState } from 'react';
-import type { ElicitationAction, MCPElicitationUIMessage } from '../api/mcp-elicitation/types';
+import type {
+  ElicitationAction,
+  MCPElicitationUIMessage,
+} from '../api/mcp-elicitation/types';
 
 export default function MCPElicitationChat() {
   const [input, setInput] = useState('');
@@ -37,7 +40,10 @@ export default function MCPElicitationChat() {
 
           // Only show modal if this elicitation hasn't been handled yet
           if (!handledElicitationsRef.current.has(elicitationId)) {
-            console.log('[page] New elicitation request detected:', elicitationId);
+            console.log(
+              '[page] New elicitation request detected:',
+              elicitationId,
+            );
             handledElicitationsRef.current.add(elicitationId);
 
             setCurrentElicitation(part.data);
@@ -71,7 +77,12 @@ export default function MCPElicitationChat() {
     }
 
     const elicitationId = currentElicitation.elicitationId;
-    console.log('[page] Submitting response for:', elicitationId, 'action:', action);
+    console.log(
+      '[page] Submitting response for:',
+      elicitationId,
+      'action:',
+      action,
+    );
 
     // Immediately close modal and clear state to prevent double-submission
     setShowModal(false);
@@ -120,14 +131,18 @@ export default function MCPElicitationChat() {
             {label}
             {isRequired && <span className="text-red-500">*</span>}
           </span>
-          {description && <span className="block text-sm text-gray-600">{description}</span>}
+          {description && (
+            <span className="block text-sm text-gray-600">{description}</span>
+          )}
         </label>
         {type === 'boolean' ? (
           <input
             id={`elicitation-${key}`}
             type="checkbox"
             checked={formData[key] || false}
-            onChange={e => setFormData({ ...formData, [key]: e.target.checked })}
+            onChange={e =>
+              setFormData({ ...formData, [key]: e.target.checked })
+            }
             className="w-4 h-4"
           />
         ) : type === 'number' || type === 'integer' ? (
@@ -152,7 +167,13 @@ export default function MCPElicitationChat() {
         ) : (
           <input
             id={`elicitation-${key}`}
-            type={property.format === 'email' ? 'email' : type === 'password' ? 'password' : 'text'}
+            type={
+              property.format === 'email'
+                ? 'email'
+                : type === 'password'
+                  ? 'password'
+                  : 'text'
+            }
             value={formData[key] || ''}
             onChange={e => setFormData({ ...formData, [key]: e.target.value })}
             className="w-full p-2 border border-gray-300 rounded"
@@ -172,7 +193,9 @@ export default function MCPElicitationChat() {
       <div className="flex-1 mb-4 overflow-y-auto">
         {messages?.map(m => (
           <div key={m.id} className="mb-4 whitespace-pre-wrap">
-            <div className="font-bold mb-1">{m.role === 'user' ? 'You' : 'Assistant'}:</div>
+            <div className="font-bold mb-1">
+              {m.role === 'user' ? 'You' : 'Assistant'}:
+            </div>
             {m.parts?.map((part, i) => {
               if (part.type === 'text') {
                 return (
@@ -188,8 +211,12 @@ export default function MCPElicitationChat() {
                       key={`${part.type}-${i}`}
                       className="p-3 mt-2 border-l-4 border-blue-500 bg-blue-50"
                     >
-                      <div className="text-sm text-blue-600">📋 Elicitation Request</div>
-                      <div className="mt-1 text-gray-700">{part.data.message}</div>
+                      <div className="text-sm text-blue-600">
+                        📋 Elicitation Request
+                      </div>
+                      <div className="mt-1 text-gray-700">
+                        {part.data.message}
+                      </div>
                     </div>
                   );
                 }
@@ -199,7 +226,9 @@ export default function MCPElicitationChat() {
                       key={`${part.type}-${i}`}
                       className="p-3 mt-2 border-l-4 border-green-500 bg-green-50"
                     >
-                      <div className="text-sm text-green-600">✅ Response: {part.data.action}</div>
+                      <div className="text-sm text-green-600">
+                        ✅ Response: {part.data.action}
+                      </div>
                       {part.data.content && (
                         <pre className="mt-1 text-xs text-gray-700">
                           {JSON.stringify(part.data.content, null, 2)}
@@ -256,8 +285,9 @@ export default function MCPElicitationChat() {
 
                 const requiredFields = new Set(schema.required || []);
 
-                return Object.entries(schema.properties).map(([key, property]) =>
-                  renderFormField(key, property, requiredFields.has(key)),
+                return Object.entries(schema.properties).map(
+                  ([key, property]) =>
+                    renderFormField(key, property, requiredFields.has(key)),
                 );
               })()}
 

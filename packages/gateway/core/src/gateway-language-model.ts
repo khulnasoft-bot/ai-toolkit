@@ -47,7 +47,9 @@ export class GatewayLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(
+    options: LanguageModelV3CallOptions,
+  ): Promise<LanguageModelV3GenerateResult> {
     const { args, warnings } = await this.getArgs(options);
     const { abortSignal } = options;
 
@@ -84,7 +86,9 @@ export class GatewayLanguageModel implements LanguageModelV3 {
     }
   }
 
-  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
+  async doStream(
+    options: LanguageModelV3CallOptions,
+  ): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs(options);
     const { abortSignal } = options;
 
@@ -108,7 +112,10 @@ export class GatewayLanguageModel implements LanguageModelV3 {
 
       return {
         stream: response.pipeThrough(
-          new TransformStream<ParseResult<LanguageModelV3StreamPart>, LanguageModelV3StreamPart>({
+          new TransformStream<
+            ParseResult<LanguageModelV3StreamPart>,
+            LanguageModelV3StreamPart
+          >({
             start(controller) {
               if (warnings.length > 0) {
                 controller.enqueue({ type: 'stream-start', warnings });
@@ -134,7 +141,9 @@ export class GatewayLanguageModel implements LanguageModelV3 {
 
                 controller.enqueue(streamPart);
               } else {
-                controller.error((chunk as { success: false; error: unknown }).error);
+                controller.error(
+                  (chunk as { success: false; error: unknown }).error,
+                );
               }
             },
           }),
@@ -148,7 +157,9 @@ export class GatewayLanguageModel implements LanguageModelV3 {
   }
 
   private isFilePart(part: unknown) {
-    return part && typeof part === 'object' && 'type' in part && part.type === 'file';
+    return (
+      part && typeof part === 'object' && 'type' in part && part.type === 'file'
+    );
   }
 
   /**

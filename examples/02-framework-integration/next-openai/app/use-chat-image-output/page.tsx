@@ -17,10 +17,17 @@ export default function Chat() {
           {message.parts.map((part, index) => {
             if (part.type === 'text') {
               return <div key={`${message.id}-text-${index}`}>{part.text}</div>;
-            } else if (part.type === 'file' && part.mediaType.startsWith('image/')) {
+            } else if (
+              part.type === 'file' &&
+              part.mediaType.startsWith('image/')
+            ) {
               return (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={`${message.id}-img-${index}`} src={part.url} alt="Generated" />
+                <img
+                  key={`${message.id}-img-${index}`}
+                  src={part.url}
+                  alt="Generated"
+                />
               );
             }
             return null;

@@ -1,5 +1,8 @@
 import { Output, stepCountIs, streamText } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 
@@ -16,7 +19,12 @@ run(async () => {
     },
     stopWhen: stepCountIs(5),
     output: Output.choice({
-      options: ['winter jacket', 'shorts and tshirt', 'light jacket', 'raincoat'],
+      options: [
+        'winter jacket',
+        'shorts and tshirt',
+        'light jacket',
+        'raincoat',
+      ],
     }),
     prompt: 'Get the weather for San Francisco. What should I wear?',
   });

@@ -98,7 +98,10 @@ describe('question', () => {
       </Question>,
     );
 
-    await user.type(screen.getByRole('textbox', { name: 'Answer' }), '  My project  ');
+    await user.type(
+      screen.getByRole('textbox', { name: 'Answer' }),
+      '  My project  ',
+    );
     await user.click(screen.getByRole('button', { name: 'Submit' }));
 
     expect(handleSubmit).toHaveBeenCalledWith(
@@ -125,7 +128,10 @@ describe('question', () => {
     );
 
     await user.click(screen.getByRole('checkbox', { name: 'TypeScript' }));
-    await user.type(screen.getByRole('textbox', { name: 'Other requirements' }), 'Include tests');
+    await user.type(
+      screen.getByRole('textbox', { name: 'Other requirements' }),
+      'Include tests',
+    );
     await user.click(screen.getByRole('button', { name: 'Submit' }));
 
     expect(handleSubmit).toHaveBeenCalledWith(
@@ -156,10 +162,12 @@ describe('question', () => {
 
   it('passes the form event through and supports async submission', async () => {
     const user = userEvent.setup();
-    const handleSubmit = vi.fn(async (_response, event: FormEvent<HTMLFormElement>) => {
-      expect(event.currentTarget).toHaveAttribute('data-question', 'example');
-      await Promise.resolve();
-    });
+    const handleSubmit = vi.fn(
+      async (_response, event: FormEvent<HTMLFormElement>) => {
+        expect(event.currentTarget).toHaveAttribute('data-question', 'example');
+        await Promise.resolve();
+      },
+    );
 
     render(
       <Question data-question="example" onSubmit={handleSubmit}>

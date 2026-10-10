@@ -13,7 +13,14 @@ interface CodeBlockProps {
   className?: string;
 }
 
-export function CodeBlock({ lines, title, code, language, filename, className }: CodeBlockProps) {
+export function CodeBlock({
+  lines,
+  title,
+  code,
+  language,
+  filename,
+  className,
+}: CodeBlockProps) {
   const source = lines ?? (code ? code.split('\n') : []);
   const [copied, setCopied] = useState(false);
 
@@ -29,7 +36,10 @@ export function CodeBlock({ lines, title, code, language, filename, className }:
 
   return (
     <div
-      className={cn('overflow-hidden rounded-md border border-alpha-border bg-black/20', className)}
+      className={cn(
+        'overflow-hidden rounded-md border border-alpha-border bg-black/20',
+        className,
+      )}
     >
       <div className="flex h-8 items-center justify-between border-b border-alpha-border bg-surface-200/60 pl-3 pr-1.5">
         <span className="min-w-0 truncate font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
@@ -46,7 +56,11 @@ export function CodeBlock({ lines, title, code, language, filename, className }:
             onClick={copy}
             className="flex items-center gap-1 rounded-md px-1.5 py-1 font-mono text-[10px] uppercase tracking-widest text-muted-foreground hover:bg-surface-300 hover:text-foreground"
           >
-            {copied ? <Check className="size-3" /> : <Copy className="size-3" />}
+            {copied ? (
+              <Check className="size-3" />
+            ) : (
+              <Copy className="size-3" />
+            )}
             {copied ? 'Copied' : 'Copy'}
           </button>
         </div>
@@ -55,8 +69,13 @@ export function CodeBlock({ lines, title, code, language, filename, className }:
         {source.map((line, index) => {
           const lineNumber = index + 1;
           return (
-            <li key={lineNumber} className="grid grid-cols-[2ch_1fr] gap-3 whitespace-pre-wrap">
-              <span className="select-none text-right text-muted-foreground/60">{lineNumber}</span>
+            <li
+              key={lineNumber}
+              className="grid grid-cols-[2ch_1fr] gap-3 whitespace-pre-wrap"
+            >
+              <span className="select-none text-right text-muted-foreground/60">
+                {lineNumber}
+              </span>
               <span className="min-w-0 text-foreground/90">{line}</span>
             </li>
           );

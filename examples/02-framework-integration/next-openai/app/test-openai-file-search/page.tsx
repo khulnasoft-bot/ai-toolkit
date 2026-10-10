@@ -25,7 +25,12 @@ export default function TestOpenAIFileSearch() {
               case 'text':
                 return <div key={`${part.type}-${index}`}>{part.text}</div>;
               case 'tool-file_search':
-                return <FileSearchView key={`${part.type}-${index}`} invocation={part} />;
+                return (
+                  <FileSearchView
+                    key={`${part.type}-${index}`}
+                    invocation={part}
+                  />
+                );
               default:
                 return null;
             }

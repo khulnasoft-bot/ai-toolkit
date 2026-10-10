@@ -1,5 +1,8 @@
 import { generateText } from '@ai-toolkit/ai';
-import { type GoogleGenerativeAIProviderMetadata, google } from '@ai-toolkit/google';
+import {
+  type GoogleGenerativeAIProviderMetadata,
+  google,
+} from '@ai-toolkit/google';
 import { run } from '../lib/run';
 
 run(async () => {
@@ -15,10 +18,13 @@ run(async () => {
         },
       },
     },
-    prompt: 'What are the best Italian restaurants within a 15-minute walk from here?',
+    prompt:
+      'What are the best Italian restaurants within a 15-minute walk from here?',
   });
 
-  const metadata = providerMetadata?.google as GoogleGenerativeAIProviderMetadata | undefined;
+  const metadata = providerMetadata?.google as
+    | GoogleGenerativeAIProviderMetadata
+    | undefined;
   const groundingMetadata = metadata?.groundingMetadata;
 
   console.log('Generated Text:', text);

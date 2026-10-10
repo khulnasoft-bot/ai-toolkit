@@ -7,11 +7,12 @@ import ChatInput from '@/components/chat-input';
 import GenerateImageView from '@/components/tool/generate-image-view';
 
 export default function TestOpenAIWebSearch() {
-  const { status, sendMessage, messages } = useChat<OpenAIImageGenerationCustomToolMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-image-generation-custom-tool',
-    }),
-  });
+  const { status, sendMessage, messages } =
+    useChat<OpenAIImageGenerationCustomToolMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-image-generation-custom-tool',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -26,7 +27,9 @@ export default function TestOpenAIWebSearch() {
                 return <div key={`${part.type}-${part.text}`}>{part.text}</div>;
               }
               case 'tool-image': {
-                return <GenerateImageView key={part.toolCallId} invocation={part} />;
+                return (
+                  <GenerateImageView key={part.toolCallId} invocation={part} />
+                );
               }
               default: {
                 return null;

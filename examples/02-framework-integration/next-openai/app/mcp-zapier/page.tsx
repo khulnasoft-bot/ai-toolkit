@@ -22,7 +22,11 @@ export default function Page() {
               if (part.type === 'text') {
                 return <span key={`${part.type}-${index}`}>{part.text}</span>;
               } else if (isStaticToolUIPart(part)) {
-                return <pre key={`${part.type}-${index}`}>{JSON.stringify(part, null, 2)}</pre>;
+                return (
+                  <pre key={`${part.type}-${index}`}>
+                    {JSON.stringify(part, null, 2)}
+                  </pre>
+                );
               }
               return null;
             })}

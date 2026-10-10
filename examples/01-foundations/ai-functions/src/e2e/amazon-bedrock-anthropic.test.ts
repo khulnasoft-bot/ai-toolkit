@@ -1,5 +1,8 @@
 import { type APICallError, generateText, stepCountIs } from '@ai-toolkit/ai';
-import { bedrockAnthropic, createBedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
+import {
+  bedrockAnthropic,
+  createBedrockAnthropic,
+} from '@ai-toolkit/amazon-bedrock/anthropic';
 import type { LanguageModelV3 } from '@ai-toolkit/provider';
 import 'dotenv/config';
 import fs from 'node:fs';
@@ -26,11 +29,14 @@ const createLanguageModel = (
   })(modelId);
 
   if (additionalTests.length > 0) {
-    describe.each([createModelObject(model)])('Provider-specific tests: $modelId', ({ model }) => {
-      for (const test of additionalTests) {
-        test(model);
-      }
-    });
+    describe.each([createModelObject(model)])(
+      'Provider-specific tests: $modelId',
+      ({ model }) => {
+        for (const test of additionalTests) {
+          test(model);
+        }
+      },
+    );
   }
 
   return createLanguageModelWithCapabilities(model);
@@ -39,7 +45,9 @@ const createLanguageModel = (
 const createModelVariants = (
   modelId: string,
   tests: ((model: LanguageModelV3) => void)[] = [],
-): ModelWithCapabilities<LanguageModelV3>[] => [createLanguageModel(modelId, tests)];
+): ModelWithCapabilities<LanguageModelV3>[] => [
+  createLanguageModel(modelId, tests),
+];
 
 // Model variants to test against
 const CHAT_MODELS = ['us.anthropic.claude-sonnet-4-5-20250929-v1:0'];
@@ -49,8 +57,12 @@ const COMPUTER_USE_MODELS = ['us.anthropic.claude-sonnet-4-5-20250929-v1:0'];
 
 const createModelsForRuntime = () => ({
   languageModels: [
-    ...CHAT_MODELS.flatMap(modelId => createModelVariants(modelId, [stopSequenceTests])),
-    ...COMPUTER_USE_MODELS.flatMap(modelId => createModelVariants(modelId, [toolTests])),
+    ...CHAT_MODELS.flatMap(modelId =>
+      createModelVariants(modelId, [stopSequenceTests]),
+    ),
+    ...COMPUTER_USE_MODELS.flatMap(modelId =>
+      createModelVariants(modelId, [toolTests]),
+    ),
   ],
 });
 
@@ -65,7 +77,9 @@ describe('Bedrock Anthropic E2E Tests', () => {
     customAssertions: {
       skipUsage: false,
       errorValidator: (error: APICallError) => {
-        expect(error.message).toMatch(/ValidationException|ResourceNotFoundException/);
+        expect(error.message).toMatch(
+          /ValidationException|ResourceNotFoundException/,
+        );
       },
     },
   })();
@@ -120,7 +134,9 @@ const toolTests = (model: LanguageModelV3) => {
                 case 'screenshot': {
                   return {
                     type: 'image',
-                    data: fs.readFileSync('./data/screenshot-editor.png').toString('base64'),
+                    data: fs
+                      .readFileSync('./data/screenshot-editor.png')
+                      .toString('base64'),
                   };
                 }
                 default: {
@@ -144,7 +160,8 @@ const toolTests = (model: LanguageModelV3) => {
             },
           }),
         },
-        prompt: 'How can I switch to dark mode? Take a look at the screen and tell me.',
+        prompt:
+          'How can I switch to dark mode? Take a look at the screen and tell me.',
         stopWhen: stepCountIs(5),
       });
 

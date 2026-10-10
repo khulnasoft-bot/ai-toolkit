@@ -7,7 +7,9 @@ import { createToolNameMapping } from './create-tool-name-mapping';
 
 describe('createToolNameMapping', () => {
   it('should create mappings for provider-defined tools', () => {
-    const tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> = [
+    const tools: Array<
+      LanguageModelV3FunctionTool | LanguageModelV3ProviderTool
+    > = [
       {
         type: 'provider',
         id: 'anthropic.computer-use',
@@ -29,14 +31,24 @@ describe('createToolNameMapping', () => {
 
     const mapping = createToolNameMapping({ tools, providerToolNames });
 
-    expect(mapping.toProviderToolName('custom-computer-tool')).toBe('computer_use');
-    expect(mapping.toProviderToolName('custom-code-tool')).toBe('code_interpreter');
-    expect(mapping.toCustomToolName('computer_use')).toBe('custom-computer-tool');
-    expect(mapping.toCustomToolName('code_interpreter')).toBe('custom-code-tool');
+    expect(mapping.toProviderToolName('custom-computer-tool')).toBe(
+      'computer_use',
+    );
+    expect(mapping.toProviderToolName('custom-code-tool')).toBe(
+      'code_interpreter',
+    );
+    expect(mapping.toCustomToolName('computer_use')).toBe(
+      'custom-computer-tool',
+    );
+    expect(mapping.toCustomToolName('code_interpreter')).toBe(
+      'custom-code-tool',
+    );
   });
 
   it('should ignore function tools', () => {
-    const tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> = [
+    const tools: Array<
+      LanguageModelV3FunctionTool | LanguageModelV3ProviderTool
+    > = [
       {
         type: 'function',
         name: 'my-function-tool',
@@ -49,12 +61,18 @@ describe('createToolNameMapping', () => {
 
     const mapping = createToolNameMapping({ tools, providerToolNames });
 
-    expect(mapping.toProviderToolName('my-function-tool')).toBe('my-function-tool');
-    expect(mapping.toCustomToolName('my-function-tool')).toBe('my-function-tool');
+    expect(mapping.toProviderToolName('my-function-tool')).toBe(
+      'my-function-tool',
+    );
+    expect(mapping.toCustomToolName('my-function-tool')).toBe(
+      'my-function-tool',
+    );
   });
 
   it('should return input name when tool is not in providerToolNames', () => {
-    const tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> = [
+    const tools: Array<
+      LanguageModelV3FunctionTool | LanguageModelV3ProviderTool
+    > = [
       {
         type: 'provider',
         id: 'unknown.tool',
@@ -72,7 +90,9 @@ describe('createToolNameMapping', () => {
   });
 
   it('should return input name when mapping does not exist', () => {
-    const tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> = [
+    const tools: Array<
+      LanguageModelV3FunctionTool | LanguageModelV3ProviderTool
+    > = [
       {
         type: 'provider',
         id: 'anthropic.computer-use',
@@ -87,14 +107,18 @@ describe('createToolNameMapping', () => {
 
     const mapping = createToolNameMapping({ tools, providerToolNames });
 
-    expect(mapping.toProviderToolName('non-existent-tool')).toBe('non-existent-tool');
+    expect(mapping.toProviderToolName('non-existent-tool')).toBe(
+      'non-existent-tool',
+    );
     expect(mapping.toCustomToolName('non-existent-provider-tool')).toBe(
       'non-existent-provider-tool',
     );
   });
 
   it('should handle empty tools array', () => {
-    const tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> = [];
+    const tools: Array<
+      LanguageModelV3FunctionTool | LanguageModelV3ProviderTool
+    > = [];
 
     const providerToolNames: Record<`${string}.${string}`, string> = {};
 
@@ -105,7 +129,9 @@ describe('createToolNameMapping', () => {
   });
 
   it('should handle mixed function and provider-defined tools', () => {
-    const tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> = [
+    const tools: Array<
+      LanguageModelV3FunctionTool | LanguageModelV3ProviderTool
+    > = [
       {
         type: 'function',
         name: 'function-tool',

@@ -1,5 +1,8 @@
 import { stepCountIs, streamText } from '@ai-toolkit/ai';
-import { type GoogleGenerativeAIProviderOptions, google } from '@ai-toolkit/google';
+import {
+  type GoogleGenerativeAIProviderOptions,
+  google,
+} from '@ai-toolkit/google';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 

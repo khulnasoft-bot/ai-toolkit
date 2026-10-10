@@ -34,7 +34,11 @@ describe('InferToolContext', () => {
   });
 
   it('infers optional-only context object properties', () => {
-    type WeatherTool = Tool<{ city: string }, never, { userId?: string; role?: string }>;
+    type WeatherTool = Tool<
+      { city: string },
+      never,
+      { userId?: string; role?: string }
+    >;
 
     expectTypeOf<InferToolContext<WeatherTool>>().toEqualTypeOf<{
       userId?: string;
@@ -43,9 +47,15 @@ describe('InferToolContext', () => {
   });
 
   it('infers optional context objects', () => {
-    type WeatherTool = Tool<{ city: string }, never, { userId: string } | undefined>;
+    type WeatherTool = Tool<
+      { city: string },
+      never,
+      { userId: string } | undefined
+    >;
 
-    expectTypeOf<InferToolContext<WeatherTool>>().toEqualTypeOf<{ userId: string } | undefined>();
+    expectTypeOf<InferToolContext<WeatherTool>>().toEqualTypeOf<
+      { userId: string } | undefined
+    >();
   });
 
   it('infers never for an empty context object', () => {

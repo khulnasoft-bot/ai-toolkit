@@ -1,6 +1,10 @@
 'use client';
 
-import { type ChatTransport, convertToModelMessages, streamText } from '@ai-toolkit/ai';
+import {
+  type ChatTransport,
+  convertToModelMessages,
+  streamText,
+} from '@ai-toolkit/ai';
 import { createOpenAI } from '@ai-toolkit/openai';
 import { type UIMessage, useChat } from '@ai-toolkit/react';
 import ChatInput from '@/components/chat-input';

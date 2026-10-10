@@ -112,7 +112,11 @@ describe('toolHeader with DynamicToolUIPart', () => {
   it('renders dynamic tool name from toolName prop', () => {
     render(
       <Tool defaultOpen>
-        <ToolHeader state="input-available" toolName="web-search" type="dynamic-tool" />
+        <ToolHeader
+          state="input-available"
+          toolName="web-search"
+          type="dynamic-tool"
+        />
       </Tool>,
     );
     expect(screen.getByText('web-search')).toBeInTheDocument();
@@ -135,7 +139,11 @@ describe('toolHeader with DynamicToolUIPart', () => {
   it('shows status badge for dynamic tools', () => {
     render(
       <Tool>
-        <ToolHeader state="output-available" toolName="search" type="dynamic-tool" />
+        <ToolHeader
+          state="output-available"
+          toolName="search"
+          type="dynamic-tool"
+        />
       </Tool>,
     );
     expect(screen.getByText('Completed')).toBeInTheDocument();
@@ -144,7 +152,11 @@ describe('toolHeader with DynamicToolUIPart', () => {
   it('shows approval-requested status for dynamic tools', () => {
     render(
       <Tool>
-        <ToolHeader state="approval-requested" toolName="delete-file" type="dynamic-tool" />
+        <ToolHeader
+          state="approval-requested"
+          toolName="delete-file"
+          type="dynamic-tool"
+        />
       </Tool>,
     );
     expect(screen.getByText('Awaiting Approval')).toBeInTheDocument();

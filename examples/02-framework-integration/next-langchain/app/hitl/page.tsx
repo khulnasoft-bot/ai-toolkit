@@ -6,7 +6,10 @@ import { AlertCircle, Shield, Sparkles } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ChatInput } from '../../components/chat-input';
 import { ChatMessage } from '../../components/chat-message';
-import { getPendingApprovals, ToolApprovalCard } from '../../components/tool-approval-card';
+import {
+  getPendingApprovals,
+  ToolApprovalCard,
+} from '../../components/tool-approval-card';
 import type { CustomDataMessage } from '../types';
 
 /**
@@ -89,9 +92,10 @@ export default function HITLPage() {
           Human-in-the-Loop Agent
         </h1>
         <div className="text-sm text-[var(--foreground-secondary)] leading-relaxed">
-          Uses LangChain&apos;s <code>humanInTheLoopMiddleware</code> to require approval for
-          sensitive actions. Try sending an email or deleting a file - you&apos;ll be asked to
-          approve the action before it executes. Search operations are auto-approved.
+          Uses LangChain&apos;s <code>humanInTheLoopMiddleware</code> to require
+          approval for sensitive actions. Try sending an email or deleting a
+          file - you&apos;ll be asked to approve the action before it executes.
+          Search operations are auto-approved.
         </div>
       </div>
 
@@ -148,10 +152,15 @@ export default function HITLPage() {
                 {message.role === 'assistant' &&
                   message.parts
                     .filter(
-                      part => part.type === 'dynamic-tool' && part.state === 'approval-requested',
+                      part =>
+                        part.type === 'dynamic-tool' &&
+                        part.state === 'approval-requested',
                     )
                     .map(part => {
-                      if (part.type !== 'dynamic-tool' || part.state !== 'approval-requested')
+                      if (
+                        part.type !== 'dynamic-tool' ||
+                        part.state !== 'approval-requested'
+                      )
                         return null;
                       return (
                         <ToolApprovalCard
@@ -194,7 +203,11 @@ export default function HITLPage() {
       {/* Input */}
       <ChatInput
         onSend={text => sendMessage({ text })}
-        disabled={status === 'submitted' || status === 'streaming' || pendingApprovals.length > 0}
+        disabled={
+          status === 'submitted' ||
+          status === 'streaming' ||
+          pendingApprovals.length > 0
+        }
         placeholder={
           pendingApprovals.length > 0
             ? 'Please approve or reject the pending action...'

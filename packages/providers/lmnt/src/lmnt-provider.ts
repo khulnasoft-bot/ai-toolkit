@@ -1,5 +1,9 @@
 import type { ProviderV3, SpeechModelV3 } from '@ai-toolkit/provider';
-import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  type FetchFunction,
+  loadApiKey,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { LMNTSpeechModel } from './lmnt-speech-model';
 import type { LMNTSpeechModelId } from './lmnt-speech-options';
 import { VERSION } from './version';

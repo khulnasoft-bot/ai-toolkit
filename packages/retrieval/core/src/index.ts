@@ -12,13 +12,19 @@ export type RetrievalResult = {
 };
 
 export interface Retriever {
-  retrieve(query: string, config: RetrievalConfig): Promise<readonly RetrievalResult[]>;
+  retrieve(
+    query: string,
+    config: RetrievalConfig,
+  ): Promise<readonly RetrievalResult[]>;
 }
 
 export interface RetrievalEngine {
   registerRetriever(name: string, retriever: Retriever): void;
   getRetriever(name: string): Retriever | undefined;
-  retrieve(query: string, config: RetrievalConfig): Promise<readonly RetrievalResult[]>;
+  retrieve(
+    query: string,
+    config: RetrievalConfig,
+  ): Promise<readonly RetrievalResult[]>;
 }
 
 export function createRetrievalEngine(): RetrievalEngine {

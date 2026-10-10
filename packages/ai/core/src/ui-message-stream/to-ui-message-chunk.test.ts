@@ -92,7 +92,8 @@ describe('toUIMessageChunk', () => {
       },
     ] satisfies TextStreamPart<{}>[];
 
-    expect(reasoningParts.map(part => toUIMessageChunk(part))).toMatchInlineSnapshot(`
+    expect(reasoningParts.map(part => toUIMessageChunk(part)))
+      .toMatchInlineSnapshot(`
         [
           {
             "id": "reasoning-1",
@@ -125,11 +126,11 @@ describe('toUIMessageChunk', () => {
         ]
       `);
 
-    expect(reasoningParts.map(part => toUIMessageChunk(part, { sendReasoning: false }))).toEqual([
-      undefined,
-      undefined,
-      undefined,
-    ]);
+    expect(
+      reasoningParts.map(part =>
+        toUIMessageChunk(part, { sendReasoning: false }),
+      ),
+    ).toEqual([undefined, undefined, undefined]);
   });
 
   it('maps files and suppresses reasoning files when reasoning is disabled', () => {
@@ -159,7 +160,9 @@ describe('toUIMessageChunk', () => {
       providerMetadata,
     });
 
-    expect(toUIMessageChunk(reasoningFilePart, { sendReasoning: false })).toBeUndefined();
+    expect(
+      toUIMessageChunk(reasoningFilePart, { sendReasoning: false }),
+    ).toBeUndefined();
   });
 
   it('skips sources by default and sends them when enabled', () => {
@@ -193,14 +196,16 @@ describe('toUIMessageChunk', () => {
       providerMetadata,
     });
 
-    expect(toUIMessageChunk(documentSourcePart, { sendSources: true })).toEqual({
-      type: 'source-document',
-      sourceId: 'source-2',
-      mediaType: 'application/pdf',
-      title: 'Document',
-      filename: 'document.pdf',
-      providerMetadata,
-    });
+    expect(toUIMessageChunk(documentSourcePart, { sendSources: true })).toEqual(
+      {
+        type: 'source-document',
+        sourceId: 'source-2',
+        mediaType: 'application/pdf',
+        title: 'Document',
+        filename: 'document.pdf',
+        providerMetadata,
+      },
+    );
   });
 
   it('maps custom and lifecycle parts', () => {
@@ -230,7 +235,9 @@ describe('toUIMessageChunk', () => {
       messageMetadata: { model: 'test-model' },
     });
 
-    expect(toUIMessageChunk({ type: 'start' }, { sendStart: false })).toBeUndefined();
+    expect(
+      toUIMessageChunk({ type: 'start' }, { sendStart: false }),
+    ).toBeUndefined();
 
     expect(
       toUIMessageChunk(
@@ -286,7 +293,9 @@ describe('toUIMessageChunk', () => {
       ),
     ).toBeUndefined();
 
-    expect(toUIMessageChunk({ type: 'start-step', request: {}, warnings: [] })).toEqual({
+    expect(
+      toUIMessageChunk({ type: 'start-step', request: {}, warnings: [] }),
+    ).toEqual({
       type: 'start-step',
     });
 
@@ -658,8 +667,8 @@ describe('toUIMessageChunk', () => {
   });
 
   it('throws for unknown part types', () => {
-    expect(() => toUIMessageChunk({ type: 'unknown' } as unknown as TextStreamPart<{}>)).toThrow(
-      'Unknown chunk type: unknown',
-    );
+    expect(() =>
+      toUIMessageChunk({ type: 'unknown' } as unknown as TextStreamPart<{}>),
+    ).toThrow('Unknown chunk type: unknown');
   });
 });

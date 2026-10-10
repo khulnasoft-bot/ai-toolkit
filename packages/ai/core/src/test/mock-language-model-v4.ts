@@ -29,7 +29,9 @@ export class MockLanguageModelV4 implements LanguageModelV4 {
   }: {
     provider?: LanguageModelV4['provider'];
     modelId?: LanguageModelV4['modelId'];
-    supportedUrls?: LanguageModelV4['supportedUrls'] | (() => LanguageModelV4['supportedUrls']);
+    supportedUrls?:
+      | LanguageModelV4['supportedUrls']
+      | (() => LanguageModelV4['supportedUrls']);
     doGenerate?:
       | LanguageModelV4['doGenerate']
       | LanguageModelV4GenerateResult
@@ -64,7 +66,9 @@ export class MockLanguageModelV4 implements LanguageModelV4 {
       }
     };
     this._supportedUrls =
-      typeof supportedUrls === 'function' ? supportedUrls : async () => await supportedUrls;
+      typeof supportedUrls === 'function'
+        ? supportedUrls
+        : async () => await supportedUrls;
   }
 
   get supportedUrls() {

@@ -8,7 +8,9 @@ describe('toolbar', () => {
     const { container } = render(
       <Canvas
         edges={[]}
-        nodes={[{ data: { label: 'Node 1' }, id: '1', position: { x: 0, y: 0 } }]}
+        nodes={[
+          { data: { label: 'Node 1' }, id: '1', position: { x: 0, y: 0 } },
+        ]}
         nodeTypes={{
           custom: () => (
             <div>

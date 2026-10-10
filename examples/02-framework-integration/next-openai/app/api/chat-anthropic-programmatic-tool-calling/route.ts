@@ -1,4 +1,8 @@
-import { createAgentUIStreamResponse, type UIMessage, validateUIMessages } from '@ai-toolkit/ai';
+import {
+  createAgentUIStreamResponse,
+  type UIMessage,
+  validateUIMessages,
+} from '@ai-toolkit/ai';
 import { anthropicProgrammaticToolCallingAgent } from '@/agent/anthropic-programmatic-tool-calling-agent';
 
 export async function POST(request: Request) {
@@ -6,9 +10,13 @@ export async function POST(request: Request) {
 
   console.dir(messages, { depth: Infinity });
 
-  const uiMessages = await validateUIMessages<UIMessage<{ containerId: string }>>({ messages });
+  const uiMessages = await validateUIMessages<
+    UIMessage<{ containerId: string }>
+  >({ messages });
 
-  const lastAssistantMessage = uiMessages.findLast(message => message.role === 'assistant');
+  const lastAssistantMessage = uiMessages.findLast(
+    message => message.role === 'assistant',
+  );
 
   return createAgentUIStreamResponse({
     agent: anthropicProgrammaticToolCallingAgent,

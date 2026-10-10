@@ -1,5 +1,8 @@
 import { stepCountIs, streamText, tool } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 
@@ -21,7 +24,8 @@ run(async () => {
         },
       }),
       countChar: tool({
-        description: 'Count the number of occurrences of a specific character in the text',
+        description:
+          'Count the number of occurrences of a specific character in the text',
         inputSchema: z.object({ text: z.string(), char: z.string() }),
         execute: async ({ text, char }) => {
           if (Math.random() < 0.5) {
@@ -50,7 +54,10 @@ run(async () => {
 
       case 'start-step':
         console.log('STEP START');
-        console.log('Request body:', JSON.stringify(chunk.request.body, null, 2));
+        console.log(
+          'Request body:',
+          JSON.stringify(chunk.request.body, null, 2),
+        );
         break;
 
       case 'reasoning-start':

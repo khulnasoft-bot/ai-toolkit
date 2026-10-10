@@ -17,23 +17,25 @@ type IsEmptyObject<T> = keyof NonNullable<T> extends never ? true : false;
  * Detects context types that come from omitted or broad context declarations
  * rather than a concrete tool context schema.
  */
-type IsUntypedContext<CONTEXT> = IsAny<CONTEXT> extends true
-  ? true
-  : unknown extends CONTEXT
+type IsUntypedContext<CONTEXT> =
+  IsAny<CONTEXT> extends true
     ? true
-    : IsEmptyObject<CONTEXT> extends true
+    : unknown extends CONTEXT
       ? true
-      : string extends keyof CONTEXT
-        ? CONTEXT extends Context
-          ? true
-          : false
-        : false;
+      : IsEmptyObject<CONTEXT> extends true
+        ? true
+        : string extends keyof CONTEXT
+          ? CONTEXT extends Context
+            ? true
+            : false
+          : false;
 
 /**
  * Infer the context type of a tool.
  */
-export type InferToolContext<TOOL extends Tool> = TOOL extends Tool<any, any, infer CONTEXT>
-  ? IsUntypedContext<CONTEXT> extends true
-    ? never
-    : CONTEXT
-  : never;
+export type InferToolContext<TOOL extends Tool> =
+  TOOL extends Tool<any, any, infer CONTEXT>
+    ? IsUntypedContext<CONTEXT> extends true
+      ? never
+      : CONTEXT
+    : never;

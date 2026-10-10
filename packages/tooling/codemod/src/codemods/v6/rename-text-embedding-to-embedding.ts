@@ -21,7 +21,10 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
     })
     .forEach(path => {
       const callee = path.node.callee;
-      if (callee.type === 'MemberExpression' && callee.property.type === 'Identifier') {
+      if (
+        callee.type === 'MemberExpression' &&
+        callee.property.type === 'Identifier'
+      ) {
         const oldName = callee.property.name;
         const newName = methodRenames[oldName];
         if (newName) {

@@ -48,7 +48,10 @@ export default function TestOpenAIResponsesMCP() {
 
               case 'step-start':
                 return index > 0 ? (
-                  <div key={`${part.type}-${index}`} className="my-2 border-t border-gray-300" />
+                  <div
+                    key={`${part.type}-${index}`}
+                    className="my-2 border-t border-gray-300"
+                  />
                 ) : null;
               default:
                 return null;

@@ -1,4 +1,8 @@
-import { extractReasoningMiddleware, generateText, wrapLanguageModel } from '@ai-toolkit/ai';
+import {
+  extractReasoningMiddleware,
+  generateText,
+  wrapLanguageModel,
+} from '@ai-toolkit/ai';
 import { huggingface } from '@ai-toolkit/huggingface';
 import { run } from '../lib/run';
 

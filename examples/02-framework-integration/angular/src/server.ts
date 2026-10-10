@@ -1,4 +1,8 @@
-import { convertToModelMessages, streamObject, streamText } from '@ai-toolkit/ai';
+import {
+  convertToModelMessages,
+  streamObject,
+  streamText,
+} from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import 'dotenv/config';
 import express, { type Request, type Response } from 'express';

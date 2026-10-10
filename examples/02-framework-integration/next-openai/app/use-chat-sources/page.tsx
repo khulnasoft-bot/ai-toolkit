@@ -6,9 +6,10 @@ import type { SourcesChatMessage } from '@/app/api/use-chat-sources/route';
 import ChatInput from '@/components/chat-input';
 
 export default function Chat() {
-  const { error, status, sendMessage, messages, regenerate, stop } = useChat<SourcesChatMessage>({
-    transport: new DefaultChatTransport({ api: '/api/use-chat-sources' }),
-  });
+  const { error, status, sendMessage, messages, regenerate, stop } =
+    useChat<SourcesChatMessage>({
+      transport: new DefaultChatTransport({ api: '/api/use-chat-sources' }),
+    });
 
   console.log(messages);
 
@@ -23,7 +24,10 @@ export default function Chat() {
             }
 
             if (part.type === 'tool-web_search') {
-              if (part.state === 'input-available' || part.state === 'input-streaming') {
+              if (
+                part.state === 'input-available' ||
+                part.state === 'input-streaming'
+              ) {
                 return (
                   <pre
                     key={`${part.type}-${part.toolCallId}`}

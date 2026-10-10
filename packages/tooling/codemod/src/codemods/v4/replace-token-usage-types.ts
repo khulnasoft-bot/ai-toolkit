@@ -22,12 +22,17 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
   root
     .find(j.ImportDeclaration)
     .filter(
-      path => path.node.source.value === 'ai-toolkit' || path.node.source.value === 'ai-toolkit',
+      path =>
+        path.node.source.value === 'ai-toolkit' ||
+        path.node.source.value === 'ai-toolkit',
     )
     .forEach(path => {
       const importSpecifiers = path.node.specifiers || [];
-      const newSpecifiers: (ImportSpecifier | ImportDefaultSpecifier | ImportNamespaceSpecifier)[] =
-        [];
+      const newSpecifiers: (
+        | ImportSpecifier
+        | ImportDefaultSpecifier
+        | ImportNamespaceSpecifier
+      )[] = [];
       const addedNewSpecifiers = new Set<string>();
 
       importSpecifiers.forEach(spec => {

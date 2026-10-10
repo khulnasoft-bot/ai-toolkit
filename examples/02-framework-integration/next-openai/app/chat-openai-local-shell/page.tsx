@@ -15,14 +15,16 @@ export default function TestOpenAIWebSearch() {
       transport: new DefaultChatTransport({
         api: '/api/chat-openai-local-shell',
       }),
-      sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
+      sendAutomaticallyWhen:
+        lastAssistantMessageIsCompleteWithApprovalResponses,
     });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
       <h1 className="mb-2 text-xl font-bold">OpenAI Local Shell Test</h1>
       <h2 className="pb-2 mb-4 border-b">
-        Note: This example requires a Vercel OIDC Token to run the Code Shell with Vercel Sandbox
+        Note: This example requires a Vercel OIDC Token to run the Code Shell
+        with Vercel Sandbox
       </h2>
 
       {messages.map(message => (
@@ -32,7 +34,9 @@ export default function TestOpenAIWebSearch() {
             {message.parts.map(part => {
               switch (part.type) {
                 case 'text': {
-                  return <div key={`${part.type}-${part.text}`}>{part.text}</div>;
+                  return (
+                    <div key={`${part.type}-${part.text}`}>{part.text}</div>
+                  );
                 }
                 case 'tool-shell': {
                   return (

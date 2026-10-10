@@ -10,18 +10,21 @@ import ChatInput from '@/components/chat-input';
 import ShellView from '@/components/tool/openai-shell-view';
 
 export default function ChatOpenAIShell() {
-  const { status, sendMessage, messages, addToolApprovalResponse } = useChat<OpenAIShellMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-shell',
-    }),
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
-  });
+  const { status, sendMessage, messages, addToolApprovalResponse } =
+    useChat<OpenAIShellMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-shell',
+      }),
+      sendAutomaticallyWhen:
+        lastAssistantMessageIsCompleteWithApprovalResponses,
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-4xl stretch">
       <h1 className="mb-2 text-xl font-bold text-black">OpenAI Shell Tool</h1>
       <h2 className="pb-2 mb-4 border-b text-black">
-        Note: This example requires a Vercel OIDC Token to run commands with Vercel Sandbox
+        Note: This example requires a Vercel OIDC Token to run commands with
+        Vercel Sandbox
       </h2>
 
       {messages.map(message => (
@@ -35,7 +38,10 @@ export default function ChatOpenAIShell() {
                 switch (part.type) {
                   case 'text':
                     return (
-                      <div key={`${part.type}-${part.text}`} className="text-black">
+                      <div
+                        key={`${part.type}-${part.text}`}
+                        className="text-black"
+                      >
                         {part.text}
                       </div>
                     );

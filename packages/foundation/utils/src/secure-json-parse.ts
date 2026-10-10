@@ -33,7 +33,10 @@ function _parse(text: string) {
     return obj;
   }
 
-  if (suspectProtoRx.test(text) === false && suspectConstructorRx.test(text) === false) {
+  if (
+    suspectProtoRx.test(text) === false &&
+    suspectConstructorRx.test(text) === false
+  ) {
     return obj;
   }
 
@@ -53,7 +56,10 @@ function filter(obj: any) {
         throw new SyntaxError('Object contains forbidden prototype property');
       }
 
-      if (Object.hasOwn(node, 'constructor') && Object.hasOwn(node.constructor, 'prototype')) {
+      if (
+        Object.hasOwn(node, 'constructor') &&
+        Object.hasOwn(node.constructor, 'prototype')
+      ) {
         throw new SyntaxError('Object contains forbidden prototype property');
       }
 

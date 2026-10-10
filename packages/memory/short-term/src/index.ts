@@ -22,7 +22,9 @@ export interface ShortTermMemory {
   forget(maxAge?: number): void;
 }
 
-export function createShortTermMemory(config?: ShortTermMemoryConfig): ShortTermMemory {
+export function createShortTermMemory(
+  config?: ShortTermMemoryConfig,
+): ShortTermMemory {
   const turns: ConversationTurn[] = [];
   const maxTurns = config?.maxTurns ?? 100;
 

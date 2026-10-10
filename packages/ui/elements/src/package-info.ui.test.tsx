@@ -19,7 +19,9 @@ describe('packageInfo', () => {
   });
 
   it('renders with version change', () => {
-    render(<PackageInfo currentVersion="18.0.0" name="react" newVersion="19.0.0" />);
+    render(
+      <PackageInfo currentVersion="18.0.0" name="react" newVersion="19.0.0" />,
+    );
     expect(screen.getByText('18.0.0')).toBeInTheDocument();
     expect(screen.getByText('19.0.0')).toBeInTheDocument();
   });
@@ -30,7 +32,9 @@ describe('packageInfo', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<PackageInfo className="custom-class" name="react" />);
+    const { container } = render(
+      <PackageInfo className="custom-class" name="react" />,
+    );
     expect(container.firstChild).toHaveClass('custom-class');
   });
 });
@@ -114,7 +118,12 @@ describe('packageInfoDependencies', () => {
 describe('composability', () => {
   it('renders with custom children', () => {
     render(
-      <PackageInfo changeType="major" currentVersion="18.0.0" name="react" newVersion="19.0.0">
+      <PackageInfo
+        changeType="major"
+        currentVersion="18.0.0"
+        name="react"
+        newVersion="19.0.0"
+      >
         <PackageInfoHeader>
           <PackageInfoName />
           <PackageInfoChangeType />

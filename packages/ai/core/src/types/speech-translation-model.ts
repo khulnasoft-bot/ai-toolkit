@@ -6,4 +6,6 @@ import type { Experimental_SpeechTranslationModelV4 } from '@ai-toolkit/provider
  * Experimental: part of the experimental speech translation modality and may
  * change in patch releases.
  */
-export type SpeechTranslationModel = string | Experimental_SpeechTranslationModelV4;
+export type SpeechTranslationModel =
+  | string
+  | Experimental_SpeechTranslationModelV4;

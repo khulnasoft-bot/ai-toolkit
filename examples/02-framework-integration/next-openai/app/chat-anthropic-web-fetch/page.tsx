@@ -10,11 +10,12 @@ import SourcesView from '@/components/sources-view';
 import AnthropicWebFetchView from '@/components/tool/anthropic-web-fetch-view';
 
 export default function TestAnthropicWebFetch() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<AnthropicWebFetchMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-anthropic-web-fetch',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<AnthropicWebFetchMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-anthropic-web-fetch',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -26,13 +27,27 @@ export default function TestAnthropicWebFetch() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+                return (
+                  <ReasoningView
+                    part={part}
+                    key={`${part.type}-${part.text}`}
+                  />
+                );
               }
               case 'tool-web_fetch': {
-                return <AnthropicWebFetchView invocation={part} key={part.toolCallId} />;
+                return (
+                  <AnthropicWebFetchView
+                    invocation={part}
+                    key={part.toolCallId}
+                  />
+                );
               }
               default: {
                 return null;
@@ -40,7 +55,9 @@ export default function TestAnthropicWebFetch() {
             }
           })}
 
-          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
+          <SourcesView
+            sources={message.parts.filter(part => part.type === 'source-url')}
+          />
         </div>
       ))}
 

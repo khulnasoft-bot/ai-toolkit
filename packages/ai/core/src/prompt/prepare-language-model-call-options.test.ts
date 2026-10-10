@@ -22,7 +22,9 @@ describe('prepareLanguageModelCallOptions', () => {
         seed: 42,
       };
 
-      expect(() => prepareLanguageModelCallOptions(validSettings)).not.toThrow();
+      expect(() =>
+        prepareLanguageModelCallOptions(validSettings),
+      ).not.toThrow();
     });
 
     it('should allow undefined values for optional settings', () => {
@@ -36,14 +38,18 @@ describe('prepareLanguageModelCallOptions', () => {
         seed: undefined,
       };
 
-      expect(() => prepareLanguageModelCallOptions(validSettings)).not.toThrow();
+      expect(() =>
+        prepareLanguageModelCallOptions(validSettings),
+      ).not.toThrow();
     });
   });
 
   describe('invalid inputs', () => {
     describe('maxOutputTokens', () => {
       it('should throw InvalidArgumentError if maxOutputTokens is not an integer', () => {
-        expect(() => prepareLanguageModelCallOptions({ maxOutputTokens: 10.5 })).toThrow(
+        expect(() =>
+          prepareLanguageModelCallOptions({ maxOutputTokens: 10.5 }),
+        ).toThrow(
           new InvalidArgumentError({
             parameter: 'maxOutputTokens',
             value: 10.5,
@@ -53,7 +59,9 @@ describe('prepareLanguageModelCallOptions', () => {
       });
 
       it('should throw InvalidArgumentError if maxOutputTokens is less than 1', () => {
-        expect(() => prepareLanguageModelCallOptions({ maxOutputTokens: 0 })).toThrow(
+        expect(() =>
+          prepareLanguageModelCallOptions({ maxOutputTokens: 0 }),
+        ).toThrow(
           new InvalidArgumentError({
             parameter: 'maxOutputTokens',
             value: 0,
@@ -65,7 +73,9 @@ describe('prepareLanguageModelCallOptions', () => {
 
     describe('temperature', () => {
       it('should throw InvalidArgumentError if temperature is not a number', () => {
-        expect(() => prepareLanguageModelCallOptions({ temperature: 'invalid' as any })).toThrow(
+        expect(() =>
+          prepareLanguageModelCallOptions({ temperature: 'invalid' as any }),
+        ).toThrow(
           new InvalidArgumentError({
             parameter: 'temperature',
             value: 'invalid',
@@ -77,7 +87,9 @@ describe('prepareLanguageModelCallOptions', () => {
 
     describe('topP', () => {
       it('should throw InvalidArgumentError if topP is not a number', () => {
-        expect(() => prepareLanguageModelCallOptions({ topP: 'invalid' as any })).toThrow(
+        expect(() =>
+          prepareLanguageModelCallOptions({ topP: 'invalid' as any }),
+        ).toThrow(
           new InvalidArgumentError({
             parameter: 'topP',
             value: 'invalid',
@@ -89,7 +101,9 @@ describe('prepareLanguageModelCallOptions', () => {
 
     describe('topK', () => {
       it('should throw InvalidArgumentError if topK is not a number', () => {
-        expect(() => prepareLanguageModelCallOptions({ topK: 'invalid' as any })).toThrow(
+        expect(() =>
+          prepareLanguageModelCallOptions({ topK: 'invalid' as any }),
+        ).toThrow(
           new InvalidArgumentError({
             parameter: 'topK',
             value: 'invalid',
@@ -146,7 +160,14 @@ describe('prepareLanguageModelCallOptions', () => {
 
   describe('reasoning', () => {
     it('should pass through valid reasoning values', () => {
-      for (const value of ['none', 'minimal', 'low', 'medium', 'high', 'xhigh'] as const) {
+      for (const value of [
+        'none',
+        'minimal',
+        'low',
+        'medium',
+        'high',
+        'xhigh',
+      ] as const) {
         const options = prepareLanguageModelCallOptions({ reasoning: value });
         expect(options.reasoning).toBe(value);
       }
@@ -207,9 +228,12 @@ describe('timeout helpers (from request-options)', () => {
     });
 
     it('should return toolMs alongside other timeout values', () => {
-      expect(getToolTimeoutMs({ totalMs: 30000, stepMs: 10000, toolMs: 5000 }, 'testTool')).toBe(
-        5000,
-      );
+      expect(
+        getToolTimeoutMs(
+          { totalMs: 30000, stepMs: 10000, toolMs: 5000 },
+          'testTool',
+        ),
+      ).toBe(5000);
     });
   });
 

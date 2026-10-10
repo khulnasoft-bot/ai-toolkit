@@ -17,10 +17,16 @@ import {
   postJsonToApi,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
-import { type CohereChatModelId, cohereChatModelOptions } from './cohere-chat-options';
+import {
+  type CohereChatModelId,
+  cohereChatModelOptions,
+} from './cohere-chat-options';
 import { cohereFailedResponseHandler } from './cohere-error';
 import { prepareTools } from './cohere-prepare-tools';
-import { type CohereUsageTokens, convertCohereUsage } from './convert-cohere-usage';
+import {
+  type CohereUsageTokens,
+  convertCohereUsage,
+} from './convert-cohere-usage';
 import { convertToCohereChatPrompt } from './convert-to-cohere-chat-prompt';
 import { mapCohereFinishReason } from './map-cohere-finish-reason';
 
@@ -130,7 +136,9 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doGenerate(options: LanguageModelV3CallOptions): Promise<LanguageModelV3GenerateResult> {
+  async doGenerate(
+    options: LanguageModelV3CallOptions,
+  ): Promise<LanguageModelV3GenerateResult> {
     const { args, warnings } = await this.getArgs(options);
 
     const {
@@ -142,7 +150,9 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body: args,
       failedResponseHandler: cohereFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(cohereChatResponseSchema),
+      successfulResponseHandler: createJsonResponseHandler(
+        cohereChatResponseSchema,
+      ),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -210,7 +220,9 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
     };
   }
 
-  async doStream(options: LanguageModelV3CallOptions): Promise<LanguageModelV3StreamResult> {
+  async doStream(
+    options: LanguageModelV3CallOptions,
+  ): Promise<LanguageModelV3StreamResult> {
     const { args, warnings } = await this.getArgs(options);
 
     const { responseHeaders, value: response } = await postJsonToApi({
@@ -218,7 +230,9 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
       headers: combineHeaders(this.config.headers(), options.headers),
       body: { ...args, stream: true },
       failedResponseHandler: cohereFailedResponseHandler,
-      successfulResponseHandler: createEventSourceResponseHandler(cohereChatChunkSchema),
+      successfulResponseHandler: createEventSourceResponseHandler(
+        cohereChatChunkSchema,
+      ),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -320,7 +334,8 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
               case 'tool-call-start': {
                 const toolId = value.delta.message.tool_calls.id;
                 const toolName = value.delta.message.tool_calls.function.name;
-                const initialArgs = value.delta.message.tool_calls.function.arguments;
+                const initialArgs =
+                  value.delta.message.tool_calls.function.arguments;
 
                 pendingToolCall = {
                   id: toolId,
@@ -347,7 +362,8 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
 
               case 'tool-call-delta': {
                 if (pendingToolCall && !pendingToolCall.hasFinished) {
-                  const argsDelta = value.delta.message.tool_calls.function.arguments;
+                  const argsDelta =
+                    value.delta.message.tool_calls.function.arguments;
                   pendingToolCall.arguments += argsDelta;
 
                   controller.enqueue({
@@ -370,7 +386,9 @@ export class CohereChatLanguageModel implements LanguageModelV3 {
                     type: 'tool-call',
                     toolCallId: pendingToolCall.id,
                     toolName: pendingToolCall.name,
-                    input: JSON.stringify(JSON.parse(pendingToolCall.arguments?.trim() || '{}')),
+                    input: JSON.stringify(
+                      JSON.parse(pendingToolCall.arguments?.trim() || '{}'),
+                    ),
                   });
 
                   pendingToolCall.hasFinished = true;

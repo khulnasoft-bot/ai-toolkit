@@ -1,4 +1,7 @@
-import { type ConformanceContext, runConformanceTests } from '@ai-toolkit/provider/conformance';
+import {
+  type ConformanceContext,
+  runConformanceTests,
+} from '@ai-toolkit/provider/conformance';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { describe, vi } from 'vitest';
 import { createAzure } from './azure-openai-provider';

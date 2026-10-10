@@ -46,6 +46,8 @@ export const anthropicToolSearchAgent = new ToolLoopAgent({
   },
 });
 
-export type AnthropicToolSearchAgentMessage = InferAgentUIMessage<typeof anthropicToolSearchAgent>;
+export type AnthropicToolSearchAgentMessage = InferAgentUIMessage<
+  typeof anthropicToolSearchAgent
+>;
 
 export type SendEmailUIToolInvocation = UIToolInvocation<typeof sendEmailTool>;

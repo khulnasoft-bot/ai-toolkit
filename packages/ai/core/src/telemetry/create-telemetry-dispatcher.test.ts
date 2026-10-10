@@ -85,7 +85,9 @@ describe('createTelemetryDispatcher', () => {
       telemetry: { integrations: [{ onStart: vi.fn() }] },
     });
 
-    await expect(telemetry.onToolExecutionStart?.(dummyEvent)).resolves.toBeUndefined();
+    await expect(
+      telemetry.onToolExecutionStart?.(dummyEvent),
+    ).resolves.toBeUndefined();
     await expect(telemetry.onEmbedEnd?.(dummyEvent)).resolves.toBeUndefined();
   });
 
@@ -364,7 +366,10 @@ describe('createTelemetryDispatcher', () => {
 
       const telemetry = createTelemetryDispatcher({
         telemetry: {
-          integrations: [{ onStart: localOnStart1 }, { onStart: localOnStart2 }],
+          integrations: [
+            { onStart: localOnStart1 },
+            { onStart: localOnStart2 },
+          ],
         },
       });
       await telemetry.onStart?.(dummyEvent);
@@ -473,7 +478,9 @@ describe('createTelemetryDispatcher', () => {
     it('wraps execute with a single integration', async () => {
       const execute = vi.fn().mockResolvedValue('result');
       let wrapperCalls = 0;
-      const wrapper: Telemetry['executeLanguageModelCall'] = async ({ execute }) => {
+      const wrapper: Telemetry['executeLanguageModelCall'] = async ({
+        execute,
+      }) => {
         wrapperCalls += 1;
         return `wrapped:${await execute()}` as any;
       };
@@ -497,7 +504,11 @@ describe('createTelemetryDispatcher', () => {
       class ExecuteLanguageModelCallIntegration implements Telemetry {
         calls = 0;
 
-        async executeLanguageModelCall<T>({ execute }: { execute: () => PromiseLike<T> }) {
+        async executeLanguageModelCall<T>({
+          execute,
+        }: {
+          execute: () => PromiseLike<T>;
+        }) {
           this.calls += 1;
           return execute();
         }

@@ -45,7 +45,8 @@ run(async () => {
         },
       }),
     },
-    prompt: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+    prompt:
+      'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     onStepFinish: ({ toolCalls, toolResults }) => {
       if (toolCalls) {
         console.log(`\n  Tool calls: ${toolCalls.length}`);
@@ -129,7 +130,8 @@ run(async () => {
   const messagesForTurn2: ModelMessage[] = [
     {
       role: 'user',
-      content: 'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
+      content:
+        'Check flight status for AA100 and book a taxi 2 hours before if delayed.',
     },
     ...response1.messages,
     {

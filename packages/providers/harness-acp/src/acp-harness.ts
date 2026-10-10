@@ -1,4 +1,7 @@
-import { HarnessACPCapabilityUnsupportedError, HarnessACPConfigError } from './acp-error';
+import {
+  HarnessACPCapabilityUnsupportedError,
+  HarnessACPConfigError,
+} from './acp-error';
 import type {
   ACPGatewayEnvValue,
   ACPHarnessOptions,
@@ -88,7 +91,8 @@ export function createACP(options: ACPHarnessOptions): ACPHarness {
     options: {
       ...options,
       version: ACP_PROTOCOL_VERSION,
-      hostToolMcpTransport: options.hostToolMcpTransport ?? DEFAULT_HOST_TOOL_MCP_TRANSPORT,
+      hostToolMcpTransport:
+        options.hostToolMcpTransport ?? DEFAULT_HOST_TOOL_MCP_TRANSPORT,
       skillsDirectory: options.skillsDirectory ?? DEFAULT_SKILLS_DIRECTORY,
       startupTimeoutMs: options.startupTimeoutMs ?? DEFAULT_STARTUP_TIMEOUT_MS,
       mintBridgeToken: options.mintBridgeToken ?? defaultBridgeToken,
@@ -176,17 +180,19 @@ function resolveGatewayEnvValue(
           message: `Unknown gateway $source "${placeholder.$source}".`,
         });
     }
-    if (placeholder.ensureSuffix != null && !resolved.endsWith(placeholder.ensureSuffix)) {
+    if (
+      placeholder.ensureSuffix != null &&
+      !resolved.endsWith(placeholder.ensureSuffix)
+    ) {
       resolved = `${resolved}${placeholder.ensureSuffix}`;
     }
     return resolved;
   }
   if (typeof value === 'object' && value !== null) {
     return Object.fromEntries(
-      Object.entries(value as Record<string, ACPGatewayEnvValue>).map(([key, entry]) => [
-        key,
-        resolveGatewayEnvValue(entry, ctx),
-      ]),
+      Object.entries(value as Record<string, ACPGatewayEnvValue>).map(
+        ([key, entry]) => [key, resolveGatewayEnvValue(entry, ctx)],
+      ),
     );
   }
   return value;

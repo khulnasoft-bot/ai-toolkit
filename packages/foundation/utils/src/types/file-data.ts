@@ -41,4 +41,8 @@ export type FileDataText = SharedV4FileDataText;
  * - `{ type: 'reference', reference }`: a provider reference (`{ [provider]: id }`).
  * - `{ type: 'text', text }`: inline text content (e.g. an inline text document).
  */
-export type FileData = FileDataData | FileDataUrl | FileDataReference | FileDataText;
+export type FileData =
+  | FileDataData
+  | FileDataUrl
+  | FileDataReference
+  | FileDataText;

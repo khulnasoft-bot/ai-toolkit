@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import type { StepResult } from './step-result';
-import { hasToolCall, isLoopFinished, isStepCount, isStopConditionMet } from './stop-condition';
+import {
+  hasToolCall,
+  isLoopFinished,
+  isStepCount,
+  isStopConditionMet,
+} from './stop-condition';
 
 function createStepResult({
   toolCalls = [],
@@ -137,7 +142,10 @@ describe('stop conditions', () => {
     it('should support asynchronous stop conditions', async () => {
       await expect(
         isStopConditionMet({
-          stopConditions: [async () => false, async ({ steps }) => steps.length === 2],
+          stopConditions: [
+            async () => false,
+            async ({ steps }) => steps.length === 2,
+          ],
           steps: [createStepResult(), createStepResult()],
         }),
       ).resolves.toBe(true);

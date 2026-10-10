@@ -2,13 +2,18 @@ import 'dotenv/config';
 import type { APICallError } from '@ai-toolkit/provider';
 import { xai as provider, type XaiErrorData } from '@ai-toolkit/xai';
 import { expect } from 'vitest';
-import { createFeatureTestSuite, createLanguageModelWithCapabilities } from './feature-test-suite';
+import {
+  createFeatureTestSuite,
+  createLanguageModelWithCapabilities,
+} from './feature-test-suite';
 
 const createChatModel = (modelId: string) =>
   createLanguageModelWithCapabilities(provider.chat(modelId));
 
 const createCompletionModel = (modelId: string) =>
-  createLanguageModelWithCapabilities(provider.languageModel(modelId), ['textCompletion']);
+  createLanguageModelWithCapabilities(provider.languageModel(modelId), [
+    'textCompletion',
+  ]);
 
 createFeatureTestSuite({
   name: 'xAI',

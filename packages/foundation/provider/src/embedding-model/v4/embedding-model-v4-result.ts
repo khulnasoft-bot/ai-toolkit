@@ -1,4 +1,8 @@
-import type { SharedV3Headers, SharedV3ProviderMetadata, SharedV3Warning } from '../../shared';
+import type {
+  SharedV3Headers,
+  SharedV3ProviderMetadata,
+  SharedV3Warning,
+} from '../../shared';
 import type { EmbeddingModelV4Embedding } from './embedding-model-v4-embedding';
 
 /**

@@ -16,7 +16,10 @@ import { asLanguageModelUsage } from '../types/usage';
 import { now } from '../util/now';
 import { executeToolsFromStream } from './execute-tools-from-stream';
 import type { LanguageModelStreamPart } from './stream-language-model-call';
-import type { ToolExecutionEndEvent, ToolExecutionStartEvent } from './tool-execution-events';
+import type {
+  ToolExecutionEndEvent,
+  ToolExecutionStartEvent,
+} from './tool-execution-events';
 
 // mock now function
 vi.mock('../util/now', () => ({
@@ -94,7 +97,8 @@ describe('executeToolsFromStream', () => {
       runtimeContext: {},
     });
 
-    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream))
+      .toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -182,7 +186,8 @@ describe('executeToolsFromStream', () => {
       runtimeContext: {},
     });
 
-    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream))
+      .toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -425,7 +430,8 @@ describe('executeToolsFromStream', () => {
       },
     });
 
-    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream))
+      .toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -554,7 +560,8 @@ describe('executeToolsFromStream', () => {
       },
     });
 
-    expect(await convertReadableStreamToArray(transformedStream)).toMatchInlineSnapshot(`
+    expect(await convertReadableStreamToArray(transformedStream))
+      .toMatchInlineSnapshot(`
         [
           {
             "input": {
@@ -671,7 +678,11 @@ describe('executeToolsFromStream', () => {
 
       await convertReadableStreamToArray(transformedStream);
 
-      expect(callOrder).toEqual(['onToolExecutionStart', 'execute', 'onToolExecutionEnd']);
+      expect(callOrder).toEqual([
+        'onToolExecutionStart',
+        'execute',
+        'onToolExecutionEnd',
+      ]);
     });
 
     it('should pass stepNumber and model to callbacks', async () => {
@@ -915,7 +926,8 @@ describe('executeToolsFromStream', () => {
         }),
       };
 
-      const toolExecutionStartEvents: ToolExecutionStartEvent<typeof tools>[] = [];
+      const toolExecutionStartEvents: ToolExecutionStartEvent<typeof tools>[] =
+        [];
       const toolExecutionEndEvents: ToolExecutionEndEvent<typeof tools>[] = [];
 
       const inputStream: ReadableStream<LanguageModelStreamPart<typeof tools>> =
@@ -961,7 +973,8 @@ describe('executeToolsFromStream', () => {
         }),
       };
 
-      const toolExecutionStartEvents: ToolExecutionStartEvent<typeof tools>[] = [];
+      const toolExecutionStartEvents: ToolExecutionStartEvent<typeof tools>[] =
+        [];
       const toolExecutionEndEvents: ToolExecutionEndEvent<typeof tools>[] = [];
 
       const inputStream: ReadableStream<LanguageModelStreamPart<typeof tools>> =
@@ -1093,7 +1106,8 @@ describe('executeToolsFromStream', () => {
         }),
       };
 
-      const toolExecutionStartEvents: ToolExecutionStartEvent<typeof tools>[] = [];
+      const toolExecutionStartEvents: ToolExecutionStartEvent<typeof tools>[] =
+        [];
       const toolExecutionEndEvents: ToolExecutionEndEvent<typeof tools>[] = [];
 
       const inputStream: ReadableStream<LanguageModelStreamPart<typeof tools>> =
@@ -1154,7 +1168,9 @@ describe('executeToolsFromStream', () => {
         }),
       };
 
-      const inputStream = convertArrayToReadableStream<LanguageModelStreamPart<typeof tools>>([
+      const inputStream = convertArrayToReadableStream<
+        LanguageModelStreamPart<typeof tools>
+      >([
         {
           type: 'tool-call',
           toolCallId: 'call-1',

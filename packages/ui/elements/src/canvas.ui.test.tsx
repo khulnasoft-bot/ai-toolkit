@@ -33,7 +33,9 @@ describe('canvas', () => {
   });
 
   it('renders with nodes and edges', () => {
-    const nodes = [{ data: { label: 'Node 1' }, id: '1', position: { x: 0, y: 0 } }];
+    const nodes = [
+      { data: { label: 'Node 1' }, id: '1', position: { x: 0, y: 0 } },
+    ];
     const edges = [{ id: 'e1-2', source: '1', target: '2' }];
 
     const { container } = render(

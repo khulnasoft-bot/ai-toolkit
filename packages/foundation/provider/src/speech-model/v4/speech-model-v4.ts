@@ -27,5 +27,7 @@ export type SpeechModelV4 = {
   /**
    * Generates speech audio from text.
    */
-  doGenerate(options: SpeechModelV4CallOptions): PromiseLike<SpeechModelV4Result>;
+  doGenerate(
+    options: SpeechModelV4CallOptions,
+  ): PromiseLike<SpeechModelV4Result>;
 };

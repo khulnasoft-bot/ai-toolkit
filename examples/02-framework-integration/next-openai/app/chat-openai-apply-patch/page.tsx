@@ -9,11 +9,12 @@ import { ReasoningView } from '@/components/reasoning-view';
 import OpenAIApplyPatchView from '@/components/tool/openai-apply-patch-view';
 
 export default function ChatOpenAIApplyPatch() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<OpenAIApplyPatchMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-apply-patch',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<OpenAIApplyPatchMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-apply-patch',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-4xl stretch">
@@ -32,13 +33,27 @@ export default function ChatOpenAIApplyPatch() {
               {message.parts.map(part => {
                 switch (part.type) {
                   case 'text': {
-                    return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                    return (
+                      <Response key={`${part.type}-${part.text}`}>
+                        {part.text}
+                      </Response>
+                    );
                   }
                   case 'reasoning': {
-                    return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+                    return (
+                      <ReasoningView
+                        part={part}
+                        key={`${part.type}-${part.text}`}
+                      />
+                    );
                   }
                   case 'tool-apply_patch': {
-                    return <OpenAIApplyPatchView invocation={part} key={part.toolCallId} />;
+                    return (
+                      <OpenAIApplyPatchView
+                        invocation={part}
+                        key={part.toolCallId}
+                      />
+                    );
                   }
                   default: {
                     return null;

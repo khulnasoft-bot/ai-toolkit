@@ -1,5 +1,13 @@
-import { NoSuchModelError, type ProviderV3, type TranscriptionModelV3 } from '@ai-toolkit/provider';
-import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  NoSuchModelError,
+  type ProviderV3,
+  type TranscriptionModelV3,
+} from '@ai-toolkit/provider';
+import {
+  type FetchFunction,
+  loadApiKey,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { AssemblyAITranscriptionModel } from './assemblyai-transcription-model';
 import type { AssemblyAITranscriptionModelId } from './assemblyai-transcription-settings';
 import { VERSION } from './version';
@@ -44,7 +52,9 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create an AssemblyAI provider instance.
  */
-export function createAssemblyAI(options: AssemblyAIProviderSettings = {}): AssemblyAIProvider {
+export function createAssemblyAI(
+  options: AssemblyAIProviderSettings = {},
+): AssemblyAIProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {

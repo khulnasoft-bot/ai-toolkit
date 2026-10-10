@@ -15,7 +15,10 @@ export interface DurableStore {
 export interface DurableEngine {
   persist(data: DurableExecution): Promise<void>;
   restore(executionId: string): Promise<DurableExecution | undefined>;
-  checkpoint(executionId: string, state: Record<string, unknown>): Promise<void>;
+  checkpoint(
+    executionId: string,
+    state: Record<string, unknown>,
+  ): Promise<void>;
 }
 
 export function createDurableEngine(store: DurableStore): DurableEngine {

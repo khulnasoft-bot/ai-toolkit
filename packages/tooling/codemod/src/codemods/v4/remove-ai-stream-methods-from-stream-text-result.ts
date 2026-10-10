@@ -1,6 +1,10 @@
 import { createTransformer } from '../lib/create-transformer';
 
-const REMOVED_METHODS = ['toAIStream', 'pipeAIStreamToResponse', 'toAIStreamResponse'];
+const REMOVED_METHODS = [
+  'toAIStream',
+  'pipeAIStreamToResponse',
+  'toAIStreamResponse',
+];
 
 export default createTransformer((_fileInfo, _api, _options, context) => {
   const { j, root } = context;

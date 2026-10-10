@@ -23,7 +23,13 @@ describe('schemaDisplay', () => {
   });
 
   it('renders description', () => {
-    render(<SchemaDisplay description="List all users" method="GET" path="/api/users" />);
+    render(
+      <SchemaDisplay
+        description="List all users"
+        method="GET"
+        path="/api/users"
+      />,
+    );
     expect(screen.getByText('List all users')).toBeInTheDocument();
   });
 
@@ -124,7 +130,12 @@ describe('schemaDisplayParameter', () => {
   it('renders parameter with location', () => {
     render(
       <SchemaDisplay method="GET" path="/test">
-        <SchemaDisplayParameter location="path" name="userId" required type="string" />
+        <SchemaDisplayParameter
+          location="path"
+          name="userId"
+          required
+          type="string"
+        />
       </SchemaDisplay>,
     );
     expect(screen.getByText('userId')).toBeInTheDocument();
@@ -138,7 +149,12 @@ describe('schemaDisplayProperty', () => {
   it('renders simple property', () => {
     render(
       <SchemaDisplay method="GET" path="/test">
-        <SchemaDisplayProperty description="The title" name="title" required type="string" />
+        <SchemaDisplayProperty
+          description="The title"
+          name="title"
+          required
+          type="string"
+        />
       </SchemaDisplay>,
     );
     expect(screen.getByText('title')).toBeInTheDocument();

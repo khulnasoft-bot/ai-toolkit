@@ -33,7 +33,8 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
       const property = path.node.property;
       return (
         property.type === 'StringLiteral' &&
-        (property.value === 'reasoning' || property.value === 'reasoningDetails')
+        (property.value === 'reasoning' ||
+          property.value === 'reasoningDetails')
       );
     })
     .forEach(path => {

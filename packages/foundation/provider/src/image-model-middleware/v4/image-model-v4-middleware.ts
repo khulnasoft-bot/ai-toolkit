@@ -28,7 +28,9 @@ export type ImageModelV4Middleware = {
    * Override the limit of how many images can be generated in a single API call if desired.
    * @param options.model - The image model instance.
    */
-  overrideMaxImagesPerCall?: (options: { model: ImageModelV4 }) => ImageModelV4['maxImagesPerCall'];
+  overrideMaxImagesPerCall?: (options: {
+    model: ImageModelV4;
+  }) => ImageModelV4['maxImagesPerCall'];
 
   /**
    * Transforms the parameters before they are passed to the image model.

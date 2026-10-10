@@ -24,7 +24,9 @@ describe('terminal', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<Terminal className="custom-class" output="" />);
+    const { container } = render(
+      <Terminal className="custom-class" output="" />,
+    );
     expect(container.firstChild).toHaveClass('custom-class');
   });
 

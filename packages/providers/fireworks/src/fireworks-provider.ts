@@ -100,7 +100,9 @@ Creates a model for image generation.
 
 const defaultBaseURL = 'https://api.fireworks.ai/inference/v1';
 
-export function createFireworks(options: FireworksProviderSettings = {}): FireworksProvider {
+export function createFireworks(
+  options: FireworksProviderSettings = {},
+): FireworksProvider {
   const baseURL = withoutTrailingSlash(options.baseURL ?? defaultBaseURL);
   const getHeaders = () =>
     withUserAgentSuffix(

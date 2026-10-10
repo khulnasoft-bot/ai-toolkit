@@ -77,7 +77,10 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
           ) as any;
 
           if (responseProp?.value && responseProp.value.type === 'Identifier') {
-            destructuredMapping.set(rawResponseVarName, responseProp.value.name);
+            destructuredMapping.set(
+              rawResponseVarName,
+              responseProp.value.name,
+            );
           }
           context.hasChanges = true;
         } else {
@@ -148,7 +151,10 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
           ) as any;
 
           if (responseProp?.value && responseProp.value.type === 'Identifier') {
-            destructuredMapping.set(rawResponseVarName, responseProp.value.name);
+            destructuredMapping.set(
+              rawResponseVarName,
+              responseProp.value.name,
+            );
           }
           context.hasChanges = true;
         } else {
@@ -215,7 +221,10 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
         currentObj = currentObj.object;
       }
 
-      if (currentObj.type === 'Identifier' && aiResultVariables.has(currentObj.name)) {
+      if (
+        currentObj.type === 'Identifier' &&
+        aiResultVariables.has(currentObj.name)
+      ) {
         context.hasChanges = true;
         property.name = 'response';
       }
@@ -231,14 +240,18 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
 
       // Don't transform if it's a property key in an object
       if (
-        (parent.value.type === 'Property' || parent.value.type === 'ObjectProperty') &&
+        (parent.value.type === 'Property' ||
+          parent.value.type === 'ObjectProperty') &&
         parent.value.key === path.node
       ) {
         return;
       }
 
       // Don't transform if it's in a variable declarator pattern (already handled)
-      if (parent.value.type === 'VariableDeclarator' && parent.value.id === path.node) {
+      if (
+        parent.value.type === 'VariableDeclarator' &&
+        parent.value.id === path.node
+      ) {
         return;
       }
 

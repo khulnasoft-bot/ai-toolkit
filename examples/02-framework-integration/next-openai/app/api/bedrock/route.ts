@@ -1,4 +1,8 @@
-import { convertToModelMessages, streamText, type UIMessage } from '@ai-toolkit/ai';
+import {
+  convertToModelMessages,
+  streamText,
+  type UIMessage,
+} from '@ai-toolkit/ai';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
 
 export async function POST(req: Request) {

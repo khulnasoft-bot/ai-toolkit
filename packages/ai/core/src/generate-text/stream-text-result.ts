@@ -18,15 +18,27 @@ import type { ErrorHandler } from '../util/error-handler';
 import type { ContentPart } from './content-part';
 import type { GeneratedFile } from './generated-file';
 import type { Output } from './output';
-import type { InferCompleteOutput, InferElementOutput, InferPartialOutput } from './output-utils';
+import type {
+  InferCompleteOutput,
+  InferElementOutput,
+  InferPartialOutput,
+} from './output-utils';
 import type { ReasoningOutput } from './reasoning-output';
 import type { ResponseMessage } from './response-message';
 import type { StepResult } from './step-result';
 import type { ToolApprovalRequestOutput } from './tool-approval-request-output';
-import type { DynamicToolCall, StaticToolCall, TypedToolCall } from './tool-call';
+import type {
+  DynamicToolCall,
+  StaticToolCall,
+  TypedToolCall,
+} from './tool-call';
 import type { TypedToolError } from './tool-error';
 import type { StaticToolOutputDenied } from './tool-output-denied';
-import type { DynamicToolResult, StaticToolResult, TypedToolResult } from './tool-result';
+import type {
+  DynamicToolResult,
+  StaticToolResult,
+  TypedToolResult,
+} from './tool-result';
 import type { ToolSet } from './tool-set';
 
 export type UIMessageStreamOptions<UI_MESSAGE extends UIMessage> = {
@@ -98,7 +110,10 @@ export type ConsumeStreamOptions = {
 /**
 A result object for accessing different stream types and additional information.
  */
-export interface StreamTextResult<TOOLS extends ToolSet, OUTPUT extends Output> {
+export interface StreamTextResult<
+  TOOLS extends ToolSet,
+  OUTPUT extends Output,
+> {
   /**
 The content that was generated in the last step.
 
@@ -281,7 +296,9 @@ enables provider-specific results that can be fully encapsulated in the provider
    *
    * @deprecated Use `partialOutputStream` instead.
    */
-  readonly experimental_partialOutputStream: AsyncIterableStream<InferPartialOutput<OUTPUT>>;
+  readonly experimental_partialOutputStream: AsyncIterableStream<
+    InferPartialOutput<OUTPUT>
+  >;
 
   /**
    * A stream of partial parsed outputs. It uses the `output` specification.

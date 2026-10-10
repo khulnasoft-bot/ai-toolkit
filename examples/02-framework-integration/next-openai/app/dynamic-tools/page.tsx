@@ -32,7 +32,11 @@ export default function Chat() {
                   case 'input-streaming':
                   case 'input-available':
                   case 'output-available':
-                    return <pre key={part.toolCallId}>{JSON.stringify(part, null, 2)}</pre>;
+                    return (
+                      <pre key={part.toolCallId}>
+                        {JSON.stringify(part, null, 2)}
+                      </pre>
+                    );
                   case 'output-error':
                     return (
                       <div key={part.toolCallId} className="text-red-500">
@@ -47,7 +51,11 @@ export default function Chat() {
                 switch (part.state) {
                   // example of pre-rendering streaming tool calls:
                   case 'input-streaming':
-                    return <pre key={part.toolCallId}>{JSON.stringify(part.input, null, 2)}</pre>;
+                    return (
+                      <pre key={part.toolCallId}>
+                        {JSON.stringify(part.input, null, 2)}
+                      </pre>
+                    );
                   case 'input-available':
                     return (
                       <div key={part.toolCallId} className="text-gray-500">

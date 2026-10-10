@@ -4,7 +4,8 @@ import { loadApiKey } from '@ai-toolkit/provider-utils';
 import { beforeEach, describe, expect, it, type Mock, vi } from 'vitest';
 import { createKhulnasoft } from './khulnasoft-provider';
 
-const OpenAICompatibleChatLanguageModelMock = OpenAICompatibleChatLanguageModel as unknown as Mock;
+const OpenAICompatibleChatLanguageModelMock =
+  OpenAICompatibleChatLanguageModel as unknown as Mock;
 
 vi.mock('@ai-toolkit/openai-compatible', () => ({
   OpenAICompatibleChatLanguageModel: vi.fn(),
@@ -42,7 +43,8 @@ describe('KhulnasoftProvider', () => {
       provider('model-id');
 
       // Use the mocked version
-      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall =
+        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 
@@ -62,7 +64,8 @@ describe('KhulnasoftProvider', () => {
       const provider = createKhulnasoft(options);
       provider('model-id');
 
-      const constructorCall = OpenAICompatibleChatLanguageModelMock.mock.calls[0];
+      const constructorCall =
+        OpenAICompatibleChatLanguageModelMock.mock.calls[0];
       const config = constructorCall[1];
       config.headers();
 

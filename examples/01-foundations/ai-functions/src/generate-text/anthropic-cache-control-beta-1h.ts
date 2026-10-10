@@ -1,6 +1,9 @@
 import fs from 'node:fs';
 import { generateText } from '@ai-toolkit/ai';
-import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
+import {
+  type AnthropicProviderOptions,
+  anthropic,
+} from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 const errorMessage = fs.readFileSync('data/error-message.txt', 'utf8');
@@ -82,7 +85,10 @@ run(async () => {
     ],
   });
 
-  console.log('Usage information:', cachedResult.providerMetadata?.anthropic?.usage);
+  console.log(
+    'Usage information:',
+    cachedResult.providerMetadata?.anthropic?.usage,
+  );
 
   // e.g.
   // Usage information: {

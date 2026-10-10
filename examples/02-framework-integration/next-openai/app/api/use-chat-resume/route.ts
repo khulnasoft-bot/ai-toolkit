@@ -1,18 +1,30 @@
-import { convertToModelMessages, generateId, streamText, type UIMessage } from '@ai-toolkit/ai';
+import {
+  convertToModelMessages,
+  generateId,
+  streamText,
+  type UIMessage,
+} from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { after } from 'next/server';
 import { createResumableStreamContext } from 'resumable-stream';
-import { appendMessageToChat, appendStreamId, saveChat } from '@/util/chat-store';
+import {
+  appendMessageToChat,
+  appendStreamId,
+  saveChat,
+} from '@/util/chat-store';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-  const { chatId, messages }: { chatId: string; messages: UIMessage[] } = await req.json();
+  const { chatId, messages }: { chatId: string; messages: UIMessage[] } =
+    await req.json();
 
   const streamId = generateId();
 
-  const recentUserMessage = messages.filter(message => message.role === 'user').at(-1);
+  const recentUserMessage = messages
+    .filter(message => message.role === 'user')
+    .at(-1);
 
   if (!recentUserMessage) {
     throw new Error('No recent user message found');

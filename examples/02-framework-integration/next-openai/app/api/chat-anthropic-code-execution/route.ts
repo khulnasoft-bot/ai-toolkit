@@ -1,4 +1,8 @@
-import { createAgentUIStreamResponse, type UIMessage, validateUIMessages } from '@ai-toolkit/ai';
+import {
+  createAgentUIStreamResponse,
+  type UIMessage,
+  validateUIMessages,
+} from '@ai-toolkit/ai';
 import type { AnthropicMessageMetadata } from '@ai-toolkit/anthropic';
 import { anthropicCodeExecutionAgent } from '@/agent/anthropic-code-execution-agent';
 
@@ -7,10 +11,14 @@ export async function POST(request: Request) {
 
   console.dir(messages, { depth: Infinity });
 
-  const uiMessages = await validateUIMessages<UIMessage<{ containerId: string }>>({ messages });
+  const uiMessages = await validateUIMessages<
+    UIMessage<{ containerId: string }>
+  >({ messages });
 
   // get the last assistant message to enable reusing the container id
-  const lastAssistantMessage = uiMessages.findLast(message => message.role === 'assistant');
+  const lastAssistantMessage = uiMessages.findLast(
+    message => message.role === 'assistant',
+  );
 
   return createAgentUIStreamResponse({
     agent: anthropicCodeExecutionAgent,
@@ -19,7 +27,8 @@ export async function POST(request: Request) {
       // store the anthropic container id if a container was used
       if (part.type === 'finish-step') {
         const anthropicContainer = (
-          part.providerMetadata?.anthropic as unknown as AnthropicMessageMetadata
+          part.providerMetadata
+            ?.anthropic as unknown as AnthropicMessageMetadata
         )?.container;
 
         return {

@@ -95,7 +95,8 @@ describe('extractResponseFromAPICallError', () => {
     });
 
     it('should handle HTML error responses', async () => {
-      const htmlResponse = '<html><body><h1>500 Internal Server Error</h1></body></html>';
+      const htmlResponse =
+        '<html><body><h1>500 Internal Server Error</h1></body></html>';
       const apiCallError = new APICallError({
         message: 'Request failed',
         statusCode: 500,

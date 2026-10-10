@@ -6,7 +6,10 @@ import type { ModelMessage } from './model-message';
  *
  * @deprecated Tool approval is handled on a `generateText` / `streamText` level now.
  */
-export type ToolNeedsApprovalFunction<INPUT, CONTEXT extends Context | unknown | never> = (
+export type ToolNeedsApprovalFunction<
+  INPUT,
+  CONTEXT extends Context | unknown | never,
+> = (
   input: INPUT,
   options: {
     /**

@@ -15,7 +15,9 @@ type MessageProps = {
 export function Message({ role, children }: MessageProps) {
   return (
     <div className="flex flex-col gap-1 border-b p-2">
-      {role != null ? <div className="text-sm text-zinc-500">{role}</div> : null}
+      {role != null ? (
+        <div className="text-sm text-zinc-500">{role}</div>
+      ) : null}
       {children}
     </div>
   );

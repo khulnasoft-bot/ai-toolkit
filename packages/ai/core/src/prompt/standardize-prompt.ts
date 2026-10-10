@@ -21,7 +21,9 @@ export type StandardizedPrompt = {
   messages: ModelMessage[];
 };
 
-export async function standardizePrompt(prompt: Prompt): Promise<StandardizedPrompt> {
+export async function standardizePrompt(
+  prompt: Prompt,
+): Promise<StandardizedPrompt> {
   if (prompt.prompt == null && prompt.messages == null) {
     throw new InvalidPromptError({
       prompt,
@@ -50,7 +52,8 @@ export async function standardizePrompt(prompt: Prompt): Promise<StandardizedPro
   ) {
     throw new InvalidPromptError({
       prompt,
-      message: 'system must be a string, SystemModelMessage, or array of SystemModelMessage',
+      message:
+        'system must be a string, SystemModelMessage, or array of SystemModelMessage',
     });
   }
 

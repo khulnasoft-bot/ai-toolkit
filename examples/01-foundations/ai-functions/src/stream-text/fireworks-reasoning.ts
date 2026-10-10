@@ -1,4 +1,8 @@
-import { extractReasoningMiddleware, streamText, wrapLanguageModel } from '@ai-toolkit/ai';
+import {
+  extractReasoningMiddleware,
+  streamText,
+  wrapLanguageModel,
+} from '@ai-toolkit/ai';
 import { fireworks } from '@ai-toolkit/fireworks';
 import { run } from '../lib/run';
 

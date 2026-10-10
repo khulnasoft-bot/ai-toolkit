@@ -8,11 +8,12 @@ import ChatInput from '@/components/chat-input';
 import WeatherView from '@/components/tool/weather-view';
 
 export default function TestAnthropicCodeExecution() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<AnthropicToolsAgentMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-anthropic-tools',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<AnthropicToolsAgentMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-anthropic-tools',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -24,7 +25,11 @@ export default function TestAnthropicCodeExecution() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'tool-weather': {
                 return <WeatherView invocation={part} key={part.toolCallId} />;

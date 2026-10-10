@@ -8,6 +8,8 @@ describe('grokBuildHarness', () => {
     expect(grokBuildHarness.getBootstrapIdentity()).toContain(
       `harness:${grokBuildHarness.harnessId}`,
     );
-    expect(grokBuildHarness.clientAppId).toContain('ai-toolkit/harness-grok-build');
+    expect(grokBuildHarness.clientAppId).toContain(
+      'ai-toolkit/harness-grok-build',
+    );
   });
 });

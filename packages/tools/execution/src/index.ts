@@ -7,12 +7,21 @@ export type ExecutionResult = {
 };
 
 export interface AsyncToolExecutor {
-  execute(toolName: string, args: Record<string, unknown>): Promise<ExecutionResult>;
-  executeStream(toolName: string, args: Record<string, unknown>): AsyncIterable<ExecutionResult>;
+  execute(
+    toolName: string,
+    args: Record<string, unknown>,
+  ): Promise<ExecutionResult>;
+  executeStream(
+    toolName: string,
+    args: Record<string, unknown>,
+  ): AsyncIterable<ExecutionResult>;
 }
 
 export interface ExecutionEngine {
-  execute(toolName: string, args: Record<string, unknown>): Promise<ExecutionResult>;
+  execute(
+    toolName: string,
+    args: Record<string, unknown>,
+  ): Promise<ExecutionResult>;
   executeBatch(
     tools: readonly { toolName: string; args: Record<string, unknown> }[],
   ): Promise<readonly ExecutionResult[]>;

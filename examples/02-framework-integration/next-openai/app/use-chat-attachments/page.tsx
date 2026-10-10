@@ -23,11 +23,20 @@ export default function Page() {
                 if (part.type === 'text') {
                   return <div key={`${part.type}-${index}`}>{part.text}</div>;
                 }
-                if (part.type === 'file' && part.mediaType?.startsWith('image/')) {
+                if (
+                  part.type === 'file' &&
+                  part.mediaType?.startsWith('image/')
+                ) {
                   return (
                     <div key={`${part.type}-${index}`}>
-                      <img className="rounded-md w-60" src={part.url} alt={part.filename} />
-                      <span className="text-sm text-zinc-500">{part.filename}</span>
+                      <img
+                        className="rounded-md w-60"
+                        src={part.url}
+                        alt={part.filename}
+                      />
+                      <span className="text-sm text-zinc-500">
+                        {part.filename}
+                      </span>
                     </div>
                   );
                 }
@@ -64,7 +73,9 @@ export default function Page() {
                         src={URL.createObjectURL(attachment)}
                         alt={attachment.name}
                       />
-                      <span className="text-sm text-zinc-500">{attachment.name}</span>
+                      <span className="text-sm text-zinc-500">
+                        {attachment.name}
+                      </span>
                     </div>
                   );
                 } else if (type.startsWith('text/')) {

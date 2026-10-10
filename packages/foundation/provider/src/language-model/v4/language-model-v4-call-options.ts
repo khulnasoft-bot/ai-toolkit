@@ -120,7 +120,14 @@ export type LanguageModelV4CallOptions = {
    * Reasoning effort level for the model. Controls how much reasoning
    * the model performs before generating a response. Defaults to 'provider-default'.
    */
-  reasoning?: 'provider-default' | 'none' | 'minimal' | 'low' | 'medium' | 'high' | 'xhigh';
+  reasoning?:
+    | 'provider-default'
+    | 'none'
+    | 'minimal'
+    | 'low'
+    | 'medium'
+    | 'high'
+    | 'xhigh';
 
   /**
    * Additional provider-specific options. They are passed through

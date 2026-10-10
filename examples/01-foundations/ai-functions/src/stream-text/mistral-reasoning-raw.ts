@@ -1,4 +1,8 @@
-import { extractReasoningMiddleware, streamText, wrapLanguageModel } from '@ai-toolkit/ai';
+import {
+  extractReasoningMiddleware,
+  streamText,
+  wrapLanguageModel,
+} from '@ai-toolkit/ai';
 import { mistral } from '@ai-toolkit/mistral';
 import { run } from '../lib/run';
 

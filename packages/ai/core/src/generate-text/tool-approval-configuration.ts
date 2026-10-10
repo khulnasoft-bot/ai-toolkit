@@ -47,7 +47,10 @@ export type SingleToolApprovalFunction<
   RUNTIME_CONTEXT extends Context | unknown | never,
 > = (
   input: INPUT,
-  options: Omit<ToolExecutionOptions<TOOL_CONTEXT>, 'abortSignal' | 'context'> & {
+  options: Omit<
+    ToolExecutionOptions<TOOL_CONTEXT>,
+    'abortSignal' | 'context'
+  > & {
     toolContext: TOOL_CONTEXT;
     runtimeContext: RUNTIME_CONTEXT;
   },
@@ -113,7 +116,11 @@ export type ToolApprovalConfiguration<
   TOOLS extends ToolSet,
   RUNTIME_CONTEXT extends Context | unknown | never,
 > =
-  | GenericToolApprovalFunction<TOOLS, InferToolSetContext<TOOLS>, RUNTIME_CONTEXT>
+  | GenericToolApprovalFunction<
+      TOOLS,
+      InferToolSetContext<TOOLS>,
+      RUNTIME_CONTEXT
+    >
   | {
       [key in keyof TOOLS]?:
         | ToolApprovalStatus

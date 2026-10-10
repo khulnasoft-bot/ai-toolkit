@@ -5,7 +5,10 @@ import {
   type UIDataTypes,
   type UIMessage,
 } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 
 const tools = {
   web_search: openai.tools.webSearch({

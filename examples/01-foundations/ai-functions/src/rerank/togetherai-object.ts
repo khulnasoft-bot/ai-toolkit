@@ -1,5 +1,8 @@
 import { rerank } from '@ai-toolkit/ai';
-import { type TogetherAIRerankingOptions, togetherai } from '@ai-toolkit/togetherai';
+import {
+  type TogetherAIRerankingOptions,
+  togetherai,
+} from '@ai-toolkit/togetherai';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 import { documents } from './documents';

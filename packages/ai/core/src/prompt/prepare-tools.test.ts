@@ -144,7 +144,12 @@ describe('prepareTools', () => {
       toolOrder: ['middle'] as const,
     });
 
-    expect(result?.map(tool => tool.name)).toEqual(['middle', 'alpha', 'providerTool', 'zebra']);
+    expect(result?.map(tool => tool.name)).toEqual([
+      'middle',
+      'alpha',
+      'providerTool',
+      'zebra',
+    ]);
   });
 
   it('preserves toolOrder entries before alphabetically sorting the remaining tools', async () => {
@@ -166,7 +171,11 @@ describe('prepareTools', () => {
       toolOrder: ['zebra', 'middle'] as const,
     });
 
-    expect(result?.map(tool => tool.name)).toEqual(['zebra', 'middle', 'alpha']);
+    expect(result?.map(tool => tool.name)).toEqual([
+      'zebra',
+      'middle',
+      'alpha',
+    ]);
   });
 
   it('does not duplicate tools when toolOrder contains duplicate names', async () => {

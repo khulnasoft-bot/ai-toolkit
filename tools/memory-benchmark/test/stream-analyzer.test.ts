@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 import { measureStream } from '../src/stream-analyzer';
 
-function asyncGeneratorToStream<T>(generator: AsyncGenerator<T>): ReadableStream<T> {
+function asyncGeneratorToStream<T>(
+  generator: AsyncGenerator<T>,
+): ReadableStream<T> {
   return new ReadableStream<T>({
     async pull(controller) {
       const { done, value } = await generator.next();

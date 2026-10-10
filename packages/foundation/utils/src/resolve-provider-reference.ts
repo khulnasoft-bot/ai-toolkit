@@ -1,4 +1,7 @@
-import { NoSuchProviderReferenceError, type SharedV4ProviderReference } from '@ai-toolkit/provider';
+import {
+  NoSuchProviderReferenceError,
+  type SharedV4ProviderReference,
+} from '@ai-toolkit/provider';
 /**
  * Resolves a provider reference to the provider-specific identifier for the
  * given provider. Throws `NoSuchProviderReferenceError` if the provider is not

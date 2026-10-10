@@ -9,12 +9,16 @@ import { InvalidArgumentError } from '../error/invalid-argument-error';
 const DIRECT_TOOL_CALL = 'AI_SDK_DIRECT_TOOL_CALL';
 
 type ToolCallerName<TOOLS extends ToolSet> = {
-  [NAME in keyof TOOLS]: TOOLS[NAME] extends Experimental_ToolCallerTool ? NAME : never;
+  [NAME in keyof TOOLS]: TOOLS[NAME] extends Experimental_ToolCallerTool
+    ? NAME
+    : never;
 }[keyof TOOLS] &
   string;
 
 export type Experimental_ToolCallers<TOOLS extends ToolSet> = {
-  [NAME in keyof TOOLS]?: ReadonlyArray<'AI_SDK_DIRECT_TOOL_CALL' | ToolCallerName<TOOLS>>;
+  [NAME in keyof TOOLS]?: ReadonlyArray<
+    'AI_SDK_DIRECT_TOOL_CALL' | ToolCallerName<TOOLS>
+  >;
 };
 
 export type ResolvedToolCallers = Record<string, ReadonlyArray<string>>;
@@ -116,7 +120,9 @@ export function prepareToolsForToolCallers({
         availableToProvider = true;
         preparedTool = {
           ...preparedTool,
-          providerOptions: caller.prepareProviderOptions(preparedTool.providerOptions),
+          providerOptions: caller.prepareProviderOptions(
+            preparedTool.providerOptions,
+          ),
         } as Tool;
       } else {
         const localTools = localToolsByCaller.get(callerName) ?? {};

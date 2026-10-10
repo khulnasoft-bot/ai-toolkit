@@ -24,7 +24,9 @@ export function createHarnessEngine(): HarnessEngine {
     registerHarness: (name, harness) => harnesses.set(name, harness),
     getHarness: name => harnesses.get(name),
     execute: async (input, providerId) => {
-      const harness = providerId ? harnesses.get(providerId) : harnesses.values().next().value;
+      const harness = providerId
+        ? harnesses.get(providerId)
+        : harnesses.values().next().value;
       if (!harness) throw new Error('No harness available');
       return harness.execute(input);
     },

@@ -10,10 +10,12 @@ import ChatInput from '@/components/chat-input';
 import WeatherValibotView from '@/components/tool/weather-valibot-view';
 
 export default function TestWeatherValibot() {
-  const { status, sendMessage, messages } = useChat<WeatherValibotAgentUIMessage>({
-    transport: new DefaultChatTransport({ api: '/api/chat-weather-valibot' }),
-    sendAutomaticallyWhen: lastAssistantMessageIsCompleteWithApprovalResponses,
-  });
+  const { status, sendMessage, messages } =
+    useChat<WeatherValibotAgentUIMessage>({
+      transport: new DefaultChatTransport({ api: '/api/chat-weather-valibot' }),
+      sendAutomaticallyWhen:
+        lastAssistantMessageIsCompleteWithApprovalResponses,
+    });
 
   console.log(structuredClone(messages));
 
@@ -29,7 +31,12 @@ export default function TestWeatherValibot() {
               case 'text':
                 return <div key={`${part.type}-${index}`}>{part.text}</div>;
               case 'tool-weather':
-                return <WeatherValibotView key={`${part.type}-${index}`} invocation={part} />;
+                return (
+                  <WeatherValibotView
+                    key={`${part.type}-${index}`}
+                    invocation={part}
+                  />
+                );
               default:
                 return null;
             }

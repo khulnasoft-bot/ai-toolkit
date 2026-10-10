@@ -1,5 +1,11 @@
 import Link from 'next/link';
-import { type CatalogItem, providers, recipes, showcase, tools } from '@/lib/registry';
+import {
+  type CatalogItem,
+  providers,
+  recipes,
+  showcase,
+  tools,
+} from '@/lib/registry';
 
 const data: Record<string, CatalogItem[]> = {
   providers,
@@ -10,7 +16,11 @@ const data: Record<string, CatalogItem[]> = {
 export function generateStaticParams() {
   return Object.keys(data).map(section => ({ section }));
 }
-export default async function Directory({ params }: { params: Promise<{ section: string }> }) {
+export default async function Directory({
+  params,
+}: {
+  params: Promise<{ section: string }>;
+}) {
   const { section } = await params;
   const items = data[section] ?? [];
   const title =
@@ -28,7 +38,9 @@ export default async function Directory({ params }: { params: Promise<{ section:
         <p className="mono" style={{ color: 'var(--accent)', fontSize: 12 }}>
           CATALOG / {section.toUpperCase()}
         </p>
-        <h1 style={{ fontSize: 56, letterSpacing: '-.07em', margin: '12px 0' }}>{title}</h1>
+        <h1 style={{ fontSize: 56, letterSpacing: '-.07em', margin: '12px 0' }}>
+          {title}
+        </h1>
         <p style={{ color: 'var(--muted)', fontSize: 17 }}>
           Discover the building blocks and ideas behind modern AI applications.
         </p>
@@ -103,12 +115,18 @@ export default async function Directory({ params }: { params: Promise<{ section:
             >
               <div style={{ display: 'flex', gap: 6 }}>
                 {item.tags.map(tag => (
-                  <span key={tag} style={{ fontSize: 11, color: 'var(--muted)' }}>
+                  <span
+                    key={tag}
+                    style={{ fontSize: 11, color: 'var(--muted)' }}
+                  >
                     {tag}
                   </span>
                 ))}
               </div>
-              <span className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>
+              <span
+                className="mono"
+                style={{ fontSize: 11, color: 'var(--muted)' }}
+              >
                 {item.meta}
               </span>
             </div>

@@ -1,5 +1,8 @@
 import { Output, ToolLoopAgent } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { printFullStream } from '../lib/print-full-stream';

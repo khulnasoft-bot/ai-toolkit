@@ -93,7 +93,11 @@ describe('sandboxHeader', () => {
   it('applies custom className', () => {
     render(
       <Sandbox>
-        <SandboxHeader className="custom-header" state="input-available" title="test" />
+        <SandboxHeader
+          className="custom-header"
+          state="input-available"
+          title="test"
+        />
       </Sandbox>,
     );
     const trigger = screen.getByRole('button');
@@ -238,7 +242,9 @@ describe('sandboxTabsBar', () => {
   });
 
   it('applies custom className', () => {
-    const { container } = render(<SandboxTabsBar className="custom-bar">Content</SandboxTabsBar>);
+    const { container } = render(
+      <SandboxTabsBar className="custom-bar">Content</SandboxTabsBar>,
+    );
     expect(container.firstChild).toHaveClass('custom-bar');
     expect(container.firstChild).toHaveClass('border-t');
     expect(container.firstChild).toHaveClass('border-b');

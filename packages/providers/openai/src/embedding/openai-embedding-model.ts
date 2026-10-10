@@ -1,4 +1,7 @@
-import { type EmbeddingModelV3, TooManyEmbeddingValuesForCallError } from '@ai-toolkit/provider';
+import {
+  type EmbeddingModelV3,
+  TooManyEmbeddingValuesForCallError,
+} from '@ai-toolkit/provider';
 import {
   combineHeaders,
   createJsonResponseHandler,
@@ -73,7 +76,9 @@ export class OpenAIEmbeddingModel implements EmbeddingModelV3 {
         user: openaiOptions.user,
       },
       failedResponseHandler: openaiFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(openaiTextEmbeddingResponseSchema),
+      successfulResponseHandler: createJsonResponseHandler(
+        openaiTextEmbeddingResponseSchema,
+      ),
       abortSignal,
       fetch: this.config.fetch,
     });
@@ -81,7 +86,9 @@ export class OpenAIEmbeddingModel implements EmbeddingModelV3 {
     return {
       warnings: [],
       embeddings: response.data.map(item => item.embedding),
-      usage: response.usage ? { tokens: response.usage.prompt_tokens } : undefined,
+      usage: response.usage
+        ? { tokens: response.usage.prompt_tokens }
+        : undefined,
       response: { headers: responseHeaders, body: rawValue },
     };
   }

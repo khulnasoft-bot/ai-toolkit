@@ -19,13 +19,17 @@ export default function Page() {
         type="button"
         className="px-4 py-2 mt-4 text-white bg-blue-500 rounded-md"
         onClick={async () => {
-          setNotificationStream(await generateNotifications('Messages during finals week.'));
+          setNotificationStream(
+            await generateNotifications('Messages during finals week.'),
+          );
         }}
       >
         Generate notifications
       </button>
 
-      {notificationStream && <NotificationsView notificationStream={notificationStream} />}
+      {notificationStream && (
+        <NotificationsView notificationStream={notificationStream} />
+      )}
     </div>
   );
 }
@@ -53,7 +57,9 @@ function NotificationsView({
                 {notification?.minutesAgo != null ? ' minutes ago' : ''}
               </p>
             </div>
-            <p className="text-gray-700 dark:text-gray-300">{notification?.message}</p>
+            <p className="text-gray-700 dark:text-gray-300">
+              {notification?.message}
+            </p>
           </div>
         </div>
       ))}

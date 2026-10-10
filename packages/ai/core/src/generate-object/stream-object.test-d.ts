@@ -13,7 +13,9 @@ describe('streamObject', () => {
       prompt: 'test',
     });
 
-    expectTypeOf<typeof result.finishReason>().toEqualTypeOf<Promise<FinishReason>>();
+    expectTypeOf<typeof result.finishReason>().toEqualTypeOf<
+      Promise<FinishReason>
+    >();
   });
 
   it('should support enum types', async () => {
@@ -24,7 +26,9 @@ describe('streamObject', () => {
       prompt: 'test',
     });
 
-    expectTypeOf<typeof result.object>().toEqualTypeOf<Promise<'a' | 'b' | 'c'>>;
+    expectTypeOf<typeof result.object>().toEqualTypeOf<
+      Promise<'a' | 'b' | 'c'>
+    >;
 
     for await (const text of result.partialObjectStream) {
       expectTypeOf(text).toEqualTypeOf<string>();
@@ -38,7 +42,9 @@ describe('streamObject', () => {
       prompt: 'test',
     });
 
-    expectTypeOf<typeof result.object>().toEqualTypeOf<Promise<{ number: number }>>();
+    expectTypeOf<typeof result.object>().toEqualTypeOf<
+      Promise<{ number: number }>
+    >();
   });
 
   it('should support no-schema output mode', async () => {

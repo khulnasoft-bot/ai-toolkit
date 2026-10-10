@@ -74,7 +74,8 @@ export function resampleAudio(
     const srcIndexCeil = Math.min(srcIndexFloor + 1, input.length - 1);
     const fraction = srcIndex - srcIndexFloor;
 
-    output[i] = input[srcIndexFloor] * (1 - fraction) + input[srcIndexCeil] * fraction;
+    output[i] =
+      input[srcIndexFloor] * (1 - fraction) + input[srcIndexCeil] * fraction;
   }
 
   return output;

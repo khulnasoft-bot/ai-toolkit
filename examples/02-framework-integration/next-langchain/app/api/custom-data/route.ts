@@ -1,6 +1,11 @@
 import { createUIMessageStreamResponse, type UIMessage } from '@ai-toolkit/ai';
 import { toBaseMessages, toUIMessageStream } from '@ai-toolkit/langchain';
-import { END, MessagesAnnotation, START, StateGraph } from '@langchain/langgraph';
+import {
+  END,
+  MessagesAnnotation,
+  START,
+  StateGraph,
+} from '@langchain/langgraph';
 import { ToolNode } from '@langchain/langgraph/prebuilt';
 import { ChatOpenAI } from '@langchain/openai';
 import { type ToolRuntime, tool } from 'langchain';
@@ -25,7 +30,10 @@ const model = new ChatOpenAI({
  * Emits progress updates during execution using typed custom events
  */
 const analyzeDataTool = tool(
-  async ({ dataSource, analysisType }, config: ToolRuntime): Promise<string> => {
+  async (
+    { dataSource, analysisType },
+    config: ToolRuntime,
+  ): Promise<string> => {
     const steps = [
       { step: 'connecting', message: `Connecting to ${dataSource}...` },
       { step: 'fetching', message: 'Fetching data records...' },
@@ -52,7 +60,9 @@ const analyzeDataTool = tool(
       } satisfies ProgressData);
 
       // Simulate processing time
-      await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 500));
+      await new Promise(resolve =>
+        setTimeout(resolve, 500 + Math.random() * 500),
+      );
     }
 
     // Emit completion event with unique ID
@@ -80,7 +90,8 @@ const analyzeDataTool = tool(
   },
   {
     name: 'analyze_data',
-    description: 'Analyze data from various sources. Streams progress updates during analysis.',
+    description:
+      'Analyze data from various sources. Streams progress updates during analysis.',
     schema: z.object({
       dataSource: z
         .enum(['sales', 'inventory', 'customers', 'transactions'])
@@ -207,7 +218,8 @@ export async function POST(req: Request) {
       stream: toUIMessageStream(stream as unknown as ReadableStream),
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'An unknown error occurred';
+    const message =
+      error instanceof Error ? error.message : 'An unknown error occurred';
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

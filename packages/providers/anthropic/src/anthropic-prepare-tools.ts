@@ -4,7 +4,10 @@ import {
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
 import { validateTypes } from '@ai-toolkit/provider-utils';
-import type { AnthropicTool, AnthropicToolChoice } from './anthropic-messages-api';
+import type {
+  AnthropicTool,
+  AnthropicToolChoice,
+} from './anthropic-messages-api';
 import { CacheControlValidator } from './get-cache-control';
 import { textEditor_20250728ArgsSchema } from './tool/text-editor_20250728';
 import { webFetch_20250910ArgsSchema } from './tool/web-fetch-20250910';
@@ -74,10 +77,14 @@ export async function prepareTools({
             ? { strict: tool.strict }
             : {}),
           ...(deferLoading != null ? { defer_loading: deferLoading } : {}),
-          ...(allowedCallers != null ? { allowed_callers: allowedCallers } : {}),
+          ...(allowedCallers != null
+            ? { allowed_callers: allowedCallers }
+            : {}),
           ...(tool.inputExamples != null
             ? {
-                input_examples: tool.inputExamples.map(example => example.input),
+                input_examples: tool.inputExamples.map(
+                  example => example.input,
+                ),
               }
             : {}),
         });

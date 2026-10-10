@@ -1,5 +1,8 @@
 import { type InferAgentUIMessage, ToolLoopAgent } from '@ai-toolkit/ai';
-import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
+import {
+  type AnthropicProviderOptions,
+  anthropic,
+} from '@ai-toolkit/anthropic';
 import { z } from 'zod';
 
 export const anthropicCodeExecutionAgent = new ToolLoopAgent({
@@ -24,4 +27,6 @@ export const anthropicCodeExecutionAgent = new ToolLoopAgent({
   }),
 });
 
-export type AnthropicCodeExecutionMessage = InferAgentUIMessage<typeof anthropicCodeExecutionAgent>;
+export type AnthropicCodeExecutionMessage = InferAgentUIMessage<
+  typeof anthropicCodeExecutionAgent
+>;

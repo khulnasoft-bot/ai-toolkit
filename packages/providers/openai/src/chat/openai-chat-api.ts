@@ -1,5 +1,9 @@
 import type { JSONSchema7 } from '@ai-toolkit/provider';
-import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import {
+  type InferSchema,
+  lazySchema,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { openaiErrorDataSchema } from '../openai-error';
 

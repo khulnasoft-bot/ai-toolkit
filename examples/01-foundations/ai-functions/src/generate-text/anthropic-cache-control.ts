@@ -1,6 +1,9 @@
 import fs from 'node:fs';
 import { generateText } from '@ai-toolkit/ai';
-import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
+import {
+  type AnthropicProviderOptions,
+  anthropic,
+} from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 
 const errorMessage = fs.readFileSync('data/error-message.txt', 'utf8');
@@ -38,5 +41,8 @@ run(async () => {
   console.log();
 
   console.log('Cache read tokens:', result.usage.cachedInputTokens);
-  console.log('Cache write tokens:', result.providerMetadata?.anthropic?.cacheCreationInputTokens);
+  console.log(
+    'Cache write tokens:',
+    result.providerMetadata?.anthropic?.cacheCreationInputTokens,
+  );
 });

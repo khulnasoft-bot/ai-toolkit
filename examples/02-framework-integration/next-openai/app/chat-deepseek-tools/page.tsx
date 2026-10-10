@@ -9,11 +9,12 @@ import { ReasoningView } from '@/components/reasoning-view';
 import WeatherView from '@/components/tool/weather-view';
 
 export default function ChatDeepSeekTools() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<DeepSeekToolsAgentMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-deepseek-tools',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<DeepSeekToolsAgentMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-deepseek-tools',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -25,10 +26,19 @@ export default function ChatDeepSeekTools() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+                return (
+                  <ReasoningView
+                    part={part}
+                    key={`${part.type}-${part.text}`}
+                  />
+                );
               }
               case 'tool-weather': {
                 return <WeatherView invocation={part} key={part.toolCallId} />;

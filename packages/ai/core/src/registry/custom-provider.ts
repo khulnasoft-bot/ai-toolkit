@@ -53,11 +53,15 @@ export function customProvider<
   languageModel(modelId: ExtractModelId<LANGUAGE_MODELS>): LanguageModelV3;
   embeddingModel(modelId: ExtractModelId<EMBEDDING_MODELS>): EmbeddingModelV3;
   imageModel(modelId: ExtractModelId<IMAGE_MODELS>): ImageModelV3;
-  transcriptionModel(modelId: ExtractModelId<TRANSCRIPTION_MODELS>): TranscriptionModelV3;
+  transcriptionModel(
+    modelId: ExtractModelId<TRANSCRIPTION_MODELS>,
+  ): TranscriptionModelV3;
   rerankingModel(modelId: ExtractModelId<RERANKING_MODELS>): RerankingModelV3;
   speechModel(modelId: ExtractModelId<SPEECH_MODELS>): SpeechModelV3;
 } {
-  const fallbackProvider = fallbackProviderArg ? asProviderV3(fallbackProviderArg) : undefined;
+  const fallbackProvider = fallbackProviderArg
+    ? asProviderV3(fallbackProviderArg)
+    : undefined;
 
   return {
     specificationVersion: 'v3',
@@ -73,7 +77,9 @@ export function customProvider<
       throw new NoSuchModelError({ modelId, modelType: 'languageModel' });
     },
 
-    embeddingModel(modelId: ExtractModelId<EMBEDDING_MODELS>): EmbeddingModelV3 {
+    embeddingModel(
+      modelId: ExtractModelId<EMBEDDING_MODELS>,
+    ): EmbeddingModelV3 {
       if (embeddingModels != null && modelId in embeddingModels) {
         return embeddingModels[modelId];
       }
@@ -97,12 +103,15 @@ export function customProvider<
       throw new NoSuchModelError({ modelId, modelType: 'imageModel' });
     },
 
-    transcriptionModel(modelId: ExtractModelId<TRANSCRIPTION_MODELS>): TranscriptionModelV3 {
+    transcriptionModel(
+      modelId: ExtractModelId<TRANSCRIPTION_MODELS>,
+    ): TranscriptionModelV3 {
       if (transcriptionModels != null && modelId in transcriptionModels) {
         return transcriptionModels[modelId];
       }
 
-      const { transcriptionModel: fallbackTranscriptionModel } = fallbackProvider ?? {};
+      const { transcriptionModel: fallbackTranscriptionModel } =
+        fallbackProvider ?? {};
 
       if (fallbackTranscriptionModel != null) {
         return fallbackTranscriptionModel.call(fallbackProvider, modelId);
@@ -124,7 +133,9 @@ export function customProvider<
 
       throw new NoSuchModelError({ modelId, modelType: 'speechModel' });
     },
-    rerankingModel(modelId: ExtractModelId<RERANKING_MODELS>): RerankingModelV3 {
+    rerankingModel(
+      modelId: ExtractModelId<RERANKING_MODELS>,
+    ): RerankingModelV3 {
       if (rerankingModels != null && modelId in rerankingModels) {
         return rerankingModels[modelId];
       }
@@ -143,4 +154,7 @@ export function customProvider<
  */
 export const experimental_customProvider = customProvider;
 
-type ExtractModelId<MODELS extends Record<string, unknown>> = Extract<keyof MODELS, string>;
+type ExtractModelId<MODELS extends Record<string, unknown>> = Extract<
+  keyof MODELS,
+  string
+>;

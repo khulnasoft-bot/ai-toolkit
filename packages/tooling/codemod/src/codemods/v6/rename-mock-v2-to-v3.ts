@@ -53,9 +53,14 @@ export default createTransformer((_fileInfo, _api, _options, context) => {
       return (
         Object.keys(mockRenames).includes(path.node.name) &&
         parent.node.type !== 'ImportSpecifier' &&
-        !(parent.node.type === 'MemberExpression' && parent.node.property === path.node) &&
+        !(
+          parent.node.type === 'MemberExpression' &&
+          parent.node.property === path.node
+        ) &&
         !(parent.node.type === 'Property' && parent.node.key === path.node) &&
-        !(parent.node.type === 'ObjectProperty' && parent.node.key === path.node)
+        !(
+          parent.node.type === 'ObjectProperty' && parent.node.key === path.node
+        )
       );
     })
     .forEach(path => {

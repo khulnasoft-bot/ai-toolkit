@@ -89,11 +89,16 @@ interface ByteDanceVideoModelConfig extends ByteDanceConfig {
   };
 }
 
-function getFirstFrameImage(options: VideoModelV4CallOptions): VideoModelV4File | undefined {
-  return options.frameImages?.find(frame => frame.frameType === 'first_frame')?.image;
+function getFirstFrameImage(
+  options: VideoModelV4CallOptions,
+): VideoModelV4File | undefined {
+  return options.frameImages?.find(frame => frame.frameType === 'first_frame')
+    ?.image;
 }
 
-function resolveStartImage(options: VideoModelV4CallOptions): VideoModelV4File | undefined {
+function resolveStartImage(
+  options: VideoModelV4CallOptions,
+): VideoModelV4File | undefined {
   return getFirstFrameImage(options) ?? options.image;
 }
 
@@ -155,7 +160,9 @@ function resolveLastFrameImage(
   options: VideoModelV4CallOptions,
   byteDanceOptions: ByteDanceVideoModelOptions | undefined,
 ): string | undefined {
-  const lastFrame = options.frameImages?.find(frame => frame.frameType === 'last_frame')?.image;
+  const lastFrame = options.frameImages?.find(
+    frame => frame.frameType === 'last_frame',
+  )?.image;
 
   if (lastFrame != null) {
     return convertImageModelFileToDataUri(lastFrame);
@@ -205,7 +212,8 @@ export class ByteDanceVideoModel implements VideoModelV4 {
       warnings.push({
         type: 'unsupported',
         feature: 'fps',
-        details: 'ByteDance video models do not support custom FPS. Frame rate is fixed at 24 fps.',
+        details:
+          'ByteDance video models do not support custom FPS. Frame rate is fixed at 24 fps.',
       });
     }
 
@@ -227,7 +235,11 @@ export class ByteDanceVideoModel implements VideoModelV4 {
 
     const startImage = resolveStartImage(options);
     const lastFrameImageUrl = resolveLastFrameImage(options, byteDanceOptions);
-    const referenceContent = resolveReferenceContent(options, byteDanceOptions, warnings);
+    const referenceContent = resolveReferenceContent(
+      options,
+      byteDanceOptions,
+      warnings,
+    );
 
     if (startImage != null) {
       content.push({
@@ -249,7 +261,10 @@ export class ByteDanceVideoModel implements VideoModelV4 {
       content.push(entry);
     }
 
-    if (byteDanceOptions?.referenceAudio != null && byteDanceOptions.referenceAudio.length > 0) {
+    if (
+      byteDanceOptions?.referenceAudio != null &&
+      byteDanceOptions.referenceAudio.length > 0
+    ) {
       for (const audioUrl of byteDanceOptions.referenceAudio) {
         content.push({
           type: 'audio_url',
@@ -277,10 +292,12 @@ export class ByteDanceVideoModel implements VideoModelV4 {
     }
 
     if (options.resolution) {
-      body.resolution = RESOLUTION_MAP[options.resolution] ?? options.resolution;
+      body.resolution =
+        RESOLUTION_MAP[options.resolution] ?? options.resolution;
     }
 
-    const generateAudio = options.generateAudio ?? byteDanceOptions?.generateAudio;
+    const generateAudio =
+      options.generateAudio ?? byteDanceOptions?.generateAudio;
     if (generateAudio != null) {
       body.generate_audio = generateAudio;
     }
@@ -319,10 +336,15 @@ export class ByteDanceVideoModel implements VideoModelV4 {
 
     const { value: createResponse, responseHeaders } = await postJsonToApi({
       url: `${this.config.baseURL}/contents/generations/tasks`,
-      headers: combineHeaders(await resolve(this.config.headers), options.headers),
+      headers: combineHeaders(
+        await resolve(this.config.headers),
+        options.headers,
+      ),
       body,
       failedResponseHandler: byteDanceFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(byteDanceTaskResponseSchema),
+      successfulResponseHandler: createJsonResponseHandler(
+        byteDanceTaskResponseSchema,
+      ),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -357,9 +379,14 @@ export class ByteDanceVideoModel implements VideoModelV4 {
       z.infer<typeof byteDanceStatusResponseSchema>
     >({
       url: `${this.config.baseURL}/contents/generations/tasks/${taskId}`,
-      headers: combineHeaders(await resolve(this.config.headers), options.headers),
+      headers: combineHeaders(
+        await resolve(this.config.headers),
+        options.headers,
+      ),
       failedResponseHandler: byteDanceFailedResponseHandler,
-      successfulResponseHandler: createJsonResponseHandler(byteDanceStatusResponseSchema),
+      successfulResponseHandler: createJsonResponseHandler(
+        byteDanceStatusResponseSchema,
+      ),
       abortSignal: options.abortSignal,
       fetch: this.config.fetch,
     });
@@ -472,5 +499,6 @@ const byteDanceErrorSchema = z.object({
 
 const byteDanceFailedResponseHandler = createJsonErrorResponseHandler({
   errorSchema: byteDanceErrorSchema,
-  errorToMessage: data => data.error?.message ?? data.message ?? 'Unknown error',
+  errorToMessage: data =>
+    data.error?.message ?? data.message ?? 'Unknown error',
 });

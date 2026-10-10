@@ -1,5 +1,13 @@
-import { NoSuchModelError, type ProviderV3, type TranscriptionModelV3 } from '@ai-toolkit/provider';
-import { type FetchFunction, loadApiKey, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  NoSuchModelError,
+  type ProviderV3,
+  type TranscriptionModelV3,
+} from '@ai-toolkit/provider';
+import {
+  type FetchFunction,
+  loadApiKey,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { GladiaTranscriptionModel } from './gladia-transcription-model';
 import { VERSION } from './version';
 
@@ -40,7 +48,9 @@ or to provide a custom fetch implementation for e.g. testing.
 /**
 Create a Gladia provider instance.
  */
-export function createGladia(options: GladiaProviderSettings = {}): GladiaProvider {
+export function createGladia(
+  options: GladiaProviderSettings = {},
+): GladiaProvider {
   const getHeaders = () =>
     withUserAgentSuffix(
       {

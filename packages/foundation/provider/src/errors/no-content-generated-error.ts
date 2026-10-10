@@ -8,7 +8,9 @@ const _symbol = Symbol.for(marker);
 Thrown when the AI provider fails to generate any content.
  */
 export class NoContentGeneratedError extends AITOOLKITError {
-  constructor({ message = 'No content generated.' }: { message?: string } = {}) {
+  constructor({
+    message = 'No content generated.',
+  }: { message?: string } = {}) {
     super({ name, message });
   }
 

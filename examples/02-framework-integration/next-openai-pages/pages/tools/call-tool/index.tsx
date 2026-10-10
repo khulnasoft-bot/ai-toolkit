@@ -19,7 +19,9 @@ export default function Page() {
               if (part.type === 'text') {
                 return <div key={`text-${part.text}`}>{part.text}</div>;
               } else if (isStaticToolUIPart(part)) {
-                return <div key={part.toolCallId}>{JSON.stringify(part.input)}</div>;
+                return (
+                  <div key={part.toolCallId}>{JSON.stringify(part.input)}</div>
+                );
               }
               return null;
             })}

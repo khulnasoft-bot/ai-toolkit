@@ -26,7 +26,10 @@ export async function submitUserMessage(content: string) {
 
   aiState.update({
     ...aiState.get(),
-    messages: [...aiState.get().messages, { id: generateId(), role: 'user', content }],
+    messages: [
+      ...aiState.get().messages,
+      { id: generateId(), role: 'user', content },
+    ],
   });
 
   let textStream: undefined | ReturnType<typeof createStreamableValue<string>>;
@@ -50,7 +53,10 @@ export async function submitUserMessage(content: string) {
         textStream.done();
         aiState.update({
           ...aiState.get(),
-          messages: [...aiState.get().messages, { id: generateId(), role: 'assistant', content }],
+          messages: [
+            ...aiState.get().messages,
+            { id: generateId(), role: 'assistant', content },
+          ],
         });
       } else {
         textStream.append(delta);

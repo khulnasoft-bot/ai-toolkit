@@ -1,5 +1,8 @@
 import type { LanguageModelV3Prompt } from '@ai-toolkit/provider';
-import { convertReadableStreamToArray, mockId } from '@ai-toolkit/provider-utils/test';
+import {
+  convertReadableStreamToArray,
+  mockId,
+} from '@ai-toolkit/provider-utils/test';
 import { createTestServer } from '@ai-toolkit/test-server/with-vitest';
 import { describe, expect, it, vi } from 'vitest';
 import { createMistral } from './mistral-provider';
@@ -478,7 +481,9 @@ describe('doGenerate', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/mistral/0.0.0-test`);
+    expect(server.calls[0].requestUserAgent).toContain(
+      `ai-toolkit/mistral/0.0.0-test`,
+    );
   });
 
   it('should send request body', async () => {
@@ -1083,7 +1088,9 @@ describe('doStream', () => {
       'custom-provider-header': 'provider-header-value',
       'custom-request-header': 'request-header-value',
     });
-    expect(server.calls[0].requestUserAgent).toContain(`ai-toolkit/mistral/0.0.0-test`);
+    expect(server.calls[0].requestUserAgent).toContain(
+      `ai-toolkit/mistral/0.0.0-test`,
+    );
   });
 
   it('should send request body', async () => {
@@ -1594,7 +1601,9 @@ describe('tool result format support', () => {
       ],
     });
 
-    expect(result.content).toEqual([{ type: 'text', text: 'Here is the result' }]);
+    expect(result.content).toEqual([
+      { type: 'text', text: 'Here is the result' },
+    ]);
 
     expect(result.finishReason).toMatchInlineSnapshot(`
       {

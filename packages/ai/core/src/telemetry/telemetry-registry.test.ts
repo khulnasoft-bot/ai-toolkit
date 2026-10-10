@@ -1,6 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { Telemetry } from './telemetry';
-import { getGlobalTelemetryIntegrations, registerTelemetry } from './telemetry-registry';
+import {
+  getGlobalTelemetryIntegrations,
+  registerTelemetry,
+} from './telemetry-registry';
 
 beforeEach(() => {
   globalThis.AI_SDK_TELEMETRY_INTEGRATIONS = undefined;
@@ -22,7 +25,10 @@ describe('registerTelemetry', () => {
     registerTelemetry(integration1);
     registerTelemetry(integration2);
 
-    expect(getGlobalTelemetryIntegrations()).toEqual([integration1, integration2]);
+    expect(getGlobalTelemetryIntegrations()).toEqual([
+      integration1,
+      integration2,
+    ]);
   });
 
   it('adds multiple integrations passed in a single call', () => {
@@ -32,7 +38,11 @@ describe('registerTelemetry', () => {
 
     registerTelemetry(integration1, integration2, integration3);
 
-    expect(getGlobalTelemetryIntegrations()).toEqual([integration1, integration2, integration3]);
+    expect(getGlobalTelemetryIntegrations()).toEqual([
+      integration1,
+      integration2,
+      integration3,
+    ]);
   });
 
   it('is a no-op when called with no integrations', () => {

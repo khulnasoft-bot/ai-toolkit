@@ -29,7 +29,10 @@ import * as logWarningsModule from '../logger/log-warnings';
 import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
 import { MockTracer } from '../test/mock-tracer';
 import { Output } from '.';
-import { type GenerateTextOnFinishCallback, generateText } from './generate-text';
+import {
+  type GenerateTextOnFinishCallback,
+  generateText,
+} from './generate-text';
 import type { GenerateTextResult } from './generate-text-result';
 import type { StepResult } from './step-result';
 import { stepCountIs } from './stop-condition';
@@ -137,7 +140,9 @@ describe('generateText', () => {
   beforeEach(() => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date(0));
-    logWarningsSpy = vitest.spyOn(logWarningsModule, 'logWarnings').mockImplementation(() => {});
+    logWarningsSpy = vitest
+      .spyOn(logWarningsModule, 'logWarnings')
+      .mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -280,7 +285,9 @@ describe('generateText', () => {
         prompt: 'prompt',
       });
 
-      expect(result.reasoningText).toStrictEqual('I will open the conversation with witty banter.');
+      expect(result.reasoningText).toStrictEqual(
+        'I will open the conversation with witty banter.',
+      );
     });
   });
 
@@ -416,7 +423,10 @@ describe('generateText', () => {
       });
 
       // test type inference
-      if (result.toolCalls[0].toolName === 'tool1' && !result.toolCalls[0].dynamic) {
+      if (
+        result.toolCalls[0].toolName === 'tool1' &&
+        !result.toolCalls[0].dynamic
+      ) {
         assertType<string>(result.toolCalls[0].input.value);
       }
 
@@ -496,7 +506,10 @@ describe('generateText', () => {
       });
 
       // test type inference
-      if (result.toolResults[0].toolName === 'tool1' && !result.toolResults[0].dynamic) {
+      if (
+        result.toolResults[0].toolName === 'tool1' &&
+        !result.toolResults[0].dynamic
+      ) {
         assertType<string>(result.toolResults[0].output);
       }
 
@@ -581,7 +594,9 @@ describe('generateText', () => {
             inputSchema: z.object({ value: z.string() }),
             execute: async (args, options) => {
               expect(args).toStrictEqual({ value: 'value' });
-              expect(options.messages).toStrictEqual([{ role: 'user', content: 'test-input' }]);
+              expect(options.messages).toStrictEqual([
+                { role: 'user', content: 'test-input' },
+              ]);
               return 'result1';
             },
           },
@@ -1054,7 +1069,9 @@ describe('generateText', () => {
                     },
                   };
                 default:
-                  throw new Error(`Unexpected response count: ${responseCount}`);
+                  throw new Error(
+                    `Unexpected response count: ${responseCount}`,
+                  );
               }
             },
           }),
@@ -1064,7 +1081,9 @@ describe('generateText', () => {
               inputSchema: z.object({ value: z.string() }),
               execute: async (args, options) => {
                 expect(args).toStrictEqual({ value: 'value' });
-                expect(options.messages).toStrictEqual([{ role: 'user', content: 'test-input' }]);
+                expect(options.messages).toStrictEqual([
+                  { role: 'user', content: 'test-input' },
+                ]);
                 return 'result1';
               },
             }),
@@ -1236,7 +1255,9 @@ describe('generateText', () => {
               inputSchema: z.object({ value: z.string() }),
               execute: async (args, options) => {
                 expect(args).toStrictEqual({ value: 'value' });
-                expect(options.messages).toStrictEqual([{ role: 'user', content: 'test-input' }]);
+                expect(options.messages).toStrictEqual([
+                  { role: 'user', content: 'test-input' },
+                ]);
                 return 'result1';
               },
             }),
@@ -1247,7 +1268,13 @@ describe('generateText', () => {
           onStepFinish: async event => {
             onStepFinishResults.push(event);
           },
-          prepareStep: async ({ model, stepNumber, steps, messages, experimental_context }) => {
+          prepareStep: async ({
+            model,
+            stepNumber,
+            steps,
+            messages,
+            experimental_context,
+          }) => {
             prepareStepCalls.push({
               modelId: typeof model === 'string' ? model : model.modelId,
               stepNumber,
@@ -1916,7 +1943,9 @@ describe('generateText', () => {
                     },
                   };
                 default:
-                  throw new Error(`Unexpected response count: ${responseCount}`);
+                  throw new Error(
+                    `Unexpected response count: ${responseCount}`,
+                  );
               }
             },
           }),
@@ -1925,7 +1954,9 @@ describe('generateText', () => {
               inputSchema: z.object({ value: z.string() }),
               execute: async (input, options) => {
                 expect(input).toStrictEqual({ value: 'value' });
-                expect(options.messages).toStrictEqual([{ role: 'user', content: 'test-input' }]);
+                expect(options.messages).toStrictEqual([
+                  { role: 'user', content: 'test-input' },
+                ]);
                 return 'result1';
               },
             }),
@@ -2142,7 +2173,10 @@ describe('generateText', () => {
       const result = await generateText({
         model: new MockLanguageModelV3({
           doGenerate: async ({ headers }) => {
-            assert.equal(headers?.['custom-request-header'], 'request-header-value');
+            assert.equal(
+              headers?.['custom-request-header'],
+              'request-header-value',
+            );
 
             return {
               ...dummyResponseValues,
@@ -2520,7 +2554,9 @@ describe('generateText', () => {
 
   describe('options.activeTools', () => {
     it('should filter available tools to only the ones in activeTools', async () => {
-      let tools: (LanguageModelV3FunctionTool | LanguageModelV3ProviderTool)[] | undefined;
+      let tools:
+        | (LanguageModelV3FunctionTool | LanguageModelV3ProviderTool)[]
+        | undefined;
 
       await generateText({
         model: new MockLanguageModelV3({
@@ -2794,7 +2830,9 @@ describe('generateText', () => {
         'exception.message': 'Tool execution failed',
         'exception.name': 'Error',
       });
-      expect(exceptionEvent.attributes?.['exception.stack']).toContain('Tool execution failed');
+      expect(exceptionEvent.attributes?.['exception.stack']).toContain(
+        'Tool execution failed',
+      );
       expect(exceptionEvent.time).toEqual([0, 0]);
     });
 
@@ -2988,7 +3026,10 @@ describe('generateText', () => {
       });
 
       // test type inference
-      if (result.toolCalls[0].toolName === 'tool1' && !result.toolCalls[0].dynamic) {
+      if (
+        result.toolCalls[0].toolName === 'tool1' &&
+        !result.toolCalls[0].dynamic
+      ) {
         assertType<string>(result.toolCalls[0].input.value);
       }
 
@@ -3179,7 +3220,10 @@ describe('generateText', () => {
               supportedUrlsCalled = true;
               // Reference 'this' to verify context
               return this.modelId === 'mock-model-id'
-                ? ({ 'image/*': [/^https:\/\/.*$/] } as Record<string, RegExp[]>)
+                ? ({ 'image/*': [/^https:\/\/.*$/] } as Record<
+                    string,
+                    RegExp[]
+                  >)
                 : {};
             },
             doGenerate: async () => ({
@@ -4030,7 +4074,9 @@ describe('generateText', () => {
                   };
 
                 default:
-                  throw new Error(`Unexpected response count: ${responseCount}`);
+                  throw new Error(
+                    `Unexpected response count: ${responseCount}`,
+                  );
               }
             },
           }),
@@ -4082,7 +4128,9 @@ describe('generateText', () => {
             if (stepNumber > 0 && steps.length > 0) {
               const lastStep = steps[steps.length - 1];
               const containerId = (
-                lastStep.providerMetadata?.anthropic as { container?: { id?: string } } | undefined
+                lastStep.providerMetadata?.anthropic as
+                  | { container?: { id?: string } }
+                  | undefined
               )?.container?.id;
 
               if (containerId) {
@@ -4879,7 +4927,8 @@ describe('generateText', () => {
         });
 
         it('should contain provider metadata with container ID for steps 1 and 2', () => {
-          expect(onStepFinishResults[0].providerMetadata).toMatchInlineSnapshot(`
+          expect(onStepFinishResults[0].providerMetadata)
+            .toMatchInlineSnapshot(`
               {
                 "anthropic": {
                   "container": {
@@ -4888,7 +4937,8 @@ describe('generateText', () => {
                 },
               }
             `);
-          expect(onStepFinishResults[1].providerMetadata).toMatchInlineSnapshot(`
+          expect(onStepFinishResults[1].providerMetadata)
+            .toMatchInlineSnapshot(`
               {
                 "anthropic": {
                   "container": {
@@ -6834,7 +6884,8 @@ describe('generateText', () => {
 
   describe('prepareStep with model switch and image URLs', () => {
     it('should use the prepareStep model supportedUrls for download decision', async () => {
-      const downloadCalls: Array<{ url: URL; isUrlSupportedByModel: boolean }> = [];
+      const downloadCalls: Array<{ url: URL; isUrlSupportedByModel: boolean }> =
+        [];
       const languageModelCalls: Array<LanguageModelV3CallOptions> = [];
 
       const modelWithImageUrlSupport = new MockLanguageModelV3({
@@ -6847,7 +6898,9 @@ describe('generateText', () => {
           languageModelCalls.push(options);
           return {
             ...dummyResponseValues,
-            content: [{ type: 'text', text: 'response from with-image-url-support' }],
+            content: [
+              { type: 'text', text: 'response from with-image-url-support' },
+            ],
           };
         },
       });
@@ -6860,7 +6913,9 @@ describe('generateText', () => {
           languageModelCalls.push(options);
           return {
             ...dummyResponseValues,
-            content: [{ type: 'text', text: 'response from without-image-url-support' }],
+            content: [
+              { type: 'text', text: 'response from without-image-url-support' },
+            ],
           };
         },
       });

@@ -4,7 +4,9 @@ import { MockLanguageModelV3 } from '../test/mock-language-model-v3';
 import { defaultSettingsMiddleware } from './default-settings-middleware';
 
 const BASE_PARAMS: LanguageModelV3CallOptions = {
-  prompt: [{ role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] }],
+  prompt: [
+    { role: 'user', content: [{ type: 'text', text: 'Hello, world!' }] },
+  ],
 };
 
 const MOCK_MODEL = new MockLanguageModelV3();

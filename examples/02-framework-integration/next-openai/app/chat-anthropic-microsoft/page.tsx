@@ -12,16 +12,19 @@ import AnthropicWebFetchView from '@/components/tool/anthropic-web-fetch-view';
 import AnthropicWebSearchView from '@/components/tool/anthropic-web-search-view';
 
 export default function TestAnthropicWebFetch() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<AnthropicMicrosoftMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-anthropic-microsoft',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<AnthropicMicrosoftMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-anthropic-microsoft',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
       <h1 className="mb-4 text-xl font-bold">Microsoft Foundry Anthropic</h1>
-      <h2 className="mb-4 text-xl font-bold">web search , web fetch , code execution</h2>
+      <h2 className="mb-4 text-xl font-bold">
+        web search , web fetch , code execution
+      </h2>
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
@@ -29,16 +32,35 @@ export default function TestAnthropicWebFetch() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+                return (
+                  <ReasoningView
+                    part={part}
+                    key={`${part.type}-${part.text}`}
+                  />
+                );
               }
               case 'tool-web_fetch': {
-                return <AnthropicWebFetchView invocation={part} key={part.toolCallId} />;
+                return (
+                  <AnthropicWebFetchView
+                    invocation={part}
+                    key={part.toolCallId}
+                  />
+                );
               }
               case 'tool-web_search': {
-                return <AnthropicWebSearchView invocation={part} key={part.toolCallId} />;
+                return (
+                  <AnthropicWebSearchView
+                    invocation={part}
+                    key={part.toolCallId}
+                  />
+                );
               }
               case 'tool-code_execution': {
                 return (
@@ -55,7 +77,9 @@ export default function TestAnthropicWebFetch() {
             }
           })}
 
-          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
+          <SourcesView
+            sources={message.parts.filter(part => part.type === 'source-url')}
+          />
         </div>
       ))}
 

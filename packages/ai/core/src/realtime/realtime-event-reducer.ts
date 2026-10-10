@@ -1,8 +1,16 @@
 import { safeParseJSON } from '@ai-toolkit/provider-utils';
 import type { RealtimeServerEvent } from '../types/realtime-model';
-import type { DynamicToolUIPart, TextUIPart, UIMessage } from '../ui/ui-messages';
+import type {
+  DynamicToolUIPart,
+  TextUIPart,
+  UIMessage,
+} from '../ui/ui-messages';
 
-export type RealtimeStatus = 'disconnected' | 'connecting' | 'connected' | 'error';
+export type RealtimeStatus =
+  | 'disconnected'
+  | 'connecting'
+  | 'connected'
+  | 'error';
 
 export interface RealtimeState {
   status: RealtimeStatus;
@@ -56,7 +64,10 @@ export class RealtimeEventReducer {
   private toolCallIdToMessageId = new Map<string, string>();
   private toolCallIdToName = new Map<string, string>();
   private inputAudioMessageInsertIndex = new Map<string, number>();
-  private itemIdToPartLocation = new Map<string, { messageId: string; partIndex: number }>();
+  private itemIdToPartLocation = new Map<
+    string,
+    { messageId: string; partIndex: number }
+  >();
 
   constructor(private readonly maxEvents = 500) {}
 
@@ -128,7 +139,10 @@ export class RealtimeEventReducer {
 
       case 'audio-committed': {
         if (event.itemId != null) {
-          this.inputAudioMessageInsertIndex.set(event.itemId, nextState.messages.length);
+          this.inputAudioMessageInsertIndex.set(
+            event.itemId,
+            nextState.messages.length,
+          );
         }
         break;
       }
@@ -140,7 +154,11 @@ export class RealtimeEventReducer {
       }
 
       case 'audio-transcript-done': {
-        nextState = this.finalizeText(nextState, event.itemId, event.transcript);
+        nextState = this.finalizeText(
+          nextState,
+          event.itemId,
+          event.transcript,
+        );
         break;
       }
 
@@ -150,7 +168,11 @@ export class RealtimeEventReducer {
       }
 
       case 'input-transcription-completed': {
-        nextState = this.addInputTranscriptionMessage(nextState, event.itemId, event.transcript);
+        nextState = this.addInputTranscriptionMessage(
+          nextState,
+          event.itemId,
+          event.transcript,
+        );
         break;
       }
 
@@ -167,7 +189,8 @@ export class RealtimeEventReducer {
       }
 
       case 'function-call-arguments-delta': {
-        const { state: updatedState, messageId } = this.getOrCreateAssistantMessage(nextState);
+        const { state: updatedState, messageId } =
+          this.getOrCreateAssistantMessage(nextState);
         nextState = updatedState;
         this.toolCallIdToMessageId.set(event.callId, messageId);
 
@@ -201,7 +224,9 @@ export class RealtimeEventReducer {
         if (!parseResult.success) {
           effects.push({
             type: 'error',
-            error: new Error(`Failed to parse tool arguments: ${event.arguments}`),
+            error: new Error(
+              `Failed to parse tool arguments: ${event.arguments}`,
+            ),
           });
         } else {
           effects.push({
@@ -224,11 +249,15 @@ export class RealtimeEventReducer {
     return { state: nextState, effects };
   }
 
-  private pushEvent(state: RealtimeState, event: RealtimeServerEvent): RealtimeState {
+  private pushEvent(
+    state: RealtimeState,
+    event: RealtimeServerEvent,
+  ): RealtimeState {
     const events = [...state.events, event];
     return {
       ...state,
-      events: events.length > this.maxEvents ? events.slice(-this.maxEvents) : events,
+      events:
+        events.length > this.maxEvents ? events.slice(-this.maxEvents) : events,
     };
   }
 
@@ -265,7 +294,9 @@ export class RealtimeEventReducer {
     transcript: string,
   ): RealtimeState {
     const messageId = `user-${itemId}`;
-    const existingMessage = state.messages.find(message => message.id === messageId);
+    const existingMessage = state.messages.find(
+      message => message.id === messageId,
+    );
 
     if (existingMessage != null) {
       return {
@@ -311,8 +342,13 @@ export class RealtimeEventReducer {
     };
   }
 
-  private appendTextDelta(state: RealtimeState, itemId: string, delta: string): RealtimeState {
-    const { state: stateWithMessage, messageId } = this.getOrCreateAssistantMessage(state);
+  private appendTextDelta(
+    state: RealtimeState,
+    itemId: string,
+    delta: string,
+  ): RealtimeState {
+    const { state: stateWithMessage, messageId } =
+      this.getOrCreateAssistantMessage(state);
 
     const acc = this.textAccumulators.get(itemId) ?? '';
     const text = acc + delta;
@@ -320,11 +356,16 @@ export class RealtimeEventReducer {
 
     const location = this.itemIdToPartLocation.get(itemId);
     if (location != null) {
-      return this.updateMessagePart(stateWithMessage, location.messageId, location.partIndex, {
-        type: 'text',
-        text,
-        state: 'streaming',
-      } as TextUIPart);
+      return this.updateMessagePart(
+        stateWithMessage,
+        location.messageId,
+        location.partIndex,
+        {
+          type: 'text',
+          text,
+          state: 'streaming',
+        } as TextUIPart,
+      );
     }
 
     return {
@@ -337,13 +378,20 @@ export class RealtimeEventReducer {
 
         return {
           ...message,
-          parts: [...message.parts, { type: 'text', text, state: 'streaming' } as TextUIPart],
+          parts: [
+            ...message.parts,
+            { type: 'text', text, state: 'streaming' } as TextUIPart,
+          ],
         };
       }),
     };
   }
 
-  private finalizeText(state: RealtimeState, itemId: string, finalText?: string): RealtimeState {
+  private finalizeText(
+    state: RealtimeState,
+    itemId: string,
+    finalText?: string,
+  ): RealtimeState {
     const text = finalText ?? this.textAccumulators.get(itemId) ?? '';
     this.textAccumulators.delete(itemId);
 
@@ -352,21 +400,32 @@ export class RealtimeEventReducer {
 
     this.itemIdToPartLocation.delete(itemId);
 
-    return this.updateMessagePart(state, location.messageId, location.partIndex, {
-      type: 'text',
-      text,
-      state: 'done',
-    } as TextUIPart);
+    return this.updateMessagePart(
+      state,
+      location.messageId,
+      location.partIndex,
+      {
+        type: 'text',
+        text,
+        state: 'done',
+      } as TextUIPart,
+    );
   }
 
-  private ensureToolPart(state: RealtimeState, messageId: string, callId: string): RealtimeState {
+  private ensureToolPart(
+    state: RealtimeState,
+    messageId: string,
+    callId: string,
+  ): RealtimeState {
     return {
       ...state,
       messages: state.messages.map(message => {
         if (message.id !== messageId) return message;
 
         const existingPart = message.parts.find(
-          part => part.type === 'dynamic-tool' && (part as DynamicToolUIPart).toolCallId === callId,
+          part =>
+            part.type === 'dynamic-tool' &&
+            (part as DynamicToolUIPart).toolCallId === callId,
         );
         if (existingPart != null) return message;
 

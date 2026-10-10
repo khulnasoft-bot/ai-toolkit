@@ -1,4 +1,7 @@
-import { InvalidArgumentError, type SharedV3ProviderMetadata } from '@ai-toolkit/provider';
+import {
+  InvalidArgumentError,
+  type SharedV3ProviderMetadata,
+} from '@ai-toolkit/provider';
 import { delay as originalDelay } from '@ai-toolkit/provider-utils';
 import type { TextStreamPart } from './stream-text-result';
 import type { ToolSet } from './tool-set';
@@ -109,7 +112,9 @@ export function smoothStream<TOOLS extends ToolSet>({
     let type: 'text-delta' | 'reasoning-delta' | undefined;
     let providerMetadata: SharedV3ProviderMetadata | undefined;
 
-    function flushBuffer(controller: TransformStreamDefaultController<TextStreamPart<TOOLS>>) {
+    function flushBuffer(
+      controller: TransformStreamDefaultController<TextStreamPart<TOOLS>>,
+    ) {
       if (buffer.length > 0 && type !== undefined) {
         controller.enqueue({
           type,

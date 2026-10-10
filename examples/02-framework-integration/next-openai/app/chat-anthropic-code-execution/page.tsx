@@ -27,10 +27,19 @@ export default function TestAnthropicCodeExecution() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'tool-code_execution': {
-                return <AnthropicCodeExecutionView invocation={part} key={part.toolCallId} />;
+                return (
+                  <AnthropicCodeExecutionView
+                    invocation={part}
+                    key={part.toolCallId}
+                  />
+                );
               }
               default: {
                 return null;

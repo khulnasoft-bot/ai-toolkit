@@ -33,7 +33,8 @@ export function createGenerationEngine(): GenerationEngine {
   const generators = new Map<string, TextGenerator>();
 
   return {
-    registerGenerator: (modelId, generator) => generators.set(modelId, generator),
+    registerGenerator: (modelId, generator) =>
+      generators.set(modelId, generator),
     getGenerator: modelId => generators.get(modelId),
     listGenerators: () => [...generators.values()],
   };

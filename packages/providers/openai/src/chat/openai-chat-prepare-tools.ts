@@ -3,7 +3,10 @@ import {
   type SharedV3Warning,
   UnsupportedFunctionalityError,
 } from '@ai-toolkit/provider';
-import type { OpenAIChatFunctionTool, OpenAIChatToolChoice } from './openai-chat-api';
+import type {
+  OpenAIChatFunctionTool,
+  OpenAIChatToolChoice,
+} from './openai-chat-api';
 
 export function prepareChatTools({
   tools,

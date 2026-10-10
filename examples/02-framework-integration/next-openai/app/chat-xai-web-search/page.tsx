@@ -8,11 +8,12 @@ import ChatInput from '@/components/chat-input';
 import SourcesView from '@/components/sources-view';
 
 export default function ChatXaiWebSearch() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<XaiWebSearchMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-xai-web-search',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<XaiWebSearchMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-xai-web-search',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -20,22 +21,34 @@ export default function ChatXaiWebSearch() {
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap mb-4">
-          <div className="font-bold">{message.role === 'user' ? 'User: ' : 'AI: '}</div>
+          <div className="font-bold">
+            {message.role === 'user' ? 'User: ' : 'AI: '}
+          </div>
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'tool-web_search': {
                 return (
-                  <div key={part.toolCallId} className="text-sm text-gray-500 italic">
+                  <div
+                    key={part.toolCallId}
+                    className="text-sm text-gray-500 italic"
+                  >
                     [Searching web...]
                   </div>
                 );
               }
               case 'tool-x_search': {
                 return (
-                  <div key={part.toolCallId} className="text-sm text-gray-500 italic">
+                  <div
+                    key={part.toolCallId}
+                    className="text-sm text-gray-500 italic"
+                  >
                     [Searching X...]
                   </div>
                 );
@@ -46,7 +59,9 @@ export default function ChatXaiWebSearch() {
             }
           })}
 
-          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
+          <SourcesView
+            sources={message.parts.filter(part => part.type === 'source-url')}
+          />
         </div>
       ))}
 

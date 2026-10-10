@@ -6,10 +6,21 @@ export interface BarDatum {
   hint?: string;
 }
 
-export function Bars({ data, className }: { data: BarDatum[]; className?: string }) {
+export function Bars({
+  data,
+  className,
+}: {
+  data: BarDatum[];
+  className?: string;
+}) {
   if (data.length === 0) {
     return (
-      <p className={cn('py-8 text-center text-sm text-muted-foreground', className)}>
+      <p
+        className={cn(
+          'py-8 text-center text-sm text-muted-foreground',
+          className,
+        )}
+      >
         No data yet.
       </p>
     );

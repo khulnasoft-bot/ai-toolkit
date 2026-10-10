@@ -11,7 +11,10 @@ export type Embedding = {
 
 export interface EmbeddingGenerator {
   generate(text: string, config?: EmbeddingConfig): Promise<Embedding>;
-  generateBatch(texts: string[], config?: EmbeddingConfig): Promise<readonly Embedding[]>;
+  generateBatch(
+    texts: string[],
+    config?: EmbeddingConfig,
+  ): Promise<readonly Embedding[]>;
 }
 
 export interface EmbeddingEngine {

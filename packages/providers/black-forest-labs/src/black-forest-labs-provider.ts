@@ -1,6 +1,14 @@
-import { type ImageModelV3, NoSuchModelError, type ProviderV3 } from '@ai-toolkit/provider';
+import {
+  type ImageModelV3,
+  NoSuchModelError,
+  type ProviderV3,
+} from '@ai-toolkit/provider';
 import type { FetchFunction } from '@ai-toolkit/provider-utils';
-import { loadApiKey, withoutTrailingSlash, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  loadApiKey,
+  withoutTrailingSlash,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { BlackForestLabsImageModel } from './black-forest-labs-image-model';
 import type { BlackForestLabsImageModelId } from './black-forest-labs-image-settings';
 import { VERSION } from './version';

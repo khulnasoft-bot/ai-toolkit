@@ -6,7 +6,11 @@ import { streamText } from '../generate-text/stream-text';
 import type { StreamTextResult } from '../generate-text/stream-text-result';
 import type { ToolSet } from '../generate-text/tool-set';
 import type { Prompt } from '../prompt';
-import type { Agent, AgentCallParameters, AgentStreamParameters } from './agent';
+import type {
+  Agent,
+  AgentCallParameters,
+  AgentStreamParameters,
+} from './agent';
 import type { ToolLoopAgentSettings } from './tool-loop-agent-settings';
 
 /**
@@ -51,7 +55,10 @@ export class ToolLoopAgent<
   private async prepareCall(
     options: AgentCallParameters<CALL_OPTIONS>,
   ): Promise<
-    Omit<ToolLoopAgentSettings<CALL_OPTIONS, TOOLS, OUTPUT>, 'prepareCall' | 'instructions'> &
+    Omit<
+      ToolLoopAgentSettings<CALL_OPTIONS, TOOLS, OUTPUT>,
+      'prepareCall' | 'instructions'
+    > &
       Prompt
   > {
     const baseCallArgs = {
@@ -60,7 +67,8 @@ export class ToolLoopAgent<
       ...options,
     };
 
-    const preparedCallArgs = (await this.settings.prepareCall?.(baseCallArgs)) ?? baseCallArgs;
+    const preparedCallArgs =
+      (await this.settings.prepareCall?.(baseCallArgs)) ?? baseCallArgs;
 
     const { instructions, messages, prompt, ...callArgs } = preparedCallArgs;
 
@@ -79,7 +87,9 @@ export class ToolLoopAgent<
     abortSignal,
     timeout,
     ...options
-  }: AgentCallParameters<CALL_OPTIONS>): Promise<GenerateTextResult<TOOLS, OUTPUT>> {
+  }: AgentCallParameters<CALL_OPTIONS>): Promise<
+    GenerateTextResult<TOOLS, OUTPUT>
+  > {
     return generateText({
       ...(await this.prepareCall(options)),
       abortSignal,
@@ -95,7 +105,9 @@ export class ToolLoopAgent<
     timeout,
     experimental_transform,
     ...options
-  }: AgentStreamParameters<CALL_OPTIONS, TOOLS>): Promise<StreamTextResult<TOOLS, OUTPUT>> {
+  }: AgentStreamParameters<CALL_OPTIONS, TOOLS>): Promise<
+    StreamTextResult<TOOLS, OUTPUT>
+  > {
     return streamText({
       ...(await this.prepareCall(options)),
       abortSignal,

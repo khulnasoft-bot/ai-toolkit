@@ -1,4 +1,8 @@
-import { type InferSchema, lazySchema, zodSchema } from '@ai-toolkit/provider-utils';
+import {
+  type InferSchema,
+  lazySchema,
+  zodSchema,
+} from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 
 export type OpenAIEmbeddingModelId =
@@ -25,4 +29,6 @@ monitor and detect abuse. Learn more.
   ),
 );
 
-export type OpenAIEmbeddingProviderOptions = InferSchema<typeof openaiEmbeddingProviderOptions>;
+export type OpenAIEmbeddingProviderOptions = InferSchema<
+  typeof openaiEmbeddingProviderOptions
+>;

@@ -32,7 +32,10 @@ export type ACPCredentialBrokering = (
   context: ACPCredentialBrokeringContext,
 ) => ACPCredentialRequestTransformation[];
 
-export type ACPCredentialForwarding = (value: string, name: string) => string | Promise<string>;
+export type ACPCredentialForwarding = (
+  value: string,
+  name: string,
+) => string | Promise<string>;
 
 /** Gateway `$source` placeholder names resolved after gateway selection. */
 export type ACPGatewaySource =

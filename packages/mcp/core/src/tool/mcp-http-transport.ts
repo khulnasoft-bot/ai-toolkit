@@ -59,7 +59,9 @@ export class HttpMCPTransport implements MCPTransport {
     this.authProvider = authProvider;
   }
 
-  private async commonHeaders(base: Record<string, string>): Promise<Record<string, string>> {
+  private async commonHeaders(
+    base: Record<string, string>,
+  ): Promise<Record<string, string>> {
     const headers: Record<string, string> = {
       ...this.headers,
       ...base,
@@ -77,7 +79,11 @@ export class HttpMCPTransport implements MCPTransport {
       }
     }
 
-    return withUserAgentSuffix(headers, `ai-toolkit/${VERSION}`, getRuntimeEnvironmentUserAgent());
+    return withUserAgentSuffix(
+      headers,
+      `ai-toolkit/${VERSION}`,
+      getRuntimeEnvironmentUserAgent(),
+    );
   }
 
   async start(): Promise<void> {
@@ -95,7 +101,11 @@ export class HttpMCPTransport implements MCPTransport {
   async close(): Promise<void> {
     this.inboundSseConnection?.close();
     try {
-      if (this.sessionId && this.abortController && !this.abortController.signal.aborted) {
+      if (
+        this.sessionId &&
+        this.abortController &&
+        !this.abortController.signal.aborted
+      ) {
         const headers = await this.commonHeaders({});
         await fetch(this.url, {
           method: 'DELETE',
@@ -196,7 +206,8 @@ export class HttpMCPTransport implements MCPTransport {
         if (contentType.includes('text/event-stream')) {
           if (!response.body) {
             const error = new MCPClientError({
-              message: 'MCP HTTP Transport Error: text/event-stream response without body',
+              message:
+                'MCP HTTP Transport Error: text/event-stream response without body',
             });
             this.onerror?.(error);
             throw error;
@@ -219,7 +230,8 @@ export class HttpMCPTransport implements MCPTransport {
                     this.onmessage?.(msg);
                   } catch (error) {
                     const e = new MCPClientError({
-                      message: 'MCP HTTP Transport Error: Failed to parse message',
+                      message:
+                        'MCP HTTP Transport Error: Failed to parse message',
                       cause: error,
                     });
                     this.onerror?.(e);
@@ -253,8 +265,11 @@ export class HttpMCPTransport implements MCPTransport {
   }
 
   private getNextReconnectionDelay(attempt: number): number {
-    const { initialReconnectionDelay, reconnectionDelayGrowFactor, maxReconnectionDelay } =
-      this.reconnectionOptions;
+    const {
+      initialReconnectionDelay,
+      reconnectionDelayGrowFactor,
+      maxReconnectionDelay,
+    } = this.reconnectionOptions;
     return Math.min(
       initialReconnectionDelay * reconnectionDelayGrowFactor ** attempt,
       maxReconnectionDelay,
@@ -281,7 +296,10 @@ export class HttpMCPTransport implements MCPTransport {
   }
 
   // Open optional inbound SSE stream; best-effort and resumable
-  private async openInboundSse(triedAuth: boolean = false, resumeToken?: string): Promise<void> {
+  private async openInboundSse(
+    triedAuth: boolean = false,
+    resumeToken?: string,
+  ): Promise<void> {
     try {
       const headers = await this.commonHeaders({
         Accept: 'text/event-stream',

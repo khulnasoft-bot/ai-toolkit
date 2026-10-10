@@ -8,11 +8,12 @@ import CodeInterpreterView from '@/components/tool/openai-code-interpreter-view'
 import { ResponsesText } from '@/components/tool/responses-text';
 
 export default function TestOpenAIWebSearch() {
-  const { status, sendMessage, messages } = useChat<OpenAICodeInterpreterMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-code-interpreter',
-    }),
-  });
+  const { status, sendMessage, messages } =
+    useChat<OpenAICodeInterpreterMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-code-interpreter',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -24,10 +25,20 @@ export default function TestOpenAIWebSearch() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <ResponsesText key={`${part.type}-${part.text}`} part={part} />;
+                return (
+                  <ResponsesText
+                    key={`${part.type}-${part.text}`}
+                    part={part}
+                  />
+                );
               }
               case 'tool-executeCode': {
-                return <CodeInterpreterView key={part.toolCallId} invocation={part} />;
+                return (
+                  <CodeInterpreterView
+                    key={part.toolCallId}
+                    invocation={part}
+                  />
+                );
               }
               default: {
                 return null;

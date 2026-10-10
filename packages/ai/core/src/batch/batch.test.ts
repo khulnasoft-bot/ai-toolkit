@@ -59,7 +59,9 @@ function createMockBatchModel({
 
 describe('startTextBatch', () => {
   it('normalizes requests and returns the acknowledged batch', async () => {
-    const calls: Array<Parameters<BatchLanguageModelV4['experimental_doStartBatch']>[0]> = [];
+    const calls: Array<
+      Parameters<BatchLanguageModelV4['experimental_doStartBatch']>[0]
+    > = [];
     const model = createMockBatchModel({
       doStartBatch: async options => {
         calls.push(options);
@@ -117,7 +119,9 @@ describe('startTextBatch', () => {
             prompt: [
               {
                 role: 'user',
-                content: [{ type: 'text', text: 'What is the capital of France?' }],
+                content: [
+                  { type: 'text', text: 'What is the capital of France?' },
+                ],
               },
             ],
             maxOutputTokens: 100,
@@ -144,9 +148,9 @@ describe('startTextBatch', () => {
   it('rejects empty and duplicate request IDs', async () => {
     const model = createMockBatchModel();
 
-    await expect(startTextBatch({ model, requests: [] })).rejects.toBeInstanceOf(
-      InvalidArgumentError,
-    );
+    await expect(
+      startTextBatch({ model, requests: [] }),
+    ).rejects.toBeInstanceOf(InvalidArgumentError);
 
     await expect(
       startTextBatch({
@@ -169,7 +173,9 @@ describe('startTextBatch', () => {
   });
 
   it('forwards the webhook URL to the batch model', async () => {
-    const calls: Array<Parameters<BatchLanguageModelV4['experimental_doStartBatch']>[0]> = [];
+    const calls: Array<
+      Parameters<BatchLanguageModelV4['experimental_doStartBatch']>[0]
+    > = [];
     const model = createMockBatchModel({
       doStartBatch: async options => {
         calls.push(options);
@@ -189,7 +195,9 @@ describe('startTextBatch', () => {
 
   it('forwards definition-only tools without executing them', async () => {
     const execute = vi.fn(async () => ({ temperature: 20 }));
-    const calls: Array<Parameters<BatchLanguageModelV4['experimental_doStartBatch']>[0]> = [];
+    const calls: Array<
+      Parameters<BatchLanguageModelV4['experimental_doStartBatch']>[0]
+    > = [];
     const model = createMockBatchModel({
       doStartBatch: async options => {
         calls.push(options);
@@ -252,7 +260,9 @@ describe('getBatchStatus', () => {
     const staleBatch = {
       ...batchReference,
       status: 'pending' as const,
-      warnings: [{ warning: { type: 'other' as const, message: 'old warning' } }],
+      warnings: [
+        { warning: { type: 'other' as const, message: 'old warning' } },
+      ],
     };
 
     const result = await getBatchStatus({

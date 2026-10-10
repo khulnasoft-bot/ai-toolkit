@@ -22,7 +22,9 @@ export default function TestOpenAIWebSearch() {
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
-      <h1 className="mb-4 text-xl font-bold">Azure OpenAI Web Search Preview</h1>
+      <h1 className="mb-4 text-xl font-bold">
+        Azure OpenAI Web Search Preview
+      </h1>
 
       {messages.map(message => (
         <div key={message.id} className="whitespace-pre-wrap">
@@ -30,14 +32,21 @@ export default function TestOpenAIWebSearch() {
           {message.parts.map((part, index) => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${index}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${index}`}>{part.text}</Response>
+                );
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={`${part.type}-${index}`} />;
+                return (
+                  <ReasoningView part={part} key={`${part.type}-${index}`} />
+                );
               }
               case 'tool-web_search_preview': {
                 return (
-                  <AzureWebSearchPreviewView invocation={part} key={`${part.type}-${index}`} />
+                  <AzureWebSearchPreviewView
+                    invocation={part}
+                    key={`${part.type}-${index}`}
+                  />
                 );
               }
               default:
@@ -45,7 +54,9 @@ export default function TestOpenAIWebSearch() {
             }
           })}
 
-          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
+          <SourcesView
+            sources={message.parts.filter(part => part.type === 'source-url')}
+          />
         </div>
       ))}
 

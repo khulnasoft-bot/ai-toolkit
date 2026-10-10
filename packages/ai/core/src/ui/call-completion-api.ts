@@ -4,7 +4,10 @@ import {
   parseJsonEventStream,
   withUserAgentSuffix,
 } from '@ai-toolkit/provider-utils';
-import { type UIMessageChunk, uiMessageChunkSchema } from '../ui-message-stream/ui-message-chunks';
+import {
+  type UIMessageChunk,
+  uiMessageChunkSchema,
+} from '../ui-message-stream/ui-message-chunks';
 import { consumeStream } from '../util/consume-stream';
 import { VERSION } from '../version';
 import { processTextStream } from './process-text-stream';
@@ -72,7 +75,9 @@ export async function callCompletionApi({
     });
 
     if (!response.ok) {
-      throw new Error((await response.text()) ?? 'Failed to fetch the chat response.');
+      throw new Error(
+        (await response.text()) ?? 'Failed to fetch the chat response.',
+      );
     }
 
     if (!response.body) {

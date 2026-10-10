@@ -28,7 +28,10 @@ export default function FileSearchView({
             <span className="font-semibold text-gray-300">Results:</span>
             <div className="mt-1 text-sm text-gray-100">
               {invocation.output.results?.map(result => (
-                <div key={JSON.stringify(result)} className="p-2 mb-2 bg-gray-800 rounded">
+                <div
+                  key={JSON.stringify(result)}
+                  className="p-2 mb-2 bg-gray-800 rounded"
+                >
                   <pre className="text-xs whitespace-pre-wrap">
                     {JSON.stringify(result, null, 2)}
                   </pre>

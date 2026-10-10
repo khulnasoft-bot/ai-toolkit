@@ -19,7 +19,10 @@ export default function Page() {
         Generate
       </button>
 
-      <pre className="text-sm w-full whitespace-pre-wrap" data-testid="generation">
+      <pre
+        className="text-sm w-full whitespace-pre-wrap"
+        data-testid="generation"
+      >
         {JSON.stringify(object, null, 2)}
       </pre>
     </div>

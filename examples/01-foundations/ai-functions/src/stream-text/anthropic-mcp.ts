@@ -1,5 +1,8 @@
 import { streamText } from '@ai-toolkit/ai';
-import { type AnthropicProviderOptions, anthropic } from '@ai-toolkit/anthropic';
+import {
+  type AnthropicProviderOptions,
+  anthropic,
+} from '@ai-toolkit/anthropic';
 import { print } from '../lib/print';
 import { printFullStream } from '../lib/print-full-stream';
 import { run } from '../lib/run';

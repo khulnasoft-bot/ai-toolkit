@@ -41,7 +41,9 @@ export type UseCompletionHelpers = {
    * ```
    */
   handleInputChange: (
-    event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>,
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>,
   ) => void;
 
   /**
@@ -97,7 +99,8 @@ export function useCompletion({
   const completion = data!;
 
   // Abort controller to cancel the current API call.
-  const [abortController, setAbortController] = useState<AbortController | null>(null);
+  const [abortController, setAbortController] =
+    useState<AbortController | null>(null);
 
   const extraMetadataRef = useRef({
     credentials,
@@ -127,14 +130,26 @@ export function useCompletion({
         streamProtocol,
         fetch,
         // throttle streamed ui updates:
-        setCompletion: throttle((completion: string) => mutate(completion, false), throttleWaitMs),
+        setCompletion: throttle(
+          (completion: string) => mutate(completion, false),
+          throttleWaitMs,
+        ),
         setLoading: mutateLoading,
         setError,
         setAbortController,
         onFinish,
         onError,
       }),
-    [mutate, mutateLoading, api, onFinish, onError, streamProtocol, fetch, throttleWaitMs],
+    [
+      mutate,
+      mutateLoading,
+      api,
+      onFinish,
+      onError,
+      streamProtocol,
+      fetch,
+      throttleWaitMs,
+    ],
   );
 
   const stop = useCallback(() => {

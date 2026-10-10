@@ -1,5 +1,8 @@
 import { generateText, Output, stepCountIs } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { print } from '../lib/print';
 import { run } from '../lib/run';

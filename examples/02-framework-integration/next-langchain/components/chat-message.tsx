@@ -32,7 +32,9 @@ export function ChatMessage({ message }: ChatMessageProps) {
       </div>
 
       {/* Message content */}
-      <div className={`flex-1 max-w-[85%] ${isUser ? 'flex flex-col items-end' : ''}`}>
+      <div
+        className={`flex-1 max-w-[85%] ${isUser ? 'flex flex-col items-end' : ''}`}
+      >
         <div
           className={`px-4 py-3 rounded-2xl flex flex-col gap-3 ${
             isUser
@@ -59,12 +61,21 @@ export function ChatMessage({ message }: ChatMessageProps) {
 
             // Handle file parts (including generated images)
             if (isFileUIPart(part)) {
-              return <File key={`${part.type}-${i}`} url={part.url} mediaType={part.mediaType} />;
+              return (
+                <File
+                  key={`${part.type}-${i}`}
+                  url={part.url}
+                  mediaType={part.mediaType}
+                />
+              );
             }
 
             // Handle tool parts
             if (isToolUIPart(part)) {
-              const toolName = 'toolName' in part ? part.toolName : part.type.replace('tool-', '');
+              const toolName =
+                'toolName' in part
+                  ? part.toolName
+                  : part.type.replace('tool-', '');
               const input = 'input' in part ? part.input : undefined;
               const output = 'output' in part ? part.output : undefined;
 

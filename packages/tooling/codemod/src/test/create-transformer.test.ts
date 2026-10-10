@@ -1,6 +1,9 @@
 import type { API, FileInfo, JSCodeshift } from 'jscodeshift';
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { createTransformer, type TransformContext } from '../codemods/lib/create-transformer';
+import {
+  createTransformer,
+  type TransformContext,
+} from '../codemods/lib/create-transformer';
 
 describe('createTransformer', () => {
   let mockApi: API;
@@ -36,30 +39,35 @@ describe('createTransformer', () => {
 
   test('should return transformed code when changes are made', () => {
     // Create a transformer function that makes changes
-    const transformFn = vi.fn((_fileInfo, _api, _options, context: TransformContext) => {
-      const { j, root } = context;
+    const transformFn = vi.fn(
+      (_fileInfo, _api, _options, context: TransformContext) => {
+        const { j, root } = context;
 
-      // Replace all console.log statements with console.error
-      root
-        .find(j.CallExpression, {
-          callee: {
-            object: { name: 'console' },
-            property: { name: 'log' },
-          },
-        })
-        .forEach(path => {
-          context.hasChanges = true;
-          j(path).replaceWith(
-            j.callExpression(
-              j.memberExpression(j.identifier('console'), j.identifier('error')),
-              path.node.arguments,
-            ),
-          );
-        });
+        // Replace all console.log statements with console.error
+        root
+          .find(j.CallExpression, {
+            callee: {
+              object: { name: 'console' },
+              property: { name: 'log' },
+            },
+          })
+          .forEach(path => {
+            context.hasChanges = true;
+            j(path).replaceWith(
+              j.callExpression(
+                j.memberExpression(
+                  j.identifier('console'),
+                  j.identifier('error'),
+                ),
+                path.node.arguments,
+              ),
+            );
+          });
 
-      // Add a message to report
-      context.messages.push('Replaced console.log with console.error');
-    });
+        // Add a message to report
+        context.messages.push('Replaced console.log with console.error');
+      },
+    );
 
     const transformer = createTransformer(transformFn);
 
@@ -72,7 +80,9 @@ describe('createTransformer', () => {
     expect(result).toContain('console.error(a);');
 
     // The report method should have been called with the message
-    expect(mockReport).toHaveBeenCalledWith('Replaced console.log with console.error');
+    expect(mockReport).toHaveBeenCalledWith(
+      'Replaced console.log with console.error',
+    );
   });
 
   test('should return null when no changes are made', () => {

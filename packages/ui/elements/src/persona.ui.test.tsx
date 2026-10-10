@@ -26,7 +26,8 @@ vi.mock('@rive-app/react-webgl2', () => ({
   useRive: (params: unknown) => mockUseRive(params),
   useStateMachineInput: (rive: unknown, stateMachine: string, input: string) =>
     mockUseStateMachineInput(rive, stateMachine, input),
-  useViewModel: (rive: unknown, options: unknown) => mockUseViewModel(rive, options),
+  useViewModel: (rive: unknown, options: unknown) =>
+    mockUseViewModel(rive, options),
   useViewModelInstance: (viewModel: unknown, options: unknown) =>
     mockUseViewModelInstance(viewModel, options),
   useViewModelInstanceColor: (name: string, instance: unknown) =>
@@ -158,7 +159,9 @@ describe('persona', () => {
       <div className={className} data-testid="rive-component" />
     ));
 
-    const { getByTestId } = render(<Persona className="custom-class" state="idle" />);
+    const { getByTestId } = render(
+      <Persona className="custom-class" state="idle" />,
+    );
 
     const component = getByTestId('rive-component');
     expect(component).toHaveClass('custom-class');
@@ -183,7 +186,9 @@ describe('persona', () => {
       <div className={className} data-testid="rive-component" />
     ));
 
-    const { getByTestId } = render(<Persona className="size-32" state="idle" />);
+    const { getByTestId } = render(
+      <Persona className="size-32" state="idle" />,
+    );
 
     const component = getByTestId('rive-component');
     expect(component.className).toContain('size-32');
@@ -200,15 +205,28 @@ describe('persona', () => {
 
     render(<Persona state="idle" />);
 
-    expect(mockUseStateMachineInput).toHaveBeenCalledWith(mockRive, 'default', 'listening');
-    expect(mockUseStateMachineInput).toHaveBeenCalledWith(mockRive, 'default', 'thinking');
-    expect(mockUseStateMachineInput).toHaveBeenCalledWith(mockRive, 'default', 'speaking');
+    expect(mockUseStateMachineInput).toHaveBeenCalledWith(
+      mockRive,
+      'default',
+      'listening',
+    );
+    expect(mockUseStateMachineInput).toHaveBeenCalledWith(
+      mockRive,
+      'default',
+      'thinking',
+    );
+    expect(mockUseStateMachineInput).toHaveBeenCalledWith(
+      mockRive,
+      'default',
+      'speaking',
+    );
   });
 });
 
 // Helper to create state machine mock without conditionals
 const createStateMachineMock =
-  (inputs: Record<string, { value: boolean }>) => (_rive: unknown, _sm: string, input: string) =>
+  (inputs: Record<string, { value: boolean }>) =>
+  (_rive: unknown, _sm: string, input: string) =>
     inputs[input] ?? { value: false };
 
 describe('persona - State Management', () => {
@@ -774,7 +792,14 @@ describe('persona - Integration', () => {
 
   it("uses 'default' as the state machine name for all variants", () => {
     setupPersonaTests();
-    const variants = ['obsidian', 'mana', 'opal', 'halo', 'glint', 'command'] as const;
+    const variants = [
+      'obsidian',
+      'mana',
+      'opal',
+      'halo',
+      'glint',
+      'command',
+    ] as const;
 
     for (const variant of variants) {
       mockUseRive.mockClear();
@@ -790,7 +815,13 @@ describe('persona - Integration', () => {
 
   it('always sets autoplay to true', () => {
     setupPersonaTests();
-    const states = ['idle', 'listening', 'thinking', 'speaking', 'asleep'] as const;
+    const states = [
+      'idle',
+      'listening',
+      'thinking',
+      'speaking',
+      'asleep',
+    ] as const;
 
     for (const state of states) {
       mockUseRive.mockClear();

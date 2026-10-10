@@ -1,6 +1,8 @@
 import type { RerankingModelV3, RerankingModelV4 } from '@ai-toolkit/provider';
 
-export function asRerankingModelV4(model: RerankingModelV3 | RerankingModelV4): RerankingModelV4 {
+export function asRerankingModelV4(
+  model: RerankingModelV3 | RerankingModelV4,
+): RerankingModelV4 {
   if (model.specificationVersion === 'v4') {
     return model;
   }

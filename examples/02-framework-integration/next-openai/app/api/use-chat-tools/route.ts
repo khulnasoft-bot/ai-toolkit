@@ -8,7 +8,10 @@ import {
   type UIMessage,
   validateUIMessages,
 } from '@ai-toolkit/ai';
-import { type OpenAIResponsesProviderOptions, openai } from '@ai-toolkit/openai';
+import {
+  type OpenAIResponsesProviderOptions,
+  openai,
+} from '@ai-toolkit/openai';
 import { z } from 'zod';
 
 // Allow streaming responses up to 30 seconds
@@ -21,7 +24,9 @@ const getWeatherInformationTool = tool({
     yield { state: 'loading' as const };
 
     // count the number of assistant messages. throw error if 2 or less
-    const _assistantMessageCount = messages.filter(message => message.role === 'assistant').length;
+    const _assistantMessageCount = messages.filter(
+      message => message.role === 'assistant',
+    ).length;
 
     // if (assistantMessageCount <= 2) {
     //   throw new Error('could not get weather information');
@@ -31,7 +36,8 @@ const getWeatherInformationTool = tool({
     await new Promise(resolve => setTimeout(resolve, 5000));
 
     const weatherOptions = ['sunny', 'cloudy', 'rainy', 'snowy', 'windy'];
-    const weather = weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
+    const weather =
+      weatherOptions[Math.floor(Math.random() * weatherOptions.length)];
 
     yield {
       state: 'ready' as const,
@@ -60,7 +66,8 @@ const askForConfirmationTool = tool({
 });
 
 const getLocationTool = tool({
-  description: 'Get the user location. Always ask for confirmation before using this tool.',
+  description:
+    'Get the user location. Always ask for confirmation before using this tool.',
   inputSchema: z.object({}),
   outputSchema: z.string(),
 });
@@ -74,7 +81,11 @@ const tools = {
   getLocation: getLocationTool,
 } as const;
 
-export type UseChatToolsMessage = UIMessage<never, UIDataTypes, InferUITools<typeof tools>>;
+export type UseChatToolsMessage = UIMessage<
+  never,
+  UIDataTypes,
+  InferUITools<typeof tools>
+>;
 
 export async function POST(req: Request) {
   const body = await req.json();

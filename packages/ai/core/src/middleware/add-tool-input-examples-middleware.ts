@@ -1,4 +1,7 @@
-import type { JSONObject, LanguageModelV3FunctionTool } from '@ai-toolkit/provider';
+import type {
+  JSONObject,
+  LanguageModelV3FunctionTool,
+} from '@ai-toolkit/provider';
 import type { LanguageModelMiddleware } from '../types';
 
 function defaultFormatExample(example: { input: JSONObject }): string {

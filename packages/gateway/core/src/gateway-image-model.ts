@@ -70,7 +70,9 @@ export class GatewayImageModel implements ImageModelV3 {
           }),
           ...(mask && { mask: maybeEncodeImageFile(mask) }),
         },
-        successfulResponseHandler: createJsonResponseHandler(gatewayImageResponseSchema),
+        successfulResponseHandler: createJsonResponseHandler(
+          gatewayImageResponseSchema,
+        ),
         failedResponseHandler: gatewayErrorResponseHandler,
         ...(abortSignal && { abortSignal }),
         fetch: this.config.fetch,
@@ -79,7 +81,8 @@ export class GatewayImageModel implements ImageModelV3 {
       return {
         images: responseBody.images, // Always base64 strings from server
         warnings: responseBody.warnings ?? [],
-        providerMetadata: responseBody.providerMetadata as ImageModelV3ProviderMetadata,
+        providerMetadata:
+          responseBody.providerMetadata as ImageModelV3ProviderMetadata,
         response: {
           timestamp: new Date(),
           modelId: this.modelId,
@@ -129,5 +132,7 @@ const gatewayImageResponseSchema = z.object({
       }),
     )
     .optional(),
-  providerMetadata: z.record(z.string(), providerMetadataEntrySchema).optional(),
+  providerMetadata: z
+    .record(z.string(), providerMetadataEntrySchema)
+    .optional(),
 });

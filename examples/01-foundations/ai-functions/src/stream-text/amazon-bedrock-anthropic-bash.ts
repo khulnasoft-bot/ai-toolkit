@@ -1,4 +1,9 @@
-import { stepCountIs, streamText, type ToolCallPart, type ToolResultPart } from '@ai-toolkit/ai';
+import {
+  stepCountIs,
+  streamText,
+  type ToolCallPart,
+  type ToolResultPart,
+} from '@ai-toolkit/ai';
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
 import { run } from '../lib/run';
@@ -41,7 +46,9 @@ run(async () => {
       case 'tool-call': {
         toolCalls.push(delta);
 
-        process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
+        process.stdout.write(
+          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
+        );
         break;
       }
 

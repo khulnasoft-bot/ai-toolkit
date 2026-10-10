@@ -10,11 +10,12 @@ import SourcesView from '@/components/sources-view';
 import OpenAIWebSearchView from '@/components/tool/openai-web-search-view';
 
 export default function TestOpenAIWebSearch() {
-  const { error, status, sendMessage, messages, regenerate } = useChat<OpenAIWebSearchMessage>({
-    transport: new DefaultChatTransport({
-      api: '/api/chat-openai-web-search',
-    }),
-  });
+  const { error, status, sendMessage, messages, regenerate } =
+    useChat<OpenAIWebSearchMessage>({
+      transport: new DefaultChatTransport({
+        api: '/api/chat-openai-web-search',
+      }),
+    });
 
   return (
     <div className="flex flex-col py-24 mx-auto w-full max-w-md stretch">
@@ -26,13 +27,27 @@ export default function TestOpenAIWebSearch() {
           {message.parts.map(part => {
             switch (part.type) {
               case 'text': {
-                return <Response key={`${part.type}-${part.text}`}>{part.text}</Response>;
+                return (
+                  <Response key={`${part.type}-${part.text}`}>
+                    {part.text}
+                  </Response>
+                );
               }
               case 'reasoning': {
-                return <ReasoningView part={part} key={`${part.type}-${part.text}`} />;
+                return (
+                  <ReasoningView
+                    part={part}
+                    key={`${part.type}-${part.text}`}
+                  />
+                );
               }
               case 'tool-webSearch': {
-                return <OpenAIWebSearchView invocation={part} key={part.toolCallId} />;
+                return (
+                  <OpenAIWebSearchView
+                    invocation={part}
+                    key={part.toolCallId}
+                  />
+                );
               }
               default: {
                 return null;
@@ -40,7 +55,9 @@ export default function TestOpenAIWebSearch() {
             }
           })}
 
-          <SourcesView sources={message.parts.filter(part => part.type === 'source-url')} />
+          <SourcesView
+            sources={message.parts.filter(part => part.type === 'source-url')}
+          />
         </div>
       ))}
 

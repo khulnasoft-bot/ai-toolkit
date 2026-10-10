@@ -1,4 +1,9 @@
-import { dynamicTool, type InferAgentUIMessage, ToolLoopAgent, type ToolSet } from '@ai-toolkit/ai';
+import {
+  dynamicTool,
+  type InferAgentUIMessage,
+  ToolLoopAgent,
+  type ToolSet,
+} from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { z } from 'zod';
 

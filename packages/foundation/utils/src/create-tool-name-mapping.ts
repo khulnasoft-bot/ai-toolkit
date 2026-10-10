@@ -37,7 +37,9 @@ export function createToolNameMapping({
   /**
    * Tools that were passed to the language model.
    */
-  tools: Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool> | undefined;
+  tools:
+    | Array<LanguageModelV3FunctionTool | LanguageModelV3ProviderTool>
+    | undefined;
 
   /**
    * Maps the provider tool ids to the provider tool names.

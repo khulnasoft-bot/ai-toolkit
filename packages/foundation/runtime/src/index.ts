@@ -19,7 +19,10 @@ export interface RuntimeCapabilities {
   readonly binaryData: boolean;
 }
 
-export type RuntimeCapabilityName = Exclude<keyof RuntimeCapabilities, 'target'>;
+export type RuntimeCapabilityName = Exclude<
+  keyof RuntimeCapabilities,
+  'target'
+>;
 
 export interface RuntimeContext {
   readonly fetch: typeof globalThis.fetch;

@@ -6,7 +6,8 @@ export function KasadaClient() {
       <script
         // biome-ignore lint/security/noDangerouslySetInnerHtml: required to inject the Kasada bot-protection bootstrap snippet
         dangerouslySetInnerHTML={{
-          __html: `document.addEventListener('kpsdk-load', () => {window.KPSDK.configure([
+          __html:
+            `document.addEventListener('kpsdk-load', () => {window.KPSDK.configure([
           {
             domain: location.host,
             path: '/api/chat',

@@ -31,4 +31,6 @@ export type DynamicToolError = {
   title?: string;
 };
 
-export type TypedToolError<TOOLS extends ToolSet> = StaticToolError<TOOLS> | DynamicToolError;
+export type TypedToolError<TOOLS extends ToolSet> =
+  | StaticToolError<TOOLS>
+  | DynamicToolError;

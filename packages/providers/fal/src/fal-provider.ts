@@ -6,7 +6,10 @@ import {
   type TranscriptionModelV3,
 } from '@ai-toolkit/provider';
 import type { FetchFunction } from '@ai-toolkit/provider-utils';
-import { withoutTrailingSlash, withUserAgentSuffix } from '@ai-toolkit/provider-utils';
+import {
+  withoutTrailingSlash,
+  withUserAgentSuffix,
+} from '@ai-toolkit/provider-utils';
 import { FalImageModel } from './fal-image-model';
 import type { FalImageModelId } from './fal-image-settings';
 import { FalSpeechModel } from './fal-speech-model';
