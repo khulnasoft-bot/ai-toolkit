@@ -2,28 +2,28 @@ import { generateText } from '@ai-toolkit/ai';
 import { huggingface } from '@ai-toolkit/huggingface';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: huggingface('deepseek-ai/DeepSeek-R1'),
-        messages: [
-            {
-                role: 'user',
-                content: 'What is 5 + 7?',
-            },
-            {
-                role: 'assistant',
-                content: [
-                    { type: 'reasoning', text: 'I need to add 5 and 7 together.' },
-                    { type: 'text', text: '5 + 7 = 12' },
-                ],
-            },
-            {
-                role: 'user',
-                content: 'What is 12 × 3?',
-            },
+  const result = await generateText({
+    model: huggingface('deepseek-ai/DeepSeek-R1'),
+    messages: [
+      {
+        role: 'user',
+        content: 'What is 5 + 7?',
+      },
+      {
+        role: 'assistant',
+        content: [
+          { type: 'reasoning', text: 'I need to add 5 and 7 together.' },
+          { type: 'text', text: '5 + 7 = 12' },
         ],
-    });
-    console.log('Response:');
-    console.log(result.text);
-    console.log('\nToken usage:', result.usage);
+      },
+      {
+        role: 'user',
+        content: 'What is 12 × 3?',
+      },
+    ],
+  });
+  console.log('Response:');
+  console.log(result.text);
+  console.log('\nToken usage:', result.usage);
 });
 //# sourceMappingURL=huggingface-reasoning-input.js.map

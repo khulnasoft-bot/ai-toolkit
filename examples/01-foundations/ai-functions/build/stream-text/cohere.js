@@ -2,15 +2,15 @@ import { streamText } from '@ai-toolkit/ai';
 import { cohere } from '@ai-toolkit/cohere';
 import { run } from '../lib/run';
 run(async () => {
-    const result = streamText({
-        model: cohere('command-r-plus'),
-        prompt: 'Invent a new holiday and describe its traditions.',
-    });
-    for await (const textPart of result.textStream) {
-        process.stdout.write(textPart);
-    }
-    console.log();
-    console.log('Token usage:', await result.usage);
-    console.log('Finish reason:', await result.finishReason);
+  const result = streamText({
+    model: cohere('command-r-plus'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
+  console.log();
+  console.log('Token usage:', await result.usage);
+  console.log('Finish reason:', await result.finishReason);
 });
 //# sourceMappingURL=cohere.js.map

@@ -3,14 +3,14 @@ import { anthropic } from '@ai-toolkit/anthropic';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: anthropic('claude-sonnet-4-0'),
-        prompt: 'Invent a new holiday and describe its traditions.',
-        maxRetries: 0,
-    });
-    print('Content:', result.content);
-    print('Usage:', result.usage);
-    print('Finish reason:', result.finishReason);
-    print('Raw finish reason:', result.rawFinishReason);
+  const result = await generateText({
+    model: anthropic('claude-sonnet-4-0'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+    maxRetries: 0,
+  });
+  print('Content:', result.content);
+  print('Usage:', result.usage);
+  print('Finish reason:', result.finishReason);
+  print('Raw finish reason:', result.rawFinishReason);
 });
 //# sourceMappingURL=anthropic.js.map

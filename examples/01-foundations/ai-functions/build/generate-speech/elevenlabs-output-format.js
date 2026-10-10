@@ -3,16 +3,16 @@ import { elevenlabs } from '@ai-toolkit/elevenlabs';
 import { run } from '../lib/run';
 import { saveAudioFile } from '../lib/save-audio';
 run(async () => {
-    const result = await generateSpeech({
-        model: elevenlabs.speech('eleven_multilingual_v2'),
-        text: 'This audio is generated in high-quality MP3 format.',
-        outputFormat: 'mp3_44100_192', // High-quality MP3 at 192kbps
-    });
-    console.log('Audio:', result.audio);
-    console.log('Warnings:', result.warnings);
-    console.log('Responses:', result.responses);
-    console.log('Provider Metadata:', result.providerMetadata);
-    console.log('Output format: MP3 at 44.1kHz, 192kbps');
-    await saveAudioFile(result.audio);
+  const result = await generateSpeech({
+    model: elevenlabs.speech('eleven_multilingual_v2'),
+    text: 'This audio is generated in high-quality MP3 format.',
+    outputFormat: 'mp3_44100_192', // High-quality MP3 at 192kbps
+  });
+  console.log('Audio:', result.audio);
+  console.log('Warnings:', result.warnings);
+  console.log('Responses:', result.responses);
+  console.log('Provider Metadata:', result.providerMetadata);
+  console.log('Output format: MP3 at 44.1kHz, 192kbps');
+  await saveAudioFile(result.audio);
 });
 //# sourceMappingURL=elevenlabs-output-format.js.map

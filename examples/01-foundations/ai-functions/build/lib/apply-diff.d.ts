@@ -6,4 +6,8 @@
  * The function preserves trailing newlines from the original file and throws when
  * the diff cannot be applied cleanly.
  */
-export declare function applyDiff(input: string, diff: string, mode?: 'default' | 'create'): string;
+export declare function applyDiff(
+  input: string,
+  diff: string,
+  mode?: 'default' | 'create',
+): string;

@@ -2,12 +2,13 @@ import { generateText } from '@ai-toolkit/ai';
 import { vertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: vertex('gemini-2.5-pro'),
-        tools: { code_execution: vertex.tools.codeExecution({}) },
-        maxOutputTokens: 2048,
-        prompt: 'Use python to calculate 20th fibonacci number. Then find the nearest palindrome to it.',
-    });
-    console.log(JSON.stringify(result, null, 2));
+  const result = await generateText({
+    model: vertex('gemini-2.5-pro'),
+    tools: { code_execution: vertex.tools.codeExecution({}) },
+    maxOutputTokens: 2048,
+    prompt:
+      'Use python to calculate 20th fibonacci number. Then find the nearest palindrome to it.',
+  });
+  console.log(JSON.stringify(result, null, 2));
 });
 //# sourceMappingURL=google-vertex-code-execution.js.map

@@ -1,183 +1,221 @@
 import { generateText, stepCountIs } from '@ai-toolkit/ai';
-import { bedrockAnthropic, createBedrockAnthropic, } from '@ai-toolkit/amazon-bedrock/anthropic';
+import {
+  bedrockAnthropic,
+  createBedrockAnthropic,
+} from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
 import fs from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { createFeatureTestSuite, createLanguageModelWithCapabilities, } from './feature-test-suite';
-const createModelObject = (model) => ({
-    model: model,
-    modelId: model.modelId,
+import {
+  createFeatureTestSuite,
+  createLanguageModelWithCapabilities,
+} from './feature-test-suite';
+const createModelObject = model => ({
+  model: model,
+  modelId: model.modelId,
 });
 const createLanguageModel = (modelId, additionalTests = []) => {
-    const model = createBedrockAnthropic({
-        region: process.env.AWS_REGION ?? 'us-east-1',
-    })(modelId);
-    if (additionalTests.length > 0) {
-        describe.each([createModelObject(model)])('Provider-specific tests: $modelId', ({ model }) => {
-            for (const test of additionalTests) {
-                test(model);
-            }
-        });
-    }
-    return createLanguageModelWithCapabilities(model);
+  const model = createBedrockAnthropic({
+    region: process.env.AWS_REGION ?? 'us-east-1',
+  })(modelId);
+  if (additionalTests.length > 0) {
+    describe.each([createModelObject(model)])(
+      'Provider-specific tests: $modelId',
+      ({ model }) => {
+        for (const test of additionalTests) {
+          test(model);
+        }
+      },
+    );
+  }
+  return createLanguageModelWithCapabilities(model);
 };
 const createModelVariants = (modelId, tests = []) => [
-    createLanguageModel(modelId, tests),
+  createLanguageModel(modelId, tests),
 ];
 // Model variants to test against
 const CHAT_MODELS = ['us.anthropic.claude-sonnet-4-5-20250929-v1:0'];
 // Sonnet 4.5 supports computer use tools
 const COMPUTER_USE_MODELS = ['us.anthropic.claude-sonnet-4-5-20250929-v1:0'];
 const createModelsForRuntime = () => ({
-    languageModels: [
-        ...CHAT_MODELS.flatMap(modelId => createModelVariants(modelId, [stopSequenceTests])),
-        ...COMPUTER_USE_MODELS.flatMap(modelId => createModelVariants(modelId, [toolTests])),
-    ],
+  languageModels: [
+    ...CHAT_MODELS.flatMap(modelId =>
+      createModelVariants(modelId, [stopSequenceTests]),
+    ),
+    ...COMPUTER_USE_MODELS.flatMap(modelId =>
+      createModelVariants(modelId, [toolTests]),
+    ),
+  ],
 });
 const LONG_TEST_MILLIS = 30000;
 const COMPUTER_USE_TEST_MILLIS = 45000;
 describe('Bedrock Anthropic E2E Tests', () => {
-    createFeatureTestSuite({
-        name: 'Bedrock Anthropic',
-        models: createModelsForRuntime(),
-        timeout: LONG_TEST_MILLIS,
-        customAssertions: {
-            skipUsage: false,
-            errorValidator: (error) => {
-                expect(error.message).toMatch(/ValidationException|ResourceNotFoundException/);
-            },
-        },
-    })();
+  createFeatureTestSuite({
+    name: 'Bedrock Anthropic',
+    models: createModelsForRuntime(),
+    timeout: LONG_TEST_MILLIS,
+    customAssertions: {
+      skipUsage: false,
+      errorValidator: error => {
+        expect(error.message).toMatch(
+          /ValidationException|ResourceNotFoundException/,
+        );
+      },
+    },
+  })();
 });
-const stopSequenceTests = (model) => {
-    it('should return stop_sequence in provider metadata when stopped by stop sequence', async () => {
-        const result = await generateText({
-            model,
-            prompt: 'Count from 1 to 10, one number per line.',
-            stopSequences: ['5'],
-        });
-        expect(result.text).toBeTruthy();
-        expect(result.text).not.toContain('6');
-        expect(result.finishReason).toBe('stop');
-        expect(result.providerMetadata?.anthropic?.stopSequence).toBe('5');
-    }, { timeout: LONG_TEST_MILLIS });
-    it('should return null stopSequence when not stopped by stop sequence', async () => {
-        const result = await generateText({
-            model,
-            prompt: 'Say hello.',
-            maxOutputTokens: 50,
-        });
-        expect(result.text).toBeTruthy();
-        expect(result.providerMetadata?.anthropic?.stopSequence).toBeNull();
-    }, { timeout: LONG_TEST_MILLIS });
+const stopSequenceTests = model => {
+  it(
+    'should return stop_sequence in provider metadata when stopped by stop sequence',
+    async () => {
+      const result = await generateText({
+        model,
+        prompt: 'Count from 1 to 10, one number per line.',
+        stopSequences: ['5'],
+      });
+      expect(result.text).toBeTruthy();
+      expect(result.text).not.toContain('6');
+      expect(result.finishReason).toBe('stop');
+      expect(result.providerMetadata?.anthropic?.stopSequence).toBe('5');
+    },
+    { timeout: LONG_TEST_MILLIS },
+  );
+  it(
+    'should return null stopSequence when not stopped by stop sequence',
+    async () => {
+      const result = await generateText({
+        model,
+        prompt: 'Say hello.',
+        maxOutputTokens: 50,
+      });
+      expect(result.text).toBeTruthy();
+      expect(result.providerMetadata?.anthropic?.stopSequence).toBeNull();
+    },
+    { timeout: LONG_TEST_MILLIS },
+  );
 };
-const toolTests = (model) => {
-    it('should execute computer tool commands', async () => {
-        const result = await generateText({
-            model,
-            tools: {
-                computer: bedrockAnthropic.tools.computer_20241022({
-                    displayWidthPx: 1024,
-                    displayHeightPx: 768,
-                    async execute({ action, coordinate, text }) {
-                        switch (action) {
-                            case 'screenshot': {
-                                return {
-                                    type: 'image',
-                                    data: fs
-                                        .readFileSync('./data/screenshot-editor.png')
-                                        .toString('base64'),
-                                };
-                            }
-                            default: {
-                                return `executed ${action}`;
-                            }
-                        }
-                    },
-                    toModelOutput({ output }) {
-                        return {
-                            type: 'content',
-                            value: [
-                                typeof output === 'string'
-                                    ? { type: 'text', text: output }
-                                    : {
-                                        type: 'image-data',
-                                        data: output.data,
-                                        mediaType: 'image/png',
-                                    },
-                            ],
-                        };
-                    },
-                }),
+const toolTests = model => {
+  it(
+    'should execute computer tool commands',
+    async () => {
+      const result = await generateText({
+        model,
+        tools: {
+          computer: bedrockAnthropic.tools.computer_20241022({
+            displayWidthPx: 1024,
+            displayHeightPx: 768,
+            async execute({ action, coordinate, text }) {
+              switch (action) {
+                case 'screenshot': {
+                  return {
+                    type: 'image',
+                    data: fs
+                      .readFileSync('./data/screenshot-editor.png')
+                      .toString('base64'),
+                  };
+                }
+                default: {
+                  return `executed ${action}`;
+                }
+              }
             },
-            prompt: 'How can I switch to dark mode? Take a look at the screen and tell me.',
-            stopWhen: stepCountIs(5),
-        });
-        console.log(result.text);
-        expect(result.text).toBeTruthy();
-        // Model should respond about the screen - check for common terms
-        expect(result.text.toLowerCase()).toMatch(/settings|theme|dark|mode|interface|screen|editor|code|vs\s?code/i);
-        expect(result.usage?.totalTokens).toBeGreaterThan(0);
-    }, { timeout: COMPUTER_USE_TEST_MILLIS });
-    it('should execute bash tool commands', async () => {
-        const result = await generateText({
-            model,
-            tools: {
-                bash: bedrockAnthropic.tools.bash_20241022({
-                    async execute({ command }) {
-                        return [
-                            {
-                                type: 'text',
-                                text: `
+            toModelOutput({ output }) {
+              return {
+                type: 'content',
+                value: [
+                  typeof output === 'string'
+                    ? { type: 'text', text: output }
+                    : {
+                        type: 'image-data',
+                        data: output.data,
+                        mediaType: 'image/png',
+                      },
+                ],
+              };
+            },
+          }),
+        },
+        prompt:
+          'How can I switch to dark mode? Take a look at the screen and tell me.',
+        stopWhen: stepCountIs(5),
+      });
+      console.log(result.text);
+      expect(result.text).toBeTruthy();
+      // Model should respond about the screen - check for common terms
+      expect(result.text.toLowerCase()).toMatch(
+        /settings|theme|dark|mode|interface|screen|editor|code|vs\s?code/i,
+      );
+      expect(result.usage?.totalTokens).toBeGreaterThan(0);
+    },
+    { timeout: COMPUTER_USE_TEST_MILLIS },
+  );
+  it(
+    'should execute bash tool commands',
+    async () => {
+      const result = await generateText({
+        model,
+        tools: {
+          bash: bedrockAnthropic.tools.bash_20241022({
+            async execute({ command }) {
+              return [
+                {
+                  type: 'text',
+                  text: `
 ❯ ${command}
 README.md     build         data          node_modules  package.json  src           tsconfig.json
 `,
-                            },
-                        ];
-                    },
-                }),
+                },
+              ];
             },
-            prompt: 'List the files in my directory.',
-            stopWhen: stepCountIs(2),
-        });
-        expect(result.text).toBeTruthy();
-        expect(result.text).toContain('README.md');
-        expect(result.text).toContain('package.json');
-        expect(result.text).toContain('node_modules');
-        expect(result.usage?.totalTokens).toBeGreaterThan(0);
-    }, { timeout: COMPUTER_USE_TEST_MILLIS });
-    it('should execute text editor tool commands', async () => {
-        let editorContent = '## README\nThis is a test file.';
-        const result = await generateText({
-            model,
-            tools: {
-                str_replace_editor: bedrockAnthropic.tools.textEditor_20241022({
-                    async execute({ command, path, old_str, new_str }) {
-                        switch (command) {
-                            case 'view': {
-                                return editorContent;
-                            }
-                            case 'create':
-                            case 'insert': {
-                                editorContent = new_str;
-                                return editorContent;
-                            }
-                            case 'str_replace': {
-                                editorContent = editorContent.replace(old_str, new_str);
-                                return editorContent;
-                            }
-                            default:
-                                return '';
-                        }
-                    },
-                }),
+          }),
+        },
+        prompt: 'List the files in my directory.',
+        stopWhen: stepCountIs(2),
+      });
+      expect(result.text).toBeTruthy();
+      expect(result.text).toContain('README.md');
+      expect(result.text).toContain('package.json');
+      expect(result.text).toContain('node_modules');
+      expect(result.usage?.totalTokens).toBeGreaterThan(0);
+    },
+    { timeout: COMPUTER_USE_TEST_MILLIS },
+  );
+  it(
+    'should execute text editor tool commands',
+    async () => {
+      let editorContent = '## README\nThis is a test file.';
+      const result = await generateText({
+        model,
+        tools: {
+          str_replace_editor: bedrockAnthropic.tools.textEditor_20241022({
+            async execute({ command, path, old_str, new_str }) {
+              switch (command) {
+                case 'view': {
+                  return editorContent;
+                }
+                case 'create':
+                case 'insert': {
+                  editorContent = new_str;
+                  return editorContent;
+                }
+                case 'str_replace': {
+                  editorContent = editorContent.replace(old_str, new_str);
+                  return editorContent;
+                }
+                default:
+                  return '';
+              }
             },
-            prompt: 'Update my README file to talk about AI.',
-            stopWhen: stepCountIs(5),
-        });
-        expect(result.text).toBeTruthy();
-        expect(editorContent).not.toBe('## README\nThis is a test file.');
-        expect(result.usage?.totalTokens).toBeGreaterThan(0);
-    }, { timeout: COMPUTER_USE_TEST_MILLIS });
+          }),
+        },
+        prompt: 'Update my README file to talk about AI.',
+        stopWhen: stepCountIs(5),
+      });
+      expect(result.text).toBeTruthy();
+      expect(editorContent).not.toBe('## README\nThis is a test file.');
+      expect(result.usage?.totalTokens).toBeGreaterThan(0);
+    },
+    { timeout: COMPUTER_USE_TEST_MILLIS },
+  );
 };
 //# sourceMappingURL=amazon-bedrock-anthropic.test.js.map

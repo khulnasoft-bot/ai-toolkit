@@ -12,7 +12,7 @@ The AI TOOLKIT monorepo already has strong foundations: domain-based packaging, 
 
 | Domain                  | Directory                          | Packages                                                                          | Count |
 | ----------------------- | ---------------------------------- | --------------------------------------------------------------------------------- | ----- |
-| Core SDK                | `packages/core/ai`         | `ai-toolkit` (npm: `ai-toolkit`)                                                  | 1     |
+| Core SDK                | `packages/core/ai`                 | `ai-toolkit` (npm: `ai-toolkit`)                                                  | 1     |
 | Core utilities          | `packages/core/provider-utils`     | `@ai-toolkit/provider-utils`                                                      | 1     |
 | Runtime contracts       | `packages/core/runtime`            | `@ai-toolkit/runtime`                                                             | 1     |
 | Provider interfaces     | `packages/validation/provider`     | `@ai-toolkit/provider`                                                            | 1     |

@@ -2,21 +2,21 @@ import fs from 'node:fs';
 import { generateText } from '@ai-toolkit/ai';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: 'xai/grok-2-vision',
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    { type: 'text', text: 'Describe the image in detail.' },
-                    {
-                        type: 'image',
-                        image: fs.readFileSync('./data/comic-cat.png').toString('base64'),
-                    },
-                ],
-            },
+  const result = await generateText({
+    model: 'xai/grok-2-vision',
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'Describe the image in detail.' },
+          {
+            type: 'image',
+            image: fs.readFileSync('./data/comic-cat.png').toString('base64'),
+          },
         ],
-    });
-    console.log(result.text);
+      },
+    ],
+  });
+  console.log(result.text);
 });
 //# sourceMappingURL=gateway-image-base64.js.map

@@ -1,39 +1,42 @@
 import fs from 'node:fs';
 import { generateText } from '@ai-toolkit/ai';
-import { anthropic, } from '@ai-toolkit/anthropic';
+import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 const errorMessage = fs.readFileSync('data/error-message.txt', 'utf8');
 run(async () => {
-    const result = await generateText({
-        model: anthropic('claude-3-5-sonnet-20240620'),
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    {
-                        type: 'text',
-                        text: 'You are a JavaScript expert.',
-                    },
-                    {
-                        type: 'text',
-                        text: `Error message: ${errorMessage}`,
-                        providerOptions: {
-                            anthropic: {
-                                cacheControl: { type: 'ephemeral', ttl: '1h' },
-                            },
-                        },
-                    },
-                    {
-                        type: 'text',
-                        text: 'Explain the error message.',
-                    },
-                ],
+  const result = await generateText({
+    model: anthropic('claude-3-5-sonnet-20240620'),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'You are a JavaScript expert.',
+          },
+          {
+            type: 'text',
+            text: `Error message: ${errorMessage}`,
+            providerOptions: {
+              anthropic: {
+                cacheControl: { type: 'ephemeral', ttl: '1h' },
+              },
             },
+          },
+          {
+            type: 'text',
+            text: 'Explain the error message.',
+          },
         ],
-    });
-    console.log(result.text);
-    console.log();
-    console.log('Cache read tokens:', result.usage.cachedInputTokens);
-    console.log('Cache write tokens:', result.providerMetadata?.anthropic?.cacheCreationInputTokens);
+      },
+    ],
+  });
+  console.log(result.text);
+  console.log();
+  console.log('Cache read tokens:', result.usage.cachedInputTokens);
+  console.log(
+    'Cache write tokens:',
+    result.providerMetadata?.anthropic?.cacheCreationInputTokens,
+  );
 });
 //# sourceMappingURL=anthropic-cache-control.js.map

@@ -3,44 +3,45 @@ import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import 'dotenv/config';
 import { run } from '../lib/run';
 run(async () => {
-    let editorContent = `# README
+  let editorContent = `# README
 
 This is a sample README file for testing the text editor tool.
 `;
-    const result = streamText({
-        model: bedrockAnthropic('us.anthropic.claude-sonnet-4-5-20250929-v1:0'),
-        tools: {
-            str_replace_editor: bedrockAnthropic.tools.textEditor_20241022({
-                async execute({ command, path, old_str, new_str }) {
-                    console.log(`Editor command: ${command}`);
-                    if (command === 'view') {
-                        return editorContent;
-                    }
-                    if (command === 'str_replace' && old_str && new_str) {
-                        editorContent = editorContent.replace(old_str, new_str);
-                        return editorContent;
-                    }
-                    return editorContent;
-                },
-            }),
+  const result = streamText({
+    model: bedrockAnthropic('us.anthropic.claude-sonnet-4-5-20250929-v1:0'),
+    tools: {
+      str_replace_editor: bedrockAnthropic.tools.textEditor_20241022({
+        async execute({ command, path, old_str, new_str }) {
+          console.log(`Editor command: ${command}`);
+          if (command === 'view') {
+            return editorContent;
+          }
+          if (command === 'str_replace' && old_str && new_str) {
+            editorContent = editorContent.replace(old_str, new_str);
+            return editorContent;
+          }
+          return editorContent;
         },
-        prompt: 'Update my README file to mention that this project uses AI TOOLKIT.',
-        stopWhen: stepCountIs(5),
-    });
-    for await (const part of result.fullStream) {
-        if (part.type === 'text-delta') {
-            process.stdout.write(part.text);
-        }
-        else if (part.type === 'tool-call') {
-            console.log(`\nTool call: ${part.toolName}(${JSON.stringify(part.input).substring(0, 100)}...)`);
-        }
-        else if (part.type === 'tool-result') {
-            console.log(`Tool result received`);
-        }
+      }),
+    },
+    prompt:
+      'Update my README file to mention that this project uses AI TOOLKIT.',
+    stopWhen: stepCountIs(5),
+  });
+  for await (const part of result.fullStream) {
+    if (part.type === 'text-delta') {
+      process.stdout.write(part.text);
+    } else if (part.type === 'tool-call') {
+      console.log(
+        `\nTool call: ${part.toolName}(${JSON.stringify(part.input).substring(0, 100)}...)`,
+      );
+    } else if (part.type === 'tool-result') {
+      console.log(`Tool result received`);
     }
-    console.log();
-    console.log('Final editor content:', editorContent);
-    console.log('Finish reason:', await result.finishReason);
-    console.log('Usage:', await result.usage);
+  }
+  console.log();
+  console.log('Final editor content:', editorContent);
+  console.log('Finish reason:', await result.finishReason);
+  console.log('Usage:', await result.usage);
 });
 //# sourceMappingURL=amazon-bedrock-anthropic-computer-use-editor.js.map

@@ -2,16 +2,16 @@ import { generateText } from '@ai-toolkit/ai';
 import { createAzure } from '@ai-toolkit/azure';
 import { run } from '../lib/run';
 const azureDefault = createAzure({
-    fetch: async (input, init) => {
-        console.log('Azure  request URL:', input);
-        return fetch(input, init);
-    },
+  fetch: async (input, init) => {
+    console.log('Azure  request URL:', input);
+    return fetch(input, init);
+  },
 });
 run(async () => {
-    const result = await generateText({
-        model: azureDefault('gpt-5-nano'),
-        prompt: 'Write a short poem about the sea.',
-    });
-    console.log(result.text);
+  const result = await generateText({
+    model: azureDefault('gpt-5-nano'),
+    prompt: 'Write a short poem about the sea.',
+  });
+  console.log(result.text);
 });
 //# sourceMappingURL=azure-responses-default.js.map

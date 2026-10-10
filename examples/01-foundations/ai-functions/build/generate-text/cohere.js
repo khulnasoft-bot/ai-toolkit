@@ -2,12 +2,12 @@ import { generateText } from '@ai-toolkit/ai';
 import { cohere } from '@ai-toolkit/cohere';
 import { run } from '../lib/run';
 run(async () => {
-    const { text, usage } = await generateText({
-        model: cohere('command-a-03-2025'),
-        prompt: 'Invent a new holiday and describe its traditions.',
-    });
-    console.log(text);
-    console.log();
-    console.log('Usage:', usage);
+  const { text, usage } = await generateText({
+    model: cohere('command-a-03-2025'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+  console.log(text);
+  console.log();
+  console.log('Usage:', usage);
 });
 //# sourceMappingURL=cohere.js.map

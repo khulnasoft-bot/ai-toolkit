@@ -2,13 +2,13 @@ import { generateText } from '@ai-toolkit/ai';
 import { groq } from '@ai-toolkit/groq';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: groq('moonshotai/kimi-k2-instruct-0905'),
-        prompt: 'Invent a new holiday and describe its traditions.',
-    });
-    console.log(result.text);
-    console.log();
-    console.log('Token usage:', result.usage);
-    console.log('Finish reason:', result.finishReason);
+  const result = await generateText({
+    model: groq('moonshotai/kimi-k2-instruct-0905'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+  console.log(result.text);
+  console.log();
+  console.log('Token usage:', result.usage);
+  console.log('Finish reason:', result.finishReason);
 });
 //# sourceMappingURL=groq-kimi-k2.js.map

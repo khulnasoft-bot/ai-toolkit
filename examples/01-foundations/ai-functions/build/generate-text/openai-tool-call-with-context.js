@@ -3,27 +3,27 @@ import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: openai('gpt-4o'),
-        tools: {
-            weather: tool({
-                description: 'Get the weather in a location',
-                inputSchema: z.object({
-                    location: z.string().describe('The location to get the weather for'),
-                }),
-                execute: async ({ location }, { experimental_context: context }) => {
-                    const typedContext = context; // or use type validation library
-                    console.log(typedContext);
-                    return {
-                        location,
-                        temperature: 72 + Math.floor(Math.random() * 21) - 10,
-                    };
-                },
-            }),
+  const result = await generateText({
+    model: openai('gpt-4o'),
+    tools: {
+      weather: tool({
+        description: 'Get the weather in a location',
+        inputSchema: z.object({
+          location: z.string().describe('The location to get the weather for'),
+        }),
+        execute: async ({ location }, { experimental_context: context }) => {
+          const typedContext = context; // or use type validation library
+          console.log(typedContext);
+          return {
+            location,
+            temperature: 72 + Math.floor(Math.random() * 21) - 10,
+          };
         },
-        experimental_context: { weatherApiKey: '123' },
-        prompt: 'What is the weather in San Francisco?',
-    });
-    console.log(JSON.stringify(result.toolResults, null, 2));
+      }),
+    },
+    experimental_context: { weatherApiKey: '123' },
+    prompt: 'What is the weather in San Francisco?',
+  });
+  console.log(JSON.stringify(result.toolResults, null, 2));
 });
 //# sourceMappingURL=openai-tool-call-with-context.js.map

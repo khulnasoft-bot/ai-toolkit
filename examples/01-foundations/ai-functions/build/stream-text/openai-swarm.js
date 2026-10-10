@@ -3,33 +3,33 @@ import { openai } from '@ai-toolkit/openai';
 import { z } from 'zod';
 import { run } from '../lib/run';
 run(async () => {
-    const agentA = {
-        system: 'You are a helpful agent.',
-        activeTools: ['transferToAgentB'],
-    };
-    const agentB = {
-        system: 'Only speak in Haikus.',
-        activeTools: [],
-    };
-    let activeAgent = agentA;
-    const result = streamText({
-        model: openai('gpt-4o'),
-        tools: {
-            transferToAgentB: tool({
-                description: 'Transfer to agent B.',
-                inputSchema: z.object({}),
-                execute: async () => {
-                    activeAgent = agentB;
-                    return 'Transferred to agent B.';
-                },
-            }),
+  const agentA = {
+    system: 'You are a helpful agent.',
+    activeTools: ['transferToAgentB'],
+  };
+  const agentB = {
+    system: 'Only speak in Haikus.',
+    activeTools: [],
+  };
+  let activeAgent = agentA;
+  const result = streamText({
+    model: openai('gpt-4o'),
+    tools: {
+      transferToAgentB: tool({
+        description: 'Transfer to agent B.',
+        inputSchema: z.object({}),
+        execute: async () => {
+          activeAgent = agentB;
+          return 'Transferred to agent B.';
         },
-        stopWhen: stepCountIs(5),
-        prepareStep: () => activeAgent,
-        prompt: 'I want to talk to agent B.',
-    });
-    for await (const chunk of result.textStream) {
-        process.stdout.write(chunk);
-    }
+      }),
+    },
+    stopWhen: stepCountIs(5),
+    prepareStep: () => activeAgent,
+    prompt: 'I want to talk to agent B.',
+  });
+  for await (const chunk of result.textStream) {
+    process.stdout.write(chunk);
+  }
 });
 //# sourceMappingURL=openai-swarm.js.map

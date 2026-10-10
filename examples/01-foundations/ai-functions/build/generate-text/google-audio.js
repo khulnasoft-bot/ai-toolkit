@@ -3,22 +3,22 @@ import { generateText } from '@ai-toolkit/ai';
 import { google } from '@ai-toolkit/google';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: google('gemini-1.5-flash'),
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    { type: 'text', text: 'What is the audio saying?' },
-                    {
-                        type: 'file',
-                        mediaType: 'audio/mpeg',
-                        data: fs.readFileSync('./data/galileo.mp3'),
-                    },
-                ],
-            },
+  const result = await generateText({
+    model: google('gemini-1.5-flash'),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'What is the audio saying?' },
+          {
+            type: 'file',
+            mediaType: 'audio/mpeg',
+            data: fs.readFileSync('./data/galileo.mp3'),
+          },
         ],
-    });
-    console.log(result.text);
+      },
+    ],
+  });
+  console.log(result.text);
 });
 //# sourceMappingURL=google-audio.js.map

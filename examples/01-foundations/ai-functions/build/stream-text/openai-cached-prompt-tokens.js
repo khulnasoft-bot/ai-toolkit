@@ -133,34 +133,34 @@ The thunder roll, the ceaseless lightnings glare;
 And all things mean swift death for mortal man.
 `;
 function createCompletion() {
-    return streamText({
-        model: openai('gpt-4o-mini'),
-        messages: [
-            {
-                role: 'user',
-                content: `What book is the following text from?: <text>${longPrompt}</text>`,
-            },
-        ],
-        providerOptions: {
-            openai: { maxCompletionTokens: 100 },
-        },
-        onFinish: ({ usage, providerMetadata }) => {
-            console.log(`metadata:`, providerMetadata);
-        },
-    });
+  return streamText({
+    model: openai('gpt-4o-mini'),
+    messages: [
+      {
+        role: 'user',
+        content: `What book is the following text from?: <text>${longPrompt}</text>`,
+      },
+    ],
+    providerOptions: {
+      openai: { maxCompletionTokens: 100 },
+    },
+    onFinish: ({ usage, providerMetadata }) => {
+      console.log(`metadata:`, providerMetadata);
+    },
+  });
 }
 run(async () => {
-    const start = performance.now();
-    const result = await createCompletion();
-    const end = performance.now();
-    console.log(`duration: ${Math.floor(end - start)} ms`);
-    let _fullResponse = '';
-    process.stdout.write('\nAssistant: ');
-    for await (const delta of result.textStream) {
-        _fullResponse += delta;
-        process.stdout.write(delta);
-    }
-    process.stdout.write('\n\n');
-    console.log('done!');
+  const start = performance.now();
+  const result = await createCompletion();
+  const end = performance.now();
+  console.log(`duration: ${Math.floor(end - start)} ms`);
+  let _fullResponse = '';
+  process.stdout.write('\nAssistant: ');
+  for await (const delta of result.textStream) {
+    _fullResponse += delta;
+    process.stdout.write(delta);
+  }
+  process.stdout.write('\n\n');
+  console.log('done!');
 });
 //# sourceMappingURL=openai-cached-prompt-tokens.js.map

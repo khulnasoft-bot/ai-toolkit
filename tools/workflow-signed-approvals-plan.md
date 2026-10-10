@@ -215,16 +215,16 @@ ToolLoopAgent (constructor)
 | File                                                                                 | Change                                                       | Phase    |
 | ------------------------------------------------------------------------------------ | ------------------------------------------------------------ | -------- |
 | `packages/core/provider-utils/src/types/tool-approval-request.ts`                    | Add `signature?: string`                                     | 1.1      |
-| `packages/core/ai/src/prompt/call-settings.ts`                               | Add `experimental_toolApprovalSecret?: string \| Uint8Array` | 1.2      |
-| `packages/core/ai/src/generate-text/generate-text.ts`                        | Add option, wire to validation                               | 1.3      |
-| `packages/core/ai/src/generate-text/stream-text.ts`                          | Add option, wire to stream signing                           | 1.4      |
-| `packages/core/ai/src/generate-text/validate-tool-approvals.ts`              | Verify wired from public API                                 | 1.5      |
-| `packages/core/ai/src/generate-text/execute-tools-from-stream.ts`            | Verify wired from streamText                                 | 1.6      |
-| `packages/core/ai/src/agent/tool-loop-agent-settings.ts`                     | Add secret to settings + prepareCall                         | 2.1      |
-| `packages/core/ai/src/agent/tool-loop-agent.ts`                              | Pass secret to generateText/streamText, add env resolution   | 2.2, 2.3 |
-| `packages/core/ai/src/generate-text/run-tools-transformation.ts`             | Verify signature preservation                                | 3.1      |
-| `packages/core/ai/src/agent/tool-loop-agent.test.ts`                         | Add agent-level tests                                        | 5.1      |
-| `packages/core/ai/src/agent/tool-loop-agent.test-d.ts`                       | Add type tests                                               | 5.2      |
+| `packages/core/ai/src/prompt/call-settings.ts`                                       | Add `experimental_toolApprovalSecret?: string \| Uint8Array` | 1.2      |
+| `packages/core/ai/src/generate-text/generate-text.ts`                                | Add option, wire to validation                               | 1.3      |
+| `packages/core/ai/src/generate-text/stream-text.ts`                                  | Add option, wire to stream signing                           | 1.4      |
+| `packages/core/ai/src/generate-text/validate-tool-approvals.ts`                      | Verify wired from public API                                 | 1.5      |
+| `packages/core/ai/src/generate-text/execute-tools-from-stream.ts`                    | Verify wired from streamText                                 | 1.6      |
+| `packages/core/ai/src/agent/tool-loop-agent-settings.ts`                             | Add secret to settings + prepareCall                         | 2.1      |
+| `packages/core/ai/src/agent/tool-loop-agent.ts`                                      | Pass secret to generateText/streamText, add env resolution   | 2.2, 2.3 |
+| `packages/core/ai/src/generate-text/run-tools-transformation.ts`                     | Verify signature preservation                                | 3.1      |
+| `packages/core/ai/src/agent/tool-loop-agent.test.ts`                                 | Add agent-level tests                                        | 5.1      |
+| `packages/core/ai/src/agent/tool-loop-agent.test-d.ts`                               | Add type tests                                               | 5.2      |
 | `examples/01-foundations/ai-functions/src/stream-text/tool-approval-signed-agent.ts` | E2E example                                                  | 5.3      |
 | `content/docs/...`                                                                   | Documentation updates                                        | 6        |
 

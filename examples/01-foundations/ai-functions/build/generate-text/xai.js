@@ -2,13 +2,13 @@ import { generateText } from '@ai-toolkit/ai';
 import { xai } from '@ai-toolkit/xai';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: xai('grok-3-beta'),
-        prompt: 'Invent a new holiday and describe its traditions.',
-    });
-    console.log(result.text);
-    console.log();
-    console.log('Token usage:', result.usage);
-    console.log('Finish reason:', result.finishReason);
+  const result = await generateText({
+    model: xai('grok-3-beta'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+  console.log(result.text);
+  console.log();
+  console.log('Token usage:', result.usage);
+  console.log('Finish reason:', result.finishReason);
 });
 //# sourceMappingURL=xai.js.map
