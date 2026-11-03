@@ -1,0 +1,10 @@
+{
+  "name": "agents-workflow",
+  "title": "Agents + Workflow",
+  "category": "01-foundations",
+  "categoryOrder": 1,
+  "framework": "node",
+  "primaryProvider": "openai",
+  "description": "Workflow engine orchestrating multiple agents in a multi-step pipeline.",
+  "tags": ["agents", "workflow", "integration", "orchestration"]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "retrieval-agents",
+  "title": "Retrieval + Agents (RAG)",
+  "category": "01-foundations",
+  "categoryOrder": 1,
+  "framework": "node",
+  "primaryProvider": "openai",
+  "description": "Retrieval layer feeding context to agents for RAG-style question answering.",
+  "tags": ["retrieval", "agents", "rag", "integration"]
+}

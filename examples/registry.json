@@ -6,7 +6,7 @@
       "order": 1,
       "title": "Foundations",
       "description": "Core SDK concepts and basic server integrations without a specific framework.",
-      "examples": ["ai-functions", "express", "fastify", "hono", "node-http-server", "cross-domain-agent"]
+      "examples": ["ai-functions", "express", "fastify", "hono", "node-http-server", "cross-domain-agent", "agents-workflow", "retrieval-agents", "evals-agents"]
     },
     {
       "id": "02-framework-integration",
@@ -113,6 +113,39 @@
       "description": "Cross-domain integration: agents + memory + context + tools working together.",
       "tags": ["agents", "memory", "context", "tools", "integration"],
       "path": "examples/01-foundations/cross-domain-agent"
+    },
+    {
+      "name": "agents-workflow",
+      "title": "Agents + Workflow",
+      "category": "01-foundations",
+      "categoryOrder": 1,
+      "framework": "node",
+      "primaryProvider": "openai",
+      "description": "Workflow engine orchestrating multiple agents in a multi-step pipeline.",
+      "tags": ["agents", "workflow", "integration", "orchestration"],
+      "path": "examples/01-foundations/agents-workflow"
+    },
+    {
+      "name": "retrieval-agents",
+      "title": "Retrieval + Agents (RAG)",
+      "category": "01-foundations",
+      "categoryOrder": 1,
+      "framework": "node",
+      "primaryProvider": "openai",
+      "description": "Retrieval layer feeding context to agents for RAG-style question answering.",
+      "tags": ["retrieval", "agents", "rag", "integration"],
+      "path": "examples/01-foundations/retrieval-agents"
+    },
+    {
+      "name": "evals-agents",
+      "title": "Evals + Agents",
+      "category": "01-foundations",
+      "categoryOrder": 1,
+      "framework": "node",
+      "primaryProvider": "openai",
+      "description": "Evaluation engine measuring agent output quality and accuracy.",
+      "tags": ["evals", "agents", "evaluation", "integration"],
+      "path": "examples/01-foundations/evals-agents"
     },
     {
       "name": "angular",

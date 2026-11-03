@@ -1,0 +1,10 @@
+{
+  "name": "evals-agents",
+  "title": "Evals + Agents",
+  "category": "01-foundations",
+  "categoryOrder": 1,
+  "framework": "node",
+  "primaryProvider": "openai",
+  "description": "Evaluation engine measuring agent output quality and accuracy.",
+  "tags": ["evals", "agents", "evaluation", "integration"]
+}
