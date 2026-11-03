@@ -2,9 +2,9 @@
   "name": "@ai-toolkit/apps",
   "private": true,
   "scripts": {
-    "dev:www": "pnpm --filter @ai-toolkit/www dev",
-    "dev:gateway": "pnpm --filter @ai-toolkit/gateway dev",
-    "dev:docs": "pnpm --filter @ai-toolkit/docs dev",
+    "dev:www": "pnpm --filter www dev",
+    "dev:gateway": "pnpm --filter gateway dev",
+    "dev:docs": "pnpm --filter docs dev",
     "build:www": "node scripts/build.mjs --filter=www",
     "build:gateway": "node scripts/build.mjs --filter=gateway",
     "build:docs": "node scripts/build.mjs --filter=docs",

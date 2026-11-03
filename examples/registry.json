@@ -6,7 +6,7 @@
       "order": 1,
       "title": "Foundations",
       "description": "Core SDK concepts and basic server integrations without a specific framework.",
-      "examples": ["ai-functions", "express", "fastify", "hono", "node-http-server"]
+      "examples": ["ai-functions", "express", "fastify", "hono", "node-http-server", "cross-domain-agent"]
     },
     {
       "id": "02-framework-integration",
@@ -102,6 +102,17 @@
       "description": "Use the AI TOOLKIT in a simple Node.js HTTP server to generate and stream text and objects.",
       "tags": ["node", "http", "streaming"],
       "path": "examples/01-foundations/node-http-server"
+    },
+    {
+      "name": "cross-domain-agent",
+      "title": "Cross-Domain Agent",
+      "category": "01-foundations",
+      "categoryOrder": 1,
+      "framework": "node",
+      "primaryProvider": "openai",
+      "description": "Cross-domain integration: agents + memory + context + tools working together.",
+      "tags": ["agents", "memory", "context", "tools", "integration"],
+      "path": "examples/01-foundations/cross-domain-agent"
     },
     {
       "name": "angular",

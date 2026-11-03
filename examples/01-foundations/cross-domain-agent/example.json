@@ -1,0 +1,10 @@
+{
+  "name": "cross-domain-agent",
+  "title": "Cross-Domain Agent",
+  "category": "01-foundations",
+  "categoryOrder": 1,
+  "framework": "node",
+  "primaryProvider": "openai",
+  "description": "Cross-domain integration: agents + memory + context + tools working together.",
+  "tags": ["agents", "memory", "context", "tools", "integration"]
+}

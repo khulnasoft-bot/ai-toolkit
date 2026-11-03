@@ -98,19 +98,19 @@ Dependencies within the same layer are always allowed. Examples:
 
 ## Domain-to-layer mapping (Current - 400% Platform)
 
-| Domain                     | May Depend On                                                |
-| -------------------------- | ------------------------------------------------------------ |
-| `packages/ai/*`            | Foundation, Providers, Gateway                               |
-| `packages/context/*`       | Foundation, AI Core, Memory                                  |
-| `packages/memory/*`        | Foundation, AI Core, Context                                 |
-| `packages/agents/*`        | Foundation, AI Core, Tools, MCP, Memory, Context, Workflow   |
-| `packages/workflow/*`      | Foundation, Agents, Tools, Observability, Sandbox            |
-| `packages/retrieval/*`     | Foundation, AI Core, Memory, Context                         |
-| `packages/tools/*`         | Foundation, AI Core, MCP, Security                           |
-| `packages/sandbox/*`       | Foundation, Security                                         |
-| `packages/evals/*`         | Foundation, AI Core, Agents, Workflow, Observability         |
-| `packages/observability/*` | Foundation (must be dependency-free for instrumentation)     |
-| `packages/security/*`      | Foundation (must be dependency-free for security primitives) |
+| Domain                     | May Depend On (actual, per package.json)                                  |
+| -------------------------- | ------------------------------------------------------------------------- |
+| `packages/ai/*`            | Foundation, AI Core (intra-layer), Providers                              |
+| `packages/context/*`       | Foundation, AI Core, Memory                                               |
+| `packages/memory/*`        | Foundation, AI Core                                                       |
+| `packages/agents/*`        | Foundation, AI Core, Context, Memory, MCP                                 |
+| `packages/workflow/*`      | Foundation, AI Core, Agents, Context, Memory, MCP, Tools                  |
+| `packages/retrieval/*`     | Foundation, AI Core, Memory, Context, MCP                                 |
+| `packages/tools/*`         | Foundation, AI Core, Context, MCP                                         |
+| `packages/sandbox/*`       | Foundation, AI Core, Context, Memory, MCP                                 |
+| `packages/evals/*`         | Foundation, AI Core, Agents, Workflow, Observability                      |
+| `packages/observability/*` | Foundation (intra-layer observability deps allowed; dependency-free otherwise) |
+| `packages/security/*`      | Foundation, Context, Memory                                               |
 
 > All 10 new domains are implemented (Waves 1-4). See `architecture/FUTURE_DOMAINS.md` for implementation plans and success criteria.
 
@@ -160,3 +160,9 @@ The following cross-layer dependencies are allowed as documented exceptions:
 | `ui-studio:ui`           | `@ai-toolkit/ui-studio` (Experience)          | `@ai-toolkit/elements`, `@ai-toolkit/design`, `@ai-toolkit/shadcn-ui` (Experience) | Studio extends UI components                                                                                                  |
 | `cli:tooling`            | `@ai-toolkit/tooling-cli` (Experience)        | `@ai-toolkit/codemod`, `@ai-toolkit/devtools` (Experience)                         | CLI extends tooling                                                                                                           |
 | `codegen:tooling`        | `@ai-toolkit/tooling-codegen` (Experience)    | `@ai-toolkit/codemod`, `@ai-toolkit/devtools` (Experience)                         | Codegen extends tooling                                                                                                       |
+| `security:context`       | `@ai-toolkit/security/*` (Security)           | `@ai-toolkit/context/*` (Runtime)                                                  | Security primitives reference context types for audit/isolation                                                               |
+| `security:memory`        | `@ai-toolkit/security/*` (Security)           | `@ai-toolkit/memory/*` (Runtime)                                                   | Security primitives reference memory for session isolation                                                                    |
+| `sandbox:ai-core`        | `@ai-toolkit/sandbox/*` (Runtime)             | `@ai-toolkit/ai/*` (Runtime)                                                       | Sandbox execution needs AI model access for code generation                                                                   |
+| `sandbox:context`        | `@ai-toolkit/sandbox/*` (Runtime)             | `@ai-toolkit/context/*` (Runtime)                                                  | Sandbox isolation references context for tenant scoping                                                                       |
+| `sandbox:memory`         | `@ai-toolkit/sandbox/*` (Runtime)             | `@ai-toolkit/memory/*` (Runtime)                                                   | Sandbox isolation references memory for persisted state                                                                       |
+| `sandbox:mcp`            | `@ai-toolkit/sandbox/*` (Runtime)             | `@ai-toolkit/mcp/*` (Protocol)                                                     | Sandbox tools expose MCP endpoints                                                                                            |

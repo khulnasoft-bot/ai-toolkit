@@ -1,0 +1,23 @@
+{
+  "name": "@example/cross-domain-agent",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Cross-domain integration: agents + memory + context + tools",
+  "dependencies": {
+    "@ai-toolkit/agents": "workspace:*",
+    "@ai-toolkit/ai": "workspace:*",
+    "@ai-toolkit/context": "workspace:*",
+    "@ai-toolkit/memory": "workspace:*",
+    "@ai-toolkit/tools": "workspace:*",
+    "@ai-toolkit/openai": "workspace:*"
+  },
+  "scripts": {
+    "test": "tsx src/index.ts",
+    "type-check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "20.17.24",
+    "tsx": "4.19.2",
+    "typescript": "5.8.3"
+  }
+}
