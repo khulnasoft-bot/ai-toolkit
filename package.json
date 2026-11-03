@@ -49,7 +49,8 @@
     "arch:capabilities:check": "node tools/scripts/generate-capability-matrix.mjs --check",
     "arch:validate": "pnpm arch:deps && pnpm arch:capabilities:check && pnpm validate-structure",
     "arch:inspect": "node tools/scripts/arch-inspect.mjs",
-    "find-package": "node tools/scripts/find-package.mjs"
+    "find-package": "node tools/scripts/find-package.mjs",
+    "arch:platform": "node tools/scripts/check-platform-registry.mjs"
   },
   "lint-staged": {
     "*": [

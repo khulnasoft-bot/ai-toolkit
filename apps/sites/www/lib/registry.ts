@@ -1,3 +1,8 @@
+import type {
+  PlatformRecord,
+  PlatformRecordUnion,
+} from '@ai-toolkit/platform';
+
 export type CatalogItem = {
   id: string;
   name: string;
@@ -5,6 +10,16 @@ export type CatalogItem = {
   tags: string[];
   meta: string;
 };
+
+function toCatalogItem(record: PlatformRecordUnion): CatalogItem {
+  return {
+    id: record.id,
+    name: record.name,
+    description: record.description,
+    tags: record.tags,
+    meta: record.status,
+  };
+}
 
 export const providers: CatalogItem[] = [
   {
@@ -51,7 +66,8 @@ export const recipes: CatalogItem[] = [
   {
     id: 'structured-outputs',
     name: 'Structured outputs',
-    description: 'Generate validated JSON that matches your TypeScript schema.',
+    description:
+      'Generate validated JSON that matches your TypeScript schema.',
     tags: ['Objects', 'Validation'],
     meta: '6 min read',
   },
@@ -113,4 +129,17 @@ export const showcase: CatalogItem[] = [
     meta: 'Community',
   },
 ];
+
 export const allCatalog = [...providers, ...recipes, ...tools, ...showcase];
+
+/**
+ * Convert platform registry records to catalog items. Used when the WWW site
+ * consumes the canonical platform registry at build time.
+ */
+export function platformRecordsToCatalog(
+  records: PlatformRecordUnion[],
+): CatalogItem[] {
+  return records.map(toCatalogItem);
+}
+
+export type { PlatformRecord, PlatformRecordUnion };

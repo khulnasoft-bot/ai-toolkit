@@ -1,0 +1,359 @@
+openapi: 3.0.3
+info:
+  title: AI Toolkit Platform API
+  description: |
+    Unified catalog API for AI Toolkit. Provides a single source of truth for
+    providers, models, gateways, tools, templates, recipes, and content.
+  version: 1.0.0
+servers:
+  - url: https://api.ai-toolkit.dev
+    description: Production platform API
+  - url: http://localhost:3000
+    description: Local development
+tags:
+  - name: catalog
+    description: Catalog records (providers, models, gateways, tools, templates, recipes, content)
+  - name: search
+    description: Full-text search across catalog records
+  - name: metrics
+    description: Aggregated platform metrics
+paths:
+  /api/platform/v1/catalog:
+    get:
+      tags: [catalog]
+      summary: List catalog records
+      description: Returns paginated catalog records with optional filtering by type, search query, and tags.
+      operationId: listCatalog
+      parameters:
+        - name: type
+          in: query
+          description: Filter by entity type
+          schema:
+            type: string
+            enum: [provider, model, gateway, tool, template, recipe, content]
+        - name: q
+          in: query
+          description: Full-text search query (matched against id, name, description, tags)
+          schema:
+            type: string
+        - name: tag
+          in: query
+          description: Filter by tag (repeatable for multiple tags)
+          schema:
+            type: string
+          style: form
+          explode: false
+        - name: limit
+          in: query
+          description: Maximum number of records (1-100, default 50)
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: Catalog records
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                    description: Registry version
+                  records:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlatformRecordUnion'
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/platform/v1/catalog/{type}:
+    get:
+      tags: [catalog]
+      summary: List records by type
+      description: Returns records of a specific entity type.
+      operationId: listCatalogByType
+      parameters:
+        - name: type
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: [providers, models, gateways, tools, templates, recipes, content]
+        - name: q
+          in: query
+          schema:
+            type: string
+        - name: tag
+          in: query
+          schema:
+            type: string
+          style: form
+          explode: false
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 50
+      responses:
+        '200':
+          description: Records of the requested type
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  records:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PlatformRecordUnion'
+        '404':
+          description: Unknown type
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/platform/v1/search:
+    get:
+      tags: [search]
+      summary: Search catalog records
+      description: Full-text search across provider, model, gateway, tool, template, recipe, and content records.
+      operationId: searchCatalog
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 100
+            default: 20
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SearchResult'
+  /api/platform/v1/metrics/overview:
+    get:
+      tags: [metrics]
+      summary: Platform metrics overview
+      description: Aggregated counts of providers, models, gateways, and tools.
+      operationId: getMetricsOverview
+      responses:
+        '200':
+          description: Metrics overview
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  version:
+                    type: string
+                  metrics:
+                    type: object
+                    properties:
+                      providers:
+                        type: integer
+                      models:
+                        type: integer
+                      gateways:
+                        type: integer
+                      tools:
+                        type: integer
+        '404':
+          description: Metrics unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+    SearchResult:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [provider, model, gateway, tool, template, recipe, content]
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+    PlatformLink:
+      type: object
+      properties:
+        label:
+          type: string
+        href:
+          type: string
+    PlatformSource:
+      type: object
+      properties:
+        path:
+          type: string
+        kind:
+          type: string
+          enum: [content, registry, package-source, generated]
+    PlatformRecord:
+      type: object
+      required: [id, type, slug, name, description, status, tags, links, source, updatedAt]
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum: [provider, model, gateway, tool, template, recipe, content]
+        slug:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        status:
+          type: string
+          enum: [active, deprecated, draft]
+        tags:
+          type: array
+          items:
+            type: string
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlatformLink'
+        source:
+          $ref: '#/components/schemas/PlatformSource'
+        updatedAt:
+          type: string
+          format: date-time
+    ProviderRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            category:
+              type: string
+            capabilities:
+              type: array
+              items:
+                type: string
+    ModelRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            providerId:
+              type: string
+            providerModelId:
+              type: string
+            modality:
+              type: string
+              enum: [language, embedding, image]
+            capabilities:
+              type: array
+              items:
+                type: string
+    GatewayRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            developer:
+              type: string
+            packageName:
+              type: string
+            installCommands:
+              type: object
+              additionalProperties:
+                type: string
+            codeExample:
+              type: string
+    ToolRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            packageName:
+              type: string
+            installCommands:
+              type: object
+              additionalProperties:
+                type: string
+            codeExample:
+              type: string
+    TemplateRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            category:
+              type: string
+            categoryOrder:
+              type: integer
+            framework:
+              type: string
+            primaryProviderId:
+              type: string
+              nullable: true
+            sourcePath:
+              type: string
+    RecipeRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            category:
+              type: string
+            contentPath:
+              type: string
+            readTimeMinutes:
+              type: integer
+    ContentRecord:
+      allOf:
+        - $ref: '#/components/schemas/PlatformRecord'
+        - type: object
+          properties:
+            family:
+              type: string
+            locale:
+              type: string
+            contentPath:
+              type: string
+            canonicalPath:
+              type: string
+    PlatformRecordUnion:
+      oneOf:
+        - $ref: '#/components/schemas/ProviderRecord'
+        - $ref: '#/components/schemas/ModelRecord'
+        - $ref: '#/components/schemas/GatewayRecord'
+        - $ref: '#/components/schemas/ToolRecord'
+        - $ref: '#/components/schemas/TemplateRecord'
+        - $ref: '#/components/schemas/RecipeRecord'
+        - $ref: '#/components/schemas/ContentRecord'

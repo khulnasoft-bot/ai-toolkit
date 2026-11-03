@@ -221,7 +221,7 @@ function providers(): ProviderRecord[] {
 }
 
 function models(): ModelRecord[] {
-  const root = join(ROOT, 'packages/core/gateway/src');
+  const root = join(ROOT, 'packages/gateway/core/src');
   const files: Array<[ModelModality, string]> = [
     ['language', 'gateway-language-model-settings.ts'],
     ['embedding', 'gateway-embedding-model-settings.ts'],
@@ -294,7 +294,7 @@ function generate(): PlatformRegistrySnapshot {
         name: model.providerId.replace('provider:', ''),
         description: 'Provider represented by gateway model metadata.',
         source: {
-          path: 'packages/core/gateway/src',
+          path: 'packages/gateway/core/src',
           kind: 'package-source',
         },
       }),
