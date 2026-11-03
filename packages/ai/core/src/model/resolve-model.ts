@@ -181,9 +181,8 @@ export function resolveSpeechTranslationModel(
     return model;
   }
 
-  const speechTranslationModel = getGlobalProvider().speechTranslationModel?.(
-    model,
-  );
+  const speechTranslationModel =
+    getGlobalProvider().speechTranslationModel?.(model);
 
   if (!speechTranslationModel) {
     throw new Error(

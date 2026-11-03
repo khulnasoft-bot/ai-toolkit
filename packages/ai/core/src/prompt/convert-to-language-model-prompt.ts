@@ -7,6 +7,7 @@ import type {
   LanguageModelV4Prompt,
 } from '@ai-toolkit/provider';
 import {
+  convertUint8ArrayToBase64,
   type DataContent,
   type FilePart,
   type ImagePart,
@@ -28,7 +29,10 @@ import {
   createDefaultDownloadFunction,
   type DownloadFunction,
 } from '../util/download/download-function';
-import { convertToLanguageModelV3DataContent } from './data-content';
+import {
+  convertDataContentToBase64String,
+  convertToLanguageModelV3DataContent,
+} from './data-content';
 import { InvalidMessageRoleError } from './invalid-message-role-error';
 import type { StandardizedPrompt } from './standardize-prompt';
 
@@ -441,7 +445,7 @@ function convertPartToLanguageModelPart(
     };
   }
 
-  let originalData: DataContent | URL;
+  let originalData: FilePart['data'];
   const type = part.type;
   switch (type) {
     case 'image':
@@ -519,25 +523,72 @@ function mapToolResultOutput(
   return {
     type: 'content',
     value: output.value.map(item => {
-      if (item.type !== 'media') {
-        return item;
-      }
+      if (item.type === 'media') {
+        // AI TOOLKIT 5 tool backwards compatibility:
+        // map media type to image-data or file-data
+        if (item.mediaType.startsWith('image/')) {
+          return {
+            type: 'image-data' as const,
+            data: item.data,
+            mediaType: item.mediaType,
+          };
+        }
 
-      // AI TOOLKIT 5 tool backwards compatibility:
-      // map media type to image-data or file-data
-      if (item.mediaType.startsWith('image/')) {
         return {
-          type: 'image-data' as const,
+          type: 'file-data' as const,
           data: item.data,
           mediaType: item.mediaType,
         };
       }
 
-      return {
-        type: 'file-data' as const,
-        data: item.data,
-        mediaType: item.mediaType,
-      };
+      if (item.type === 'file') {
+        // Convert V4 file data to V3 format:
+        if (item.data.type === 'data') {
+          return {
+            type: 'file-data' as const,
+            data: convertDataContentToBase64String(item.data.data),
+            mediaType: item.mediaType,
+            filename: item.filename,
+            providerOptions: item.providerOptions,
+          };
+        }
+
+        if (item.data.type === 'url') {
+          return {
+            type: 'file-url' as const,
+            url: item.data.url.toString(),
+            providerOptions: item.providerOptions,
+          };
+        }
+
+        if (item.data.type === 'reference') {
+          return {
+            type: 'file-id' as const,
+            fileId: item.data.reference,
+            providerOptions: item.providerOptions,
+          };
+        }
+
+        // item.data.type === 'text'
+        return {
+          type: 'file-data' as const,
+          data: convertUint8ArrayToBase64(
+            new TextEncoder().encode(item.data.text),
+          ),
+          mediaType: item.mediaType,
+          filename: item.filename,
+          providerOptions: item.providerOptions,
+        };
+      }
+
+      if (item.type === 'file-reference') {
+        return {
+          type: 'file-id' as const,
+          fileId: item.providerReference,
+        };
+      }
+
+      return item;
     }),
   };
 }

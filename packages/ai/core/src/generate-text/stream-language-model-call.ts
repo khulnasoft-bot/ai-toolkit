@@ -628,7 +628,9 @@ function createLanguageModelV4StreamPartToLanguageModelStreamPartTransform<
             const toolCall = await parseToolCall<TOOLS>({
               toolCall: chunk,
               tools,
-              repairToolCall: repairToolCall as ToolCallRepairFunction<TOOLS> | undefined,
+              repairToolCall: repairToolCall as
+                | ToolCallRepairFunction<TOOLS>
+                | undefined,
               system: instructions,
               messages,
             });

@@ -7,7 +7,9 @@ import {
   validateRegistry,
 } from './index';
 
-function makeSnapshot(overrides?: Partial<PlatformRegistrySnapshot>): PlatformRegistrySnapshot {
+function makeSnapshot(
+  overrides?: Partial<PlatformRegistrySnapshot>,
+): PlatformRegistrySnapshot {
   const base: PlatformRegistrySnapshot = {
     schemaVersion: 1,
     registryVersion: 'test-v1',
@@ -22,7 +24,10 @@ function makeSnapshot(overrides?: Partial<PlatformRegistrySnapshot>): PlatformRe
         status: 'active',
         tags: ['chat', 'language'],
         links: [{ label: 'docs', href: 'https://openai.com' }],
-        source: { path: 'content/providers/01-ai-toolkit-providers/openai.mdx', kind: 'content' },
+        source: {
+          path: 'content/providers/01-ai-toolkit-providers/openai.mdx',
+          kind: 'content',
+        },
         updatedAt: '2026-01-01',
         category: 'ai-toolkit',
         capabilities: [],
@@ -36,7 +41,10 @@ function makeSnapshot(overrides?: Partial<PlatformRegistrySnapshot>): PlatformRe
         status: 'active',
         tags: ['chat'],
         links: [],
-        source: { path: 'packages/gateway/core/src/gateway-language-model-settings.ts', kind: 'package-source' },
+        source: {
+          path: 'packages/gateway/core/src/gateway-language-model-settings.ts',
+          kind: 'package-source',
+        },
         updatedAt: '2026-01-01',
         providerId: 'provider:openai',
         providerModelId: 'openai/gpt-4o',
@@ -52,11 +60,19 @@ function makeSnapshot(overrides?: Partial<PlatformRegistrySnapshot>): PlatformRe
         status: 'active',
         tags: ['gateway'],
         links: [],
-        source: { path: 'content/gateways-registry/registry.ts', kind: 'registry' },
+        source: {
+          path: 'content/gateways-registry/registry.ts',
+          kind: 'registry',
+        },
         updatedAt: '2026-01-01',
         developer: 'Vercel',
         packageName: '@ai-toolkit/gateway',
-        installCommands: { pnpm: 'pnpm add', npm: 'npm add', yarn: 'yarn add', bun: 'bun add' },
+        installCommands: {
+          pnpm: 'pnpm add',
+          npm: 'npm add',
+          yarn: 'yarn add',
+          bun: 'bun add',
+        },
         codeExample: 'import { createGateway }',
       },
     ],
@@ -73,10 +89,7 @@ describe('validateRegistry', () => {
 
   it('detects duplicate ids', () => {
     const snapshot = makeSnapshot({
-      records: [
-        ...makeSnapshot().records,
-        { ...makeSnapshot().records[0] },
-      ],
+      records: [...makeSnapshot().records, { ...makeSnapshot().records[0] }],
     });
     const issues = validateRegistry(snapshot);
     expect(issues).toHaveLength(1);
@@ -130,7 +143,11 @@ describe('PlatformRegistry', () => {
 
   it('lists all records sorted by name', () => {
     const records = registry.all();
-    expect(records.map(r => r.name)).toEqual(['GPT-4o', 'OpenAI', 'Vercel AI Gateway']);
+    expect(records.map(r => r.name)).toEqual([
+      'GPT-4o',
+      'OpenAI',
+      'Vercel AI Gateway',
+    ]);
   });
 
   it('filters by type', () => {
@@ -175,7 +192,10 @@ describe('PlatformRegistry', () => {
 describe('createPlatformApi', () => {
   const registry = new PlatformRegistry(makeSnapshot());
 
-  function request(pathname: string, params: Record<string, string> = {}): PlatformApiRequest {
+  function request(
+    pathname: string,
+    params: Record<string, string> = {},
+  ): PlatformApiRequest {
     const url = new URL(`http://localhost${pathname}`);
     for (const [k, v] of Object.entries(params)) url.searchParams.set(k, v);
     return { pathname: url.pathname, searchParams: url.searchParams };
@@ -206,7 +226,9 @@ describe('createPlatformApi', () => {
 
   it('serves search', async () => {
     const handle = createPlatformApi(registry);
-    const res = await handle(request('/api/platform/v1/search', { q: 'openai' }));
+    const res = await handle(
+      request('/api/platform/v1/search', { q: 'openai' }),
+    );
     expect(res.status).toBe(200);
     const body = res.body as { version: string; results: unknown[] };
     expect(body.results.length).toBeGreaterThan(0);

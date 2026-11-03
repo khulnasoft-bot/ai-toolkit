@@ -500,7 +500,8 @@ function App() {
             onClick={fetchRuns}
             className="h-8 px-3 text-xs"
           >
-            {/* Refresh button */}<RefreshCw className="size-3.5" />
+            {/* Refresh button */}
+            <RefreshCw className="size-3.5" />
             Refresh
           </Button>
           <Button
@@ -713,11 +714,11 @@ function App() {
                                       {inputSummary.type === 'user' ? (
                                         // @ts-ignore
                                         // @ts-ignore
-                                    <MessageSquare className="size-3.5 text-muted-foreground" />
+                                        <MessageSquare className="size-3.5 text-muted-foreground" />
                                       ) : (
                                         // @ts-ignore
                                         // @ts-ignore
-                                    <Wrench className="size-3.5 text-muted-foreground" />
+                                        <Wrench className="size-3.5 text-muted-foreground" />
                                       )}
                                       {inputSummary.fullText ||
                                       inputSummary.toolDetails ? (

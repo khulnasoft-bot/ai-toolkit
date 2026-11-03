@@ -345,11 +345,14 @@ describe('MCPClient', () => {
     });
     const toolCall = tools['mock-tool'].execute;
     await expect(
-      toolCall({ bar: 'bar' }, {
-        messages: [],
-        toolCallId: '1',
-        context: undefined,
-      }),
+      toolCall(
+        { bar: 'bar' },
+        {
+          messages: [],
+          toolCallId: '1',
+          context: undefined,
+        },
+      ),
     ).rejects.toThrow(MCPClientError);
   });
 
@@ -373,11 +376,14 @@ describe('MCPClient', () => {
     const toolCall = tools['mock-tool'].execute;
 
     try {
-      await toolCall({ bar: 'bar' }, {
-        messages: [],
-        toolCallId: '1',
-        context: undefined,
-      });
+      await toolCall(
+        { bar: 'bar' },
+        {
+          messages: [],
+          toolCallId: '1',
+          context: undefined,
+        },
+      );
       throw new Error('Expected error to be thrown');
     } catch (error) {
       expect(MCPClientError.isInstance(error)).toBe(true);
@@ -634,11 +640,14 @@ describe('MCPClient', () => {
       },
     });
 
-    const result = await tool.execute({}, {
-      messages: [],
-      toolCallId: '1',
-      context: undefined,
-    });
+    const result = await tool.execute(
+      {},
+      {
+        messages: [],
+        toolCallId: '1',
+        context: undefined,
+      },
+    );
     expect(result).toMatchInlineSnapshot(`
       {
         "content": [
@@ -927,11 +936,14 @@ describe('MCPClient', () => {
       });
 
       await expect(
-        tools['bad-output-tool'].execute({}, {
-          messages: [],
-          toolCallId: '1',
-          context: undefined,
-        }),
+        tools['bad-output-tool'].execute(
+          {},
+          {
+            messages: [],
+            toolCallId: '1',
+            context: undefined,
+          },
+        ),
       ).rejects.toThrow(MCPClientError);
     });
 

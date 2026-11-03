@@ -1,11 +1,13 @@
 import {
   AITOOLKITError,
   type LanguageModelV3DataContent,
+  type SharedV4ProviderReference,
 } from '@ai-toolkit/provider';
 import {
   convertBase64ToUint8Array,
   convertUint8ArrayToBase64,
   type DataContent,
+  type FilePart,
 } from '@ai-toolkit/provider-utils';
 import { z } from 'zod/v4';
 import { InvalidDataContentError } from './invalid-data-content-error';
@@ -26,12 +28,55 @@ export const dataContentSchema: z.ZodType<DataContent> = z.union([
   ),
 ]);
 
+/**
+ * Checks whether a value is a provider reference as opposed to raw data
+ * content or a tagged file-data shape.
+ */
+function isProviderReference(
+  value: unknown,
+): value is SharedV4ProviderReference {
+  return (
+    typeof value === 'object' &&
+    value !== null &&
+    !(value instanceof Uint8Array) &&
+    !(value instanceof URL) &&
+    !(value instanceof ArrayBuffer) &&
+    !globalThis.Buffer?.isBuffer(value) &&
+    !('type' in value)
+  );
+}
+
 export function convertToLanguageModelV3DataContent(
-  content: DataContent | URL,
+  content: FilePart['data'],
 ): {
   data: LanguageModelV3DataContent;
   mediaType: string | undefined;
 } {
+  // Provider references cannot be represented as V3 data content:
+  if (isProviderReference(content)) {
+    throw new AITOOLKITError({
+      name: 'UnsupportedDataContentError',
+      message: 'Provider references are not supported as V3 data content.',
+    });
+  }
+
+  // Tagged file data shapes:
+  if (typeof content === 'object' && content !== null && 'type' in content) {
+    switch (content.type) {
+      case 'data':
+        return convertToLanguageModelV3DataContent(content.data);
+      case 'url':
+        return { data: content.url, mediaType: undefined };
+      case 'reference':
+        throw new AITOOLKITError({
+          name: 'UnsupportedDataContentError',
+          message: 'Provider references are not supported as V3 data content.',
+        });
+      case 'text':
+        return convertToLanguageModelV3DataContent(content.text);
+    }
+  }
+
   // Buffer & Uint8Array:
   if (content instanceof Uint8Array) {
     return { data: content, mediaType: undefined };

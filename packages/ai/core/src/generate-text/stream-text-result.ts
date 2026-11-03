@@ -400,14 +400,21 @@ export type TextStreamReasoningFilePart = {
 };
 export type TextStreamToolApprovalRequestPart<TOOLS extends ToolSet = ToolSet> =
   Extract<TextStreamPart<TOOLS>, { type: 'tool-approval-request' }>;
-export type TextStreamToolApprovalResponsePart<TOOLS extends ToolSet = ToolSet> =
-  Extract<TextStreamPart<TOOLS>, { type: 'tool-approval-response' }>;
-export type TextStreamToolCallPart<TOOLS extends ToolSet = ToolSet> =
-  Extract<TextStreamPart<TOOLS>, { type: 'tool-call' }>;
-export type TextStreamToolResultPart<TOOLS extends ToolSet = ToolSet> =
-  Extract<TextStreamPart<TOOLS>, { type: 'tool-result' }>;
-export type TextStreamToolErrorPart<TOOLS extends ToolSet = ToolSet> =
-  Extract<TextStreamPart<TOOLS>, { type: 'tool-error' }>;
+export type TextStreamToolApprovalResponsePart<
+  TOOLS extends ToolSet = ToolSet,
+> = Extract<TextStreamPart<TOOLS>, { type: 'tool-approval-response' }>;
+export type TextStreamToolCallPart<TOOLS extends ToolSet = ToolSet> = Extract<
+  TextStreamPart<TOOLS>,
+  { type: 'tool-call' }
+>;
+export type TextStreamToolResultPart<TOOLS extends ToolSet = ToolSet> = Extract<
+  TextStreamPart<TOOLS>,
+  { type: 'tool-result' }
+>;
+export type TextStreamToolErrorPart<TOOLS extends ToolSet = ToolSet> = Extract<
+  TextStreamPart<TOOLS>,
+  { type: 'tool-error' }
+>;
 
 export type TextStreamPart<TOOLS extends ToolSet> =
   | {
@@ -465,7 +472,11 @@ export type TextStreamPart<TOOLS extends ToolSet> =
     }
   | ({ type: 'source' } & Source)
   | { type: 'file'; file: GeneratedFile }
-  | { type: 'reasoning-file'; file: GeneratedFile; providerMetadata?: ProviderMetadata }
+  | {
+      type: 'reasoning-file';
+      file: GeneratedFile;
+      providerMetadata?: ProviderMetadata;
+    }
   | { type: 'custom'; kind: string; providerMetadata?: ProviderMetadata }
   | ({ type: 'tool-call' } & TypedToolCall<TOOLS>)
   | ({ type: 'tool-result' } & TypedToolResult<TOOLS>)

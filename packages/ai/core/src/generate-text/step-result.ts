@@ -1,4 +1,8 @@
-import type { Context, InferToolSetContext, ReasoningPart } from '@ai-toolkit/provider-utils';
+import type {
+  Context,
+  InferToolSetContext,
+  ReasoningPart,
+} from '@ai-toolkit/provider-utils';
 import type {
   CallWarning,
   FinishReason,
@@ -47,7 +51,10 @@ export type StepPerformance = {
 /**
  * The result of a single step in the generation process.
  */
-export type StepResult<TOOLS extends ToolSet, RUNTIME_CONTEXT extends Context = Context> = {
+export type StepResult<
+  TOOLS extends ToolSet,
+  RUNTIME_CONTEXT extends Context = Context,
+> = {
   readonly callId: string;
   readonly stepNumber: number;
   readonly provider: string;
@@ -170,7 +177,9 @@ results that can be fully encapsulated in the provider.
   readonly providerMetadata: ProviderMetadata | undefined;
 };
 
-export class DefaultStepResult<TOOLS extends ToolSet> implements StepResult<TOOLS> {
+export class DefaultStepResult<TOOLS extends ToolSet>
+  implements StepResult<TOOLS>
+{
   readonly callId: StepResult<TOOLS>['callId'];
   readonly stepNumber: StepResult<TOOLS>['stepNumber'];
   readonly provider: StepResult<TOOLS>['provider'];

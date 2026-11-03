@@ -53,7 +53,9 @@ export class DefaultGeneratedFile implements GeneratedFile {
         ? record.type === 'data'
           ? (record as Record<string, unknown>).data
           : record.type === 'text'
-            ? new TextEncoder().encode(String((record as Record<string, unknown>).text ?? ''))
+            ? new TextEncoder().encode(
+                String((record as Record<string, unknown>).text ?? ''),
+              )
             : record.type === 'url'
               ? String((record as Record<string, unknown>).url ?? '')
               : undefined

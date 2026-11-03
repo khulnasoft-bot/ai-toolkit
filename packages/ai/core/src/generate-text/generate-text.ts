@@ -1124,9 +1124,7 @@ function asToolCalls(
   content: Array<LanguageModelV3Content | LanguageModelV4Content>,
 ) {
   const parts = content.filter(
-    (
-      part,
-    ): part is LanguageModelV3ToolCall | LanguageModelV4ToolCall =>
+    (part): part is LanguageModelV3ToolCall | LanguageModelV4ToolCall =>
       part.type === 'tool-call',
   );
 

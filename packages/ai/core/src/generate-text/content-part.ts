@@ -13,7 +13,11 @@ export type ContentPart<TOOLS extends ToolSet> =
   | { type: 'text'; text: string; providerMetadata?: ProviderMetadata }
   | ReasoningOutput
   | ({ type: 'source' } & Source)
-  | { type: 'custom'; kind: `${string}.${string}`; providerMetadata?: ProviderMetadata }
+  | {
+      type: 'custom';
+      kind: `${string}.${string}`;
+      providerMetadata?: ProviderMetadata;
+    }
   | {
       type: 'file';
       file: GeneratedFile;
