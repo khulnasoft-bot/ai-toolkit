@@ -1,5 +1,5 @@
 {
-  "name": "www",
+  "name": "@ai-toolkit/www",
   "private": true,
   "scripts": {
     "dev": "next dev",

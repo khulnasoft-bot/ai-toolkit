@@ -1,5 +1,5 @@
 {
-  "name": "gateway",
+  "name": "@ai-toolkit/gateway",
   "version": "0.1.0",
   "private": true,
   "scripts": {

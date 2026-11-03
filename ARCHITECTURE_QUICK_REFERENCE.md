@@ -9,12 +9,26 @@ A one-page cheat sheet for the AI Toolkit enterprise architecture.
 ```
 📦 packages/foundation/    Foundation layer (types, runtime, provider, capabilities)
 📦 packages/ai/           Core SDK (ai-toolkit: generateText, streamText, generateObject)
+📦 packages/ai/generation  Text generation primitives
+📦 packages/ai/multimodal  Vision, audio, image, video runtime
+📦 packages/ai/reasoning   Reasoning engine
+📦 packages/ai/structured  Structured output generation
 📦 packages/gateway/      Gateway and routing
 📦 packages/providers/     LLM providers (40+ integrations)
 📦 packages/integrations/ Framework support (React, Vue, Angular, Svelte, RSC, LangChain, LlamaIndex)
 📦 packages/mcp/          Model Context Protocol
-📦 packages/tooling/      Developer tools (codemod, devtools)
-📦 packages/ui/           UI components (elements, design, shadcn-ui)
+📦 packages/agents/       Agent platform (core, loop, planner, teams, delegation, skills, harness)
+📦 packages/tools/        Tool platform (core, registry, execution, approval, permissions, discovery)
+📦 packages/workflow/     Workflow engine (core, engine, durable, scheduler, events, queue)
+📦 packages/sandbox/      Sandbox runtime (core, execution, filesystem, network, isolation)
+📦 packages/retrieval/    Retrieval layer (core, embeddings, vector, reranking, indexing, rag)
+📦 packages/memory/       Memory system (core, short-term, long-term, semantic, episodic, storage)
+📦 packages/context/      Context management (core, window, compression, summarization, runtime, routing)
+📦 packages/evals/        Evaluation engine (core, datasets, scorers, experiments, benchmarks, regression)
+📦 packages/observability/ Observability (telemetry, tracing, metrics, logging, cost, replay)
+📦 packages/security/     Security layer (auth, rbac, policy, secrets, audit, isolation)
+📦 packages/tooling/      Developer tools (codemod, devtools, cli, codegen)
+📦 packages/ui/           UI components (elements, design, shadcn-ui, studio)
 📦 packages/testing/      Internal test utilities
 
 📚 examples/               Organized reference implementations (see registry.json)
@@ -91,9 +105,21 @@ pnpm generate example --level=01-foundations --name=my-example
 | -------------------------------- | ---------------------------------- | ------------------- |
 | `packages/foundation/`           | @khulnasoft/ai-toolkit-core        | 2 approvals         |
 | `packages/ai/`                   | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/agents/`               | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/tools/`                | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/workflow/`             | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/sandbox/`              | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/retrieval/`            | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/memory/`               | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/context/`              | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/evals/`                | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/observability/`        | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/security/`             | @khulnasoft/ai-toolkit-core        | 2 approvals         |
 | `packages/providers/{provider}/` | Provider team                      | 1 approval + 1 core |
 | `packages/integrations/`         | Framework teams                    | 1 approval          |
 | `packages/gateway/`              | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/ui/`                   | @khulnasoft/ai-toolkit-core        | 2 approvals         |
+| `packages/tooling/`              | @khulnasoft/ai-toolkit-core        | 2 approvals         |
 | `examples/`                      | @khulnasoft/ai-toolkit-developers  | 1 approval          |
 | `.github/`                       | @khulnasoft/devops-team            | 1 approval          |
 | Root configs                     | @khulnasoft/ai-toolkit-maintainers | 1 approval          |
@@ -240,13 +266,23 @@ Once approved and CI passes, auto-merge happens
 
 ## Testing by Layer
 
-| Layer        | Location                   | Command                           |
-| ------------ | -------------------------- | --------------------------------- |
-| Foundation   | `packages/foundation/*/`   | `pnpm test:core`                  |
-| AI Core      | `packages/ai/*/`           | `pnpm test:core`                  |
-| Providers    | `packages/providers/*/`    | `pnpm test:providers`             |
-| Integrations | `packages/integrations/*/` | `pnpm test:adapters`              |
-| Examples     | `examples/*/*/`            | `pnpm test --filter="@example/*"` |
+| Layer              | Location                   | Command                           |
+| ------------------ | -------------------------- | --------------------------------- |
+| Foundation         | `packages/foundation/*/`   | `pnpm test:core`                  |
+| AI Core            | `packages/ai/*/`           | `pnpm test:core`                  |
+| Agent Platform     | `packages/agents/*/`       | `pnpm test --filter=@ai-toolkit/agents` |
+| Tool Platform      | `packages/tools/*/`        | `pnpm test --filter=@ai-toolkit/tools` |
+| Workflow Engine    | `packages/workflow/*/`     | `pnpm test --filter=@ai-toolkit/workflow` |
+| Sandbox Runtime    | `packages/sandbox/*/`      | `pnpm test --filter=@ai-toolkit/sandbox` |
+| Retrieval Layer    | `packages/retrieval/*/`    | `pnpm test --filter=@ai-toolkit/retrieval` |
+| Memory System      | `packages/memory/*/`       | `pnpm test --filter=@ai-toolkit/memory` |
+| Context Management | `packages/context/*/`      | `pnpm test --filter=@ai-toolkit/context` |
+| Evaluation Engine  | `packages/evals/*/`        | `pnpm test --filter=@ai-toolkit/evals` |
+| Observability      | `packages/observability/*/`| `pnpm test --filter=@ai-toolkit/observability` |
+| Security Layer     | `packages/security/*/`     | `pnpm test --filter=@ai-toolkit/security` |
+| Providers          | `packages/providers/*/`    | `pnpm test:providers`             |
+| Integrations       | `packages/integrations/*/` | `pnpm test:adapters`              |
+| Examples           | `examples/*/*/`            | `pnpm test --filter="@example/*"` |
 
 ---
 

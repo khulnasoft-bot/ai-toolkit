@@ -71,19 +71,32 @@ Dependencies within the same layer are always allowed. Examples:
 
 ## Domain-to-layer mapping (Current)
 
-| Domain       | Directory                 | Layer              |
-| ------------ | ------------------------- | ------------------ |
-| Foundation   | `packages/foundation/*`   | Foundation         |
-| AI Core      | `packages/ai/core`        | Runtime            |
-| Gateway      | `packages/gateway/core`   | Runtime            |
-| Providers    | `packages/providers/*`    | Provider           |
-| MCP          | `packages/mcp/core`       | Protocol           |
-| Integrations | `packages/integrations/*` | Integration        |
-| Tooling      | `packages/tooling/*`      | Experience/Tooling |
-| UI           | `packages/ui/*`           | Experience/Tooling |
-| Testing      | `packages/testing/*`      | Infrastructure     |
+| Domain                   | Directory                 | Layer              |
+| ------------------------ | ------------------------- | ------------------ |
+| Foundation               | `packages/foundation/*`   | Foundation         |
+| AI Core                  | `packages/ai/core`        | Runtime            |
+| AI Expansion             | `packages/ai/*`           | Runtime            |
+| Gateway                  | `packages/gateway/core`   | Runtime            |
+| Gateway Expansion        | `packages/gateway/*`      | Runtime            |
+| Providers                | `packages/providers/*`    | Provider           |
+| MCP                      | `packages/mcp/core`       | Protocol           |
+| MCP Expansion            | `packages/mcp/*`          | Protocol           |
+| Integrations             | `packages/integrations/*` | Integration        |
+| Tooling                  | `packages/tooling/*`      | Experience/Tooling |
+| UI                       | `packages/ui/*`           | Experience/Tooling |
+| Testing                  | `packages/testing/*`      | Infrastructure     |
+| Agent Platform           | `packages/agents/*`       | Runtime            |
+| Tool Platform            | `packages/tools/*`        | Runtime            |
+| Workflow Engine          | `packages/workflow/*`     | Runtime            |
+| Sandbox Runtime          | `packages/sandbox/*`      | Runtime            |
+| Retrieval Layer          | `packages/retrieval/*`    | Runtime            |
+| Memory System            | `packages/memory/*`       | Runtime            |
+| Context Management       | `packages/context/*`      | Runtime            |
+| Evaluation Engine        | `packages/evals/*`        | Runtime            |
+| Observability            | `packages/observability/*`| Runtime            |
+| Security Layer           | `packages/security/*`     | Runtime            |
 
-## Domain-to-layer mapping (Future - 400% Platform)
+## Domain-to-layer mapping (Current - 400% Platform)
 
 | Domain                     | May Depend On                                                |
 | -------------------------- | ------------------------------------------------------------ |
@@ -99,7 +112,7 @@ Dependencies within the same layer are always allowed. Examples:
 | `packages/observability/*` | Foundation (must be dependency-free for instrumentation)     |
 | `packages/security/*`      | Foundation (must be dependency-free for security primitives) |
 
-> Implemented domains: Wave 1, Wave 2, Wave 3, and Wave 4 (`packages/evals/*`, `packages/observability/*`, `packages/security/*`). Remaining domains are planned for future waves. See `architecture/FUTURE_DOMAINS.md` for implementation plans.
+> All 10 new domains are implemented (Waves 1-4). See `architecture/FUTURE_DOMAINS.md` for implementation plans and success criteria.
 
 ## Resolved violations
 

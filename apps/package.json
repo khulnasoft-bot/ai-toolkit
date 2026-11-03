@@ -2,6 +2,19 @@
   "name": "@ai-toolkit/apps",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter www dev"
+    "dev:www": "pnpm --filter @ai-toolkit/www dev",
+    "dev:gateway": "pnpm --filter @ai-toolkit/gateway dev",
+    "dev:docs": "pnpm --filter @ai-toolkit/docs dev",
+    "build:www": "node scripts/build.mjs --filter=www",
+    "build:gateway": "node scripts/build.mjs --filter=gateway",
+    "build:docs": "node scripts/build.mjs --filter=docs",
+    "build": "node scripts/build.mjs",
+    "deploy:www": "node scripts/deploy.mjs --filter=www",
+    "deploy:gateway": "node scripts/deploy.mjs --filter=gateway",
+    "deploy:docs": "node scripts/deploy.mjs --filter=docs",
+    "deploy": "node scripts/deploy.mjs"
+  },
+  "devDependencies": {
+    "vercel": "^39"
   }
 }
