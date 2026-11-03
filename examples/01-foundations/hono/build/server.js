@@ -1,4 +1,9 @@
-import { createAgentUIStreamResponse, createUIMessageStream, createUIMessageStreamResponse, streamText, } from '@ai-toolkit/ai';
+import {
+  createAgentUIStreamResponse,
+  createUIMessageStream,
+  createUIMessageStreamResponse,
+  streamText,
+} from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { serve } from '@hono/node-server';
 import 'dotenv/config';
@@ -7,64 +12,69 @@ import { cors } from 'hono/cors';
 import { openaiWebSearchAgent } from './openai-web-search-agent';
 const app = new Hono();
 // CORS setup to allow calls from localhost:3000
-app.use('/chat/*', cors({
+app.use(
+  '/chat/*',
+  cors({
     origin: 'http://localhost:3000',
     allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowHeaders: ['Content-Type', 'Authorization'],
     maxAge: 86400,
-}));
-app.post('/', async (_c) => {
-    console.log('POST /');
-    const result = streamText({
+  }),
+);
+app.post('/', async _c => {
+  console.log('POST /');
+  const result = streamText({
+    model: openai('gpt-4o'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+  return result.toUIMessageStreamResponse();
+});
+app.post('/text', async _c => {
+  console.log('POST /text');
+  const result = streamText({
+    model: openai('gpt-4o'),
+    prompt: 'Write a short poem about coding.',
+  });
+  return result.toTextStreamResponse();
+});
+app.post('/stream-data', async _c => {
+  console.log('POST /stream-data');
+  // immediately start streaming the response
+  const stream = createUIMessageStream({
+    execute: ({ writer }) => {
+      writer.write({ type: 'start' });
+      writer.write({
+        type: 'data-custom',
+        data: {
+          custom: 'Hello, world!',
+        },
+      });
+      const result = streamText({
         model: openai('gpt-4o'),
         prompt: 'Invent a new holiday and describe its traditions.',
-    });
-    return result.toUIMessageStreamResponse();
-});
-app.post('/text', async (_c) => {
-    console.log('POST /text');
-    const result = streamText({
-        model: openai('gpt-4o'),
-        prompt: 'Write a short poem about coding.',
-    });
-    return result.toTextStreamResponse();
-});
-app.post('/stream-data', async (_c) => {
-    console.log('POST /stream-data');
-    // immediately start streaming the response
-    const stream = createUIMessageStream({
-        execute: ({ writer }) => {
-            writer.write({ type: 'start' });
-            writer.write({
-                type: 'data-custom',
-                data: {
-                    custom: 'Hello, world!',
-                },
-            });
-            const result = streamText({
-                model: openai('gpt-4o'),
-                prompt: 'Invent a new holiday and describe its traditions.',
-            });
-            writer.merge(result.toUIMessageStream({
-                sendStart: false,
-                onError: error => {
-                    // Error messages are masked by default for security reasons.
-                    // If you want to expose the error message to the client, you can do so here:
-                    return error instanceof Error ? error.message : String(error);
-                },
-            }));
-        },
-    });
-    return createUIMessageStreamResponse({ stream });
+      });
+      writer.merge(
+        result.toUIMessageStream({
+          sendStart: false,
+          onError: error => {
+            // Error messages are masked by default for security reasons.
+            // If you want to expose the error message to the client, you can do so here:
+            return error instanceof Error ? error.message : String(error);
+          },
+        }),
+      );
+    },
+  });
+  return createUIMessageStreamResponse({ stream });
 });
 // useChat example using Agent
-app.post('/chat', async (c) => {
-    console.log('POST /chat');
-    const { messages } = await c.req.json();
-    return createAgentUIStreamResponse({
-        agent: openaiWebSearchAgent,
-        uiMessages: messages,
-    });
+app.post('/chat', async c => {
+  console.log('POST /chat');
+  const { messages } = await c.req.json();
+  return createAgentUIStreamResponse({
+    agent: openaiWebSearchAgent,
+    uiMessages: messages,
+  });
 });
 app.get('/health', c => c.text('Hono AI TOOLKIT example server is running!'));
 console.log('Server starting on http://localhost:8080');

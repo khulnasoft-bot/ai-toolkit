@@ -2,26 +2,26 @@ import { generateText } from '@ai-toolkit/ai';
 import { perplexity } from '@ai-toolkit/perplexity';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: perplexity('sonar-pro'),
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    {
-                        type: 'text',
-                        text: 'What is this document about? Provide a brief summary.',
-                    },
-                    {
-                        type: 'file',
-                        data: new URL('https://example.com/path/to/document.pdf'),
-                        mediaType: 'application/pdf',
-                        filename: 'document.pdf',
-                    },
-                ],
-            },
+  const result = await generateText({
+    model: perplexity('sonar-pro'),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          {
+            type: 'text',
+            text: 'What is this document about? Provide a brief summary.',
+          },
+          {
+            type: 'file',
+            data: new URL('https://example.com/path/to/document.pdf'),
+            mediaType: 'application/pdf',
+            filename: 'document.pdf',
+          },
         ],
-    });
-    console.log(result.text);
+      },
+    ],
+  });
+  console.log(result.text);
 });
 //# sourceMappingURL=perplexity-pdf-url.js.map

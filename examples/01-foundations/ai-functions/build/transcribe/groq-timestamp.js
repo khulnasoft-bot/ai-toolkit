@@ -4,23 +4,23 @@ import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 async function main() {
-    const result = await transcribe({
-        model: groq.transcription('whisper-large-v3-turbo'),
-        audio: await readFile(path.join(__dirname, '../../data/galileo.mp3')),
-        providerOptions: {
-            groq: {
-                language: 'en',
-                timestampGranularities: ['word', 'segment'],
-                responseFormat: 'verbose_json', // this is required for timestamp granularities
-            },
-        },
-    });
-    console.log('Text:', result.text);
-    console.log('Duration:', result.durationInSeconds);
-    console.log('Language:', result.language);
-    console.log('Segments:', result.segments);
-    console.log('Warnings:', result.warnings);
-    console.log('Responses:', result.responses);
+  const result = await transcribe({
+    model: groq.transcription('whisper-large-v3-turbo'),
+    audio: await readFile(path.join(__dirname, '../../data/galileo.mp3')),
+    providerOptions: {
+      groq: {
+        language: 'en',
+        timestampGranularities: ['word', 'segment'],
+        responseFormat: 'verbose_json', // this is required for timestamp granularities
+      },
+    },
+  });
+  console.log('Text:', result.text);
+  console.log('Duration:', result.durationInSeconds);
+  console.log('Language:', result.language);
+  console.log('Segments:', result.segments);
+  console.log('Warnings:', result.warnings);
+  console.log('Responses:', result.responses);
 }
 main().catch(console.error);
 //# sourceMappingURL=groq-timestamp.js.map

@@ -1,23 +1,27 @@
-import { defaultSettingsMiddleware, generateText, wrapLanguageModel, } from '@ai-toolkit/ai';
+import {
+  defaultSettingsMiddleware,
+  generateText,
+  wrapLanguageModel,
+} from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: wrapLanguageModel({
-            model: openai.responses('gpt-4o'),
-            middleware: defaultSettingsMiddleware({
-                settings: {
-                    temperature: 0.5,
-                    providerOptions: {
-                        openai: {
-                            store: false,
-                        },
-                    },
-                },
-            }),
-        }),
-        prompt: 'What cities are in the United States?',
-    });
-    console.log(result.response.body);
+  const result = await generateText({
+    model: wrapLanguageModel({
+      model: openai.responses('gpt-4o'),
+      middleware: defaultSettingsMiddleware({
+        settings: {
+          temperature: 0.5,
+          providerOptions: {
+            openai: {
+              store: false,
+            },
+          },
+        },
+      }),
+    }),
+    prompt: 'What cities are in the United States?',
+  });
+  console.log(result.response.body);
 });
 //# sourceMappingURL=default-settings-example.js.map

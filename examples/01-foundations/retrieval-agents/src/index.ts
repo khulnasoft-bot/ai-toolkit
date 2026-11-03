@@ -49,10 +49,10 @@ async function run(): Promise<void> {
   const query = 'What capabilities does AI Toolkit provide for agents?';
 
   // Step 1: Retrieve relevant context
-  const results = await retrievalEngine.retrieve(
-    query,
-    { topK: 5, minScore: 0.5 },
-  );
+  const results = await retrievalEngine.retrieve(query, {
+    topK: 5,
+    minScore: 0.5,
+  });
   console.log(`Retrieved ${results.length} context documents:`);
   for (const r of results) {
     console.log(`  - ${r.content} (score: ${r.score})`);

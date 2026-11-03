@@ -2,16 +2,16 @@ import { streamText } from '@ai-toolkit/ai';
 import { bedrockAnthropic } from '@ai-toolkit/amazon-bedrock/anthropic';
 import { run } from '../lib/run';
 run(async () => {
-    const result = streamText({
-        model: bedrockAnthropic('us.anthropic.claude-sonnet-4-5-20250929-v1:0'),
-        prompt: 'Invent a new holiday and describe its traditions.',
-    });
-    for await (const textPart of result.textStream) {
-        process.stdout.write(textPart);
-    }
-    console.log();
-    console.log('Token usage:', await result.usage);
-    console.log('Finish reason:', await result.finishReason);
-    console.log('Response headers:', (await result.response).headers);
+  const result = streamText({
+    model: bedrockAnthropic('us.anthropic.claude-sonnet-4-5-20250929-v1:0'),
+    prompt: 'Invent a new holiday and describe its traditions.',
+  });
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
+  console.log();
+  console.log('Token usage:', await result.usage);
+  console.log('Finish reason:', await result.finishReason);
+  console.log('Response headers:', (await result.response).headers);
 });
 //# sourceMappingURL=amazon-bedrock-anthropic.js.map

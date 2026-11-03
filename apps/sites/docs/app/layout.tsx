@@ -3,7 +3,8 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'AI Toolkit Docs — Documentation',
-  description: 'Documentation for AI Toolkit, a unified TypeScript AI engineering platform.',
+  description:
+    'Documentation for AI Toolkit, a unified TypeScript AI engineering platform.',
 };
 
 const nav = [

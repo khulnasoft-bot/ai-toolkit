@@ -3,15 +3,15 @@ import { google } from '@ai-toolkit/google';
 import { presentImages } from '../lib/present-image';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: google('gemini-2.0-flash-exp'),
-        prompt: 'Generate an image of a comic cat',
-    });
-    console.log(result.text);
-    for (const file of result.files) {
-        if (file.mediaType.startsWith('image/')) {
-            await presentImages([file]);
-        }
+  const result = await generateText({
+    model: google('gemini-2.0-flash-exp'),
+    prompt: 'Generate an image of a comic cat',
+  });
+  console.log(result.text);
+  for (const file of result.files) {
+    if (file.mediaType.startsWith('image/')) {
+      await presentImages([file]);
     }
+  }
 });
 //# sourceMappingURL=google-image-output.js.map

@@ -71,46 +71,46 @@ Dependencies within the same layer are always allowed. Examples:
 
 ## Domain-to-layer mapping (Current)
 
-| Domain                   | Directory                 | Layer              |
-| ------------------------ | ------------------------- | ------------------ |
-| Foundation               | `packages/foundation/*`   | Foundation         |
-| AI Core                  | `packages/ai/core`        | Runtime            |
-| AI Expansion             | `packages/ai/*`           | Runtime            |
-| Gateway                  | `packages/gateway/core`   | Runtime            |
-| Gateway Expansion        | `packages/gateway/*`      | Runtime            |
-| Providers                | `packages/providers/*`    | Provider           |
-| MCP                      | `packages/mcp/core`       | Protocol           |
-| MCP Expansion            | `packages/mcp/*`          | Protocol           |
-| Integrations             | `packages/integrations/*` | Integration        |
-| Tooling                  | `packages/tooling/*`      | Experience/Tooling |
-| UI                       | `packages/ui/*`           | Experience/Tooling |
-| Testing                  | `packages/testing/*`      | Infrastructure     |
-| Agent Platform           | `packages/agents/*`       | Runtime            |
-| Tool Platform            | `packages/tools/*`        | Runtime            |
-| Workflow Engine          | `packages/workflow/*`     | Runtime            |
-| Sandbox Runtime          | `packages/sandbox/*`      | Runtime            |
-| Retrieval Layer          | `packages/retrieval/*`    | Runtime            |
-| Memory System            | `packages/memory/*`       | Runtime            |
-| Context Management       | `packages/context/*`      | Runtime            |
-| Evaluation Engine        | `packages/evals/*`        | Runtime            |
-| Observability            | `packages/observability/*`| Runtime            |
-| Security Layer           | `packages/security/*`     | Runtime            |
+| Domain             | Directory                  | Layer              |
+| ------------------ | -------------------------- | ------------------ |
+| Foundation         | `packages/foundation/*`    | Foundation         |
+| AI Core            | `packages/ai/core`         | Runtime            |
+| AI Expansion       | `packages/ai/*`            | Runtime            |
+| Gateway            | `packages/gateway/core`    | Runtime            |
+| Gateway Expansion  | `packages/gateway/*`       | Runtime            |
+| Providers          | `packages/providers/*`     | Provider           |
+| MCP                | `packages/mcp/core`        | Protocol           |
+| MCP Expansion      | `packages/mcp/*`           | Protocol           |
+| Integrations       | `packages/integrations/*`  | Integration        |
+| Tooling            | `packages/tooling/*`       | Experience/Tooling |
+| UI                 | `packages/ui/*`            | Experience/Tooling |
+| Testing            | `packages/testing/*`       | Infrastructure     |
+| Agent Platform     | `packages/agents/*`        | Runtime            |
+| Tool Platform      | `packages/tools/*`         | Runtime            |
+| Workflow Engine    | `packages/workflow/*`      | Runtime            |
+| Sandbox Runtime    | `packages/sandbox/*`       | Runtime            |
+| Retrieval Layer    | `packages/retrieval/*`     | Runtime            |
+| Memory System      | `packages/memory/*`        | Runtime            |
+| Context Management | `packages/context/*`       | Runtime            |
+| Evaluation Engine  | `packages/evals/*`         | Runtime            |
+| Observability      | `packages/observability/*` | Runtime            |
+| Security Layer     | `packages/security/*`      | Runtime            |
 
 ## Domain-to-layer mapping (Current - 400% Platform)
 
-| Domain                     | May Depend On (actual, per package.json)                                  |
-| -------------------------- | ------------------------------------------------------------------------- |
-| `packages/ai/*`            | Foundation, AI Core (intra-layer), Providers                              |
-| `packages/context/*`       | Foundation, AI Core, Memory                                               |
-| `packages/memory/*`        | Foundation, AI Core                                                       |
-| `packages/agents/*`        | Foundation, AI Core, Context, Memory, MCP                                 |
-| `packages/workflow/*`      | Foundation, AI Core, Agents, Context, Memory, MCP, Tools                  |
-| `packages/retrieval/*`     | Foundation, AI Core, Memory, Context, MCP                                 |
-| `packages/tools/*`         | Foundation, AI Core, Context, MCP                                         |
-| `packages/sandbox/*`       | Foundation, AI Core, Context, Memory, MCP                                 |
-| `packages/evals/*`         | Foundation, AI Core, Agents, Workflow, Observability                      |
+| Domain                     | May Depend On (actual, per package.json)                                       |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| `packages/ai/*`            | Foundation, AI Core (intra-layer), Providers                                   |
+| `packages/context/*`       | Foundation, AI Core, Memory                                                    |
+| `packages/memory/*`        | Foundation, AI Core                                                            |
+| `packages/agents/*`        | Foundation, AI Core, Context, Memory, MCP                                      |
+| `packages/workflow/*`      | Foundation, AI Core, Agents, Context, Memory, MCP, Tools                       |
+| `packages/retrieval/*`     | Foundation, AI Core, Memory, Context, MCP                                      |
+| `packages/tools/*`         | Foundation, AI Core, Context, MCP                                              |
+| `packages/sandbox/*`       | Foundation, AI Core, Context, Memory, MCP                                      |
+| `packages/evals/*`         | Foundation, AI Core, Agents, Workflow, Observability                           |
 | `packages/observability/*` | Foundation (intra-layer observability deps allowed; dependency-free otherwise) |
-| `packages/security/*`      | Foundation, Context, Memory                                               |
+| `packages/security/*`      | Foundation, Context, Memory                                                    |
 
 > All 10 new domains are implemented (Waves 1-4). See `architecture/FUTURE_DOMAINS.md` for implementation plans and success criteria.
 

@@ -1,7 +1,4 @@
-import type {
-  PlatformRecord,
-  PlatformRecordUnion,
-} from '@ai-toolkit/platform';
+import type { PlatformRecord, PlatformRecordUnion } from '@ai-toolkit/platform';
 
 export type CatalogItem = {
   id: string;
@@ -66,8 +63,7 @@ export const recipes: CatalogItem[] = [
   {
     id: 'structured-outputs',
     name: 'Structured outputs',
-    description:
-      'Generate validated JSON that matches your TypeScript schema.',
+    description: 'Generate validated JSON that matches your TypeScript schema.',
     tags: ['Objects', 'Validation'],
     meta: '6 min read',
   },

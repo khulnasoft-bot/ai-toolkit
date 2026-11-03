@@ -4,21 +4,22 @@ import { z } from 'zod';
 import { run } from '../lib/run';
 import { weatherTool } from '../tools/weather-tool';
 run(async () => {
-    const result = await generateText({
-        model: anthropic('claude-3-opus-20240229'),
-        maxOutputTokens: 512,
-        tools: {
-            weather: weatherTool,
-            cityAttractions: tool({
-                inputSchema: z.object({ city: z.string() }),
-            }),
-        },
-        toolChoice: {
-            type: 'tool',
-            toolName: 'weather',
-        },
-        prompt: 'What is the weather in San Francisco and what attractions should I visit?',
-    });
-    console.log(JSON.stringify(result, null, 2));
+  const result = await generateText({
+    model: anthropic('claude-3-opus-20240229'),
+    maxOutputTokens: 512,
+    tools: {
+      weather: weatherTool,
+      cityAttractions: tool({
+        inputSchema: z.object({ city: z.string() }),
+      }),
+    },
+    toolChoice: {
+      type: 'tool',
+      toolName: 'weather',
+    },
+    prompt:
+      'What is the weather in San Francisco and what attractions should I visit?',
+  });
+  console.log(JSON.stringify(result, null, 2));
 });
 //# sourceMappingURL=anthropic-tool-choice.js.map

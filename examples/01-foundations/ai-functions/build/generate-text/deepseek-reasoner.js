@@ -3,12 +3,12 @@ import { deepseek } from '@ai-toolkit/deepseek';
 import { print } from '../lib/print';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: deepseek('deepseek-reasoner'),
-        prompt: 'How many "r"s are in the word "strawberry"?',
-    });
-    print('Content:', result.content);
-    print('Usage:', result.usage);
-    print('Finish reason:', result.finishReason);
+  const result = await generateText({
+    model: deepseek('deepseek-reasoner'),
+    prompt: 'How many "r"s are in the word "strawberry"?',
+  });
+  print('Content:', result.content);
+  print('Usage:', result.usage);
+  print('Finish reason:', result.finishReason);
 });
 //# sourceMappingURL=deepseek-reasoner.js.map

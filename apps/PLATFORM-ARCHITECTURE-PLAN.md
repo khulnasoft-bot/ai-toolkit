@@ -27,10 +27,12 @@ This plan executes the remaining steps to make the platform the canonical catalo
 ### Tasks
 
 1. **Freeze app-local catalog types**
+
    - Audit `apps/sites/www/lib/registry.ts` and `apps/sites/gateway/lib/catalog.ts` for local catalog types
    - Mark them as deprecated in favor of `@ai-toolkit/platform` types
 
 2. **Create entity inventory**
+
    - Document all entity types: provider, model, gateway, tool, template, recipe, content
    - Map each to its source of truth (content/providers, content/gateways-registry, content/tools-registry, examples/registry.json, content/cookbook, packages/gateway/core/src)
 
@@ -53,11 +55,13 @@ This plan executes the remaining steps to make the platform the canonical catalo
 ### Tasks
 
 1. **Implement `packages/foundation/platform`** (already exists)
+
    - Contracts: `PlatformRecord`, `PlatformRegistry`, `PlatformRegistrySnapshot`, `PlatformQuery`
    - Validation: `validateRegistry` (duplicate-id, invalid-id, missing-reference)
    - Query: `list`, `all`, `get`, `search`
 
 2. **Add schemas and validation**
+
    - JSON Schema for `PlatformRegistrySnapshot`
    - Valibot/Zod schema for record validation
    - Export schema from package entry point
@@ -82,10 +86,12 @@ This plan executes the remaining steps to make the platform the canonical catalo
 ### Tasks
 
 1. **Define typed queries**
+
    - Typed query builders for each entity type (providers, models, gateways, tools, templates, recipes, content)
    - Strongly typed search/filter parameters
 
 2. **Add DTO mappers**
+
    - Map `PlatformRecordUnion` → app-facing DTOs (ProviderDTO, ModelDTO, etc.)
    - Keep DTOs separate from internal record types
 
@@ -109,12 +115,14 @@ This plan executes the remaining steps to make the platform the canonical catalo
 ### Tasks
 
 1. **Implement `/api/platform/v1` routes** (createPlatformApi already handles this)
+
    - `GET /api/platform/v1/catalog` — all records with query filtering
    - `GET /api/platform/v1/catalog/:type` — collection by type
    - `GET /api/platform/v1/search?q=` — full-text search
    - `GET /api/platform/v1/metrics/overview` — aggregated counts
 
 2. **Add OpenAPI spec**
+
    - `apps/platform/openapi.yaml` (or `build/openapi/platform-openapi.json`)
    - Document all endpoints, query params, response shapes
 

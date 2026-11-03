@@ -2,22 +2,22 @@ import { generateText } from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: anthropic('claude-3-5-sonnet-latest'),
-        prompt: 'What are the latest developments in AI research and technology?',
-        tools: {
-            web_search: anthropic.tools.webSearch_20250305({
-                maxUses: 5,
-                userLocation: {
-                    type: 'approximate',
-                    city: 'San Francisco',
-                    region: 'California',
-                    country: 'US',
-                    timezone: 'America/Los_Angeles',
-                },
-            }),
+  const result = await generateText({
+    model: anthropic('claude-3-5-sonnet-latest'),
+    prompt: 'What are the latest developments in AI research and technology?',
+    tools: {
+      web_search: anthropic.tools.webSearch_20250305({
+        maxUses: 5,
+        userLocation: {
+          type: 'approximate',
+          city: 'San Francisco',
+          region: 'California',
+          country: 'US',
+          timezone: 'America/Los_Angeles',
         },
-    });
-    console.log(JSON.stringify(result.content, null, 2));
+      }),
+    },
+  });
+  console.log(JSON.stringify(result.content, null, 2));
 });
 //# sourceMappingURL=anthropic-search.js.map

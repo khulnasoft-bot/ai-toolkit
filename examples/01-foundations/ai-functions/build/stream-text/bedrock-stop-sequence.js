@@ -2,17 +2,20 @@ import { streamText } from '@ai-toolkit/ai';
 import { bedrock } from '@ai-toolkit/amazon-bedrock';
 import { run } from '../lib/run';
 run(async () => {
-    const result = streamText({
-        model: bedrock('anthropic.claude-3-5-sonnet-20240620-v1:0'),
-        prompt: 'Write a short story and end it with the word END.',
-        stopSequences: ['END'],
-    });
-    for await (const textPart of result.textStream) {
-        process.stdout.write(textPart);
-    }
-    console.log();
-    console.log('Token usage:', await result.usage);
-    console.log('Finish reason:', await result.finishReason);
-    console.log('Stop sequence:', (await result.providerMetadata)?.bedrock?.stopSequence);
+  const result = streamText({
+    model: bedrock('anthropic.claude-3-5-sonnet-20240620-v1:0'),
+    prompt: 'Write a short story and end it with the word END.',
+    stopSequences: ['END'],
+  });
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
+  console.log();
+  console.log('Token usage:', await result.usage);
+  console.log('Finish reason:', await result.finishReason);
+  console.log(
+    'Stop sequence:',
+    (await result.providerMetadata)?.bedrock?.stopSequence,
+  );
 });
 //# sourceMappingURL=bedrock-stop-sequence.js.map

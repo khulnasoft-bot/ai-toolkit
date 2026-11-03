@@ -2,15 +2,16 @@ import { generateText } from '@ai-toolkit/ai';
 import { groq } from '@ai-toolkit/groq';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: groq('openai/gpt-oss-120b'),
-        prompt: 'What are the latest developments in AI? Please search for recent news.',
-        tools: {
-            browser_search: groq.tools.browserSearch({}),
-        },
-        toolChoice: 'required',
-    });
-    console.log(result.text);
-    console.log('\nUsage:', result.usage);
+  const result = await generateText({
+    model: groq('openai/gpt-oss-120b'),
+    prompt:
+      'What are the latest developments in AI? Please search for recent news.',
+    tools: {
+      browser_search: groq.tools.browserSearch({}),
+    },
+    toolChoice: 'required',
+  });
+  console.log(result.text);
+  console.log('\nUsage:', result.usage);
 });
 //# sourceMappingURL=groq-browser-search.js.map

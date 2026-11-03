@@ -1,8 +1,5 @@
 import { createAgent, type Agent } from '@ai-toolkit/agents';
-import {
-  createEvaluationEngine,
-  type Evaluation,
-} from '@ai-toolkit/evals';
+import { createEvaluationEngine, type Evaluation } from '@ai-toolkit/evals';
 import { createOpenAI } from '@ai-toolkit/openai';
 
 const openai = createOpenAI({ apiKey: process.env.OPENAI_API_KEY });
@@ -22,7 +19,7 @@ const evalEngine = createEvaluationEngine();
 
 // Register an evaluator that checks answer length and keyword presence
 evalEngine.registerEvaluator('quality-check', {
-  evaluate: async (_evaluation) => {
+  evaluate: async _evaluation => {
     const answer =
       _evaluation.name === 'concise-answer'
         ? 'AI Toolkit is a TypeScript platform for building AI applications.'
@@ -38,9 +35,7 @@ evalEngine.registerEvaluator('quality-check', {
 
 async function run(): Promise<void> {
   // Step 1: Agent generates an answer
-  const result = await agent.execute(
-    'Describe AI Toolkit in one sentence.',
-  );
+  const result = await agent.execute('Describe AI Toolkit in one sentence.');
   console.log(`Agent answer: ${result.output}`);
 
   // Step 2: Evaluate the agent's output

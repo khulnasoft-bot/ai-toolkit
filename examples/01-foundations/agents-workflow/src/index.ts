@@ -61,7 +61,7 @@ async function run(): Promise<void> {
         ? `Research findings: ${results.get('research')}`
         : step.action === 'review-agent'
           ? `Summary to review: ${results.get('write')}`
-        : 'AI agent platforms';
+          : 'AI agent platforms';
 
     const result = await agent.execute(input);
     results.set(step.id, result.output);

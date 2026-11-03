@@ -66,40 +66,63 @@ importers:
         specifier: 4.1.0
         version: 4.1.0(@edge-runtime/vm@5.0.0)(@opentelemetry/api@1.9.1)(@types/node@24.13.3)(jsdom@26.1.0)(msw@2.15.0(@types/node@24.13.3)(typescript@5.8.3))(vite@7.3.6(@types/node@24.13.3)(jiti@2.7.0)(less@4.4.0)(lightningcss@1.32.0)(sass@1.90.0)(terser@5.49.2)(tsx@4.23.13)(yaml@2.9.0))
 
-  apps: {}
+  apps/sites/docs:
+    dependencies:
+      next:
+        specifier: 16.3.6
+        version: 16.3.6(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@22.19.19)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.90.0)
+      react:
+        specifier: ^19.2.0
+        version: 19.2.8
+      react-dom:
+        specifier: ^19.2.0
+        version: 19.2.8(react@19.2.8)
+    devDependencies:
+      '@types/node':
+        specifier: ^22.0.0
+        version: 22.19.19
+      '@types/react':
+        specifier: ^19.0.0
+        version: 19.2.18
+      '@types/react-dom':
+        specifier: ^19.0.0
+        version: 19.2.7(@types/react@19.2.18)
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
 
-  apps/gateway:
+  apps/sites/gateway:
     dependencies:
       '@ai-toolkit/ai':
         specifier: workspace:*
-        version: link:../../packages/ai/core
+        version: link:../../../packages/ai/core
       '@ai-toolkit/anthropic':
         specifier: workspace:*
-        version: link:../../packages/providers/anthropic
+        version: link:../../../packages/providers/anthropic
       '@ai-toolkit/gateway-router':
         specifier: workspace:*
-        version: link:../../packages/gateway/router
+        version: link:../../../packages/gateway/router
       '@ai-toolkit/google':
         specifier: workspace:*
-        version: link:../../packages/providers/google
+        version: link:../../../packages/providers/google
       '@ai-toolkit/groq':
         specifier: workspace:*
-        version: link:../../packages/providers/groq
+        version: link:../../../packages/providers/groq
       '@ai-toolkit/mistral':
         specifier: workspace:*
-        version: link:../../packages/providers/mistral
+        version: link:../../../packages/providers/mistral
       '@ai-toolkit/observability-cost':
         specifier: workspace:*
-        version: link:../../packages/observability/cost
+        version: link:../../../packages/observability/cost
       '@ai-toolkit/openai':
         specifier: workspace:*
-        version: link:../../packages/providers/openai
+        version: link:../../../packages/providers/openai
       '@ai-toolkit/provider-utils':
         specifier: workspace:*
-        version: link:../../packages/foundation/utils
+        version: link:../../../packages/foundation/utils
       '@ai-toolkit/security-auth':
         specifier: workspace:*
-        version: link:../../packages/security/auth
+        version: link:../../../packages/security/auth
       next:
         specifier: 16.3.6
         version: 16.3.6(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@22.19.19)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.90.0)
@@ -126,8 +149,11 @@ importers:
         specifier: 5.8.3
         version: 5.8.3
 
-  apps/www:
+  apps/sites/www:
     dependencies:
+      '@ai-toolkit/platform':
+        specifier: workspace:*
+        version: link:../../../packages/foundation/platform
       next:
         specifier: 16.3.6
         version: 16.3.6(@opentelemetry/api@1.9.1)(@playwright/test@1.62.1)(@types/node@22.19.19)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)(sass@1.90.0)
@@ -315,6 +341,37 @@ importers:
       zod:
         specifier: 3.25.76
         version: 3.25.76
+    devDependencies:
+      '@types/node':
+        specifier: 20.17.24
+        version: 20.17.24
+      tsx:
+        specifier: 4.19.2
+        version: 4.19.2
+      typescript:
+        specifier: 5.8.3
+        version: 5.8.3
+
+  examples/01-foundations/cross-domain-agent:
+    dependencies:
+      '@ai-toolkit/agents':
+        specifier: workspace:*
+        version: link:../../../packages/agents/core
+      '@ai-toolkit/ai':
+        specifier: workspace:*
+        version: link:../../../packages/ai/core
+      '@ai-toolkit/context':
+        specifier: workspace:*
+        version: link:../../../packages/context/core
+      '@ai-toolkit/memory':
+        specifier: workspace:*
+        version: link:../../../packages/memory/core
+      '@ai-toolkit/openai':
+        specifier: workspace:*
+        version: link:../../../packages/providers/openai
+      '@ai-toolkit/tools':
+        specifier: workspace:*
+        version: link:../../../packages/tools/core
     devDependencies:
       '@types/node':
         specifier: 20.17.24
@@ -7873,9 +7930,6 @@ packages:
   '@emnapi/runtime@1.11.3':
     resolution: {integrity: sha512-Xz4Tpyki7XyrpbUK1jR1AhdAdaXyhhY4lZ3neLodmhpuWfy2PAQN5B46sAiU4liOXGLkHypn/qU+jvfWSCYYLA==}
 
-  '@emnapi/runtime@1.5.0':
-    resolution: {integrity: sha512-97/BJ3iXHww3djw6hYIfErCZFee7qCtrneuLa20UXFCOTCfBM2cvQHjWJ2EG0s0MtdNwInarqCTz35i4wWXHsQ==}
-
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
     engines: {node: '>=12'}
@@ -9232,10 +9286,6 @@ packages:
 
   '@iconify/utils@3.0.2':
     resolution: {integrity: sha512-EfJS0rLfVuRuJRn4psJHtK2A9TqVnkxPpHY6lYHiB9+8eSuudsxbwMiavocG45ujOo6FJ+CIRlRnlOGinzkaGQ==}
-
-  '@img/colour@1.0.0':
-    resolution: {integrity: sha512-A5P/LfWGFSl6nsckYtjw9da+19jB8hkJ6ACTGcDfEJ0aE+l2n2El7dsVM7UVHZQ9s2lmYMWlrS21YLy2IR1LUw==}
-    engines: {node: '>=18'}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -25902,11 +25952,6 @@ snapshots:
       tslib: 2.8.1
     optional: true
 
-  '@emnapi/runtime@1.5.0':
-    dependencies:
-      tslib: 2.8.1
-    optional: true
-
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
 
@@ -26693,9 +26738,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@img/colour@1.0.0':
-    optional: true
-
   '@img/colour@1.1.0':
     optional: true
 
@@ -26922,7 +26964,7 @@ snapshots:
 
   '@img/sharp-wasm32@0.33.5':
     dependencies:
-      '@emnapi/runtime': 1.5.0
+      '@emnapi/runtime': 1.11.3
     optional: true
 
   '@img/sharp-wasm32@0.34.4':
@@ -43223,7 +43265,7 @@ snapshots:
 
   sharp@0.34.4:
     dependencies:
-      '@img/colour': 1.0.0
+      '@img/colour': 1.1.0
       detect-libc: 2.1.2
       semver: 7.8.5
     optionalDependencies:

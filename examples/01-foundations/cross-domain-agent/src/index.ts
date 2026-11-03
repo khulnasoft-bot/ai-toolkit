@@ -1,4 +1,8 @@
-import { createAgent, createAgentRegistry, type Agent } from '@ai-toolkit/agents';
+import {
+  createAgent,
+  createAgentRegistry,
+  type Agent,
+} from '@ai-toolkit/agents';
 import { createMemoryStore, type MemoryEntry } from '@ai-toolkit/memory';
 import { createToolRegistry, type Tool } from '@ai-toolkit/tools';
 import { createOpenAI } from '@ai-toolkit/openai';
@@ -59,7 +63,10 @@ async function run(): Promise<void> {
   console.log('Agent result:', result.output);
 
   // Store the interaction in episodic memory
-  storeMemory(`User asked to echo; agent responded: ${result.output}`, 'episodic');
+  storeMemory(
+    `User asked to echo; agent responded: ${result.output}`,
+    'episodic',
+  );
 
   console.log('Cross-domain integration complete.');
 }

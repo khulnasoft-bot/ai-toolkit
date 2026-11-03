@@ -6,37 +6,39 @@ import { ConsoleSpanExporter } from '@opentelemetry/sdk-trace-node';
 import { z } from 'zod';
 import { run } from '../lib/run';
 const sdk = new NodeSDK({
-    traceExporter: new ConsoleSpanExporter(),
-    instrumentations: [getNodeAutoInstrumentations()],
+  traceExporter: new ConsoleSpanExporter(),
+  instrumentations: [getNodeAutoInstrumentations()],
 });
 sdk.start();
 run(async () => {
-    const result = streamObject({
-        model: openai('gpt-4o-mini'),
-        schema: z.object({
-            recipe: z.object({
-                name: z.string(),
-                ingredients: z.array(z.object({
-                    name: z.string(),
-                    amount: z.string(),
-                })),
-                steps: z.array(z.string()),
-            }),
-        }),
-        prompt: 'Generate a lasagna recipe.',
-        experimental_telemetry: {
-            isEnabled: true,
-            functionId: 'my-awesome-function',
-            metadata: {
-                something: 'custom',
-                someOtherThing: 'other-value',
-            },
-        },
-    });
-    for await (const partialObject of result.partialObjectStream) {
-        console.clear();
-        console.log(partialObject);
-    }
-    await sdk.shutdown();
+  const result = streamObject({
+    model: openai('gpt-4o-mini'),
+    schema: z.object({
+      recipe: z.object({
+        name: z.string(),
+        ingredients: z.array(
+          z.object({
+            name: z.string(),
+            amount: z.string(),
+          }),
+        ),
+        steps: z.array(z.string()),
+      }),
+    }),
+    prompt: 'Generate a lasagna recipe.',
+    experimental_telemetry: {
+      isEnabled: true,
+      functionId: 'my-awesome-function',
+      metadata: {
+        something: 'custom',
+        someOtherThing: 'other-value',
+      },
+    },
+  });
+  for await (const partialObject of result.partialObjectStream) {
+    console.clear();
+    console.log(partialObject);
+  }
+  await sdk.shutdown();
 });
 //# sourceMappingURL=stream-object.js.map

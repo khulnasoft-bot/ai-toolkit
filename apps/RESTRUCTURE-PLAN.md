@@ -55,6 +55,7 @@ apps/
 **Tasks**:
 
 1. Update `pnpm-workspace.yaml`:
+
    - Replace `- 'apps'`, `- 'apps/www'`, `- 'apps/gateway'` with a single entry for the consolidated apps structure
    - Keep `apps/*/*` for sites if using nested structure
 
@@ -74,11 +75,13 @@ apps/
 **Tasks**:
 
 1. Create `apps/scripts/build.mjs`:
+
    - Build all sites in sequence or parallel
    - Support `--filter` for individual site builds
    - Handle build errors with rollback
 
 2. Create `apps/scripts/deploy.mjs`:
+
    - Deploy to Vercel per site
    - Independent deployability per site
    - Environment variable handling

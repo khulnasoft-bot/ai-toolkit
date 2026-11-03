@@ -2,22 +2,22 @@ import { generateText } from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: anthropic('claude-sonnet-4-20250514'),
-        prompt: 'What happened in tech news today?',
-        tools: {
-            web_search: anthropic.tools.webSearch_20250305({
-                maxUses: 3,
-                userLocation: {
-                    type: 'approximate',
-                    city: 'New York',
-                    country: 'US',
-                    timezone: 'America/New_York',
-                },
-            }),
+  const result = await generateText({
+    model: anthropic('claude-sonnet-4-20250514'),
+    prompt: 'What happened in tech news today?',
+    tools: {
+      web_search: anthropic.tools.webSearch_20250305({
+        maxUses: 3,
+        userLocation: {
+          type: 'approximate',
+          city: 'New York',
+          country: 'US',
+          timezone: 'America/New_York',
         },
-    });
-    console.dir(result.response.body, { depth: Infinity });
-    console.dir(result.content, { depth: Infinity });
+      }),
+    },
+  });
+  console.dir(result.response.body, { depth: Infinity });
+  console.dir(result.content, { depth: Infinity });
 });
 //# sourceMappingURL=anthropic-web-search-tool.js.map

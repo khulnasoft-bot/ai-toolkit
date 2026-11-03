@@ -1,20 +1,25 @@
 import { experimental_generateVideo as generateVideo } from '@ai-toolkit/ai';
-import { byteDance, } from '@ai-toolkit/bytedance';
+import { byteDance } from '@ai-toolkit/bytedance';
 import { presentVideos } from '../../lib/present-video';
 import { run } from '../../lib/run';
 import { withSpinner } from '../../lib/spinner';
 run(async () => {
-    const { video } = await withSpinner('Generating text-to-video with seedance-1-0-pro-fast...', () => generateVideo({
+  const { video } = await withSpinner(
+    'Generating text-to-video with seedance-1-0-pro-fast...',
+    () =>
+      generateVideo({
         model: byteDance.video('seedance-1-0-pro-fast-251015'),
-        prompt: 'A golden retriever puppy running through a sunlit meadow, chasing butterflies, cinematic slow motion',
+        prompt:
+          'A golden retriever puppy running through a sunlit meadow, chasing butterflies, cinematic slow motion',
         aspectRatio: '16:9',
         duration: 5,
         providerOptions: {
-            bytedance: {
-                watermark: false,
-            },
+          bytedance: {
+            watermark: false,
+          },
         },
-    }));
-    await presentVideos([video]);
+      }),
+  );
+  await presentVideos([video]);
 });
 //# sourceMappingURL=pro-fast.js.map

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-10-09T15:59:02.103Z",
+  "generatedAt": "2026-11-03T07:15:06.544Z",
   "sources": [
     {
       "id": "gateways",
@@ -21,7 +21,7 @@
       "kind": "registry",
       "path": "examples/registry.json",
       "entity": "Template",
-      "count": 22
+      "count": 26
     },
     {
       "id": "providers",

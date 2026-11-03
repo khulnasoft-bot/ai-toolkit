@@ -1,34 +1,6 @@
 {
-  "generatedAt": "2026-10-10T06:22:42.078Z",
+  "generatedAt": "2026-11-03T07:15:16.405Z",
   "packages": [
-    {
-      "name": "@ai-toolkit/apps",
-      "dir": "apps",
-      "domain": "apps",
-      "workspaceGlobs": [
-        "apps"
-      ],
-      "version": null,
-      "private": true,
-      "source": null,
-      "main": null,
-      "module": null,
-      "types": null,
-      "exports": [],
-      "conditions": [],
-      "publicApi": [],
-      "dependencies": [],
-      "runtimeAssumptions": {
-        "nodeBuiltins": [
-          "node:fs",
-          "node:path"
-        ],
-        "usesGlobalFetch": false
-      },
-      "stability": null,
-      "owners": null,
-      "dependencyEdges": []
-    },
     {
       "name": "@ai-toolkit/ai",
       "dir": "packages/ai/core",
@@ -5338,6 +5310,11 @@
       ],
       "dependencies": [
         {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
           "name": "@ai-toolkit/codemod",
           "version": "workspace:*",
           "kind": "workspace"
@@ -5381,6 +5358,11 @@
           "name": "@ai-toolkit/runtime",
           "version": "workspace:*",
           "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/tools",
+          "version": "workspace:*",
+          "kind": "workspace"
         }
       ],
       "runtimeAssumptions": {
@@ -5392,6 +5374,12 @@
         "@khulnasoft/ai-toolkit-core"
       ],
       "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
         {
           "name": "@ai-toolkit/codemod",
           "version": "workspace:*",
@@ -5445,6 +5433,12 @@
           "version": "workspace:*",
           "kind": "workspace",
           "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/tools",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
         }
       ]
     },
@@ -5477,6 +5471,11 @@
       ],
       "dependencies": [
         {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
           "name": "@ai-toolkit/codemod",
           "version": "workspace:*",
           "kind": "workspace"
@@ -5520,6 +5519,11 @@
           "name": "@ai-toolkit/runtime",
           "version": "workspace:*",
           "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/tools",
+          "version": "workspace:*",
+          "kind": "workspace"
         }
       ],
       "runtimeAssumptions": {
@@ -5531,6 +5535,12 @@
         "@khulnasoft/ai-toolkit-core"
       ],
       "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
         {
           "name": "@ai-toolkit/codemod",
           "version": "workspace:*",
@@ -5584,6 +5594,12 @@
           "version": "workspace:*",
           "kind": "workspace",
           "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/tools",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
         }
       ]
     },
@@ -6340,6 +6356,11 @@
           "kind": "workspace"
         },
         {
+          "name": "@ai-toolkit/platform",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
           "name": "@ai-toolkit/provider",
           "version": "workspace:*",
           "kind": "workspace"
@@ -6399,6 +6420,12 @@
           "version": "workspace:*",
           "kind": "workspace",
           "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/platform",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
         },
         {
           "name": "@ai-toolkit/provider",
@@ -6696,6 +6723,77 @@
       "stability": null,
       "owners": null,
       "dependencyEdges": []
+    },
+    {
+      "name": "@example/agents-workflow",
+      "dir": "examples/01-foundations/agents-workflow",
+      "domain": "examples",
+      "workspaceGlobs": [
+        "examples/*/*"
+      ],
+      "version": "0.0.0",
+      "private": true,
+      "source": null,
+      "main": null,
+      "module": null,
+      "types": null,
+      "exports": [],
+      "conditions": [],
+      "publicApi": [],
+      "dependencies": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/workflow",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        }
+      ],
+      "runtimeAssumptions": {
+        "nodeBuiltins": [],
+        "usesGlobalFetch": false
+      },
+      "stability": null,
+      "owners": null,
+      "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/workflow",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        }
+      ]
     },
     {
       "name": "@example/ai-functions",
@@ -7330,6 +7428,170 @@
       ]
     },
     {
+      "name": "@example/cross-domain-agent",
+      "dir": "examples/01-foundations/cross-domain-agent",
+      "domain": "examples",
+      "workspaceGlobs": [
+        "examples/*/*"
+      ],
+      "version": "0.0.0",
+      "private": true,
+      "source": null,
+      "main": null,
+      "module": null,
+      "types": null,
+      "exports": [],
+      "conditions": [],
+      "publicApi": [],
+      "dependencies": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/context",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/memory",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/tools",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        }
+      ],
+      "runtimeAssumptions": {
+        "nodeBuiltins": [],
+        "usesGlobalFetch": false
+      },
+      "stability": null,
+      "owners": null,
+      "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/context",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/memory",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/tools",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        }
+      ]
+    },
+    {
+      "name": "@example/evals-agents",
+      "dir": "examples/01-foundations/evals-agents",
+      "domain": "examples",
+      "workspaceGlobs": [
+        "examples/*/*"
+      ],
+      "version": "0.0.0",
+      "private": true,
+      "source": null,
+      "main": null,
+      "module": null,
+      "types": null,
+      "exports": [],
+      "conditions": [],
+      "publicApi": [],
+      "dependencies": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/evals",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        }
+      ],
+      "runtimeAssumptions": {
+        "nodeBuiltins": [],
+        "usesGlobalFetch": false
+      },
+      "stability": null,
+      "owners": null,
+      "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/evals",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
+        }
+      ]
+    },
+    {
       "name": "@example/express",
       "dir": "examples/01-foundations/express",
       "domain": "examples",
@@ -7623,6 +7885,77 @@
           "version": "workspace:*",
           "kind": "workspace",
           "direction": "to-legacy"
+        }
+      ]
+    },
+    {
+      "name": "@example/retrieval-agents",
+      "dir": "examples/01-foundations/retrieval-agents",
+      "domain": "examples",
+      "workspaceGlobs": [
+        "examples/*/*"
+      ],
+      "version": "0.0.0",
+      "private": true,
+      "source": null,
+      "main": null,
+      "module": null,
+      "types": null,
+      "exports": [],
+      "conditions": [],
+      "publicApi": [],
+      "dependencies": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/retrieval",
+          "version": "workspace:*",
+          "kind": "workspace"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace"
+        }
+      ],
+      "runtimeAssumptions": {
+        "nodeBuiltins": [],
+        "usesGlobalFetch": false
+      },
+      "stability": null,
+      "owners": null,
+      "dependencyEdges": [
+        {
+          "name": "@ai-toolkit/agents",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/ai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
+        },
+        {
+          "name": "@ai-toolkit/retrieval",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-unknown"
+        },
+        {
+          "name": "@ai-toolkit/openai",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-providers"
         }
       ]
     },
@@ -10523,11 +10856,71 @@
       ]
     },
     {
-      "name": "gateway",
-      "dir": "apps/gateway",
+      "name": "docs",
+      "dir": "apps/sites/docs",
       "domain": "apps",
       "workspaceGlobs": [
-        "apps/gateway"
+        "apps/sites/*"
+      ],
+      "version": null,
+      "private": true,
+      "source": null,
+      "main": null,
+      "module": null,
+      "types": null,
+      "exports": [],
+      "conditions": [],
+      "publicApi": [],
+      "dependencies": [
+        {
+          "name": "next",
+          "version": "16.3.6",
+          "kind": "external"
+        },
+        {
+          "name": "react",
+          "version": "^19.2.0",
+          "kind": "external"
+        },
+        {
+          "name": "react-dom",
+          "version": "^19.2.0",
+          "kind": "external"
+        }
+      ],
+      "runtimeAssumptions": {
+        "nodeBuiltins": [],
+        "usesGlobalFetch": false
+      },
+      "stability": null,
+      "owners": null,
+      "dependencyEdges": [
+        {
+          "name": "next",
+          "version": "16.3.6",
+          "kind": "external",
+          "direction": "external"
+        },
+        {
+          "name": "react",
+          "version": "^19.2.0",
+          "kind": "external",
+          "direction": "external"
+        },
+        {
+          "name": "react-dom",
+          "version": "^19.2.0",
+          "kind": "external",
+          "direction": "external"
+        }
+      ]
+    },
+    {
+      "name": "gateway",
+      "dir": "apps/sites/gateway",
+      "domain": "apps",
+      "workspaceGlobs": [
+        "apps/sites/*"
       ],
       "version": "0.1.0",
       "private": true,
@@ -10697,10 +11090,10 @@
     },
     {
       "name": "www",
-      "dir": "apps/www",
+      "dir": "apps/sites/www",
       "domain": "apps",
       "workspaceGlobs": [
-        "apps/www"
+        "apps/sites/*"
       ],
       "version": null,
       "private": true,
@@ -10726,6 +11119,11 @@
           "name": "react-dom",
           "version": "^19.2.0",
           "kind": "external"
+        },
+        {
+          "name": "@ai-toolkit/platform",
+          "version": "workspace:*",
+          "kind": "workspace"
         }
       ],
       "runtimeAssumptions": {
@@ -10752,6 +11150,12 @@
           "version": "^19.2.0",
           "kind": "external",
           "direction": "external"
+        },
+        {
+          "name": "@ai-toolkit/platform",
+          "version": "workspace:*",
+          "kind": "workspace",
+          "direction": "to-legacy"
         }
       ]
     }

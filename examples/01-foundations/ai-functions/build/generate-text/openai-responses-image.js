@@ -3,29 +3,29 @@ import { generateText } from '@ai-toolkit/ai';
 import { openai } from '@ai-toolkit/openai';
 import { run } from '../lib/run';
 run(async () => {
-    const result = await generateText({
-        model: openai.responses('gpt-4o-mini'),
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    { type: 'text', text: 'Describe the image in detail.' },
-                    {
-                        type: 'image',
-                        image: fs.readFileSync('./data/comic-cat.png'),
-                        providerOptions: {
-                            openai: { imageDetail: 'low' },
-                        },
-                    },
-                ],
+  const result = await generateText({
+    model: openai.responses('gpt-4o-mini'),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'Describe the image in detail.' },
+          {
+            type: 'image',
+            image: fs.readFileSync('./data/comic-cat.png'),
+            providerOptions: {
+              openai: { imageDetail: 'low' },
             },
+          },
         ],
-    });
-    console.log(result.text);
-    console.log();
-    console.log('Finish reason:', result.finishReason);
-    console.log('Usage:', result.usage);
-    console.log('Request:', JSON.stringify(result.request, null, 2));
-    console.log('Response:', JSON.stringify(result.response, null, 2));
+      },
+    ],
+  });
+  console.log(result.text);
+  console.log();
+  console.log('Finish reason:', result.finishReason);
+  console.log('Usage:', result.usage);
+  console.log('Request:', JSON.stringify(result.request, null, 2));
+  console.log('Response:', JSON.stringify(result.response, null, 2));
 });
 //# sourceMappingURL=openai-responses-image.js.map

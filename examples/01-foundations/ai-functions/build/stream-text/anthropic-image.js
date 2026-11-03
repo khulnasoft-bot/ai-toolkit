@@ -3,20 +3,20 @@ import { streamText } from '@ai-toolkit/ai';
 import { anthropic } from '@ai-toolkit/anthropic';
 import { run } from '../lib/run';
 run(async () => {
-    const result = streamText({
-        model: anthropic('claude-3-5-sonnet-20240620'),
-        messages: [
-            {
-                role: 'user',
-                content: [
-                    { type: 'text', text: 'Describe the image in detail.' },
-                    { type: 'image', image: fs.readFileSync('./data/comic-cat.png') },
-                ],
-            },
+  const result = streamText({
+    model: anthropic('claude-3-5-sonnet-20240620'),
+    messages: [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'Describe the image in detail.' },
+          { type: 'image', image: fs.readFileSync('./data/comic-cat.png') },
         ],
-    });
-    for await (const textPart of result.textStream) {
-        process.stdout.write(textPart);
-    }
+      },
+    ],
+  });
+  for await (const textPart of result.textStream) {
+    process.stdout.write(textPart);
+  }
 });
 //# sourceMappingURL=anthropic-image.js.map

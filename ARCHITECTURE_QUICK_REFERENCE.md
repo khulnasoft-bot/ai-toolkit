@@ -266,23 +266,23 @@ Once approved and CI passes, auto-merge happens
 
 ## Testing by Layer
 
-| Layer              | Location                   | Command                           |
-| ------------------ | -------------------------- | --------------------------------- |
-| Foundation         | `packages/foundation/*/`   | `pnpm test:core`                  |
-| AI Core            | `packages/ai/*/`           | `pnpm test:core`                  |
-| Agent Platform     | `packages/agents/*/`       | `pnpm test --filter=@ai-toolkit/agents` |
-| Tool Platform      | `packages/tools/*/`        | `pnpm test --filter=@ai-toolkit/tools` |
-| Workflow Engine    | `packages/workflow/*/`     | `pnpm test --filter=@ai-toolkit/workflow` |
-| Sandbox Runtime    | `packages/sandbox/*/`      | `pnpm test --filter=@ai-toolkit/sandbox` |
-| Retrieval Layer    | `packages/retrieval/*/`    | `pnpm test --filter=@ai-toolkit/retrieval` |
-| Memory System      | `packages/memory/*/`       | `pnpm test --filter=@ai-toolkit/memory` |
-| Context Management | `packages/context/*/`      | `pnpm test --filter=@ai-toolkit/context` |
-| Evaluation Engine  | `packages/evals/*/`        | `pnpm test --filter=@ai-toolkit/evals` |
-| Observability      | `packages/observability/*/`| `pnpm test --filter=@ai-toolkit/observability` |
-| Security Layer     | `packages/security/*/`     | `pnpm test --filter=@ai-toolkit/security` |
-| Providers          | `packages/providers/*/`    | `pnpm test:providers`             |
-| Integrations       | `packages/integrations/*/` | `pnpm test:adapters`              |
-| Examples           | `examples/*/*/`            | `pnpm test --filter="@example/*"` |
+| Layer              | Location                    | Command                                        |
+| ------------------ | --------------------------- | ---------------------------------------------- |
+| Foundation         | `packages/foundation/*/`    | `pnpm test:core`                               |
+| AI Core            | `packages/ai/*/`            | `pnpm test:core`                               |
+| Agent Platform     | `packages/agents/*/`        | `pnpm test --filter=@ai-toolkit/agents`        |
+| Tool Platform      | `packages/tools/*/`         | `pnpm test --filter=@ai-toolkit/tools`         |
+| Workflow Engine    | `packages/workflow/*/`      | `pnpm test --filter=@ai-toolkit/workflow`      |
+| Sandbox Runtime    | `packages/sandbox/*/`       | `pnpm test --filter=@ai-toolkit/sandbox`       |
+| Retrieval Layer    | `packages/retrieval/*/`     | `pnpm test --filter=@ai-toolkit/retrieval`     |
+| Memory System      | `packages/memory/*/`        | `pnpm test --filter=@ai-toolkit/memory`        |
+| Context Management | `packages/context/*/`       | `pnpm test --filter=@ai-toolkit/context`       |
+| Evaluation Engine  | `packages/evals/*/`         | `pnpm test --filter=@ai-toolkit/evals`         |
+| Observability      | `packages/observability/*/` | `pnpm test --filter=@ai-toolkit/observability` |
+| Security Layer     | `packages/security/*/`      | `pnpm test --filter=@ai-toolkit/security`      |
+| Providers          | `packages/providers/*/`     | `pnpm test:providers`                          |
+| Integrations       | `packages/integrations/*/`  | `pnpm test:adapters`                           |
+| Examples           | `examples/*/*/`             | `pnpm test --filter="@example/*"`              |
 
 ---
 

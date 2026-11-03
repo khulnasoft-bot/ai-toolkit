@@ -1,51 +1,56 @@
 import * as process from 'node:process';
-import { streamText, } from '@ai-toolkit/ai';
+import { streamText } from '@ai-toolkit/ai';
 import { vertex } from '@ai-toolkit/google-vertex';
 import { run } from '../lib/run';
 const messages = [];
 run(async () => {
-    let _toolResponseAvailable = false;
-    const result = streamText({
-        model: vertex('gemini-2.5-pro'),
-        tools: { code_execution: vertex.tools.codeExecution({}) },
-        maxOutputTokens: 10000,
-        prompt: 'Calculate 20th fibonacci number. Then find the nearest palindrome to it.',
-    });
-    let fullResponse = '';
-    const toolCalls = [];
-    const toolResponses = [];
-    for await (const delta of result.fullStream) {
-        switch (delta.type) {
-            case 'text-delta': {
-                fullResponse += delta.text;
-                process.stdout.write(delta.text);
-                break;
-            }
-            case 'tool-call': {
-                toolCalls.push(delta);
-                process.stdout.write(`\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`);
-                break;
-            }
-            case 'tool-result': {
-                const transformedDelta = {
-                    ...delta,
-                    output: { type: 'json', value: delta.output },
-                };
-                toolResponses.push(transformedDelta);
-                process.stdout.write(`\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`);
-                break;
-            }
-        }
+  let _toolResponseAvailable = false;
+  const result = streamText({
+    model: vertex('gemini-2.5-pro'),
+    tools: { code_execution: vertex.tools.codeExecution({}) },
+    maxOutputTokens: 10000,
+    prompt:
+      'Calculate 20th fibonacci number. Then find the nearest palindrome to it.',
+  });
+  let fullResponse = '';
+  const toolCalls = [];
+  const toolResponses = [];
+  for await (const delta of result.fullStream) {
+    switch (delta.type) {
+      case 'text-delta': {
+        fullResponse += delta.text;
+        process.stdout.write(delta.text);
+        break;
+      }
+      case 'tool-call': {
+        toolCalls.push(delta);
+        process.stdout.write(
+          `\nTool call: '${delta.toolName}' ${JSON.stringify(delta.input)}`,
+        );
+        break;
+      }
+      case 'tool-result': {
+        const transformedDelta = {
+          ...delta,
+          output: { type: 'json', value: delta.output },
+        };
+        toolResponses.push(transformedDelta);
+        process.stdout.write(
+          `\nTool response: '${delta.toolName}' ${JSON.stringify(delta.output)}`,
+        );
+        break;
+      }
     }
-    process.stdout.write('\n\n');
-    messages.push({
-        role: 'assistant',
-        content: [{ type: 'text', text: fullResponse }, ...toolCalls],
-    });
-    if (toolResponses.length > 0) {
-        messages.push({ role: 'tool', content: toolResponses });
-    }
-    _toolResponseAvailable = toolCalls.length > 0;
-    console.log('Messages:', messages[0].content);
+  }
+  process.stdout.write('\n\n');
+  messages.push({
+    role: 'assistant',
+    content: [{ type: 'text', text: fullResponse }, ...toolCalls],
+  });
+  if (toolResponses.length > 0) {
+    messages.push({ role: 'tool', content: toolResponses });
+  }
+  _toolResponseAvailable = toolCalls.length > 0;
+  console.log('Messages:', messages[0].content);
 });
 //# sourceMappingURL=google-vertex-code-execution.js.map

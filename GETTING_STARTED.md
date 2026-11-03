@@ -56,7 +56,9 @@ const agent = createAgent({
   maxSteps: 5,
 });
 
-const result = await agent.execute('What are the benefits of TypeScript for AI apps?');
+const result = await agent.execute(
+  'What are the benefits of TypeScript for AI apps?',
+);
 console.log(result.output);
 ```
 
@@ -75,7 +77,11 @@ const tools = createToolRegistry();
 tools.registerTool({
   name: 'echo',
   description: 'Echoes back text.',
-  parameters: { type: 'object', properties: { text: { type: 'string' } }, required: ['text'] },
+  parameters: {
+    type: 'object',
+    properties: { text: { type: 'string' } },
+    required: ['text'],
+  },
   execute: async ({ text }) => text,
 });
 
@@ -187,11 +193,11 @@ npm test
 
 Other integration examples:
 
-| Example | Domains | Path |
-|---------|---------|------|
-| Agents + Workflow | agents, workflow | `examples/01-foundations/agents-workflow` |
+| Example                  | Domains           | Path                                       |
+| ------------------------ | ----------------- | ------------------------------------------ |
+| Agents + Workflow        | agents, workflow  | `examples/01-foundations/agents-workflow`  |
 | Retrieval + Agents (RAG) | retrieval, agents | `examples/01-foundations/retrieval-agents` |
-| Evals + Agents | evals, agents | `examples/01-foundations/evals-agents` |
+| Evals + Agents           | evals, agents     | `examples/01-foundations/evals-agents`     |
 
 ---
 

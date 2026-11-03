@@ -16,9 +16,7 @@ export default function Page() {
                 ? message.content
                 : message.content
                     .filter(part => part.type === 'text')
-                    .map(part => (
-                      <div key={part.text}>{part.text}</div>
-                    ))}
+                    .map(part => <div key={part.text}>{part.text}</div>)}
             </div>
           </div>
         ))}
