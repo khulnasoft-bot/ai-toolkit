@@ -30,6 +30,7 @@
     }
   },
   "dependencies": {
+    "@ai-toolkit/agents": "workspace:*",
     "@ai-toolkit/codemod": "workspace:*",
     "@ai-toolkit/devtools": "workspace:*",
     "@ai-toolkit/ai": "workspace:*",
@@ -38,7 +39,8 @@
     "@ai-toolkit/mcp": "workspace:*",
     "@ai-toolkit/provider": "workspace:*",
     "@ai-toolkit/provider-utils": "workspace:*",
-    "@ai-toolkit/runtime": "workspace:*"
+    "@ai-toolkit/runtime": "workspace:*",
+    "@ai-toolkit/tools": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "20.17.24",

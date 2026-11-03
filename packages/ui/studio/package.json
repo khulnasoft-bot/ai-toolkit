@@ -36,6 +36,7 @@
     "@ai-toolkit/ai": "workspace:*",
     "@ai-toolkit/context": "workspace:*",
     "@ai-toolkit/memory": "workspace:*",
+    "@ai-toolkit/platform": "workspace:*",
     "@ai-toolkit/provider": "workspace:*",
     "@ai-toolkit/provider-utils": "workspace:*",
     "@ai-toolkit/runtime": "workspace:*"
